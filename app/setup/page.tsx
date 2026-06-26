@@ -1,0 +1,135 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+export default function SetupPage() {
+  const router = useRouter();
+  const [done, setDone] = useState<boolean | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/setup")
+      .then((r) => r.json())
+      .then((d) => setDone(d.done));
+  }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    if (password !== confirm) {
+      setError("Password tidak cocok");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password minimal 6 karakter");
+      return;
+    }
+    setLoading(true);
+    const res = await fetch("/api/setup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
+    setLoading(false);
+    if (res.ok) {
+      router.push("/login");
+    } else {
+      const d = await res.json();
+      setError(d.error ?? "Terjadi kesalahan");
+    }
+  }
+
+  if (done === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <p className="text-slate-400">Memuat…</p>
+      </div>
+    );
+  }
+
+  if (done) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
+          <p className="text-2xl mb-2">🔒</p>
+          <p className="font-semibold text-slate-700">Setup sudah selesai</p>
+          <p className="text-sm text-slate-400 mt-1 mb-4">Silakan login dengan akun yang sudah ada.</p>
+          <a href="/login" className="inline-block bg-blue-600 text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-blue-700 transition">
+            Ke halaman login
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
+        <h1 className="text-xl font-bold text-slate-800 mb-1">Setup Pertama</h1>
+        <p className="text-sm text-slate-400 mb-6">Buat akun admin untuk mulai menggunakan OKR App.</p>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Nama</label>
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Nama lengkap"
+              className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Email</label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@perusahaan.com"
+              className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Password</label>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Min. 6 karakter"
+              className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Konfirmasi Password</label>
+            <input
+              type="password"
+              required
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              placeholder="Ulangi password"
+              className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
+            />
+          </div>
+
+          {error && <p className="text-xs text-red-500">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-600 text-white font-medium text-sm py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+          >
+            {loading ? "Membuat akun…" : "Buat Admin & Mulai"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}

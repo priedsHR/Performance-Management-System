@@ -1,0 +1,171 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+
+const bandClass: Record<string, string> = {
+  red: "bg-red-50 text-red-600",
+  amber: "bg-amber-50 text-amber-700",
+  teal: "bg-teal-50 text-teal-700",
+  green: "bg-emerald-50 text-emerald-700",
+  slate: "bg-slate-100 text-slate-500",
+};
+
+interface Period {
+  id: string;
+  name: string;
+  isActive: boolean;
+  releaseReports: boolean;
+}
+interface Row {
+  userId: string;
+  name: string;
+  department: string | null;
+  overall: number | null;
+  band: { key: string; label: string; color: string };
+  responseCount: number;
+  hasData: boolean;
+}
+
+export default function Dashboard360() {
+  const [periods, setPeriods] = useState<Period[]>([]);
+  const [periodId, setPeriodId] = useState("");
+  const [rows, setRows] = useState<Row[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/feedback/periods")
+      .then((r) => r.json())
+      .then((ps: Period[]) => {
+        setPeriods(ps);
+        const active = ps.find((p) => p.isActive) || ps[0];
+        if (active) setPeriodId(active.id);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!periodId) return;
+    setLoading(true);
+    fetch(`/api/feedback/report?all=1&periodId=${periodId}`)
+      .then((r) => r.json())
+      .then((d) => setRows(d.rows || []))
+      .finally(() => setLoading(false));
+  }, [periodId]);
+
+  const period = periods.find((p) => p.id === periodId);
+  const total = rows.length;
+  const withData = rows.filter((r) => r.hasData).length;
+  const scored = rows.filter((r) => r.overall != null).map((r) => r.overall as number);
+  const avg = scored.length ? scored.reduce((a, b) => a + b, 0) / scored.length : null;
+
+  const bandCounts: Record<string, { label: string; color: string; n: number }> = {};
+  rows.forEach((r) => {
+    if (!r.hasData) return;
+    const k = r.band.key;
+    bandCounts[k] = bandCounts[k] || { label: r.band.label, color: r.band.color, n: 0 };
+    bandCounts[k].n++;
+  });
+
+  const byDept: Record<string, number[]> = {};
+  rows.forEach((r) => {
+    if (r.overall == null) return;
+    const d = r.department || "—";
+    (byDept[d] ??= []).push(r.overall);
+  });
+
+  if (periods.length === 0)
+    return (
+      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
+        Belum ada periode. Buat & aktifkan periode di menu <b>Periode</b> untuk memulai.
+      </div>
+    );
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Periode</label>
+          <select value={periodId} onChange={(e) => setPeriodId(e.target.value)} className="border border-slate-200 rounded-lg px-3 py-2 text-sm">
+            {periods.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+                {p.isActive ? " (aktif)" : ""}
+              </option>
+            ))}
+          </select>
+        </div>
+        {period && (
+          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${period.releaseReports ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-500"}`}>
+            {period.releaseReports ? "Rapor sudah dirilis" : "Rapor belum dirilis"}
+          </span>
+        )}
+      </div>
+
+      {loading ? (
+        <div className="text-sm text-slate-400">Menghitung…</div>
+      ) : (
+        <>
+          <div className="grid sm:grid-cols-3 gap-3">
+            <Stat label="Karyawan aktif" value={String(total)} />
+            <Stat label="Sudah ada penilaian" value={`${withData} / ${total}`} />
+            <Stat label="Rata-rata skor" value={avg == null ? "—" : avg.toFixed(2)} accent />
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-2xl p-5">
+            <p className="text-sm font-semibold text-slate-700 mb-3">Sebaran band</p>
+            {withData === 0 ? (
+              <p className="text-sm text-slate-400">Belum ada data pada periode ini.</p>
+            ) : (
+              <div className="space-y-2">
+                {Object.values(bandCounts).map((b) => (
+                  <div key={b.label} className="flex items-center gap-3">
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded w-40 ${bandClass[b.color] || bandClass.slate}`}>{b.label}</span>
+                    <div className="flex-1 h-4 bg-slate-100 rounded overflow-hidden">
+                      <div className="h-full bg-teal-400" style={{ width: `${(b.n / withData) * 100}%` }} />
+                    </div>
+                    <span className="text-xs text-slate-500 w-8 text-right">{b.n}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-2xl p-5">
+            <p className="text-sm font-semibold text-slate-700 mb-3">Rata-rata per departemen</p>
+            {Object.keys(byDept).length === 0 ? (
+              <p className="text-sm text-slate-400">Belum ada data.</p>
+            ) : (
+              <div className="space-y-2">
+                {Object.entries(byDept).map(([d, arr]) => {
+                  const m = arr.reduce((a, b) => a + b, 0) / arr.length;
+                  return (
+                    <div key={d} className="flex items-center gap-3">
+                      <span className="text-sm text-slate-600 w-32 truncate">{d}</span>
+                      <div className="flex-1 h-4 bg-slate-100 rounded overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-teal-500 to-teal-400" style={{ width: `${(m / 4) * 100}%` }} />
+                      </div>
+                      <span className="text-xs font-semibold text-teal-700 w-10 text-right">{m.toFixed(2)}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <Link href="/360/admin/reports" className="inline-block text-sm font-semibold text-teal-700 hover:underline">
+            Lihat rekap rapor lengkap →
+          </Link>
+        </>
+      )}
+    </div>
+  );
+}
+
+function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className="bg-white border border-slate-200 rounded-2xl p-5">
+      <p className="text-xs text-slate-400">{label}</p>
+      <p className={`text-2xl font-extrabold mt-1 ${accent ? "text-teal-700" : "text-slate-900"}`}>{value}</p>
+    </div>
+  );
+}

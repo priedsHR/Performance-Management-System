@@ -1,0 +1,503 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  DEPARTMENTS,
+  LEVELS,
+  CATEGORY_LABEL,
+  type Category,
+} from "@/lib/feedback/library";
+
+interface ManualPair {
+  id: string;
+  raterId: string;
+  raterName: string;
+  rateeId: string;
+  rateeName: string;
+  periodId: string | null;
+}
+
+interface Comp {
+  id: string;
+  code: string;
+  name: string;
+  category: Category;
+  department: string | null;
+  active: boolean;
+}
+interface UserLite {
+  id: string;
+  name: string;
+  email: string;
+}
+interface Profile {
+  id: string;
+  userId: string;
+  name: string;
+  email: string;
+  role: string;
+  department: string | null;
+  position: string | null;
+  level: string | null;
+  targetLevel: number | null;
+  isManager: boolean;
+  managerId: string | null;
+  managerName: string | null;
+  active: boolean;
+  competencyIds: string[];
+}
+
+const CATS: Category[] = ["CORE", "LEADERSHIP", "JOB_FAMILY", "TECHNICAL"];
+
+const blankForm = {
+  name: "",
+  email: "",
+  password: "",
+  role: "MEMBER",
+  department: "",
+  position: "",
+  level: "",
+  targetMode: "auto",
+  managerId: "",
+  active: true,
+};
+
+export default function EmployeeManager360() {
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [comps, setComps] = useState<Comp[]>([]);
+  const [users, setUsers] = useState<UserLite[]>([]);
+  const [editing, setEditing] = useState<string | "new" | null>(null);
+  const [form, setForm] = useState({ ...blankForm });
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [msg, setMsg] = useState("");
+  const [importing, setImporting] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [manualPairs, setManualPairs] = useState<ManualPair[]>([]);
+  const [pairA, setPairA] = useState("");
+  const [pairB, setPairB] = useState("");
+  const [pairMsg, setPairMsg] = useState("");
+
+  async function load() {
+    const [p, c, u, mp] = await Promise.all([
+      fetch("/api/feedback/profiles").then((r) => r.json()),
+      fetch("/api/feedback/competencies").then((r) => r.json()),
+      fetch("/api/users").then((r) => r.json()),
+      fetch("/api/feedback/manual-peers").then((r) => r.json()),
+    ]);
+    setProfiles(p);
+    setComps(c);
+    setUsers(u);
+    setManualPairs(mp);
+  }
+
+  async function addPair() {
+    if (!pairA || !pairB || pairA === pairB) { setPairMsg("Pilih dua karyawan berbeda."); return; }
+    const res = await fetch("/api/feedback/manual-peers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userAId: pairA, userBId: pairB }),
+    });
+    if (res.ok) { setPairA(""); setPairB(""); setPairMsg(""); await load(); }
+    else { const d = await res.json().catch(() => ({})); setPairMsg(d.error || "Gagal."); }
+  }
+
+  async function removePair(pair: ManualPair) {
+    await fetch("/api/feedback/manual-peers", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userAId: pair.raterId, userBId: pair.rateeId }),
+    });
+    await load();
+  }
+  useEffect(() => {
+    load();
+  }, []);
+
+  const activeComps = useMemo(() => comps.filter((c) => c.active), [comps]);
+
+  function autoIds(dept: string, role: string): string[] {
+    const isManager = role === "LEAD" || role === "ADMIN";
+    return activeComps
+      .filter(
+        (c) =>
+          c.category === "CORE" ||
+          (c.category === "LEADERSHIP" && isManager) ||
+          (c.category === "JOB_FAMILY" && c.department && c.department === dept) ||
+          (c.category === "TECHNICAL" && c.department == null)
+      )
+      .map((c) => c.id);
+  }
+
+  function startNew() {
+    setForm({ ...blankForm });
+    setSelected(new Set());
+    setEditing("new");
+    setMsg("");
+  }
+  function startEdit(p: Profile) {
+    setForm({
+      name: p.name,
+      email: p.email,
+      password: "",
+      role: p.role,
+      department: p.department || "",
+      position: p.position || "",
+      level: p.level || "",
+      targetMode: p.targetLevel == null ? "none" : String(p.targetLevel),
+      managerId: p.managerId || "",
+      active: p.active,
+    });
+    setSelected(new Set(p.competencyIds));
+    setEditing(p.id);
+    setMsg("");
+  }
+
+  function applyAuto() {
+    const auto = autoIds(form.department, form.role);
+    setSelected((prev) => new Set([...prev, ...auto]));
+  }
+  function toggleComp(id: string) {
+    setSelected((prev) => {
+      const n = new Set(prev);
+      if (n.has(id)) n.delete(id);
+      else n.add(id);
+      return n;
+    });
+  }
+
+  async function save() {
+    setMsg("");
+    const { targetMode, ...rest } = form;
+    const body: Record<string, unknown> = {
+      ...rest,
+      department: form.department || null,
+      managerId: form.managerId || null,
+      isManager: form.role === "LEAD" || form.role === "ADMIN",
+      competencyIds: [...selected],
+    };
+    // target: auto = let server derive from level; none = null; number = explicit
+    if (targetMode === "none") body.targetLevel = null;
+    else if (targetMode !== "auto") body.targetLevel = parseInt(targetMode);
+    // (auto: omit targetLevel so the API fills it from the level mapping)
+    const res =
+      editing === "new"
+        ? await fetch("/api/feedback/profiles", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          })
+        : await fetch(`/api/feedback/profiles/${editing}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+    if (res.ok) {
+      setEditing(null);
+      await load();
+    } else {
+      const d = await res.json().catch(() => ({}));
+      setMsg(d.error || "Gagal menyimpan.");
+    }
+  }
+
+  async function del(p: Profile) {
+    const withUser = confirm(
+      `Hapus profil 360 "${p.name}".\n\nTekan OK untuk MENGHAPUS JUGA akun loginnya.\nTekan Cancel untuk hanya menghapus profil 360 (akun login tetap ada).`
+    );
+    await fetch(`/api/feedback/profiles/${p.id}${withUser ? "?withUser=1" : ""}`, { method: "DELETE" });
+    await load();
+  }
+
+  async function doImport(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImporting(true);
+    setMsg("");
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch("/api/feedback/profiles/import", { method: "POST", body: fd });
+    const d = await res.json().catch(() => ({}));
+    setImporting(false);
+    if (fileRef.current) fileRef.current.value = "";
+    if (res.ok) {
+      setMsg((d.message || "Impor selesai.") + (d.errors ? ` (${d.errors.length} catatan)` : ""));
+      if (d.errors) console.warn("Import notes:", d.errors);
+      await load();
+    } else {
+      setMsg(d.error || "Gagal mengimpor.");
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* actions */}
+      <div className="flex flex-wrap items-center gap-2">
+        <button onClick={startNew} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700">
+          + Tambah karyawan
+        </button>
+        <a href="/api/feedback/profiles/import" className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
+          ⬇ Download template Excel
+        </a>
+        <button
+          onClick={() => fileRef.current?.click()}
+          disabled={importing}
+          className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+        >
+          {importing ? "Mengimpor…" : "⬆ Impor massal"}
+        </button>
+        <input ref={fileRef} type="file" accept=".xlsx" hidden onChange={doImport} />
+      </div>
+      {msg && <p className="text-sm text-teal-700">{msg}</p>}
+
+      {/* form */}
+      {editing && (
+        <div className="bg-white border border-teal-200 rounded-2xl p-5 space-y-3">
+          <p className="text-sm font-semibold text-slate-700">{editing === "new" ? "Karyawan baru" : "Ubah karyawan"}</p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <Field label="Nama*">
+              <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="inp" />
+            </Field>
+            <Field label="Email* (untuk login)">
+              <input value={form.email} disabled={editing !== "new"} onChange={(e) => setForm({ ...form, email: e.target.value })} className="inp disabled:bg-slate-50 disabled:text-slate-400" />
+            </Field>
+            <Field label={editing === "new" ? "Password*" : "Password (kosongkan jika tetap)"}>
+              <input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="inp" />
+            </Field>
+            <Field label="Hak akses">
+              <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="inp">
+                <option value="MEMBER">Anggota</option>
+                <option value="LEAD">Lead</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+            </Field>
+            <Field label="Departemen (= grup peer)">
+              <input
+                list="dept-suggestions"
+                value={form.department}
+                onChange={(e) => setForm({ ...form, department: e.target.value })}
+                placeholder="mis. HR, Finance, Tech…"
+                className="inp"
+              />
+              <datalist id="dept-suggestions">
+                {DEPARTMENTS.map((d) => (
+                  <option key={d} value={d} />
+                ))}
+              </datalist>
+            </Field>
+            <Field label="Posisi">
+              <input value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} className="inp" />
+            </Field>
+            <Field label="Level">
+              <select value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} className="inp">
+                <option value="">—</option>
+                {LEVELS.map((l) => (
+                  <option key={l} value={l}>
+                    {l}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Target penilaian">
+              <select value={form.targetMode} onChange={(e) => setForm({ ...form, targetMode: e.target.value })} className="inp">
+                <option value="auto">Otomatis dari level</option>
+                <option value="none">Tanpa target</option>
+                <option value="1">Target L1</option>
+                <option value="2">Target L2</option>
+                <option value="3">Target L3</option>
+                <option value="4">Target L4</option>
+              </select>
+            </Field>
+            <Field label="Atasan (superordinate)">
+              <select value={form.managerId} onChange={(e) => setForm({ ...form, managerId: e.target.value })} className="inp">
+                <option value="">— tidak ada —</option>
+                {users.map((u) => (
+                  <option key={u.id} value={u.id}>
+                    {u.name}
+                  </option>
+                ))}
+              </select>
+            </Field>
+          </div>
+          {(form.role === "LEAD" || form.role === "ADMIN") && (
+            <p className="text-xs text-teal-700 bg-teal-50 px-3 py-1.5 rounded-lg">
+              Role Lead/Admin otomatis mendapat kompetensi Leadership.
+            </p>
+          )}
+
+          {/* competency picker */}
+          <div className="border-t border-slate-100 pt-3">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-semibold text-slate-700">Kompetensi yang dinilai ({selected.size})</p>
+              <div className="flex gap-2">
+                <button onClick={applyAuto} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100">
+                  Terapkan aturan otomatis
+                </button>
+                <button onClick={() => setSelected(new Set())} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-500 hover:bg-slate-50">
+                  Kosongkan
+                </button>
+              </div>
+            </div>
+            <p className="text-[11px] text-slate-400 mb-3">
+              Otomatis: Core (semua) + Leadership (jika manajer) + Job Family sesuai departemen + AI Fluency.
+              Technical spesifik departemen silakan dicentang manual.
+            </p>
+            <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+              {CATS.map((cat) => {
+                const list = activeComps.filter(
+                  (c) => c.category === cat && (cat === "CORE" || cat === "LEADERSHIP" || !c.department || c.department === form.department || c.department == null)
+                );
+                if (!list.length) return null;
+                return (
+                  <div key={cat}>
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-1">{CATEGORY_LABEL[cat]}</p>
+                    <div className="grid sm:grid-cols-2 gap-1">
+                      {list.map((c) => (
+                        <label key={c.id} className="flex items-center gap-2 text-sm text-slate-600 py-0.5">
+                          <input type="checkbox" checked={selected.has(c.id)} onChange={() => toggleComp(c.id)} />
+                          <span className="truncate">
+                            {c.name}
+                            {c.department && <span className="text-[11px] text-slate-400"> · {c.department}</span>}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-1">
+            <button onClick={save} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700">
+              Simpan
+            </button>
+            <button onClick={() => setEditing(null)} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
+              Batal
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* list */}
+      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+        {profiles.length === 0 ? (
+          <div className="p-6 text-sm text-slate-400">Belum ada karyawan. Tambah satu per satu atau impor massal.</div>
+        ) : (
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 text-slate-400 text-xs">
+              <tr>
+                <th className="text-left px-4 py-2 font-semibold">Nama</th>
+                <th className="text-left px-3 py-2 font-semibold">Departemen</th>
+                <th className="text-left px-3 py-2 font-semibold">Atasan</th>
+                <th className="text-center px-3 py-2 font-semibold">Komp.</th>
+                <th className="px-3 py-2"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {profiles.map((p) => (
+                <tr key={p.id} className="border-t border-slate-100">
+                  <td className="px-4 py-2">
+                    <p className={`font-medium ${p.active ? "text-slate-700" : "text-slate-300"}`}>
+                      {p.name}
+                      {p.isManager && <span className="ml-1.5 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-50 text-amber-600">mgr</span>}
+                    </p>
+                    <p className="text-[11px] text-slate-400">{p.position || "—"} · {p.level || "—"}</p>
+                  </td>
+                  <td className="px-3 py-2 text-slate-500">{p.department || "—"}</td>
+                  <td className="px-3 py-2 text-slate-500">{p.managerName || "—"}</td>
+                  <td className="px-3 py-2 text-center text-slate-500">{p.competencyIds.length}</td>
+                  <td className="px-3 py-2 text-right whitespace-nowrap">
+                    <button onClick={() => startEdit(p)} className="px-2 py-1 rounded text-xs text-slate-500 hover:bg-slate-100">
+                      Ubah
+                    </button>
+                    <button onClick={() => del(p)} className="px-2 py-1 rounded text-xs text-red-500 hover:bg-red-50">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* Manual cross-department peers */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3">
+        <div>
+          <p className="text-sm font-semibold text-slate-700">Peers Lintas Departemen</p>
+          <p className="text-xs text-slate-400 mt-0.5">Assign dua karyawan dari departemen berbeda untuk saling menilai sebagai peer.</p>
+        </div>
+        <div className="flex flex-wrap gap-2 items-end">
+          <div>
+            <label className="block text-xs text-slate-400 mb-1">Karyawan A</label>
+            <select value={pairA} onChange={(e) => setPairA(e.target.value)} className="inp">
+              <option value="">— pilih —</option>
+              {profiles.filter((p) => p.active).map((p) => (
+                <option key={p.userId} value={p.userId}>{p.name} ({p.department || "—"})</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs text-slate-400 mb-1">Karyawan B</label>
+            <select value={pairB} onChange={(e) => setPairB(e.target.value)} className="inp">
+              <option value="">— pilih —</option>
+              {profiles.filter((p) => p.active && p.userId !== pairA).map((p) => (
+                <option key={p.userId} value={p.userId}>{p.name} ({p.department || "—"})</option>
+              ))}
+            </select>
+          </div>
+          <button onClick={addPair} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700">
+            Tambah
+          </button>
+        </div>
+        {pairMsg && <p className="text-xs text-red-500">{pairMsg}</p>}
+        {manualPairs.length > 0 && (
+          <table className="w-full text-sm mt-2">
+            <thead className="bg-slate-50 text-slate-400 text-xs">
+              <tr>
+                <th className="text-left px-3 py-2 font-semibold">Karyawan A</th>
+                <th className="text-left px-3 py-2 font-semibold">Karyawan B</th>
+                <th className="px-3 py-2"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {manualPairs.map((pair) => (
+                <tr key={pair.id} className="border-t border-slate-100">
+                  <td className="px-3 py-2 text-slate-700">{pair.raterName}</td>
+                  <td className="px-3 py-2 text-slate-700">{pair.rateeName}</td>
+                  <td className="px-3 py-2 text-right">
+                    <button onClick={() => removePair(pair)} className="px-2 py-1 rounded text-xs text-red-500 hover:bg-red-50">
+                      Hapus
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {manualPairs.length === 0 && (
+          <p className="text-xs text-slate-400">Belum ada pasangan peer lintas departemen.</p>
+        )}
+      </div>
+
+      <style jsx>{`
+        :global(.inp) {
+          width: 100%;
+          border: 1px solid rgb(226 232 240);
+          border-radius: 0.5rem;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.875rem;
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="block text-xs text-slate-400 mb-1">{label}</label>
+      {children}
+    </div>
+  );
+}

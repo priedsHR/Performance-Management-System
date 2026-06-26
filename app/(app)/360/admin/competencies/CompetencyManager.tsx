@@ -1,0 +1,298 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Trash2, Edit2, ToggleLeft, ToggleRight } from "lucide-react";
+import { DEPARTMENTS, CATEGORY_LABEL, type Category } from "@/lib/feedback/library";
+
+interface Comp {
+  id: string;
+  code: string;
+  name: string;
+  category: Category;
+  department: string | null;
+  definition: string | null;
+  l1: string | null;
+  l2: string | null;
+  l3: string | null;
+  l4: string | null;
+  active: boolean;
+}
+
+const CATS: Category[] = ["CORE", "LEADERSHIP", "JOB_FAMILY", "TECHNICAL"];
+
+const empty = { name: "", category: "CORE" as Category, department: "", definition: "", l1: "", l2: "", l3: "", l4: "" };
+
+const inp = "w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition";
+const btnPrimary = "flex items-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5 active:shadow-[0_1px_0_#d97706] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
+const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
+
+function SkeletonRow() {
+  return (
+    <div className="flex items-center justify-between gap-3 px-5 py-3.5 animate-pulse">
+      <div className="space-y-1.5 flex-1">
+        <div className="h-3.5 bg-slate-200 rounded w-1/3" />
+        <div className="h-2.5 bg-slate-100 rounded w-1/2" />
+      </div>
+      <div className="flex gap-2">
+        <div className="h-7 w-12 bg-slate-100 rounded-lg" />
+        <div className="h-7 w-20 bg-slate-100 rounded-lg" />
+        <div className="h-7 w-12 bg-slate-100 rounded-lg" />
+      </div>
+    </div>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <div className="space-y-4">
+      {CATS.map((cat) => (
+        <div key={cat} className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+          <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 animate-pulse">
+            <div className="h-3 bg-slate-200 rounded w-32" />
+          </div>
+          <SkeletonRow />
+          <SkeletonRow />
+          <SkeletonRow />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function CompetencyManager() {
+  const [comps, setComps] = useState<Comp[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState<string | "new" | null>(null);
+  const [form, setForm] = useState({ ...empty });
+  const [saving, setSaving] = useState(false);
+
+  // Bulk mode
+  const [bulkOpen, setBulkOpen] = useState(false);
+  const [bulkText, setBulkText] = useState("");
+  const [bulkCategory, setBulkCategory] = useState<Category>("CORE");
+  const [bulkDept, setBulkDept] = useState("");
+  const [bulkSaving, setBulkSaving] = useState(false);
+  const [bulkMsg, setBulkMsg] = useState("");
+
+  async function load() {
+    const r = await fetch("/api/feedback/competencies");
+    setComps(await r.json());
+    setLoading(false);
+  }
+  useEffect(() => { load(); }, []);
+
+  function startNew() { setForm({ ...empty }); setEditing("new"); setBulkOpen(false); }
+  function startEdit(c: Comp) {
+    setForm({ name: c.name, category: c.category, department: c.department || "", definition: c.definition || "", l1: c.l1 || "", l2: c.l2 || "", l3: c.l3 || "", l4: c.l4 || "" });
+    setEditing(c.id);
+    setBulkOpen(false);
+  }
+
+  async function save() {
+    if (!form.name.trim()) { alert("Nama wajib diisi."); return; }
+    setSaving(true);
+    const body = { ...form, department: form.department || null };
+    if (editing === "new") {
+      await fetch("/api/feedback/competencies", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    } else {
+      await fetch(`/api/feedback/competencies/${editing}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    }
+    setSaving(false);
+    setEditing(null);
+    await load();
+  }
+
+  async function toggle(c: Comp) {
+    await fetch(`/api/feedback/competencies/${c.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ active: !c.active }) });
+    await load();
+  }
+
+  async function del(c: Comp) {
+    if (!confirm(`Hapus kompetensi "${c.name}"? Ini juga menghapusnya dari profil & penilaian terkait.`)) return;
+    await fetch(`/api/feedback/competencies/${c.id}`, { method: "DELETE" });
+    await load();
+  }
+
+  async function saveBulk() {
+    const names = bulkText.split("\n").map((s) => s.trim()).filter(Boolean);
+    if (!names.length) { setBulkMsg("Isi minimal satu nama kompetensi."); return; }
+    setBulkSaving(true);
+    setBulkMsg("");
+    const res = await fetch("/api/feedback/competencies/bulk", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ names, category: bulkCategory, department: bulkDept || null }),
+    });
+    const data = await res.json();
+    setBulkSaving(false);
+    if (res.ok) {
+      setBulkMsg(`✅ ${data.created} kompetensi berhasil dibuat.${data.errors?.length ? ` ${data.errors.length} gagal.` : ""}`);
+      setBulkText("");
+      await load();
+    } else {
+      setBulkMsg(`❌ ${data.error ?? "Gagal."}`);
+    }
+  }
+
+  const needsDept = form.category === "JOB_FAMILY" || form.category === "TECHNICAL";
+  const bulkNeedsDept = bulkCategory === "JOB_FAMILY" || bulkCategory === "TECHNICAL";
+
+  return (
+    <div className="space-y-4">
+      {/* Toolbar */}
+      <div className="flex flex-wrap gap-2">
+        <button onClick={startNew} className={btnPrimary}>➕ Tambah Kompetensi</button>
+        <button onClick={() => { setBulkOpen((v) => !v); setEditing(null); setBulkMsg(""); }} className={btnSecondary}>
+          📋 Bulk Tambah
+        </button>
+      </div>
+
+      {/* Bulk add form */}
+      {bulkOpen && (
+        <div className="bg-white border border-amber-200 rounded-2xl p-6 space-y-4">
+          <p className="font-semibold text-slate-800">📋 Bulk Tambah Kompetensi</p>
+          <p className="text-xs text-slate-400">Tulis satu nama per baris. Semua kompetensi akan dibuat dengan kategori & departemen yang sama.</p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">Kategori*</label>
+              <select value={bulkCategory} onChange={(e) => setBulkCategory(e.target.value as Category)} className={inp}>
+                {CATS.map((c) => <option key={c} value={c}>{CATEGORY_LABEL[c]}</option>)}
+              </select>
+            </div>
+            {bulkNeedsDept && (
+              <div>
+                <label className="block text-xs font-medium text-slate-500 mb-1.5">Departemen (kosong = semua)</label>
+                <select value={bulkDept} onChange={(e) => setBulkDept(e.target.value)} className={inp}>
+                  <option value="">Semua departemen</option>
+                  {DEPARTMENTS.map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+            )}
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">Nama Kompetensi (satu per baris)*</label>
+            <textarea
+              value={bulkText}
+              onChange={(e) => setBulkText(e.target.value)}
+              placeholder={"Komunikasi Efektif\nKerjasama Tim\nProblem Solving"}
+              rows={6}
+              className={inp}
+            />
+            <p className="text-xs text-slate-400 mt-1">{bulkText.split("\n").filter((s) => s.trim()).length} kompetensi siap dibuat</p>
+          </div>
+          {bulkMsg && (
+            <p className={`text-sm px-3 py-2 rounded-xl border ${bulkMsg.startsWith("✅") ? "bg-green-50 border-green-200 text-green-700" : "bg-red-50 border-red-200 text-red-600"}`}>
+              {bulkMsg}
+            </p>
+          )}
+          <div className="flex gap-2">
+            <button onClick={saveBulk} disabled={bulkSaving} className={btnPrimary}>
+              {bulkSaving ? "⏳ Menyimpan..." : "💾 Simpan Semua"}
+            </button>
+            <button onClick={() => { setBulkOpen(false); setBulkMsg(""); }} className={btnSecondary}>✕ Batal</button>
+          </div>
+        </div>
+      )}
+
+      {/* Single add/edit form */}
+      {editing && (
+        <div className="bg-white border border-amber-200 rounded-2xl p-6 space-y-4">
+          <p className="font-semibold text-slate-800">{editing === "new" ? "➕ Kompetensi Baru" : "✏️ Ubah Kompetensi"}</p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">Nama*</label>
+              <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inp} placeholder="Nama kompetensi" />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">Kategori*</label>
+              <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value as Category })} className={inp}>
+                {CATS.map((c) => <option key={c} value={c}>{CATEGORY_LABEL[c]}</option>)}
+              </select>
+            </div>
+            {needsDept && (
+              <div>
+                <label className="block text-xs font-medium text-slate-500 mb-1.5">Departemen (kosong = semua)</label>
+                <select value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} className={inp}>
+                  <option value="">Semua departemen</option>
+                  {DEPARTMENTS.map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+            )}
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">Definisi</label>
+            <textarea value={form.definition} onChange={(e) => setForm({ ...form, definition: e.target.value })} className={inp} rows={2} placeholder="Deskripsi singkat kompetensi ini" />
+          </div>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {([1, 2, 3, 4] as const).map((n) => (
+              <div key={n}>
+                <label className="block text-xs font-medium text-slate-500 mb-1.5">Anchor Level {n}</label>
+                <input value={(form as Record<string, string>)[`l${n}`]} onChange={(e) => setForm({ ...form, [`l${n}`]: e.target.value })} className={inp} placeholder={`Deskripsi perilaku level ${n}`} />
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <button onClick={save} disabled={saving} className={btnPrimary}>{saving ? "⏳ Menyimpan..." : "💾 Simpan"}</button>
+            <button onClick={() => setEditing(null)} className={btnSecondary}>✕ Batal</button>
+          </div>
+        </div>
+      )}
+
+      {/* Loading skeleton */}
+      {loading && <LoadingSkeleton />}
+
+      {/* Competency list */}
+      {!loading && (
+        <>
+          {CATS.map((cat) => {
+            const list = comps.filter((c) => c.category === cat);
+            if (!list.length) return null;
+            return (
+              <div key={cat} className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+                <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-wide text-amber-600">{CATEGORY_LABEL[cat]}</span>
+                  <span className="text-slate-400 text-xs">({list.filter((c) => c.active).length} aktif / {list.length} total)</span>
+                </div>
+                <div className="divide-y divide-slate-50">
+                  {list.map((c) => (
+                    <div key={c.id} className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-slate-50/50 transition">
+                      <div className="min-w-0">
+                        <p className={`text-sm font-medium ${c.active ? "text-slate-800" : "text-slate-300 line-through"}`}>
+                          {c.name}
+                          {c.department && <span className="ml-2 text-[11px] text-slate-400">· {c.department}</span>}
+                        </p>
+                        {c.definition && <p className="text-[11px] text-slate-400 truncate mt-0.5">{c.definition}</p>}
+                      </div>
+                      <div className="flex items-center gap-1 flex-shrink-0">
+                        <button onClick={() => startEdit(c)}
+                          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px active:shadow-none transition-all duration-75">
+                          <Edit2 size={13} />
+                        </button>
+                        <button onClick={() => toggle(c)}
+                          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px active:shadow-none transition-all duration-75"
+                          title={c.active ? "Nonaktifkan" : "Aktifkan"}>
+                          {c.active ? <ToggleRight size={15} className="text-green-500" /> : <ToggleLeft size={15} className="text-slate-400" />}
+                        </button>
+                        <button onClick={() => del(c)}
+                          className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#fecaca] hover:translate-y-px active:shadow-none transition-all duration-75">
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+
+          {comps.length === 0 && (
+            <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
+              <div className="text-4xl mb-3">🧩</div>
+              <p className="text-slate-500 text-sm">Belum ada kompetensi. Tambah satu per satu atau gunakan Bulk Tambah.</p>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}

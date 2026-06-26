@@ -1,0 +1,291 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  LEAD
+  MEMBER
+}
+
+enum OKRStatus {
+  DRAFT
+  SUBMITTED
+}
+
+model User {
+  id             String       @id @default(cuid())
+  name           String
+  email          String       @unique
+  password       String
+  role           Role         @default(MEMBER)
+  division       String?
+  objectives     Objective[]
+  teamMembers    TeamMember[] @relation("LeadTeamMembers")
+  teamMembership TeamMember?  @relation("MemberUserLink")
+  // 360 Feedback module
+  feedbackProfile   FeedbackProfile?    @relation("ProfileOwner")
+  managedProfiles   FeedbackProfile[]   @relation("FeedbackManager")
+  feedbackGiven     FeedbackResponse[]  @relation("Rater")
+  feedbackReceived  FeedbackResponse[]  @relation("Ratee")
+  commentsGiven     FeedbackComment[]   @relation("CommentRater")
+  commentsReceived  FeedbackComment[]   @relation("CommentRatee")
+  manualPeersGiven  FeedbackManualPeer[] @relation("ManualPeerRater")
+  manualPeersReceived FeedbackManualPeer[] @relation("ManualPeerRatee")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Quarter {
+  id              String             @id @default(cuid())
+  name            String
+  year            Int
+  quarter         Int
+  startDate       DateTime
+  endDate         DateTime
+  isActive        Boolean            @default(false)
+  objectives      Objective[]
+  reminderSchedules ReminderSchedule[]
+  createdAt       DateTime           @default(now())
+
+  @@unique([year, quarter])
+}
+
+model ReminderSchedule {
+  id         String    @id @default(cuid())
+  type       String    // "settings" | "collection"
+  quarterId  String
+  quarter    Quarter   @relation(fields: [quarterId], references: [id], onDelete: Cascade)
+  frequency  String    // "weekly" | "biweekly" | "monthly"
+  dayOfWeek  Int?      // 0=Sun 1=Mon ... 6=Sat  (weekly/biweekly)
+  dayOfMonth Int?      // 1-28 (monthly)
+  hourWIB    Int       // 0-23 Jakarta time
+  isActive   Boolean   @default(true)
+  lastRun    DateTime?
+  nextRun    DateTime
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Objective {
+  id          String                @id @default(cuid())
+  title       String
+  weight      Float                 @default(100)
+  status      OKRStatus             @default(DRAFT)
+  submittedAt DateTime?
+  userId      String
+  user        User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quarterId   String
+  quarter     Quarter               @relation(fields: [quarterId], references: [id], onDelete: Cascade)
+  keyResults  KeyResult[]
+  assignments ObjectiveAssignment[]
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+}
+
+model TeamMember {
+  id          String                @id @default(cuid())
+  name        String
+  leadId      String
+  lead        User                  @relation("LeadTeamMembers", fields: [leadId], references: [id], onDelete: Cascade)
+  userId      String?               @unique
+  user        User?                 @relation("MemberUserLink", fields: [userId], references: [id], onDelete: SetNull)
+  assignments ObjectiveAssignment[]
+  createdAt   DateTime              @default(now())
+}
+
+model ObjectiveAssignment {
+  id            String         @id @default(cuid())
+  weight        Float
+  memberId      String
+  member        TeamMember     @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  objectiveId   String
+  objective     Objective      @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  krAssignments KRAssignment[]
+
+  @@unique([memberId, objectiveId])
+}
+
+model KRAssignment {
+  id           String              @id @default(cuid())
+  weight       Float               @default(0)
+  progress     Float               @default(0)
+  target       Float?              // Individual target override (null = use parent KR target)
+  assignmentId String
+  assignment   ObjectiveAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  keyResultId  String
+  keyResult    KeyResult           @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+
+  @@unique([assignmentId, keyResultId])
+}
+
+model Employee {
+  id        String   @id @default(cuid())
+  name      String
+  division  String?
+  position  String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model KeyResult {
+  id            String         @id @default(cuid())
+  title         String
+  target        Float
+  unit          String
+  weight        Float
+  teamProgress  Float          @default(0)
+  leadProgress  Float?
+  objectiveId   String
+  objective     Objective      @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  krAssignments KRAssignment[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+// ============================================================
+// 360 FEEDBACK MODULE
+// ============================================================
+
+enum CompetencyCategory {
+  CORE
+  LEADERSHIP
+  JOB_FAMILY
+  TECHNICAL
+}
+
+// One assessment cycle (semester): "Mid Year 2026" / "End Year 2026"
+model FeedbackPeriod {
+  id             String               @id @default(cuid())
+  name           String
+  half           String               // "MID" | "END"
+  year           Int
+  isActive       Boolean              @default(false)
+  releaseReports Boolean              @default(false) // ratees may see their own report
+  responses      FeedbackResponse[]
+  comments       FeedbackComment[]
+  manualPeers    FeedbackManualPeer[]
+  createdAt      DateTime             @default(now())
+
+  @@unique([year, half])
+}
+
+// Competency library (editable by admin). `code` is a stable handle.
+model Competency {
+  id          String              @id @default(cuid())
+  code        String              @unique
+  name        String
+  category    CompetencyCategory
+  department  String? // for JOB_FAMILY / TECHNICAL; null = applies to all departments
+  definition  String?
+  l1          String?
+  l2          String?
+  l3          String?
+  l4          String?
+  active      Boolean             @default(true)
+  sortOrder   Int                 @default(0)
+  profileLinks ProfileCompetency[]
+  responses   FeedbackResponse[]
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+// A person's 360 profile (1-1 with a login User).
+model FeedbackProfile {
+  id           String              @id @default(cuid())
+  userId       String              @unique
+  user         User                @relation("ProfileOwner", fields: [userId], references: [id], onDelete: Cascade)
+  department   String? // peers = same department
+  position     String?
+  level        String? // career level label
+  targetLevel  Int? // 1-4, optional (kosong = tanpa target)
+  isManager    Boolean             @default(false) // receives Leadership competencies
+  managerId    String? // superordinate (a User id)
+  manager      User?               @relation("FeedbackManager", fields: [managerId], references: [id], onDelete: SetNull)
+  active       Boolean             @default(true)
+  competencies ProfileCompetency[]
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+}
+
+// Resolved set of competencies a person is assessed on (source of truth).
+model ProfileCompetency {
+  id           String          @id @default(cuid())
+  profileId    String
+  profile      FeedbackProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  competencyId String
+  competency   Competency      @relation(fields: [competencyId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, competencyId])
+}
+
+// One rater's score for one ratee on one competency in one period.
+// `relation` is the RATER's group relative to the RATEE (already inverted):
+// SELF | PEER | SUPERORDINATE | SUBORDINATE
+model FeedbackResponse {
+  id           String         @id @default(cuid())
+  periodId     String
+  period       FeedbackPeriod @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  raterId      String
+  rater        User           @relation("Rater", fields: [raterId], references: [id], onDelete: Cascade)
+  rateeId      String
+  ratee        User           @relation("Ratee", fields: [rateeId], references: [id], onDelete: Cascade)
+  competencyId String
+  competency   Competency     @relation(fields: [competencyId], references: [id], onDelete: Cascade)
+  relation     String
+  score        Int // 1-4
+  submitted    Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@unique([periodId, raterId, rateeId, competencyId])
+}
+
+// Single-row settings for the 360 module (weights, bands, level->target map).
+model FeedbackSetting {
+  id           String   @id @default("singleton")
+  weightSuper  Float    @default(0.4)
+  weightPeer   Float    @default(0.3)
+  weightSub    Float    @default(0.3)
+  bands        Json
+  levelTargets Json
+  updatedAt    DateTime @updatedAt
+}
+
+// Admin-assigned cross-department peer pairs (bidirectional: both directions stored).
+model FeedbackManualPeer {
+  id        String          @id @default(cuid())
+  raterId   String
+  rater     User            @relation("ManualPeerRater", fields: [raterId], references: [id], onDelete: Cascade)
+  rateeId   String
+  ratee     User            @relation("ManualPeerRatee", fields: [rateeId], references: [id], onDelete: Cascade)
+  periodId  String?
+  period    FeedbackPeriod? @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  createdAt DateTime        @default(now())
+
+  @@unique([raterId, rateeId, periodId])
+}
+
+// Per-category qualitative comment from one rater about one ratee in a period.
+model FeedbackComment {
+  id        String         @id @default(cuid())
+  periodId  String
+  period    FeedbackPeriod @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  raterId   String
+  rater     User           @relation("CommentRater", fields: [raterId], references: [id], onDelete: Cascade)
+  rateeId   String
+  ratee     User           @relation("CommentRatee", fields: [rateeId], references: [id], onDelete: Cascade)
+  category  String // CORE | LEADERSHIP | JOB_FAMILY | TECHNICAL
+  comment   String
+  submitted Boolean        @default(false)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  @@unique([periodId, raterId, rateeId, category])
+}

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "KRAssignment" ADD COLUMN     "progress" DOUBLE PRECISION NOT NULL DEFAULT 0;

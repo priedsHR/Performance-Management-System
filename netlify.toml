@@ -1,0 +1,14 @@
+# Konfigurasi Netlify untuk Performance Management System (Next.js 16 + Prisma 7)
+# Netlify otomatis memasang "Next.js Runtime" karena mendeteksi Next.js,
+# jadi tidak perlu plugin tambahan.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  SECRETS_SCAN_ENABLED = "false"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
