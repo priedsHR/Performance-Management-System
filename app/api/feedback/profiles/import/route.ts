@@ -23,20 +23,20 @@ function readStr(cell: ExcelJS.Cell): string {
 }
 
 const HEADERS = [
-  "Nama*",
+  "Name*",
   "Email*",
   "Password*",
-  "Departemen",
-  "Posisi",
+  "Department",
+  "Position",
   "Level",
-  "Email Atasan",
-  "Manager? (Ya/Tidak)",
+  "Manager Email",
+  "Manager? (Yes/No)",
 ];
 
 export async function GET() {
   const wb = new ExcelJS.Workbook();
   wb.creator = "Performance Management System";
-  const sheet = wb.addWorksheet("Karyawan", { views: [{ state: "frozen", ySplit: 1 }] });
+  const sheet = wb.addWorksheet("Employees", { views: [{ state: "frozen", ySplit: 1 }] });
   const TEAL = "FF2E7C8F";
 
   const hRow = sheet.getRow(1);
@@ -50,9 +50,9 @@ export async function GET() {
   });
 
   const examples = [
-    ["Vanessa Geraldine", "vanessa@perusahaan.com", "Password123!", "Commercial", "COO", "C-Suites", "", "Ya"],
-    ["Lita Lestari", "lita@perusahaan.com", "Password123!", "Operations", "Finance Manager", "Manager", "vanessa@perusahaan.com", "Ya"],
-    ["Tievanto Yasser", "tievanto@perusahaan.com", "Password123!", "Operations", "People & Culture", "Officer", "lita@perusahaan.com", "Tidak"],
+    ["Vanessa Geraldine", "vanessa@perusahaan.com", "Password123!", "Commercial", "COO", "C-Suites", "", "Yes"],
+    ["Lita Lestari", "lita@perusahaan.com", "Password123!", "Operations", "Finance Manager", "Manager", "vanessa@perusahaan.com", "Yes"],
+    ["Tievanto Yasser", "tievanto@perusahaan.com", "Password123!", "Operations", "People & Culture", "Officer", "lita@perusahaan.com", "No"],
   ];
   examples.forEach((row, i) => {
     const r = sheet.getRow(i + 2);
@@ -62,10 +62,10 @@ export async function GET() {
 
   const note = sheet.getRow(6);
   note.getCell(1).value =
-    "Catatan: Email Atasan harus cocok dengan Email karyawan lain di file ini (atau yang sudah ada). " +
-    "Departemen menentukan rekan (peer); Atasan menentukan superordinate/subordinate. " +
-    `Departemen yang dikenal: ${DEPARTMENTS.join(", ")}. Level: ${LEVELS.join(", ")}. ` +
-    "Kompetensi diterapkan otomatis sesuai aturan; bisa disesuaikan per orang setelah impor.";
+    "Note: Manager Email must match another employee's Email in this file (or an existing one). " +
+    "Department determines peers; Manager determines superordinate/subordinate. " +
+    `Known departments: ${DEPARTMENTS.join(", ")}. Levels: ${LEVELS.join(", ")}. ` +
+    "Competencies are applied automatically by rule; they can be adjusted per person after import.";
   note.getCell(1).font = { name: "Arial", italic: true, size: 10, color: { argb: "FF94A3B8" } };
   sheet.mergeCells("A6:H6");
 
@@ -76,7 +76,7 @@ export async function GET() {
     status: 200,
     headers: {
       "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "Content-Disposition": 'attachment; filename="template-karyawan-360.xlsx"',
+      "Content-Disposition": 'attachment; filename="employee-360-template.xlsx"',
     },
   });
 }
@@ -94,20 +94,20 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const file = formData.get("file");
     if (!file || typeof file === "string")
-      return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
+      return Response.json({ error: "File not found." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
   } catch {
-    return Response.json({ error: "Gagal membaca form." }, { status: 400 });
+    return Response.json({ error: "Failed to read the form." }, { status: 400 });
   }
 
   const wb = new ExcelJS.Workbook();
   try {
     await wb.xlsx.load(fileBuffer);
   } catch {
-    return Response.json({ error: "File Excel tidak valid." }, { status: 400 });
+    return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
-  const sheet = wb.getWorksheet("Karyawan") ?? wb.worksheets[0];
-  if (!sheet) return Response.json({ error: "Sheet tidak ditemukan." }, { status: 400 });
+  const sheet = wb.getWorksheet("Employees") ?? wb.getWorksheet("Karyawan") ?? wb.worksheets[0];
+  if (!sheet) return Response.json({ error: "Sheet not found." }, { status: 400 });
 
   const allComps = await prisma.competency.findMany({
     select: { id: true, category: true, department: true, active: true },
@@ -133,11 +133,11 @@ export async function POST(req: Request) {
     if (!name && !email) continue;
     if (!email.includes("@")) {
       if (name.startsWith("Catatan") || name.startsWith("Note") || !name) continue;
-      errors.push(`Baris ${rowNum} "${name}": Email tidak valid.`);
+      errors.push(`Row ${rowNum} "${name}": Invalid email.`);
       continue;
     }
     if (!name) {
-      errors.push(`Baris ${rowNum}: Nama kosong, dilewati.`);
+      errors.push(`Row ${rowNum}: Empty name, skipped.`);
       continue;
     }
 
@@ -145,7 +145,7 @@ export async function POST(req: Request) {
       let user = await prisma.user.findUnique({ where: { email } });
       if (!user) {
         if (!password) {
-          errors.push(`Baris ${rowNum} "${name}": Password wajib untuk karyawan baru.`);
+          errors.push(`Row ${rowNum} "${name}": Password is required for new employees.`);
           continue;
         }
         user = await prisma.user.create({
@@ -186,7 +186,7 @@ export async function POST(req: Request) {
 
       if (mgrEmail) managerByEmail.push({ profileId: profile.id, managerEmail: mgrEmail, row: rowNum });
     } catch (e) {
-      errors.push(`Baris ${rowNum} "${name}": ${String(e)}`);
+      errors.push(`Row ${rowNum} "${name}": ${String(e)}`);
     }
   }
 
@@ -200,13 +200,13 @@ export async function POST(req: Request) {
     if (mgrUserId) {
       await prisma.feedbackProfile.update({ where: { id: link.profileId }, data: { managerId: mgrUserId } });
     } else {
-      errors.push(`Baris ${link.row}: Atasan dengan email "${link.managerEmail}" tidak ditemukan.`);
+      errors.push(`Row ${link.row}: Manager with email "${link.managerEmail}" not found.`);
     }
   }
 
   return Response.json({
     success: true,
-    message: `Berhasil: ${created} profil baru, ${updated} diperbarui.`,
+    message: `Done: ${created} new profiles, ${updated} updated.`,
     created,
     updated,
     errors: errors.length ? errors : undefined,

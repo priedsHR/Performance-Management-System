@@ -13,7 +13,7 @@ export default async function FeedbackHome() {
       <div className="space-y-4">
         <div>
           <h1 className="text-xl font-bold text-slate-900">Dashboard 360</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Ringkasan pelaksanaan & hasil penilaian 360 per periode.</p>
+          <p className="text-sm text-slate-500 mt-0.5">Summary of 360 assessment progress & results per period.</p>
         </div>
         <Dashboard360 />
       </div>
@@ -25,12 +25,12 @@ export default async function FeedbackHome() {
       <div className="space-y-6">
         <div>
           <h1 className="text-xl font-bold text-slate-900">360° Feedback</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Nilai kolega yang ditugaskan kepadamu. Jawabanmu bersifat rahasia.</p>
+          <p className="text-sm text-slate-500 mt-0.5">Rate the colleagues assigned to you. Your answers are confidential.</p>
         </div>
         <MyAssessment />
         <div>
-          <h2 className="text-base font-bold text-slate-800 mb-1">Progress Tim</h2>
-          <p className="text-sm text-slate-500 mb-3">Pantau status penilaian anggota tim kamu.</p>
+          <h2 className="text-base font-bold text-slate-800 mb-1">Team Progress</h2>
+          <p className="text-sm text-slate-500 mb-3">Track the assessment status of your team members.</p>
           <LeadDashboard360 />
         </div>
       </div>
@@ -42,7 +42,7 @@ export default async function FeedbackHome() {
       <div>
         <h1 className="text-xl font-bold text-slate-900">360° Feedback</h1>
         <p className="text-sm text-slate-500 mt-0.5">
-          Nilai kolega yang ditugaskan kepadamu pada periode aktif. Jawabanmu bersifat rahasia.
+          Rate the colleagues assigned to you for the active period. Your answers are confidential.
         </p>
       </div>
       <MyAssessment />

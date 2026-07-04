@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const period = await getActivePeriod();
-  if (!period) return NextResponse.json({ error: "Belum ada periode aktif." }, { status: 400 });
+  if (!period) return NextResponse.json({ error: "No active period yet." }, { status: 400 });
 
   const body = await req.json();
   const rateeUserId = String(body.rateeUserId || "");
@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
   const assignments = computeAssignmentsFor(session.user.id, profiles, manualPeersPost.map((p) => p.rateeId));
   const assignment = assignments.find((a) => a.ratee.userId === rateeUserId);
   if (!assignment)
-    return NextResponse.json({ error: "Kamu tidak ditugaskan menilai orang ini." }, { status: 403 });
+    return NextResponse.json({ error: "You are not assigned to rate this person." }, { status: 403 });
 
   const allowed = new Set(assignment.ratee.competencyIds);
 

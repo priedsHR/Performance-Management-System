@@ -76,7 +76,7 @@ export default function Dashboard360() {
   if (periods.length === 0)
     return (
       <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
-        Belum ada periode. Buat & aktifkan periode di menu <b>Periode</b> untuk memulai.
+        No periods yet. Create & activate a period in the <b>Periods</b> menu to get started.
       </div>
     );
 
@@ -84,37 +84,37 @@ export default function Dashboard360() {
     <div className="space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
-          <label className="block text-xs text-slate-400 mb-1">Periode</label>
+          <label className="block text-xs text-slate-400 mb-1">Period</label>
           <select value={periodId} onChange={(e) => setPeriodId(e.target.value)} className="border border-slate-200 rounded-lg px-3 py-2 text-sm">
             {periods.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.name}
-                {p.isActive ? " (aktif)" : ""}
+                {p.isActive ? " (active)" : ""}
               </option>
             ))}
           </select>
         </div>
         {period && (
           <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${period.releaseReports ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-500"}`}>
-            {period.releaseReports ? "Rapor sudah dirilis" : "Rapor belum dirilis"}
+            {period.releaseReports ? "Reports released" : "Reports not released"}
           </span>
         )}
       </div>
 
       {loading ? (
-        <div className="text-sm text-slate-400">Menghitung…</div>
+        <div className="text-sm text-slate-400">Calculating…</div>
       ) : (
         <>
           <div className="grid sm:grid-cols-3 gap-3">
-            <Stat label="Karyawan aktif" value={String(total)} />
-            <Stat label="Sudah ada penilaian" value={`${withData} / ${total}`} />
-            <Stat label="Rata-rata skor" value={avg == null ? "—" : avg.toFixed(2)} accent />
+            <Stat label="Active employees" value={String(total)} />
+            <Stat label="Assessed" value={`${withData} / ${total}`} />
+            <Stat label="Average score" value={avg == null ? "—" : avg.toFixed(2)} accent />
           </div>
 
           <div className="bg-white border border-slate-200 rounded-2xl p-5">
-            <p className="text-sm font-semibold text-slate-700 mb-3">Sebaran band</p>
+            <p className="text-sm font-semibold text-slate-700 mb-3">Band distribution</p>
             {withData === 0 ? (
-              <p className="text-sm text-slate-400">Belum ada data pada periode ini.</p>
+              <p className="text-sm text-slate-400">No data for this period yet.</p>
             ) : (
               <div className="space-y-2">
                 {Object.values(bandCounts).map((b) => (
@@ -131,9 +131,9 @@ export default function Dashboard360() {
           </div>
 
           <div className="bg-white border border-slate-200 rounded-2xl p-5">
-            <p className="text-sm font-semibold text-slate-700 mb-3">Rata-rata per departemen</p>
+            <p className="text-sm font-semibold text-slate-700 mb-3">Average per department</p>
             {Object.keys(byDept).length === 0 ? (
-              <p className="text-sm text-slate-400">Belum ada data.</p>
+              <p className="text-sm text-slate-400">No data yet.</p>
             ) : (
               <div className="space-y-2">
                 {Object.entries(byDept).map(([d, arr]) => {
@@ -153,7 +153,7 @@ export default function Dashboard360() {
           </div>
 
           <Link href="/360/admin/reports" className="inline-block text-sm font-semibold text-teal-700 hover:underline">
-            Lihat rekap rapor lengkap →
+            View full report recap →
           </Link>
         </>
       )}

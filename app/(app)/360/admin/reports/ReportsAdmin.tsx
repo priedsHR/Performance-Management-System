@@ -57,7 +57,7 @@ export default function ReportsAdmin() {
     <div className="space-y-4">
       {/* Period selector */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <label className="block text-xs font-medium text-slate-500 mb-1.5">🗓️ Pilih Periode</label>
+        <label className="block text-xs font-medium text-slate-500 mb-1.5">🗓️ Select Period</label>
         <select
           value={periodId}
           onChange={(e) => setPeriodId(e.target.value)}
@@ -65,7 +65,7 @@ export default function ReportsAdmin() {
         >
           {periods.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.name}{p.isActive ? " (Aktif)" : ""}
+              {p.name}{p.isActive ? " (Active)" : ""}
             </option>
           ))}
         </select>
@@ -90,17 +90,17 @@ export default function ReportsAdmin() {
         ) : rows.length === 0 ? (
           <div className="p-12 text-center">
             <div className="text-4xl mb-3">📊</div>
-            <p className="text-slate-500 text-sm">Belum ada data penilaian untuk periode ini.</p>
+            <p className="text-slate-500 text-sm">No assessment data for this period yet.</p>
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-slate-400 text-xs border-b border-slate-100">
               <tr>
-                <th className="text-left px-5 py-2.5 font-semibold">Nama</th>
-                <th className="text-left px-3 py-2.5 font-semibold">Departemen</th>
-                <th className="text-center px-3 py-2.5 font-semibold">Skor</th>
+                <th className="text-left px-5 py-2.5 font-semibold">Name</th>
+                <th className="text-left px-3 py-2.5 font-semibold">Department</th>
+                <th className="text-center px-3 py-2.5 font-semibold">Score</th>
                 <th className="text-left px-3 py-2.5 font-semibold">Band</th>
-                <th className="text-center px-3 py-2.5 font-semibold">Penilaian</th>
+                <th className="text-center px-3 py-2.5 font-semibold">Responses</th>
                 <th className="px-3 py-2.5" />
               </tr>
             </thead>
@@ -122,7 +122,7 @@ export default function ReportsAdmin() {
                       href={`/360/report?userId=${r.userId}&periodId=${periodId}`}
                       className="text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg hover:bg-amber-100 transition"
                     >
-                      Buka →
+                      Open →
                     </Link>
                   </td>
                 </tr>

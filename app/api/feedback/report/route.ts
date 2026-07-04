@@ -16,12 +16,12 @@ export async function GET(req: NextRequest) {
   // ---- Trend view (a person's overall + per-category across periods) ----
   if (url.searchParams.get("trend") === "1") {
     const userId = url.searchParams.get("userId");
-    if (!userId) return NextResponse.json({ error: "userId wajib." }, { status: 400 });
+    if (!userId) return NextResponse.json({ error: "userId is required." }, { status: 400 });
     const profile = await prisma.feedbackProfile.findUnique({
       where: { userId },
       include: { user: { select: { name: true } } },
     });
-    if (!profile) return NextResponse.json({ error: "Profil tidak ditemukan." }, { status: 404 });
+    if (!profile) return NextResponse.json({ error: "Profile not found." }, { status: 404 });
     const isSelf = session.user.id === userId;
     const isManager = profile.managerId === session.user.id;
     if (!isAdmin && !isManager && !isSelf)
@@ -49,9 +49,9 @@ export async function GET(req: NextRequest) {
   }
 
   const periodId = url.searchParams.get("periodId") || (await getActivePeriod())?.id;
-  if (!periodId) return NextResponse.json({ error: "Belum ada periode." }, { status: 400 });
+  if (!periodId) return NextResponse.json({ error: "No periods yet." }, { status: 400 });
   const period = await prisma.feedbackPeriod.findUnique({ where: { id: periodId } });
-  if (!period) return NextResponse.json({ error: "Periode tidak ditemukan." }, { status: 404 });
+  if (!period) return NextResponse.json({ error: "Period not found." }, { status: 404 });
 
   // ---- Admin list view ----
   if (url.searchParams.get("all") === "1") {
@@ -91,19 +91,19 @@ export async function GET(req: NextRequest) {
 
   // ---- Single report view ----
   const userId = url.searchParams.get("userId");
-  if (!userId) return NextResponse.json({ error: "userId wajib." }, { status: 400 });
+  if (!userId) return NextResponse.json({ error: "userId is required." }, { status: 400 });
 
   const profile = await prisma.feedbackProfile.findUnique({
     where: { userId },
     include: { user: { select: { id: true, name: true } } },
   });
-  if (!profile) return NextResponse.json({ error: "Profil tidak ditemukan." }, { status: 404 });
+  if (!profile) return NextResponse.json({ error: "Profile not found." }, { status: 404 });
 
   // Access control: admin, the person themselves (if released), or their manager.
   const isSelf = session.user.id === userId;
   const isManager = profile.managerId === session.user.id;
   if (!isAdmin && !isManager && !(isSelf && period.releaseReports)) {
-    return NextResponse.json({ error: "Rapor ini belum tersedia untukmu." }, { status: 403 });
+    return NextResponse.json({ error: "This report is not available to you yet." }, { status: 403 });
   }
 
   const report = await scoreRatee(userId, periodId, settings);

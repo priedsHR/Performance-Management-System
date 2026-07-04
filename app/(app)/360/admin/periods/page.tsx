@@ -10,10 +10,10 @@ export default async function PeriodsPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-slate-900">Periode Penilaian (Semester)</h1>
+        <h1 className="text-xl font-bold text-slate-900">Assessment Periods (Semester)</h1>
         <p className="text-sm text-slate-500 mt-0.5">
-          Buat periode Mid Year / End Year, aktifkan satu periode untuk membuka penilaian, lalu rilis
-          rapor saat siap dibagikan ke karyawan.
+          Create Mid Year / End Year periods, activate one period to open assessments, then release
+          reports when they are ready to share with employees.
         </p>
       </div>
       <PeriodManager />

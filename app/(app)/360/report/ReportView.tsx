@@ -123,7 +123,7 @@ export default function ReportView({ userId }: { userId: string; periodId?: stri
     if (mode !== "period" || !selectedPeriod) { if (mode === "period") { setData(null); } return; }
     setLoading(true); setError("");
     fetch(`/api/feedback/report?userId=${userId}&periodId=${selectedPeriod.id}`)
-      .then(async (r) => { if (!r.ok) { const d = await r.json().catch(() => ({})); throw new Error(d.error || "Gagal memuat rapor."); } return r.json(); })
+      .then(async (r) => { if (!r.ok) { const d = await r.json().catch(() => ({})); throw new Error(d.error || "Failed to load report."); } return r.json(); })
       .then(setData)
       .catch((e) => { setData(null); setError(e.message); })
       .finally(() => setLoading(false));
@@ -134,7 +134,7 @@ export default function ReportView({ userId }: { userId: string; periodId?: stri
     if (mode !== "trend") return;
     setLoading(true); setError("");
     fetch(`/api/feedback/report?userId=${userId}&trend=1`)
-      .then(async (r) => { if (!r.ok) { const d = await r.json().catch(() => ({})); throw new Error(d.error || "Gagal memuat tren."); } return r.json(); })
+      .then(async (r) => { if (!r.ok) { const d = await r.json().catch(() => ({})); throw new Error(d.error || "Failed to load trend."); } return r.json(); })
       .then((d) => setTrend(d.series || []))
       .catch((e) => { setTrend(null); setError(e.message); })
       .finally(() => setLoading(false));
@@ -145,7 +145,7 @@ export default function ReportView({ userId }: { userId: string; periodId?: stri
       {/* selectors */}
       <div className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-wrap items-end gap-3">
         <div>
-          <label className="block text-xs text-slate-400 mb-1">Tahun</label>
+          <label className="block text-xs text-slate-400 mb-1">Year</label>
           <select disabled={mode === "trend"} value={year ?? ""} onChange={(e) => setYear(parseInt(e.target.value))} className="border border-slate-200 rounded-lg px-3 py-2 text-sm disabled:bg-slate-50 disabled:text-slate-300">
             {years.length === 0 && <option>—</option>}
             {years.map((y) => <option key={y} value={y}>{y}</option>)}
@@ -159,26 +159,26 @@ export default function ReportView({ userId }: { userId: string; periodId?: stri
           </select>
         </div>
         <div className="flex gap-1 ml-auto">
-          <button onClick={() => setMode("period")} className={`px-3 py-2 rounded-lg text-sm font-semibold ${mode === "period" ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600"}`}>Per periode</button>
-          <button onClick={() => setMode("trend")} className={`px-3 py-2 rounded-lg text-sm font-semibold ${mode === "trend" ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600"}`}>Tren / Overall</button>
+          <button onClick={() => setMode("period")} className={`px-3 py-2 rounded-lg text-sm font-semibold ${mode === "period" ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600"}`}>By period</button>
+          <button onClick={() => setMode("trend")} className={`px-3 py-2 rounded-lg text-sm font-semibold ${mode === "trend" ? "bg-teal-600 text-white" : "bg-white border border-slate-200 text-slate-600"}`}>Trend / Overall</button>
         </div>
       </div>
 
-      {loading && <div className="text-sm text-slate-400">Memuat…</div>}
+      {loading && <div className="text-sm text-slate-400">Loading…</div>}
       {error && !loading && <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">{error}</div>}
 
       {/* TREND */}
       {!loading && !error && mode === "trend" && (
         <div className="bg-white border border-slate-200 rounded-2xl p-5">
-          <p className="text-sm font-semibold text-slate-700 mb-1">Perkembangan skor 360</p>
-          <p className="text-[11px] text-slate-400 mb-3">Garis tebal = skor keseluruhan; garis tipis = per kategori.</p>
+          <p className="text-sm font-semibold text-slate-700 mb-1">360 score progression</p>
+          <p className="text-[11px] text-slate-400 mb-3">Thick line = overall score; thin lines = per category.</p>
           {!trend || trend.length === 0 ? (
-            <p className="text-sm text-slate-400">Belum ada data yang bisa ditampilkan.</p>
+            <p className="text-sm text-slate-400">No data to display yet.</p>
           ) : (
             <>
               <TrendChart series={trend} />
               <div className="flex flex-wrap gap-3 mt-2">
-                <Legend color="#0d9488" label="Keseluruhan" bold />
+                <Legend color="#0d9488" label="Overall" bold />
                 {Object.keys(CAT_COLOR).map((c) => <Legend key={c} color={CAT_COLOR[c]} label={CAT_LABEL[c]} />)}
               </div>
             </>
@@ -188,7 +188,7 @@ export default function ReportView({ userId }: { userId: string; periodId?: stri
 
       {/* PERIOD */}
       {!loading && !error && mode === "period" && !selectedPeriod && (
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 text-slate-500 text-sm">Periode ini belum dibuat. Pilih tahun/semester lain.</div>
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 text-slate-500 text-sm">This period has not been created yet. Choose another year/semester.</div>
       )}
       {!loading && !error && mode === "period" && data && <SingleReport data={data} />}
     </div>
@@ -218,13 +218,13 @@ function SingleReport({ data }: { data: SinglePayload }) {
       </div>
 
       {!report.hasData ? (
-        <div className="text-sm text-slate-500">Belum ada penilaian masuk untuk periode ini.</div>
+        <div className="text-sm text-slate-500">No assessments submitted for this period yet.</div>
       ) : (
         <>
           <div className="flex items-baseline gap-3 mb-1 flex-wrap">
             <span className="text-4xl font-extrabold text-teal-700">{fmt(report.overall)}</span>
             <span className={`text-xs font-bold px-2 py-1 rounded ${bandClass[report.overallBand.color] || bandClass.slate}`}>{report.overallBand.label}</span>
-            <span className="text-xs text-slate-400">skor keseluruhan{tgt ? ` (target L${tgt})` : ""}</span>
+            <span className="text-xs text-slate-400">overall score{tgt ? ` (target L${tgt})` : ""}</span>
           </div>
 
           <div className="space-y-3 mt-4">
@@ -238,7 +238,7 @@ function SingleReport({ data }: { data: SinglePayload }) {
               </div>
             ))}
           </div>
-          {tgt && <p className="text-[11px] text-slate-400 mt-2 text-right">Garis merah = target level L{tgt}</p>}
+          {tgt && <p className="text-[11px] text-slate-400 mt-2 text-right">Red line = target level L{tgt}</p>}
 
           {report.categories.map((cat) => (
             <div key={cat.category} className="mt-5">
@@ -247,12 +247,12 @@ function SingleReport({ data }: { data: SinglePayload }) {
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="text-slate-400 text-left">
-                      <th className="py-1.5 pr-2 font-semibold">Kompetensi</th>
-                      <th className="py-1.5 px-1 font-semibold text-center">Atasan</th>
-                      <th className="py-1.5 px-1 font-semibold text-center">Rekan</th>
-                      <th className="py-1.5 px-1 font-semibold text-center">Bawahan</th>
+                      <th className="py-1.5 pr-2 font-semibold">Competency</th>
+                      <th className="py-1.5 px-1 font-semibold text-center">Superordinate</th>
+                      <th className="py-1.5 px-1 font-semibold text-center">Peers</th>
+                      <th className="py-1.5 px-1 font-semibold text-center">Subordinates</th>
                       <th className="py-1.5 px-1 font-semibold text-center">Self</th>
-                      <th className="py-1.5 px-1 font-semibold text-center">Berbobot</th>
+                      <th className="py-1.5 px-1 font-semibold text-center">Weighted</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -271,7 +271,7 @@ function SingleReport({ data }: { data: SinglePayload }) {
               </div>
               {comments[cat.category] && comments[cat.category].length > 0 && (
                 <div className="mt-2 bg-slate-50 rounded-lg p-3 space-y-1.5">
-                  <p className="text-[11px] font-semibold text-slate-500">Catatan kualitatif (anonim):</p>
+                  <p className="text-[11px] font-semibold text-slate-500">Qualitative notes (anonymous):</p>
                   {comments[cat.category].map((cm, i) => (
                     <p key={i} className="text-[12px] text-slate-600 border-l-2 border-teal-300 pl-2">“{cm}”</p>
                   ))}
@@ -280,7 +280,7 @@ function SingleReport({ data }: { data: SinglePayload }) {
             </div>
           ))}
           <p className="text-[11px] text-slate-400 mt-3">
-            Skor berbobot = Atasan 40% · Rekan 30% · Bawahan 30% (Self hanya konteks). Identitas penilai dirahasiakan — skor & catatan ditampilkan tanpa nama.
+            Weighted score = Superordinate 40% · Peers 30% · Subordinates 30% (Self shown for context only). Rater identities are confidential — scores & notes are shown without names.
           </p>
         </>
       )}

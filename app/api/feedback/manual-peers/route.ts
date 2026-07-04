@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { userAId, userBId, periodId, type = "peer" } = body;
   if (!userAId || !userBId || userAId === userBId)
-    return NextResponse.json({ error: "Pilih dua karyawan berbeda." }, { status: 400 });
+    return NextResponse.json({ error: "Choose two different employees." }, { status: 400 });
 
   if (type === "peer") {
     // Bidirectional
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       skipDuplicates: true,
     });
   } else {
-    return NextResponse.json({ error: "Tipe tidak valid." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid type." }, { status: 400 });
   }
 
   return NextResponse.json({ ok: true }, { status: 201 });

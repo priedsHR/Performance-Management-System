@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
   if (!body.name || !CATS.includes(body.category))
-    return NextResponse.json({ error: "Nama dan kategori wajib." }, { status: 400 });
+    return NextResponse.json({ error: "Name and category are required." }, { status: 400 });
 
   const max = await prisma.competency.aggregate({ _max: { sortOrder: true } });
   const comp = await prisma.competency.create({

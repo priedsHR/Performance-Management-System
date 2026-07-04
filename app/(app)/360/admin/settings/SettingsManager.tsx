@@ -51,19 +51,19 @@ export default function SettingsManager() {
       body: JSON.stringify(s),
     });
     setSaving(false);
-    setMsg(res.ok ? "✅ Tersimpan." : "❌ Gagal menyimpan.");
+    setMsg(res.ok ? "✅ Saved." : "❌ Failed to save.");
   }
 
   return (
     <div className="space-y-4">
       {/* Weights */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <p className="font-semibold text-slate-800 mb-1">⚖️ Bobot Kelompok Penilai</p>
-        <p className="text-xs text-slate-400 mb-4">Self tidak diberi bobot (hanya konteks). Total ideal = 1.00. Total saat ini:{" "}
+        <p className="font-semibold text-slate-800 mb-1">⚖️ Rater Group Weights</p>
+        <p className="text-xs text-slate-400 mb-4">Self carries no weight (context only). Ideal total = 1.00. Current total:{" "}
           <span className={`font-semibold ${sumOk ? "text-green-600" : "text-red-500"}`}>{sum}</span>
         </p>
         <div className="grid grid-cols-3 gap-3">
-          {([["Atasan (Superordinate)", "weightSuper"], ["Rekan (Peer)", "weightPeer"], ["Bawahan (Subordinate)", "weightSub"]] as const).map(([label, key]) => (
+          {([["Superordinate (Manager)", "weightSuper"], ["Peer", "weightPeer"], ["Subordinate", "weightSub"]] as const).map(([label, key]) => (
             <div key={key}>
               <label className="block text-xs font-medium text-slate-500 mb-1.5">{label}</label>
               <input
@@ -82,8 +82,8 @@ export default function SettingsManager() {
 
       {/* Level targets */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <p className="font-semibold text-slate-800 mb-1">🎯 Target Level per Jenjang</p>
-        <p className="text-xs text-slate-400 mb-4">Nilai target (1–4) yang diharapkan untuk setiap level karir.</p>
+        <p className="font-semibold text-slate-800 mb-1">🎯 Target Level per Career Level</p>
+        <p className="text-xs text-slate-400 mb-4">The expected target score (1–4) for each career level.</p>
         <div className="grid sm:grid-cols-3 gap-3">
           {LEVELS.map((lv) => (
             <div key={lv}>
@@ -102,18 +102,18 @@ export default function SettingsManager() {
 
       {/* Bands */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <p className="font-semibold text-slate-800 mb-1">📊 Band Penilaian</p>
-        <p className="text-xs text-slate-400 mb-4">Skor masuk band pertama yang batas atasnya lebih besar dari skor. Band terakhir adalah batas tertinggi.</p>
+        <p className="font-semibold text-slate-800 mb-1">📊 Scoring Bands</p>
+        <p className="text-xs text-slate-400 mb-4">A score falls into the first band whose upper bound is greater than the score. The last band is the highest bound.</p>
         <div className="space-y-2">
           {s.bands.map((b, i) => (
             <div key={b.key} className="flex items-center gap-3">
               <input
                 value={b.label}
                 onChange={(e) => { const bands = [...s.bands]; bands[i] = { ...b, label: e.target.value }; setS({ ...s, bands }); }}
-                placeholder="Nama band"
+                placeholder="Band name"
                 className={`${inp} flex-1`}
               />
-              <span className="text-xs text-slate-400 whitespace-nowrap">batas atas &lt;</span>
+              <span className="text-xs text-slate-400 whitespace-nowrap">upper bound &lt;</span>
               <input
                 type="number"
                 step="0.1"
@@ -128,7 +128,7 @@ export default function SettingsManager() {
 
       <div className="flex items-center gap-3">
         <button onClick={save} disabled={saving} className={btnPrimary}>
-          {saving ? "⏳ Menyimpan..." : "💾 Simpan Pengaturan"}
+          {saving ? "⏳ Saving..." : "💾 Save Settings"}
         </button>
         {msg && <span className={`text-sm font-medium ${msg.startsWith("✅") ? "text-green-600" : "text-red-500"}`}>{msg}</span>}
       </div>

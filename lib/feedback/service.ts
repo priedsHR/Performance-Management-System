@@ -48,6 +48,27 @@ export async function ensureFeedbackBootstrap(): Promise<void> {
       })),
       skipDuplicates: true,
     });
+  } else {
+    // Resync library wording (e.g. after the library was translated to English).
+    // Cheap sentinel check: if one known competency's definition differs from the
+    // library, refresh definition/levels for every library-coded competency.
+    const sentinelSeed = COMPETENCY_LIBRARY[0];
+    const sentinel = await prisma.competency.findFirst({ where: { code: sentinelSeed.code } });
+    if (sentinel && sentinel.definition !== sentinelSeed.definition) {
+      for (const c of COMPETENCY_LIBRARY) {
+        await prisma.competency.updateMany({
+          where: { code: c.code },
+          data: {
+            name: c.name,
+            definition: c.definition,
+            l1: c.levels[0],
+            l2: c.levels[1],
+            l3: c.levels[2],
+            l4: c.levels[3],
+          },
+        });
+      }
+    }
   }
 }
 
@@ -73,7 +94,7 @@ export async function getFeedbackSettings(): Promise<FeedbackSettings> {
 }
 
 export function bandFor(score: number | null, bands: Band[]) {
-  if (score == null) return { key: "nd", label: "Belum ada data", color: "slate" };
+  if (score == null) return { key: "nd", label: "No data yet", color: "slate" };
   for (const b of bands) {
     if (score < b.max) return b;
   }

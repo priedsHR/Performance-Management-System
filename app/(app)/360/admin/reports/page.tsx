@@ -10,8 +10,8 @@ export default async function AdminReportsPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-slate-900">Rekap Rapor 360</h1>
-        <p className="text-sm text-slate-500 mt-0.5">Ringkasan skor seluruh karyawan per periode. Klik untuk membuka rapor detail.</p>
+        <h1 className="text-xl font-bold text-slate-900">360 Report Recap</h1>
+        <p className="text-sm text-slate-500 mt-0.5">Score summary for all employees per period. Click to open a detailed report.</p>
       </div>
       <ReportsAdmin />
     </div>

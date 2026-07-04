@@ -21,11 +21,11 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const half = body.half === "END" ? "END" : "MID";
   const year = parseInt(String(body.year), 10);
-  if (!year || year < 2000) return NextResponse.json({ error: "Tahun tidak valid." }, { status: 400 });
+  if (!year || year < 2000) return NextResponse.json({ error: "Invalid year." }, { status: 400 });
 
   const name = (half === "MID" ? "Mid Year " : "End Year ") + year;
   const existing = await prisma.feedbackPeriod.findUnique({ where: { year_half: { year, half } } });
-  if (existing) return NextResponse.json({ error: "Periode ini sudah ada." }, { status: 400 });
+  if (existing) return NextResponse.json({ error: "This period already exists." }, { status: 400 });
 
   const period = await prisma.feedbackPeriod.create({ data: { name, half, year } });
   return NextResponse.json(period, { status: 201 });

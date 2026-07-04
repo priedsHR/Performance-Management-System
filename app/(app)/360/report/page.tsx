@@ -13,7 +13,7 @@ export default async function ReportPage({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-bold text-slate-900">{isOwn ? "Rapor 360 Saya" : "Rapor 360"}</h1>
+      <h1 className="text-xl font-bold text-slate-900">{isOwn ? "My 360 Report" : "360 Report"}</h1>
       <ReportView userId={targetUserId} periodId={periodId ?? null} isOwn={isOwn} />
     </div>
   );

@@ -14,7 +14,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const settings = await getFeedbackSettings();
 
   const profile = await prisma.feedbackProfile.findUnique({ where: { id } });
-  if (!profile) return NextResponse.json({ error: "Profil tidak ditemukan." }, { status: 404 });
+  if (!profile) return NextResponse.json({ error: "Profile not found." }, { status: 404 });
 
   const data: Record<string, unknown> = {};
   if (body.department !== undefined) data.department = body.department || null;

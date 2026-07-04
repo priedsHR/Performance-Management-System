@@ -15,36 +15,36 @@ const adminSettingOkr: Item[] = [
   { href: "/admin/reminders", label: "Reminder", icon: "🔔" },
 ];
 const adminSetting360: Item[] = [
-  { href: "/360/admin/competencies", label: "Kompetensi", icon: "🧩" },
-  { href: "/360/admin/periods", label: "Periode", icon: "🗓️" },
-  { href: "/360/admin/reports", label: "Rekap Rapor", icon: "📄" },
-  { href: "/360/admin/settings", label: "Pembobotan", icon: "⚖️" },
+  { href: "/360/admin/competencies", label: "Competencies", icon: "🧩" },
+  { href: "/360/admin/periods", label: "Periods", icon: "🗓️" },
+  { href: "/360/admin/reports", label: "Report Recap", icon: "📄" },
+  { href: "/360/admin/settings", label: "Weighting", icon: "⚖️" },
   { href: "/360/admin/reminders", label: "Reminder", icon: "🔔" },
 ];
 const adminGeneralSetting: Item[] = [
-  { href: "/admin/employees", label: "Manajemen Karyawan", icon: "🧑‍💼" },
+  { href: "/admin/employees", label: "Employee Management", icon: "🧑‍💼" },
 ];
 
 const leadDashboard: Item[] = [{ href: "/dashboard", label: "Dashboard", icon: "📊" }];
 const leadOkr: Item[] = [
-  { href: "/okr", label: "OKR Divisi", icon: "🎯" },
-  { href: "/distribusi", label: "Distribusi Anggota", icon: "👥" },
+  { href: "/okr", label: "Division OKR", icon: "🎯" },
+  { href: "/distribusi", label: "Member Distribution", icon: "👥" },
 ];
 const lead360: Item[] = [
   { href: "/360", label: "360° Feedback", icon: "📝" },
-  { href: "/360/report", label: "Rapor Saya", icon: "📄" },
+  { href: "/360/report", label: "My Report", icon: "📄" },
 ];
 
 const memberDashboard: Item[] = [{ href: "/dashboard", label: "Dashboard", icon: "📊" }];
 const member360: Item[] = [
   { href: "/360", label: "360° Feedback", icon: "📝" },
-  { href: "/360/report", label: "Rapor Saya", icon: "📄" },
+  { href: "/360/report", label: "My Report", icon: "📄" },
 ];
 
 export default function Sidebar({ role, name, division }: { role: string; name?: string | null; division?: string | null }) {
   const path = usePathname();
 
-  const roleLabel = role === "ADMIN" ? "Admin" : role === "LEAD" ? "Lead Divisi" : "Anggota";
+  const roleLabel = role === "ADMIN" ? "Admin" : role === "LEAD" ? "Division Lead" : "Member";
   const initials = name ? name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase() : "U";
 
   function NavLink({ href, label, icon }: Item) {
@@ -134,7 +134,7 @@ export default function Sidebar({ role, name, division }: { role: string; name?:
           className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-500 hover:bg-slate-100 hover:text-slate-800 w-full transition-all duration-100"
         >
           <span>🚪</span>
-          <span>Keluar</span>
+          <span>Sign out</span>
         </button>
       </div>
     </aside>

@@ -56,7 +56,7 @@ export default function PeriodManager() {
       await load();
     } else {
       const d = await r.json().catch(() => ({}));
-      setMsg(d.error || "Gagal membuat periode.");
+      setMsg(d.error || "Failed to create period.");
     }
   }
 
@@ -70,7 +70,7 @@ export default function PeriodManager() {
   }
 
   async function del(id: string) {
-    if (!confirm("Hapus periode ini beserta semua penilaiannya?")) return;
+    if (!confirm("Delete this period along with all its assessments?")) return;
     await fetch(`/api/feedback/periods/${id}`, { method: "DELETE" });
     await load();
   }
@@ -79,7 +79,7 @@ export default function PeriodManager() {
     <div className="space-y-4">
       {/* Create form */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <p className="text-sm font-semibold text-slate-800 mb-3">🗓️ Buat Periode Baru</p>
+        <p className="text-sm font-semibold text-slate-800 mb-3">🗓️ Create New Period</p>
         <div className="flex flex-wrap items-end gap-3">
           <div>
             <label className="block text-xs font-medium text-slate-500 mb-1.5">Semester</label>
@@ -89,7 +89,7 @@ export default function PeriodManager() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-500 mb-1.5">Tahun</label>
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">Year</label>
             <input
               type="number"
               value={year}
@@ -98,7 +98,7 @@ export default function PeriodManager() {
             />
           </div>
           <button onClick={create} disabled={busy} className={btnPrimary}>
-            {busy ? "⏳ Membuat..." : "➕ Tambah Periode"}
+            {busy ? "⏳ Creating..." : "➕ Add Period"}
           </button>
         </div>
         {msg && <p className="text-sm text-red-500 mt-2">{msg}</p>}
@@ -118,7 +118,7 @@ export default function PeriodManager() {
           {periods.length === 0 ? (
             <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
               <div className="text-4xl mb-3">🗓️</div>
-              <p className="text-slate-500 text-sm">Belum ada periode. Buat periode pertama di atas.</p>
+              <p className="text-slate-500 text-sm">No periods yet. Create the first period above.</p>
             </div>
           ) : (
             periods.map((p) => (
@@ -126,26 +126,26 @@ export default function PeriodManager() {
                 <div>
                   <div className="flex items-center gap-2 mb-0.5">
                     <p className="font-semibold text-slate-800 text-sm">📅 {p.name}</p>
-                    {p.isActive && <span className="bg-amber-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full">✅ Aktif</span>}
-                    {p.releaseReports && <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">📊 Rapor dirilis</span>}
+                    {p.isActive && <span className="bg-amber-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full">✅ Active</span>}
+                    {p.releaseReports && <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">📊 Reports released</span>}
                   </div>
                   <p className="text-xs text-slate-400">{p.half === "MID" ? "Mid Year" : "End Year"} {p.year}</p>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
                   {!p.isActive ? (
                     <button onClick={() => patch(p.id, { isActive: true })} className={btnPrimary + " !py-2 !text-xs"}>
-                      ▶️ Set Aktif
+                      ▶️ Set Active
                     </button>
                   ) : (
                     <button onClick={() => patch(p.id, { isActive: false })} className={btnSecondary + " !text-xs"}>
-                      ⏸️ Nonaktifkan
+                      ⏸️ Deactivate
                     </button>
                   )}
                   <button onClick={() => patch(p.id, { releaseReports: !p.releaseReports })} className={btnSecondary + " !text-xs"}>
-                    {p.releaseReports ? "🔒 Sembunyikan Rapor" : "📊 Rilis Rapor"}
+                    {p.releaseReports ? "🔒 Hide Reports" : "📊 Release Reports"}
                   </button>
                   <button onClick={() => del(p.id)} className="text-slate-300 hover:text-red-500 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-red-50 shadow-[0_3px_0_#e2e8f0] hover:shadow-[0_1px_0_#fecaca] hover:translate-y-0.5 active:shadow-none transition-all duration-75">
-                    🗑️ Hapus
+                    🗑️ Delete
                   </button>
                 </div>
               </div>

@@ -41,9 +41,9 @@ export default function Reminder360Manager({
         body: JSON.stringify({ type, periodId: selectedPeriodId }),
       });
       const data = await res.json();
-      setResult({ type, message: data.message ?? (res.ok ? "Terkirim." : "Gagal."), results: data.results ?? [], success: data.success ?? res.ok });
+      setResult({ type, message: data.message ?? (res.ok ? "Sent." : "Failed."), results: data.results ?? [], success: data.success ?? res.ok });
     } catch {
-      setResult({ type, message: "Terjadi kesalahan jaringan.", results: [], success: false });
+      setResult({ type, message: "A network error occurred.", results: [], success: false });
     } finally {
       setSending(null);
     }
@@ -53,7 +53,7 @@ export default function Reminder360Manager({
     return (
       <div className="bg-white rounded-2xl border border-slate-200 p-10 text-center">
         <div className="text-4xl mb-3">🗓️</div>
-        <p className="text-slate-500 text-sm">Belum ada periode 360 Feedback. Buat periode terlebih dahulu di menu Periode.</p>
+        <p className="text-slate-500 text-sm">No 360 Feedback periods yet. Create a period first in the Periods menu.</p>
       </div>
     );
   }
@@ -62,7 +62,7 @@ export default function Reminder360Manager({
     <div className="space-y-5">
       {/* Period selector */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5">
-        <label className="block text-sm font-semibold text-slate-700 mb-2">🗓️ Pilih Periode</label>
+        <label className="block text-sm font-semibold text-slate-700 mb-2">🗓️ Select Period</label>
         <select
           value={selectedPeriodId}
           onChange={(e) => setSelectedPeriodId(e.target.value)}
@@ -70,7 +70,7 @@ export default function Reminder360Manager({
         >
           {periods.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.name}{p.isActive ? " (Aktif)" : ""}
+              {p.name}{p.isActive ? " (Active)" : ""}
             </option>
           ))}
         </select>
@@ -82,11 +82,11 @@ export default function Reminder360Manager({
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xl">📝</span>
-              <h3 className="font-bold text-slate-800">Reminder Pengisian</h3>
+              <h3 className="font-bold text-slate-800">Completion Reminder</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Kirim email ke semua karyawan yang masih memiliki penilaian 360° belum diisi pada periode ini.
-              Cocok dikirim di <strong>awal atau pertengahan periode</strong>.
+              Email everyone who still has unfinished 360° assessments in this period.
+              Best sent at the <strong>start or middle of the period</strong>.
             </p>
           </div>
           <button
@@ -94,7 +94,7 @@ export default function Reminder360Manager({
             disabled={!selectedPeriodId || sending !== null}
             className={btnTeal}
           >
-            {sending === "initial" ? "⏳ Mengirim..." : "📧 Kirim Reminder Pengisian"}
+            {sending === "initial" ? "⏳ Sending..." : "📧 Send Completion Reminder"}
           </button>
         </div>
 
@@ -105,8 +105,8 @@ export default function Reminder360Manager({
               <h3 className="font-bold text-slate-800">Follow Up</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Kirim follow up dengan nada lebih mendesak ke yang <strong>masih belum selesai</strong>.
-              Cocok dikirim di <strong>mendekati akhir periode</strong>.
+              Send a more urgent follow-up to those who are <strong>still not done</strong>.
+              Best sent <strong>near the end of the period</strong>.
             </p>
           </div>
           <button
@@ -114,7 +114,7 @@ export default function Reminder360Manager({
             disabled={!selectedPeriodId || sending !== null}
             className={btnSlate}
           >
-            {sending === "followup" ? "⏳ Mengirim..." : "📧 Kirim Follow Up"}
+            {sending === "followup" ? "⏳ Sending..." : "📧 Send Follow Up"}
           </button>
         </div>
       </div>
@@ -124,7 +124,7 @@ export default function Reminder360Manager({
         <div className={`rounded-2xl border p-5 space-y-3 ${result.success ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
           <p className={`font-semibold text-sm ${result.success ? "text-green-700" : "text-red-700"}`}>
             {result.success ? "✅" : "❌"}{" "}
-            {result.type === "initial" ? "Reminder Pengisian" : "Follow Up"} — {result.message}
+            {result.type === "initial" ? "Completion Reminder" : "Follow Up"} — {result.message}
           </p>
           {result.results.length > 0 && (
             <div className="space-y-1">

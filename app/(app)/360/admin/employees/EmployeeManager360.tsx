@@ -91,14 +91,14 @@ export default function EmployeeManager360() {
   }
 
   async function addPair() {
-    if (!pairA || !pairB || pairA === pairB) { setPairMsg("Pilih dua karyawan berbeda."); return; }
+    if (!pairA || !pairB || pairA === pairB) { setPairMsg("Choose two different employees."); return; }
     const res = await fetch("/api/feedback/manual-peers", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userAId: pairA, userBId: pairB }),
     });
     if (res.ok) { setPairA(""); setPairB(""); setPairMsg(""); await load(); }
-    else { const d = await res.json().catch(() => ({})); setPairMsg(d.error || "Gagal."); }
+    else { const d = await res.json().catch(() => ({})); setPairMsg(d.error || "Failed."); }
   }
 
   async function removePair(pair: ManualPair) {
@@ -196,13 +196,13 @@ export default function EmployeeManager360() {
       await load();
     } else {
       const d = await res.json().catch(() => ({}));
-      setMsg(d.error || "Gagal menyimpan.");
+      setMsg(d.error || "Failed to save.");
     }
   }
 
   async function del(p: Profile) {
     const withUser = confirm(
-      `Hapus profil 360 "${p.name}".\n\nTekan OK untuk MENGHAPUS JUGA akun loginnya.\nTekan Cancel untuk hanya menghapus profil 360 (akun login tetap ada).`
+      `Delete the 360 profile of "${p.name}".\n\nPress OK to ALSO DELETE their login account.\nPress Cancel to delete only the 360 profile (login account stays).`
     );
     await fetch(`/api/feedback/profiles/${p.id}${withUser ? "?withUser=1" : ""}`, { method: "DELETE" });
     await load();
@@ -220,11 +220,11 @@ export default function EmployeeManager360() {
     setImporting(false);
     if (fileRef.current) fileRef.current.value = "";
     if (res.ok) {
-      setMsg((d.message || "Impor selesai.") + (d.errors ? ` (${d.errors.length} catatan)` : ""));
+      setMsg((d.message || "Import complete.") + (d.errors ? ` (${d.errors.length} notes)` : ""));
       if (d.errors) console.warn("Import notes:", d.errors);
       await load();
     } else {
-      setMsg(d.error || "Gagal mengimpor.");
+      setMsg(d.error || "Failed to import.");
     }
   }
 
@@ -233,17 +233,17 @@ export default function EmployeeManager360() {
       {/* actions */}
       <div className="flex flex-wrap items-center gap-2">
         <button onClick={startNew} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700">
-          + Tambah karyawan
+          + Add employee
         </button>
         <a href="/api/feedback/profiles/import" className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
-          ⬇ Download template Excel
+          ⬇ Download Excel template
         </a>
         <button
           onClick={() => fileRef.current?.click()}
           disabled={importing}
           className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50"
         >
-          {importing ? "Mengimpor…" : "⬆ Impor massal"}
+          {importing ? "Importing…" : "⬆ Bulk import"}
         </button>
         <input ref={fileRef} type="file" accept=".xlsx" hidden onChange={doImport} />
       </div>
@@ -252,30 +252,30 @@ export default function EmployeeManager360() {
       {/* form */}
       {editing && (
         <div className="bg-white border border-teal-200 rounded-2xl p-5 space-y-3">
-          <p className="text-sm font-semibold text-slate-700">{editing === "new" ? "Karyawan baru" : "Ubah karyawan"}</p>
+          <p className="text-sm font-semibold text-slate-700">{editing === "new" ? "New employee" : "Edit employee"}</p>
           <div className="grid sm:grid-cols-2 gap-3">
-            <Field label="Nama*">
+            <Field label="Name*">
               <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="inp" />
             </Field>
-            <Field label="Email* (untuk login)">
+            <Field label="Email* (for login)">
               <input value={form.email} disabled={editing !== "new"} onChange={(e) => setForm({ ...form, email: e.target.value })} className="inp disabled:bg-slate-50 disabled:text-slate-400" />
             </Field>
-            <Field label={editing === "new" ? "Password*" : "Password (kosongkan jika tetap)"}>
+            <Field label={editing === "new" ? "Password*" : "Password (leave blank to keep)"}>
               <input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className="inp" />
             </Field>
-            <Field label="Hak akses">
+            <Field label="Access role">
               <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className="inp">
-                <option value="MEMBER">Anggota</option>
+                <option value="MEMBER">Member</option>
                 <option value="LEAD">Lead</option>
                 <option value="ADMIN">Admin</option>
               </select>
             </Field>
-            <Field label="Departemen (= grup peer)">
+            <Field label="Department (= peer group)">
               <input
                 list="dept-suggestions"
                 value={form.department}
                 onChange={(e) => setForm({ ...form, department: e.target.value })}
-                placeholder="mis. HR, Finance, Tech…"
+                placeholder="e.g. HR, Finance, Tech…"
                 className="inp"
               />
               <datalist id="dept-suggestions">
@@ -284,7 +284,7 @@ export default function EmployeeManager360() {
                 ))}
               </datalist>
             </Field>
-            <Field label="Posisi">
+            <Field label="Position">
               <input value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} className="inp" />
             </Field>
             <Field label="Level">
@@ -297,19 +297,19 @@ export default function EmployeeManager360() {
                 ))}
               </select>
             </Field>
-            <Field label="Target penilaian">
+            <Field label="Assessment target">
               <select value={form.targetMode} onChange={(e) => setForm({ ...form, targetMode: e.target.value })} className="inp">
-                <option value="auto">Otomatis dari level</option>
-                <option value="none">Tanpa target</option>
+                <option value="auto">Automatic from level</option>
+                <option value="none">No target</option>
                 <option value="1">Target L1</option>
                 <option value="2">Target L2</option>
                 <option value="3">Target L3</option>
                 <option value="4">Target L4</option>
               </select>
             </Field>
-            <Field label="Atasan (superordinate)">
+            <Field label="Manager (superordinate)">
               <select value={form.managerId} onChange={(e) => setForm({ ...form, managerId: e.target.value })} className="inp">
-                <option value="">— tidak ada —</option>
+                <option value="">— none —</option>
                 {users.map((u) => (
                   <option key={u.id} value={u.id}>
                     {u.name}
@@ -320,26 +320,26 @@ export default function EmployeeManager360() {
           </div>
           {(form.role === "LEAD" || form.role === "ADMIN") && (
             <p className="text-xs text-teal-700 bg-teal-50 px-3 py-1.5 rounded-lg">
-              Role Lead/Admin otomatis mendapat kompetensi Leadership.
+              Lead/Admin roles automatically get the Leadership competencies.
             </p>
           )}
 
           {/* competency picker */}
           <div className="border-t border-slate-100 pt-3">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm font-semibold text-slate-700">Kompetensi yang dinilai ({selected.size})</p>
+              <p className="text-sm font-semibold text-slate-700">Competencies assessed ({selected.size})</p>
               <div className="flex gap-2">
                 <button onClick={applyAuto} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-teal-50 text-teal-700 hover:bg-teal-100">
-                  Terapkan aturan otomatis
+                  Apply automatic rule
                 </button>
                 <button onClick={() => setSelected(new Set())} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-500 hover:bg-slate-50">
-                  Kosongkan
+                  Clear
                 </button>
               </div>
             </div>
             <p className="text-[11px] text-slate-400 mb-3">
-              Otomatis: Core (semua) + Leadership (jika manajer) + Job Family sesuai departemen + AI Fluency.
-              Technical spesifik departemen silakan dicentang manual.
+              Automatic: Core (all) + Leadership (if manager) + Job Family by department + AI Fluency.
+              Department-specific Technical competencies are ticked manually.
             </p>
             <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
               {CATS.map((cat) => {
@@ -369,10 +369,10 @@ export default function EmployeeManager360() {
 
           <div className="flex gap-2 pt-1">
             <button onClick={save} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700">
-              Simpan
+              Save
             </button>
             <button onClick={() => setEditing(null)} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
-              Batal
+              Cancel
             </button>
           </div>
         </div>
@@ -381,14 +381,14 @@ export default function EmployeeManager360() {
       {/* list */}
       <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
         {profiles.length === 0 ? (
-          <div className="p-6 text-sm text-slate-400">Belum ada karyawan. Tambah satu per satu atau impor massal.</div>
+          <div className="p-6 text-sm text-slate-400">No employees yet. Add them one by one or bulk import.</div>
         ) : (
           <table className="w-full text-sm">
             <thead className="bg-slate-50 text-slate-400 text-xs">
               <tr>
-                <th className="text-left px-4 py-2 font-semibold">Nama</th>
-                <th className="text-left px-3 py-2 font-semibold">Departemen</th>
-                <th className="text-left px-3 py-2 font-semibold">Atasan</th>
+                <th className="text-left px-4 py-2 font-semibold">Name</th>
+                <th className="text-left px-3 py-2 font-semibold">Department</th>
+                <th className="text-left px-3 py-2 font-semibold">Manager</th>
                 <th className="text-center px-3 py-2 font-semibold">Komp.</th>
                 <th className="px-3 py-2"></th>
               </tr>
@@ -408,10 +408,10 @@ export default function EmployeeManager360() {
                   <td className="px-3 py-2 text-center text-slate-500">{p.competencyIds.length}</td>
                   <td className="px-3 py-2 text-right whitespace-nowrap">
                     <button onClick={() => startEdit(p)} className="px-2 py-1 rounded text-xs text-slate-500 hover:bg-slate-100">
-                      Ubah
+                      Edit
                     </button>
                     <button onClick={() => del(p)} className="px-2 py-1 rounded text-xs text-red-500 hover:bg-red-50">
-                      Hapus
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -424,30 +424,30 @@ export default function EmployeeManager360() {
       {/* Manual cross-department peers */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-3">
         <div>
-          <p className="text-sm font-semibold text-slate-700">Peers Lintas Departemen</p>
-          <p className="text-xs text-slate-400 mt-0.5">Assign dua karyawan dari departemen berbeda untuk saling menilai sebagai peer.</p>
+          <p className="text-sm font-semibold text-slate-700">Cross-Department Peers</p>
+          <p className="text-xs text-slate-400 mt-0.5">Assign two employees from different departments to rate each other as peers.</p>
         </div>
         <div className="flex flex-wrap gap-2 items-end">
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Karyawan A</label>
+            <label className="block text-xs text-slate-400 mb-1">Employee A</label>
             <select value={pairA} onChange={(e) => setPairA(e.target.value)} className="inp">
-              <option value="">— pilih —</option>
+              <option value="">— select —</option>
               {profiles.filter((p) => p.active).map((p) => (
                 <option key={p.userId} value={p.userId}>{p.name} ({p.department || "—"})</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-xs text-slate-400 mb-1">Karyawan B</label>
+            <label className="block text-xs text-slate-400 mb-1">Employee B</label>
             <select value={pairB} onChange={(e) => setPairB(e.target.value)} className="inp">
-              <option value="">— pilih —</option>
+              <option value="">— select —</option>
               {profiles.filter((p) => p.active && p.userId !== pairA).map((p) => (
                 <option key={p.userId} value={p.userId}>{p.name} ({p.department || "—"})</option>
               ))}
             </select>
           </div>
           <button onClick={addPair} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700">
-            Tambah
+            Add
           </button>
         </div>
         {pairMsg && <p className="text-xs text-red-500">{pairMsg}</p>}
@@ -455,8 +455,8 @@ export default function EmployeeManager360() {
           <table className="w-full text-sm mt-2">
             <thead className="bg-slate-50 text-slate-400 text-xs">
               <tr>
-                <th className="text-left px-3 py-2 font-semibold">Karyawan A</th>
-                <th className="text-left px-3 py-2 font-semibold">Karyawan B</th>
+                <th className="text-left px-3 py-2 font-semibold">Employee A</th>
+                <th className="text-left px-3 py-2 font-semibold">Employee B</th>
                 <th className="px-3 py-2"></th>
               </tr>
             </thead>
@@ -467,7 +467,7 @@ export default function EmployeeManager360() {
                   <td className="px-3 py-2 text-slate-700">{pair.rateeName}</td>
                   <td className="px-3 py-2 text-right">
                     <button onClick={() => removePair(pair)} className="px-2 py-1 rounded text-xs text-red-500 hover:bg-red-50">
-                      Hapus
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -476,7 +476,7 @@ export default function EmployeeManager360() {
           </table>
         )}
         {manualPairs.length === 0 && (
-          <p className="text-xs text-slate-400">Belum ada pasangan peer lintas departemen.</p>
+          <p className="text-xs text-slate-400">No cross-department peer pairs yet.</p>
         )}
       </div>
 

@@ -32,10 +32,10 @@ const CAT_ORDER: Category[] = ["CORE", "LEADERSHIP", "JOB_FAMILY", "TECHNICAL"];
 // Stored `relation` = rater's group relative to ratee. Shown to the rater as
 // how the RATEE relates to them.
 const rateeLabel: Record<string, string> = {
-  SELF: "Diri sendiri",
-  SUBORDINATE: "Atasan",
-  SUPERORDINATE: "Bawahan",
-  PEER: "Rekan (peer)",
+  SELF: "Self",
+  SUBORDINATE: "Manager",
+  SUPERORDINATE: "Direct report",
+  PEER: "Peer",
 };
 const relTag: Record<string, string> = {
   SELF: "bg-indigo-50 text-indigo-600",
@@ -103,41 +103,41 @@ export default function MyAssessment() {
     });
     setSaving(null);
     if (res.ok) {
-      setMsg(submit ? "Penilaian dikumpulkan ✓" : "Tersimpan sebagai draf ✓");
+      setMsg(submit ? "Assessment submitted ✓" : "Saved as draft ✓");
       await load();
       if (submit) setOpenId(null);
     } else {
       const d = await res.json().catch(() => ({}));
-      setMsg(d.error || "Gagal menyimpan.");
+      setMsg(d.error || "Failed to save.");
     }
   }
 
-  if (loading) return <div className="text-sm text-slate-400">Memuat…</div>;
+  if (loading) return <div className="text-sm text-slate-400">Loading…</div>;
 
   if (!period)
     return (
       <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
-        Belum ada periode 360 yang aktif. Tunggu admin mengaktifkan periode penilaian.
+        No active 360 period yet. Please wait for the admin to activate an assessment period.
       </div>
     );
 
   if (tasks.length === 0)
     return (
       <div className="bg-white border border-slate-200 rounded-2xl p-6 text-slate-500 text-sm">
-        Tidak ada kolega yang perlu kamu nilai pada periode <b>{period.name}</b>. Jika ini keliru,
-        hubungi admin untuk memeriksa profil 360-mu (departemen & atasan).
+        There are no colleagues for you to rate in the <b>{period.name}</b> period. If this looks wrong,
+        contact the admin to check your 360 profile (department & manager).
       </div>
     );
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-teal-50 text-teal-700">Periode: {period.name}</span>
-        <Link href="/360/report" className="text-sm text-teal-700 hover:underline">Lihat rapor saya →</Link>
+        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-teal-50 text-teal-700">Period: {period.name}</span>
+        <Link href="/360/report" className="text-sm text-teal-700 hover:underline">View my report →</Link>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-2xl p-4">
-        <p className="text-xs font-semibold text-slate-500 mb-2">Skala penilaian (1–4)</p>
+        <p className="text-xs font-semibold text-slate-500 mb-2">Rating scale (1–4)</p>
         <div className="grid sm:grid-cols-4 gap-2">
           {SCALE.map((s) => (
             <div key={s.value} className="border border-slate-100 rounded-lg p-2 border-l-2 border-l-teal-400">
@@ -166,9 +166,9 @@ export default function MyAssessment() {
               </div>
               <div className="flex items-center gap-3 flex-shrink-0">
                 {t.submitted ? (
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600">✓ Terkumpul</span>
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600">✓ Submitted</span>
                 ) : (
-                  <span className="text-[11px] text-slate-400">{answered}/{t.total} terisi</span>
+                  <span className="text-[11px] text-slate-400">{answered}/{t.total} answered</span>
                 )}
                 <span className="text-slate-300">{open ? "▲" : "▼"}</span>
               </div>
@@ -190,7 +190,7 @@ export default function MyAssessment() {
                                 <p className="text-sm font-medium text-slate-700">{c.name}</p>
                                 {c.definition && <p className="text-[11px] text-slate-400">{c.definition}</p>}
                                 <button onClick={() => toggleInd(c.id)} className="text-[11px] text-teal-600 hover:underline mt-0.5">
-                                  {indOpen ? "Sembunyikan indikator level ▲" : "Lihat indikator level ▼"}
+                                  {indOpen ? "Hide level indicators ▲" : "Show level indicators ▼"}
                                 </button>
                               </div>
                               <div className="flex gap-1 flex-shrink-0">
@@ -214,12 +214,12 @@ export default function MyAssessment() {
                       })}
                     </div>
                     <div className="mt-2">
-                      <label className="block text-[11px] text-slate-400 mb-1">Catatan / bukti untuk {CATEGORY_LABEL[cat]} (opsional)</label>
+                      <label className="block text-[11px] text-slate-400 mb-1">Notes / evidence for {CATEGORY_LABEL[cat]} (optional)</label>
                       <textarea
                         value={comments[t.rateeUserId]?.[cat] || ""}
                         onChange={(e) => setComment(t.rateeUserId, cat, e.target.value)}
                         rows={2}
-                        placeholder="Contoh perilaku nyata yang mendasari penilaian di kategori ini…"
+                        placeholder="Concrete behavior examples that support your ratings in this category…"
                         className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm"
                       />
                     </div>
@@ -227,8 +227,8 @@ export default function MyAssessment() {
                 ))}
 
                 <div className="flex items-center gap-2 mt-5">
-                  <button onClick={() => save(t.rateeUserId, false)} disabled={saving === t.rateeUserId} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50">Simpan draf</button>
-                  <button onClick={() => save(t.rateeUserId, true)} disabled={saving === t.rateeUserId} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50">{saving === t.rateeUserId ? "Menyimpan…" : "Kumpulkan penilaian"}</button>
+                  <button onClick={() => save(t.rateeUserId, false)} disabled={saving === t.rateeUserId} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50">Save draft</button>
+                  <button onClick={() => save(t.rateeUserId, true)} disabled={saving === t.rateeUserId} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50">{saving === t.rateeUserId ? "Saving…" : "Submit assessment"}</button>
                 </div>
               </div>
             )}

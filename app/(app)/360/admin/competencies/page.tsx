@@ -10,10 +10,10 @@ export default async function CompetenciesPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-slate-900">Kerangka Kompetensi</h1>
+        <h1 className="text-xl font-bold text-slate-900">Competency Framework</h1>
         <p className="text-sm text-slate-500 mt-0.5">
-          Tambah, ubah, atau nonaktifkan kompetensi. Core berlaku untuk semua; Leadership untuk
-          manajer; Job Family & Technical mengikuti departemen.
+          Add, edit, or deactivate competencies. Core applies to everyone; Leadership to
+          managers; Job Family & Technical follow the department.
         </p>
       </div>
       <CompetencyManager />

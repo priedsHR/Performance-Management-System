@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
   const name = String(body.name || "").trim();
   const email = String(body.email || "").trim().toLowerCase();
   if (!name || !email.includes("@"))
-    return NextResponse.json({ error: "Nama dan email valid wajib diisi." }, { status: 400 });
+    return NextResponse.json({ error: "Name and a valid email are required." }, { status: 400 });
 
   const level = body.level || null;
   let targetLevel: number | null;
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
   if (!user) {
     const password = String(body.password || "").trim();
     if (!password)
-      return NextResponse.json({ error: "Password wajib untuk pengguna baru." }, { status: 400 });
+      return NextResponse.json({ error: "Password is required for new users." }, { status: 400 });
     user = await prisma.user.create({
       data: {
         name,
@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
 
   const existing = await prisma.feedbackProfile.findUnique({ where: { userId: user.id } });
   if (existing)
-    return NextResponse.json({ error: "Karyawan ini sudah punya profil 360." }, { status: 400 });
+    return NextResponse.json({ error: "This employee already has a 360 profile." }, { status: 400 });
 
   const profile = await prisma.feedbackProfile.create({
     data: {

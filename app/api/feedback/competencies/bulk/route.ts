@@ -20,9 +20,9 @@ export async function POST(req: NextRequest) {
   const { names, category, department } = body;
 
   if (!Array.isArray(names) || names.length === 0)
-    return NextResponse.json({ error: "names harus array dan tidak kosong." }, { status: 400 });
+    return NextResponse.json({ error: "names must be a non-empty array." }, { status: 400 });
   if (!CATS.includes(category))
-    return NextResponse.json({ error: "Kategori tidak valid." }, { status: 400 });
+    return NextResponse.json({ error: "Invalid category." }, { status: 400 });
 
   const max = await prisma.competency.aggregate({ _max: { sortOrder: true } });
   let sortOrder = (max._max.sortOrder ?? 0) + 1;
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       });
       created.push(comp);
     } catch {
-      errors.push(`Gagal membuat: "${name}"`);
+      errors.push(`Failed to create: "${name}"`);
     }
   }
 

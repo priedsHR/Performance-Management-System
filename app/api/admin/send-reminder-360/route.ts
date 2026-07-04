@@ -29,8 +29,8 @@ function buildEmail360Html({
 }) {
   const isFollowUp = type === "followup";
   const subject = isFollowUp
-    ? `[Follow Up] Mohon segera lengkapi penilaian 360° – ${periodName}`
-    : `[Reminder] Mohon isi penilaian 360° – ${periodName}`;
+    ? `[Follow Up] Please complete your 360° assessment – ${periodName}`
+    : `[Reminder] Please fill in your 360° assessment – ${periodName}`;
 
   const html = `
 <!DOCTYPE html>
@@ -49,29 +49,29 @@ function buildEmail360Html({
         <tr>
           <td style="padding:28px 32px;">
             <p style="margin:0 0 16px;font-size:22px;font-weight:bold;color:#0f172a;">
-              ${isFollowUp ? "⚠️ Follow Up Penilaian 360°" : "📝 Reminder Pengisian 360°"}
+              ${isFollowUp ? "⚠️ 360° Assessment Follow Up" : "📝 360° Assessment Reminder"}
             </p>
             <p style="margin:0 0 16px;color:#475569;font-size:14px;line-height:1.6;">
-              Halo <strong>${name}</strong>,<br><br>
+              Hello <strong>${name}</strong>,<br><br>
               ${isFollowUp
-                ? `Ini adalah <strong>follow up</strong> untuk mengingatkan bahwa kamu masih memiliki <strong>${pendingCount} penilaian</strong> yang belum selesai untuk periode <strong>${periodName}</strong>. Mohon segera diselesaikan sebelum periode berakhir.`
-                : `Kamu memiliki <strong>${pendingCount} penilaian 360°</strong> yang perlu diisi pada periode <strong>${periodName}</strong>. Mohon luangkan waktu untuk mengisinya sebelum batas waktu.`
+                ? `This is a <strong>follow up</strong> to remind you that you still have <strong>${pendingCount} assessments</strong> unfinished for the <strong>${periodName}</strong> period. Please complete them before the period ends.`
+                : `You have <strong>${pendingCount} 360° assessments</strong> to fill in for the <strong>${periodName}</strong> period. Please take a moment to complete them before the deadline.`
               }
             </p>
             <div style="background:#f0fdf9;border:1px solid #99f6e4;border-radius:10px;padding:14px 18px;margin:16px 0;">
-              <p style="margin:0;font-size:13px;color:#0f766e;">📊 <strong>${pendingCount} penilaian</strong> belum selesai</p>
+              <p style="margin:0;font-size:13px;color:#0f766e;">📊 <strong>${pendingCount} assessments</strong> remaining</p>
             </div>
             <a href="${APP_URL}/360"
                style="display:inline-block;background:#0d9488;color:#ffffff;font-weight:bold;font-size:14px;
                       padding:12px 24px;border-radius:10px;text-decoration:none;margin-top:8px;">
-              Isi Penilaian 360° →
+              Fill in 360° Assessment →
             </a>
           </td>
         </tr>
         <tr>
           <td style="padding:16px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;">
             <p style="margin:0;color:#94a3b8;font-size:12px;">
-              Email ini dikirim otomatis oleh sistem Performance Management. Jangan balas email ini.
+              This email was sent automatically by the Performance Management system. Please do not reply.
             </p>
           </td>
         </tr>
@@ -92,10 +92,10 @@ export async function POST(req: NextRequest) {
   const { type, periodId }: { type: "initial" | "followup"; periodId: string } = await req.json();
 
   if (!type || !periodId)
-    return NextResponse.json({ error: "type dan periodId wajib diisi." }, { status: 400 });
+    return NextResponse.json({ error: "type and periodId are required." }, { status: 400 });
 
   const period = await prisma.feedbackPeriod.findUnique({ where: { id: periodId } });
-  if (!period) return NextResponse.json({ error: "Periode tidak ditemukan." }, { status: 404 });
+  if (!period) return NextResponse.json({ error: "Period not found." }, { status: 404 });
 
   // Get all users with a feedbackProfile and pending (unsubmitted) responses
   const usersWithPending = await prisma.user.findMany({
@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (usersWithPending.length === 0) {
-    return NextResponse.json({ success: true, message: "Semua penilaian sudah selesai. Tidak ada email yang dikirim.", results: [] });
+    return NextResponse.json({ success: true, message: "All assessments are complete. No emails were sent.", results: [] });
   }
 
   const transporter = createTransporter();
@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
 
   for (const user of usersWithPending) {
     if (!user.email) {
-      results.push({ name: user.name ?? "-", email: "-", status: "error", error: "Tidak ada email" });
+      results.push({ name: user.name ?? "-", email: "-", status: "error", error: "No email address" });
       continue;
     }
 
@@ -144,8 +144,8 @@ export async function POST(req: NextRequest) {
   const sentCount = results.filter((r) => r.status === "sent").length;
   const errCount = results.filter((r) => r.status === "error").length;
   const parts = [];
-  if (sentCount > 0) parts.push(`${sentCount} email terkirim`);
-  if (errCount > 0) parts.push(`${errCount} gagal`);
+  if (sentCount > 0) parts.push(`${sentCount} emails sent`);
+  if (errCount > 0) parts.push(`${errCount} failed`);
 
   return NextResponse.json({ success: sentCount > 0, message: parts.join(", ") + ".", results });
 }
