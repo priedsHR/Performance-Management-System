@@ -94,6 +94,22 @@ export default function MyAssessment() {
   }
 
   async function save(ratee: string, submit: boolean) {
+    if (submit) {
+      const t = tasks.find((x) => x.rateeUserId === ratee);
+      if (t) {
+        const answered = scores[ratee] || {};
+        if (t.competencies.some((c) => answered[c.id] == null)) {
+          setMsg("Please rate all competencies before submitting.");
+          return;
+        }
+        const cats = CAT_ORDER.filter((cat) => t.competencies.some((c) => c.category === cat));
+        const missing = cats.filter((cat) => !(comments[ratee]?.[cat] || "").trim());
+        if (missing.length) {
+          setMsg(`Please add feedback (why the scores & what to improve) for: ${missing.map((c) => CATEGORY_LABEL[c]).join(", ")}.`);
+          return;
+        }
+      }
+    }
     setSaving(ratee);
     setMsg("");
     const res = await fetch("/api/feedback/my-assessment", {
@@ -214,12 +230,12 @@ export default function MyAssessment() {
                       })}
                     </div>
                     <div className="mt-2">
-                      <label className="block text-[11px] text-slate-400 mb-1">Notes / evidence for {CATEGORY_LABEL[cat]} (optional)</label>
+                      <label className="block text-[11px] text-slate-400 mb-1">Feedback for {CATEGORY_LABEL[cat]} <span className="text-red-400">*</span> — why these scores & what to improve</label>
                       <textarea
                         value={comments[t.rateeUserId]?.[cat] || ""}
                         onChange={(e) => setComment(t.rateeUserId, cat, e.target.value)}
                         rows={2}
-                        placeholder="Concrete behavior examples that support your ratings in this category…"
+                        placeholder="Explain why you chose these scores (concrete examples) and what this person should improve…"
                         className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm"
                       />
                     </div>

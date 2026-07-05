@@ -24,9 +24,9 @@ function StatusBadge({ status }: { status: LeadStatus }) {
 }
 
 const btnAmber =
-  "flex items-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl " +
-  "shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#d97706] active:translate-y-[3px] " +
+  "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl " +
+  "shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 " +
+  "active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] " +
   "disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
 
 const btnSlate =

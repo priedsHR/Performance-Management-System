@@ -511,7 +511,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
 
   const btnBase = "flex items-center gap-2 font-bold text-sm px-4 py-2 rounded-xl transition-all duration-75 ";
   const btnSlate  = btnBase + "bg-white text-slate-700 border border-slate-200 shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px]";
-  const btnAmber  = btnBase + "bg-amber-400 text-gray-900 shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5 active:shadow-[0_1px_0_#d97706] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0";
+  const btnAmber  = btnBase + "bg-amber-400 text-white shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0";
   const btnGreen  = btnBase + "bg-emerald-500 text-white shadow-[0_4px_0_#059669] hover:shadow-[0_2px_0_#059669] hover:translate-y-0.5 active:shadow-[0_1px_0_#059669] active:translate-y-[3px]";
   const btnViolet = btnBase + "bg-violet-100 text-violet-700 border border-violet-200 shadow-[0_4px_0_#ddd6fe] hover:shadow-[0_2px_0_#ddd6fe] hover:translate-y-0.5 active:shadow-[0_1px_0_#ddd6fe] active:translate-y-[3px]";
 
@@ -809,7 +809,7 @@ function CopyFromQuarterModal({
     setCopying(false);
   }
 
-  const btnPrimary   = "flex items-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-4 py-2 rounded-xl shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5 active:shadow-[0_1px_0_#d97706] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
+  const btnPrimary   = "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-4 py-2 rounded-xl shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
   const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-4 py-2 rounded-xl shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
 
   return (
@@ -1012,7 +1012,7 @@ function ProgressExcel({ leadId, quarterId }: { leadId: string; quarterId: strin
         </button>
 
         <label className={`flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl cursor-pointer
-          bg-amber-400 text-gray-900 shadow-[0_3px_0_#d97706] hover:shadow-[0_1px_0_#d97706] hover:translate-y-0.5
+          bg-amber-400 text-white shadow-[0_3px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-0.5
           active:shadow-none active:translate-y-[3px] transition-all duration-75
           ${importing ? "opacity-50 pointer-events-none" : ""}`}
         >
@@ -1255,9 +1255,9 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
           <button
             onClick={() => { setShowSuggestions(false); addMember(); }}
             disabled={saving || !newName.trim()}
-            className="flex items-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl
-              shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5
-              active:shadow-[0_1px_0_#d97706] active:translate-y-[3px]
+            className="flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl
+              shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5
+              active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px]
               disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75"
           >
             ➕ Tambah

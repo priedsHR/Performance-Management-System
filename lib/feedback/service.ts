@@ -19,6 +19,23 @@ export interface FeedbackSettings {
 // not the seed script, so a non-technical admin never needs the command line).
 export async function ensureFeedbackBootstrap(): Promise<void> {
   const settingCount = await prisma.feedbackSetting.count();
+  if (settingCount > 0) {
+    // Migrate old default band labels to the current 360 Categorization wording.
+    const s = await prisma.feedbackSetting.findUnique({ where: { id: "singleton" } });
+    const bands = (s?.bands as unknown as Band[]) ?? [];
+    if (bands.some((b) => b.label === "Unsatisfactory" || b.label === "Exceed Expectation")) {
+      await prisma.feedbackSetting.update({
+        where: { id: "singleton" },
+        data: {
+          bands: bands.map((b) =>
+            b.label === "Unsatisfactory" ? { ...b, label: "Unacceptable" }
+            : b.label === "Exceed Expectation" ? { ...b, label: "Exceptional" }
+            : b
+          ),
+        },
+      });
+    }
+  }
   if (settingCount === 0) {
     await prisma.feedbackSetting.create({
       data: {

@@ -109,6 +109,41 @@ export async function POST(req: NextRequest) {
 
   const allowed = new Set(assignment.ratee.competencyIds);
 
+  if (submit) {
+    // Submitting requires every competency scored and a qualitative note per
+    // category (why the scores were given & what to improve).
+    const comps = await prisma.competency.findMany({
+      where: { id: { in: [...allowed] }, active: true },
+      select: { id: true, category: true },
+    });
+    const existingResp = await prisma.feedbackResponse.findMany({
+      where: { periodId: period.id, raterId: session.user.id, rateeId: rateeUserId },
+      select: { competencyId: true },
+    });
+    const scored = new Set(existingResp.map((r) => r.competencyId));
+    for (const [cid, raw] of Object.entries(scores)) {
+      const s = Number(raw);
+      if (allowed.has(cid) && Number.isInteger(s) && s >= 1 && s <= 4) scored.add(cid);
+    }
+    if (comps.some((c) => !scored.has(c.id)))
+      return NextResponse.json({ error: "Please rate all competencies before submitting." }, { status: 400 });
+
+    const existingCm = await prisma.feedbackComment.findMany({
+      where: { periodId: period.id, raterId: session.user.id, rateeId: rateeUserId },
+      select: { category: true, comment: true },
+    });
+    const cmByCat = new Map(existingCm.map((c) => [c.category, c.comment]));
+    const cats = [...new Set(comps.map((c) => c.category))];
+    const emptyCats = cats.filter(
+      (cat) => !String(comments[cat] ?? cmByCat.get(cat) ?? "").trim()
+    );
+    if (emptyCats.length)
+      return NextResponse.json(
+        { error: `Please add feedback notes (why the scores & what to improve) for: ${emptyCats.join(", ")}.` },
+        { status: 400 }
+      );
+  }
+
   for (const [competencyId, raw] of Object.entries(scores)) {
     if (!allowed.has(competencyId)) continue;
     const score = Number(raw);

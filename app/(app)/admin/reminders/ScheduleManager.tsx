@@ -155,8 +155,8 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
           {/* Submit */}
           <div className="flex items-end col-span-2 md:col-span-1">
             <button type="submit" disabled={saving || !quarterId}
-              className="w-full flex items-center justify-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-5 py-2 rounded-xl
-                shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5
+              className="w-full flex items-center justify-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2 rounded-xl
+                shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5
                 active:shadow-none active:translate-y-1 disabled:opacity-50 disabled:shadow-none transition-all duration-75">
               {saving ? "⏳ Menyimpan..." : "💾 Simpan Jadwal"}
             </button>

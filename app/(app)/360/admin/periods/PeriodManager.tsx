@@ -12,7 +12,7 @@ interface Period {
 }
 
 const inp = "border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition";
-const btnPrimary = "flex items-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5 active:shadow-[0_1px_0_#d97706] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
+const btnPrimary = "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
 const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-4 py-2 rounded-xl shadow-[0_3px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-none active:translate-y-[3px] transition-all duration-75";
 
 function SkeletonPeriod() {
@@ -126,7 +126,7 @@ export default function PeriodManager() {
                 <div>
                   <div className="flex items-center gap-2 mb-0.5">
                     <p className="font-semibold text-slate-800 text-sm">📅 {p.name}</p>
-                    {p.isActive && <span className="bg-amber-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full">✅ Active</span>}
+                    {p.isActive && <span className="bg-amber-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">✅ Active</span>}
                     {p.releaseReports && <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">📊 Reports released</span>}
                   </div>
                   <p className="text-xs text-slate-400">{p.half === "MID" ? "Mid Year" : "End Year"} {p.year}</p>

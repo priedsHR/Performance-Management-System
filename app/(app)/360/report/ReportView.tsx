@@ -279,11 +279,86 @@ function SingleReport({ data }: { data: SinglePayload }) {
               )}
             </div>
           ))}
+          <Recommendation report={report} comments={comments} />
+
           <p className="text-[11px] text-slate-400 mt-3">
             Weighted score = Superordinate 40% · Peers 30% · Subordinates 30% (Self shown for context only). Rater identities are confidential — scores & notes are shown without names.
           </p>
         </>
       )}
+    </div>
+  );
+}
+
+// Auto-generated development recommendation: strengths & focus areas derived
+// from the weighted scores vs target, plus the anonymous qualitative feedback.
+function Recommendation({ report, comments }: { report: Report; comments: Record<string, string[]> }) {
+  const tgt = report.targetLevel;
+  const scoredCats = report.categories.filter((c) => c.score != null);
+  if (!scoredCats.length) return null;
+
+  const strengths = scoredCats.filter((c) => tgt == null ? (c.score as number) >= 3 : (c.score as number) >= tgt);
+  const focus = scoredCats.filter((c) => (tgt == null ? (c.score as number) < 3 : (c.score as number) < tgt));
+  const weakComps = report.categories
+    .flatMap((c) => c.comps)
+    .filter((c) => c.weighted != null && (tgt == null ? c.weighted < 3 : c.weighted < tgt))
+    .sort((a, b) => (a.weighted as number) - (b.weighted as number))
+    .slice(0, 5);
+  const hasComments = Object.values(comments).some((arr) => arr && arr.length > 0);
+
+  return (
+    <div className="mt-6 border border-slate-200 rounded-2xl overflow-hidden">
+      <div className="bg-slate-50 px-5 py-3 border-b border-slate-100">
+        <p className="text-sm font-bold text-slate-800">💡 Recommendation</p>
+        <p className="text-[11px] text-slate-400">Summary of this 360 cycle — strengths, development focus, and what raters said.</p>
+      </div>
+      <div className="p-5 space-y-4">
+        {strengths.length > 0 && (
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-emerald-600 mb-1">Strengths</p>
+            <p className="text-sm text-slate-600">
+              {strengths.map((c) => `${c.label} (${fmt(c.score)})`).join(" · ")}
+              {tgt ? ` — at or above the L${tgt} target.` : " — solid performance."}
+            </p>
+          </div>
+        )}
+        {focus.length > 0 && (
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-red-500 mb-1">Areas for development</p>
+            <p className="text-sm text-slate-600 mb-1.5">
+              {focus.map((c) => `${c.label} (${fmt(c.score)})`).join(" · ")}
+              {tgt ? ` — below the L${tgt} target.` : ""}
+            </p>
+            {weakComps.length > 0 && (
+              <ul className="text-sm text-slate-600 list-disc pl-5 space-y-0.5">
+                {weakComps.map((c) => (
+                  <li key={c.competencyId}>
+                    <span className="font-medium">{c.name}</span> — weighted {fmt(c.weighted)}; prioritize this in the IDP / 1-on-1.
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+        {focus.length === 0 && strengths.length > 0 && (
+          <p className="text-sm text-slate-600">All categories meet the target. Focus on stretch goals and mentoring others.</p>
+        )}
+        {hasComments && (
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">What raters said (anonymous)</p>
+            <div className="space-y-2">
+              {Object.entries(comments).filter(([, arr]) => arr && arr.length).map(([cat, arr]) => (
+                <div key={cat}>
+                  <p className="text-[11px] font-semibold text-slate-400">{CAT_LABEL[cat] ?? cat}</p>
+                  {arr.map((cm, i) => (
+                    <p key={i} className="text-[13px] text-slate-600 border-l-2 border-slate-200 pl-2 mt-0.5">"{cm}"</p>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -17,9 +17,9 @@ type Quarter = {
 };
 
 const btnPrimary =
-  "flex items-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-4 py-2.5 rounded-xl " +
-  "shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#d97706] active:translate-y-[3px] transition-all duration-75";
+  "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-4 py-2.5 rounded-xl " +
+  "shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 " +
+  "active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] transition-all duration-75";
 
 const btnSecondary =
   "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-4 py-2.5 rounded-xl " +
@@ -197,7 +197,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                   <div className="flex items-center gap-2.5">
                     <span className="text-sm font-bold text-slate-700">📅 {year}</span>
                     {hasActive && (
-                      <span className="bg-amber-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                      <span className="bg-amber-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                         ✅ Aktif
                       </span>
                     )}
@@ -221,7 +221,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                           <div className="flex items-center gap-2.5 mb-0.5">
                             <h3 className="font-semibold text-slate-800 text-sm">⏱️ {q.name}</h3>
                             {q.isActive && (
-                              <span className="bg-amber-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full">
+                              <span className="bg-amber-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                                 ✅ Aktif
                               </span>
                             )}

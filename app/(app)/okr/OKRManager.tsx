@@ -42,9 +42,9 @@ type Props = {
 const UNITS = ["%", "pcs", "x", "score", "hari", "bulan", "orang", "lainnya"];
 
 const btnPrimary =
-  "flex items-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-4 py-2 rounded-xl " +
-  "shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#d97706] active:translate-y-[3px] " +
+  "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-4 py-2 rounded-xl " +
+  "shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 " +
+  "active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] " +
   "disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
 
 const btnSecondary =
@@ -631,7 +631,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                   {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </button>
 
-                <span className="w-6 h-6 rounded-full bg-amber-400 text-gray-900 text-xs font-bold flex items-center justify-center flex-shrink-0 shadow-[0_2px_0_#d97706] mt-0.5">
+                <span className="w-6 h-6 rounded-full bg-amber-400 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 shadow-[0_2px_0_#097eb9] mt-0.5">
                   {objIdx + 1}
                 </span>
 
@@ -714,7 +714,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                       <button
                         onClick={() => addKeyResult(obj.id)}
                         className="flex items-center gap-1 text-xs text-amber-600 hover:text-amber-700 font-bold bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg
-                          shadow-[0_3px_0_#d97706] hover:shadow-[0_1px_0_#d97706] hover:translate-y-0.5
+                          shadow-[0_3px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-0.5
                           active:shadow-none active:translate-y-[3px] transition-all duration-75"
                       >
                         ➕ Tambah KR

@@ -49,18 +49,18 @@ export type Band = {
   color: string; // tailwind-ish token used in UI
 };
 export const DEFAULT_BANDS: Band[] = [
-  { key: "unsat", label: "Unsatisfactory", max: 2, color: "red" },
+  { key: "unsat", label: "Unacceptable", max: 2, color: "red" },
   { key: "need", label: "Need Improvement", max: 3, color: "amber" },
   { key: "meet", label: "Meet Expectation", max: 3.5001, color: "teal" },
-  { key: "exceed", label: "Exceed Expectation", max: 9999, color: "green" },
+  { key: "exceed", label: "Exceptional", max: 9999, color: "green" },
 ];
 
 // 1-4 rating scale shown on the form.
 export const SCALE: { value: number; label: string; hint: string }[] = [
-  { value: 1, label: "Unsatisfactory", hint: "Does not meet the standard / competency not yet visible" },
+  { value: 1, label: "Unacceptable", hint: "Does not meet the standard / competency not yet visible" },
   { value: 2, label: "Need Improvement", hint: "Partially meets the standard; still needs development" },
   { value: 3, label: "Meet Expectation", hint: "Meets the expected standard" },
-  { value: 4, label: "Exceed Expectation", hint: "Consistently exceeds the standard" },
+  { value: 4, label: "Exceptional", hint: "Consistently exceeds the standard" },
 ];
 
 export const CATEGORY_LABEL: Record<Category, string> = {

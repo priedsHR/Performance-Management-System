@@ -39,9 +39,9 @@ const ROLE_COLORS: Record<string, string> = {
 const ROLE_EMOJI: Record<string, string> = { ADMIN: "🛡️", LEAD: "⭐", MEMBER: "👤" };
 
 const btnPrimary =
-  "flex items-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl " +
-  "shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#d97706] active:translate-y-[3px] transition-all duration-75";
+  "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl " +
+  "shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 " +
+  "active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] transition-all duration-75";
 
 const btnSecondary =
   "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl " +
@@ -332,7 +332,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
                           <button
                             onClick={() => saveLink(user.id)}
                             disabled={linkSaving}
-                            className="text-xs font-semibold px-3 py-1 bg-amber-400 text-gray-900 rounded-lg shadow-[0_2px_0_#d97706] hover:shadow-[0_1px_0_#d97706] hover:translate-y-px transition-all disabled:opacity-50"
+                            className="text-xs font-semibold px-3 py-1 bg-amber-400 text-white rounded-lg shadow-[0_2px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-px transition-all disabled:opacity-50"
                           >
                             {linkSaving ? "⏳" : "💾 Simpan"}
                           </button>

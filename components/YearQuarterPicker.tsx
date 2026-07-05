@@ -48,7 +48,7 @@ export default function YearQuarterPicker({ quarters, value, onChange }: Props) 
   const qBtn = (active: boolean, isCurrentActive: boolean) =>
     `px-3 py-1 rounded-lg text-xs font-bold transition-all duration-75 ` +
     (active
-      ? "bg-amber-400 text-gray-900 shadow-[0_2px_0_#d97706]"
+      ? "bg-amber-400 text-white shadow-[0_2px_0_#097eb9]"
       : isCurrentActive
       ? "bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 shadow-[0_2px_0_#fde68a] hover:shadow-[0_1px_0_#fde68a] hover:translate-y-px"
       : "bg-white border border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px");

@@ -202,9 +202,9 @@ export default function MemberDashboard({ quarters, userId, initialObjectives, i
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
           <div className="text-4xl mb-2">🎯</div>
           <p className="text-slate-500 text-sm mb-3">Belum ada OKR untuk quarter ini.</p>
-          <a href="/okr" className="inline-flex items-center gap-2 bg-amber-400 text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl
-            shadow-[0_4px_0_#d97706] hover:shadow-[0_2px_0_#d97706] hover:translate-y-0.5
-            active:shadow-[0_1px_0_#d97706] active:translate-y-[3px] transition-all duration-75">
+          <a href="/okr" className="inline-flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl
+            shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5
+            active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] transition-all duration-75">
             ✏️ Isi OKR Sekarang →
           </a>
         </div>
