@@ -32,6 +32,38 @@ export default function Dashboard360() {
   const [periodId, setPeriodId] = useState("");
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState<"fill" | "reset" | null>(null);
+  const [toolMsg, setToolMsg] = useState("");
+
+  function reloadRows(id: string) {
+    setLoading(true);
+    fetch(`/api/feedback/report?all=1&periodId=${id}`)
+      .then((r) => r.json())
+      .then((d) => setRows(d.rows || []))
+      .finally(() => setLoading(false));
+  }
+
+  async function runTool(action: "fill" | "reset") {
+    if (action === "fill" && !confirm("Fill this period with random simulated answers for all employees?")) return;
+    if (
+      action === "reset" &&
+      !confirm(
+        "Clear ALL answers & notes for this period (including real ones) and remove demo employees?\n\nForms will be empty and ready to send to employees."
+      )
+    )
+      return;
+    setBusy(action);
+    setToolMsg("");
+    const res = await fetch("/api/feedback/simulate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action, periodId }),
+    });
+    const d = await res.json().catch(() => ({}));
+    setBusy(null);
+    setToolMsg(d.message || d.error || (res.ok ? "Done." : "Failed."));
+    reloadRows(periodId);
+  }
 
   useEffect(() => {
     fetch("/api/feedback/periods")
@@ -94,12 +126,29 @@ export default function Dashboard360() {
             ))}
           </select>
         </div>
-        {period && (
-          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${period.releaseReports ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-500"}`}>
-            {period.releaseReports ? "Reports released" : "Reports not released"}
-          </span>
-        )}
+        <div className="flex items-center gap-2 flex-wrap">
+          {period && (
+            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${period.releaseReports ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-500"}`}>
+              {period.releaseReports ? "Reports released" : "Reports not released"}
+            </span>
+          )}
+          <button
+            onClick={() => runTool("fill")}
+            disabled={busy !== null || !periodId}
+            className="px-3 py-2 rounded-lg text-xs font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50"
+          >
+            {busy === "fill" ? "⏳ Simulating…" : "⚡ Simulate responses"}
+          </button>
+          <button
+            onClick={() => runTool("reset")}
+            disabled={busy !== null || !periodId}
+            className="px-3 py-2 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-red-500 hover:bg-red-50 disabled:opacity-50"
+          >
+            {busy === "reset" ? "⏳ Resetting…" : "↺ Reset answers"}
+          </button>
+        </div>
       </div>
+      {toolMsg && <div className="text-sm text-teal-700 bg-teal-50 border border-teal-100 rounded-lg px-3 py-2">{toolMsg}</div>}
 
       {loading ? (
         <div className="text-sm text-slate-400">Calculating…</div>
