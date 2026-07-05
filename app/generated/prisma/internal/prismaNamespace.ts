@@ -402,7 +402,8 @@ export const ModelName = {
   FeedbackManualPeer: 'FeedbackManualPeer',
   FeedbackComment: 'FeedbackComment',
   FeedbackPeerExclusion: 'FeedbackPeerExclusion',
-  IdpPlan: 'IdpPlan'
+  IdpPlan: 'IdpPlan',
+  ProgressSnapshot: 'ProgressSnapshot'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment" | "feedbackPeerExclusion" | "idpPlan"
+    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment" | "feedbackPeerExclusion" | "idpPlan" | "progressSnapshot"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1828,6 +1829,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProgressSnapshot: {
+      payload: Prisma.$ProgressSnapshotPayload<ExtArgs>
+      fields: Prisma.ProgressSnapshotFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgressSnapshotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgressSnapshotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgressSnapshotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgressSnapshotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload>
+        }
+        findMany: {
+          args: Prisma.ProgressSnapshotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload>[]
+        }
+        create: {
+          args: Prisma.ProgressSnapshotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload>
+        }
+        createMany: {
+          args: Prisma.ProgressSnapshotCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProgressSnapshotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload>[]
+        }
+        delete: {
+          args: Prisma.ProgressSnapshotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload>
+        }
+        update: {
+          args: Prisma.ProgressSnapshotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgressSnapshotDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgressSnapshotUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProgressSnapshotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProgressSnapshotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgressSnapshotPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgressSnapshotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgressSnapshot>
+        }
+        groupBy: {
+          args: Prisma.ProgressSnapshotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgressSnapshotGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgressSnapshotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgressSnapshotCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2139,6 +2214,19 @@ export const IdpPlanScalarFieldEnum = {
 export type IdpPlanScalarFieldEnum = (typeof IdpPlanScalarFieldEnum)[keyof typeof IdpPlanScalarFieldEnum]
 
 
+export const ProgressSnapshotScalarFieldEnum = {
+  id: 'id',
+  memberId: 'memberId',
+  quarterId: 'quarterId',
+  month: 'month',
+  achievement: 'achievement',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgressSnapshotScalarFieldEnum = (typeof ProgressSnapshotScalarFieldEnum)[keyof typeof ProgressSnapshotScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2432,6 +2520,7 @@ export type GlobalOmitConfig = {
   feedbackComment?: Prisma.FeedbackCommentOmit
   feedbackPeerExclusion?: Prisma.FeedbackPeerExclusionOmit
   idpPlan?: Prisma.IdpPlanOmit
+  progressSnapshot?: Prisma.ProgressSnapshotOmit
 }
 
 /* Types for Logging */

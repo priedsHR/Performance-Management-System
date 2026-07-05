@@ -359,16 +359,18 @@ function Recommendation({ report, comments, personName }: { report: Report; comm
         )}
         {hasComments ? (
           <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">What raters said (anonymous)</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">Feedback summary (anonymous)</p>
             <div className="space-y-2">
-              {Object.entries(comments).filter(([, arr]) => arr && arr.length).map(([cat, arr]) => (
-                <div key={cat}>
-                  <p className="text-[11px] font-semibold text-slate-400">{CAT_LABEL[cat] ?? cat}</p>
-                  {arr.map((cm, i) => (
-                    <p key={i} className="text-[13px] text-slate-600 border-l-2 border-slate-200 pl-2 mt-0.5">"{cm}"</p>
-                  ))}
-                </div>
-              ))}
+              {Object.entries(comments).filter(([, arr]) => arr && arr.length).map(([cat, arr]) => {
+                const sum = summarizeComments(arr);
+                return (
+                  <div key={cat}>
+                    <p className="text-[11px] font-semibold text-slate-400">{CAT_LABEL[cat] ?? cat} · {arr.length} rater{arr.length > 1 ? "s" : ""}</p>
+                    {sum.strengths && <p className="text-[13px] text-slate-600"><span className="font-semibold text-emerald-600">Strengths:</span> {sum.strengths}</p>}
+                    {sum.improve && <p className="text-[13px] text-slate-600"><span className="font-semibold text-amber-600">To improve:</span> {sum.improve}</p>}
+                  </div>
+                );
+              })}
             </div>
           </div>
         ) : (
@@ -377,4 +379,31 @@ function Recommendation({ report, comments, personName }: { report: Report; comm
       </div>
     </div>
   );
+}
+
+// Extractive summary of qualitative feedback: split every comment into clauses,
+// bucket them into strengths vs improvement points, dedupe, and keep it short.
+const IMPROVE_HINT = /(should|could|needs?|improve|recommend|next level|next step|develop|invest|focus|push|prioriti|rather than|instead of|avoid|work on|belum|perlu)/i;
+function summarizeComments(arr: string[]): { strengths: string; improve: string } {
+  const strengths: string[] = [];
+  const improve: string[] = [];
+  const seen = new Set<string>();
+  for (const c of arr) {
+    for (let clause of c.split(/[;.]\s+|\.$/)) {
+      clause = clause.trim().replace(/^[-–—•\s]+/, "");
+      if (clause.length < 12) continue;
+      const key = clause.toLowerCase().slice(0, 40);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      (IMPROVE_HINT.test(clause) ? improve : strengths).push(clause);
+    }
+  }
+  const join = (list: string[]) => {
+    const top = list.slice(0, 3).map((t) => t.charAt(0).toLowerCase() + t.slice(1));
+    let out = top.join("; ");
+    if (out) out = out.charAt(0).toUpperCase() + out.slice(1) + ".";
+    if (list.length > 3) out += ` (+${list.length - 3} more)`;
+    return out;
+  };
+  return { strengths: join(strengths), improve: join(improve) };
 }

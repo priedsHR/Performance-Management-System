@@ -69,7 +69,8 @@ export const ModelName = {
   FeedbackManualPeer: 'FeedbackManualPeer',
   FeedbackComment: 'FeedbackComment',
   FeedbackPeerExclusion: 'FeedbackPeerExclusion',
-  IdpPlan: 'IdpPlan'
+  IdpPlan: 'IdpPlan',
+  ProgressSnapshot: 'ProgressSnapshot'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -358,6 +359,19 @@ export const IdpPlanScalarFieldEnum = {
 } as const
 
 export type IdpPlanScalarFieldEnum = (typeof IdpPlanScalarFieldEnum)[keyof typeof IdpPlanScalarFieldEnum]
+
+
+export const ProgressSnapshotScalarFieldEnum = {
+  id: 'id',
+  memberId: 'memberId',
+  quarterId: 'quarterId',
+  month: 'month',
+  achievement: 'achievement',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgressSnapshotScalarFieldEnum = (typeof ProgressSnapshotScalarFieldEnum)[keyof typeof ProgressSnapshotScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -9,6 +9,7 @@ type Item = { href: string; label: string; icon: string };
 const adminDashboard: Item[] = [
   { href: "/dashboard", label: "OKR", icon: "🎯" },
   { href: "/360", label: "360 Feedback", icon: "📝" },
+  { href: "/northstar", label: "North Star", icon: "🌟" },
   { href: "/admin/ninebox", label: "9-Box Matrix", icon: "🧭" },
   { href: "/idp", label: "IDP", icon: "🌱" },
 ];
@@ -27,7 +28,10 @@ const adminGeneralSetting: Item[] = [
   { href: "/admin/employees", label: "Employee Management", icon: "🧑‍💼" },
 ];
 
-const leadDashboard: Item[] = [{ href: "/dashboard", label: "Dashboard", icon: "📊" }];
+const leadDashboard: Item[] = [
+  { href: "/dashboard", label: "Dashboard", icon: "📊" },
+  { href: "/northstar", label: "North Star", icon: "🌟" },
+];
 const leadOkr: Item[] = [
   { href: "/okr", label: "Division OKR", icon: "🎯" },
   { href: "/distribusi", label: "Member Distribution", icon: "👥" },

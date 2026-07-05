@@ -99,6 +99,7 @@ model TeamMember {
   userId      String?               @unique
   user        User?                 @relation("MemberUserLink", fields: [userId], references: [id], onDelete: SetNull)
   assignments ObjectiveAssignment[]
+  snapshots   ProgressSnapshot[]
   createdAt   DateTime              @default(now())
 }
 
@@ -333,4 +334,19 @@ model IdpPlan {
   updatedAt        DateTime       @updatedAt
 
   @@unique([userId, periodId])
+}
+
+// Monthly OKR achievement snapshot per team member, captured lazily whenever
+// dashboards load (and seeded by simulation) — powers the monthly progress chart.
+model ProgressSnapshot {
+  id          String     @id @default(cuid())
+  memberId    String
+  member      TeamMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  quarterId   String
+  month       String // YYYY-MM
+  achievement Float
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([memberId, quarterId, month])
 }

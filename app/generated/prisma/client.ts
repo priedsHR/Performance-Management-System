@@ -136,3 +136,8 @@ export type FeedbackPeerExclusion = Prisma.FeedbackPeerExclusionModel
  * 
  */
 export type IdpPlan = Prisma.IdpPlanModel
+/**
+ * Model ProgressSnapshot
+ * 
+ */
+export type ProgressSnapshot = Prisma.ProgressSnapshotModel
