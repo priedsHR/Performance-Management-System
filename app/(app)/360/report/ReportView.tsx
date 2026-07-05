@@ -279,7 +279,7 @@ function SingleReport({ data }: { data: SinglePayload }) {
               )}
             </div>
           ))}
-          <Recommendation report={report} comments={comments} />
+          <Recommendation report={report} comments={comments} personName={person.name} />
 
           <p className="text-[11px] text-slate-400 mt-3">
             Weighted score = Superordinate 40% · Peers 30% · Subordinates 30% (Self shown for context only). Rater identities are confidential — scores & notes are shown without names.
@@ -290,60 +290,74 @@ function SingleReport({ data }: { data: SinglePayload }) {
   );
 }
 
-// Auto-generated development recommendation: strengths & focus areas derived
-// from the weighted scores vs target, plus the anonymous qualitative feedback.
-function Recommendation({ report, comments }: { report: Report; comments: Record<string, string[]> }) {
+// Auto-generated development recommendation, modeled on the PRIEDS 360 report:
+// a Performance Overview narrative, numbered Areas for Development, and the
+// anonymous qualitative feedback from raters.
+function Recommendation({ report, comments, personName }: { report: Report; comments: Record<string, string[]>; personName: string }) {
   const tgt = report.targetLevel;
   const scoredCats = report.categories.filter((c) => c.score != null);
   if (!scoredCats.length) return null;
 
-  const strengths = scoredCats.filter((c) => tgt == null ? (c.score as number) >= 3 : (c.score as number) >= tgt);
-  const focus = scoredCats.filter((c) => (tgt == null ? (c.score as number) < 3 : (c.score as number) < tgt));
-  const weakComps = report.categories
-    .flatMap((c) => c.comps)
-    .filter((c) => c.weighted != null && (tgt == null ? c.weighted < 3 : c.weighted < tgt))
-    .sort((a, b) => (a.weighted as number) - (b.weighted as number))
-    .slice(0, 5);
+  const firstName = (personName || "This employee").split(" ")[0];
+  const sorted = [...scoredCats].sort((a, b) => (b.score as number) - (a.score as number));
+  const strongest = sorted.slice(0, 2);
+  const belowTarget = scoredCats.filter((c) => (tgt == null ? (c.score as number) < 3 : (c.score as number) < tgt));
+  const allComps = report.categories.flatMap((c) => c.comps).filter((c) => c.weighted != null);
+  const weakest = [...allComps].sort((a, b) => (a.weighted as number) - (b.weighted as number)).slice(0, 3);
+  const meetsAll = belowTarget.length === 0;
+
+  const overview =
+    `${firstName} achieved an overall weighted score of ${fmt(report.overall)} (${report.overallBand.label})` +
+    (tgt ? ` against an L${tgt} target.` : ".") +
+    (strongest.length
+      ? ` The strongest results come from ${strongest.map((c) => `${c.label} (${fmt(c.score)})`).join(" and ")}, indicating this is where colleagues consistently see ${firstName} at their best.`
+      : "") +
+    (meetsAll
+      ? ` All competency categories are at or above the expected level for this role.`
+      : ` However, ${belowTarget.map((c) => `${c.label} (${fmt(c.score)})`).join(", ")} ${belowTarget.length > 1 ? "are" : "is"} still below the expected level and should be the priority for the next cycle.`);
+
+  const devItems = (belowTarget.length
+    ? report.categories
+        .filter((c) => belowTarget.some((b) => b.category === c.category))
+        .flatMap((c) => c.comps)
+        .filter((c) => c.weighted != null && (tgt == null ? (c.weighted as number) < 3 : (c.weighted as number) < tgt))
+        .sort((a, b) => (a.weighted as number) - (b.weighted as number))
+        .slice(0, 4)
+    : weakest
+  ).map((c) => ({
+    name: c.name,
+    score: c.weighted as number,
+    text: belowTarget.length
+      ? `Currently at ${fmt(c.weighted)}${tgt ? ` vs the L${tgt} target` : ""} — agree on concrete actions in the IDP and review progress in 1-on-1s.`
+      : `The lowest-scored area (${fmt(c.weighted)}) even though the target is met — a stretch-growth opportunity for the next cycle.`,
+  }));
+
   const hasComments = Object.values(comments).some((arr) => arr && arr.length > 0);
 
   return (
     <div className="mt-6 border border-slate-200 rounded-2xl overflow-hidden">
       <div className="bg-slate-50 px-5 py-3 border-b border-slate-100">
         <p className="text-sm font-bold text-slate-800">💡 Recommendation</p>
-        <p className="text-[11px] text-slate-400">Summary of this 360 cycle — strengths, development focus, and what raters said.</p>
+        <p className="text-[11px] text-slate-400">Summary of this 360 cycle — overview, development focus, and what raters said.</p>
       </div>
       <div className="p-5 space-y-4">
-        {strengths.length > 0 && (
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wide text-teal-700 mb-1">Performance Overview</p>
+          <p className="text-sm text-slate-600 leading-relaxed">{overview}</p>
+        </div>
+        {devItems.length > 0 && (
           <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-emerald-600 mb-1">Strengths</p>
-            <p className="text-sm text-slate-600">
-              {strengths.map((c) => `${c.label} (${fmt(c.score)})`).join(" · ")}
-              {tgt ? ` — at or above the L${tgt} target.` : " — solid performance."}
-            </p>
+            <p className="text-xs font-bold uppercase tracking-wide text-red-500 mb-1">Areas for Development</p>
+            <ol className="text-sm text-slate-600 list-decimal pl-5 space-y-1">
+              {devItems.map((d) => (
+                <li key={d.name}>
+                  <span className="font-semibold">{d.name}:</span> {d.text}
+                </li>
+              ))}
+            </ol>
           </div>
         )}
-        {focus.length > 0 && (
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-red-500 mb-1">Areas for development</p>
-            <p className="text-sm text-slate-600 mb-1.5">
-              {focus.map((c) => `${c.label} (${fmt(c.score)})`).join(" · ")}
-              {tgt ? ` — below the L${tgt} target.` : ""}
-            </p>
-            {weakComps.length > 0 && (
-              <ul className="text-sm text-slate-600 list-disc pl-5 space-y-0.5">
-                {weakComps.map((c) => (
-                  <li key={c.competencyId}>
-                    <span className="font-medium">{c.name}</span> — weighted {fmt(c.weighted)}; prioritize this in the IDP / 1-on-1.
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        )}
-        {focus.length === 0 && strengths.length > 0 && (
-          <p className="text-sm text-slate-600">All categories meet the target. Focus on stretch goals and mentoring others.</p>
-        )}
-        {hasComments && (
+        {hasComments ? (
           <div>
             <p className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">What raters said (anonymous)</p>
             <div className="space-y-2">
@@ -357,6 +371,8 @@ function Recommendation({ report, comments }: { report: Report; comments: Record
               ))}
             </div>
           </div>
+        ) : (
+          <p className="text-[11px] text-slate-400">No qualitative feedback was submitted in this cycle yet.</p>
         )}
       </div>
     </div>

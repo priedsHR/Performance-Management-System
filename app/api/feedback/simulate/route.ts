@@ -64,6 +64,47 @@ export async function POST(req: Request) {
   const created = await prisma.feedbackResponse.createMany({ data: rows, skipDuplicates: true });
   await prisma.feedbackResponse.updateMany({ where: { periodId }, data: { submitted: true } });
 
+  // sample qualitative feedback per rater/ratee/category, so reports show the
+  // "what raters said" summary during trials
+  const SAMPLES: Record<string, string[]> = {
+    CORE: [
+      "Shows strong ownership of daily tasks and responds quickly when problems come up; could speak up earlier when priorities clash.",
+      "Reliable team player who shares information openly. To reach the next level, take more initiative on improvements instead of waiting for direction.",
+      "Consistently meets commitments and stays calm under pressure. Should push quality further by double-checking edge cases before handover.",
+    ],
+    LEADERSHIP: [
+      "Gives the team clear direction and useful feedback; could delegate more and build a stronger successor plan.",
+      "Handles change well and keeps people motivated. Needs to make tougher calls faster when the team is stuck.",
+    ],
+    JOB_FAMILY: [
+      "Solid analytical approach to day-to-day cases; should go deeper on root-cause analysis for complex, unfamiliar problems.",
+      "Good grasp of the craft and dependable output. Invest in anticipating issues one step ahead rather than reacting.",
+    ],
+    TECHNICAL: [
+      "Technically dependable on routine work; the next step is handling complex cases independently and sharing knowledge with the team.",
+      "Uses the tools well and delivers on time. Recommend exploring more advanced techniques (including AI tooling) to raise efficiency.",
+    ],
+  };
+  const compCatById = new Map(
+    (await prisma.competency.findMany({ select: { id: true, category: true } })).map((c) => [c.id, c.category])
+  );
+  const commentRows: { periodId: string; raterId: string; rateeId: string; category: string; comment: string; submitted: boolean }[] = [];
+  const seen = new Set<string>();
+  for (const r of rows) {
+    if (r.relation === "SELF") continue;
+    const cat = compCatById.get(r.competencyId);
+    if (!cat) continue;
+    const key = `${r.raterId}:${r.rateeId}:${cat}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const pool = SAMPLES[cat] ?? SAMPLES.CORE;
+    commentRows.push({
+      periodId, raterId: r.raterId, rateeId: r.rateeId, category: cat,
+      comment: pool[Math.floor(Math.random() * pool.length)], submitted: true,
+    });
+  }
+  await prisma.feedbackComment.createMany({ data: commentRows, skipDuplicates: true });
+
   return NextResponse.json({
     message: `Simulation done: ${created.count} answers filled for ${profiles.length} employees in ${period.name}.`,
   });
