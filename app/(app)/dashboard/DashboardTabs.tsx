@@ -30,7 +30,7 @@ export default function DashboardTabs({ title, quarters, members, leadId, defaul
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
-          📊 Divisi
+          📊 Division
         </button>
         <button
           onClick={() => setTab("individual")}

@@ -22,12 +22,12 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
   if (quarters.length === 0) {
     return (
       <div className="space-y-4">
-        <h1 className="text-xl font-bold text-slate-900">{isLead ? "OKR Divisi" : "OKR Saya"}</h1>
+        <h1 className="text-xl font-bold text-slate-900">{isLead ? "Division OKR" : "OKR Saya"}</h1>
         {isLead ? (
           <QuarterSelector quarters={[]} selectedQuarterId={null} isLead={isLead} />
         ) : (
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
-            Belum ada quarter. Tunggu Lead atau Admin membuat quarter terlebih dahulu.
+            No quarter. Tunggu Lead atau Admin membuat quarter terlebih dahulu.
           </div>
         )}
       </div>
@@ -39,7 +39,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
       <div className="space-y-4">
         <QuarterSelector quarters={JSON.parse(JSON.stringify(quarters))} selectedQuarterId={null} isLead={isLead} />
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
-          Pilih quarter di atas untuk melihat OKR.
+          Select quarter di atas untuk melihat OKR.
         </div>
       </div>
     );
@@ -92,7 +92,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
 
       {/* Bagian 1: OKR + Import/Export (satu section) */}
       <CollapsibleSection
-        title={isLead ? "OKR Divisi" : "OKR Saya"}
+        title={isLead ? "Division OKR" : "OKR Saya"}
         subtitle={selectedQuarter.name}
         badge={
           objCount > 0 ? (
@@ -121,7 +121,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
         </div>
       </CollapsibleSection>
 
-      {/* Link ke Distribusi Anggota untuk LEAD */}
+      {/* Link ke Distribusi Member untuk LEAD */}
       {isLead && (
         <a
           href={`/distribusi?quarterId=${selectedQuarter.id}`}
@@ -131,10 +131,10 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
             <span className="text-xl">👥</span>
             <div>
               <p className="font-semibold text-slate-800 text-sm group-hover:text-amber-700 transition-colors">
-                Distribusi ke Anggota
+                Distribusi ke Member
               </p>
               <p className="text-xs text-slate-400">
-                Assign objective &amp; KR ke anggota, atur bobot dan target individu
+                Assign objective &amp; KR ke anggota, atur weight dan target individu
               </p>
             </div>
           </div>

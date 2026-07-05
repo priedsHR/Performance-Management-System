@@ -93,7 +93,7 @@ function BarObjectivesChart({ objectives }: { objectives: ObjData[] }) {
   const data = objectives.map((o, i) => ({ name: `OBJ ${i + 1}`, pct: parseFloat(o.achievement.toFixed(1)), title: o.title }));
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5">
-      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">📊 Capaian per Objective</p>
+      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">📊 Achievement per Objective</p>
       <p className="text-xs text-slate-400 mb-3">Perbandingan % capaian tiap objective</p>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
@@ -101,7 +101,7 @@ function BarObjectivesChart({ objectives }: { objectives: ObjData[] }) {
           <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#64748b" }} />
           <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: "#94a3b8" }} tickFormatter={(v) => `${v}%`} width={38} />
           <Tooltip formatter={(v: unknown) => `${(v as number).toFixed(1)}%`} labelFormatter={(_, p) => p[0]?.payload?.title ?? ""} contentStyle={{ fontSize: "11px", padding: "4px 10px", borderRadius: "8px", border: "1px solid #e2e8f0" }} />
-          <Bar dataKey="pct" name="Capaian" radius={[6, 6, 0, 0]} maxBarSize={60}>
+          <Bar dataKey="pct" name="Achievement" radius={[6, 6, 0, 0]} maxBarSize={60}>
             {data.map((d, i) => <Cell key={i} fill={barColor(d.pct)} />)}
           </Bar>
         </BarChart>
@@ -110,28 +110,28 @@ function BarObjectivesChart({ objectives }: { objectives: ObjData[] }) {
   );
 }
 
-// ─── Chart 3: Donut komposisi bobot ───────────────────────────────────────────
+// ─── Chart 3: Donut komposisi weight ───────────────────────────────────────────
 
 function DonutObjectivesChart({ objectives, divisionAchievement }: { objectives: ObjData[]; divisionAchievement: number }) {
   if (objectives.length === 0) return null;
   const data = objectives.map((o, i) => ({ name: `OBJ ${i + 1}`, value: o.weight, achievement: o.achievement, title: o.title }));
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5">
-      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">🍩 Komposisi Bobot</p>
-      <p className="text-xs text-slate-400 mb-3">Proporsi bobot tiap objective</p>
+      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">🍩 Komposisi Weight</p>
+      <p className="text-xs text-slate-400 mb-3">Proporsi weight tiap objective</p>
       <div className="relative">
         <ResponsiveContainer width="100%" height={220}>
           <PieChart>
             <Pie data={data} cx="50%" cy="50%" innerRadius={65} outerRadius={95} dataKey="value" paddingAngle={3}>
               {data.map((_, i) => <Cell key={i} fill={PALETTE[i % PALETTE.length]} />)}
             </Pie>
-            <Tooltip formatter={(v: unknown, _: unknown, p: { payload?: { achievement?: number; title?: string } }) => [`${v}% bobot · ${(p.payload?.achievement ?? 0).toFixed(1)}% capaian`, p.payload?.title ?? ""]} contentStyle={{ fontSize: "11px", padding: "4px 10px", borderRadius: "8px", border: "1px solid #e2e8f0" }} />
+            <Tooltip formatter={(v: unknown, _: unknown, p: { payload?: { achievement?: number; title?: string } }) => [`${v}% weight · ${(p.payload?.achievement ?? 0).toFixed(1)}% capaian`, p.payload?.title ?? ""]} contentStyle={{ fontSize: "11px", padding: "4px 10px", borderRadius: "8px", border: "1px solid #e2e8f0" }} />
           </PieChart>
         </ResponsiveContainer>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="text-center">
             <p className="text-2xl font-bold text-slate-800">{divisionAchievement.toFixed(1)}%</p>
-            <p className="text-xs text-slate-400">Divisi</p>
+            <p className="text-xs text-slate-400">Division</p>
           </div>
         </div>
       </div>
@@ -168,7 +168,7 @@ function MemberStackedChart({ keyResults }: { keyResults: KRData[] }) {
 
   return (
     <div className="mt-5 pt-5 border-t border-slate-100">
-      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">📊 Kontribusi Anggota per KR</p>
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">📊 Kontribusi Member per KR</p>
       <ResponsiveContainer width="100%" height={200}>
         <BarChart data={data} margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -230,7 +230,7 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
           <div className="min-w-0">
             <p className="text-xs font-semibold text-amber-600 mb-0.5">Objective #{index + 1}</p>
             <h3 className="font-bold text-slate-800 text-sm leading-snug">{obj.title}</h3>
-            <span className="text-xs text-slate-400">⚖️ Bobot {obj.weight}%</span>
+            <span className="text-xs text-slate-400">⚖️ Weight {obj.weight}%</span>
           </div>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0 ml-3">
@@ -257,9 +257,9 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
                   <th className="text-left py-2 pr-3 text-xs font-semibold text-slate-400">Key Result</th>
                   <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Target</th>
                   <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Satuan</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Bobot</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Weight</th>
                   <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Progress</th>
-                  <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Pencapaian</th>
+                  <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Achievement</th>
                 </tr>
               </thead>
               <tbody>
@@ -305,7 +305,7 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
               onClick={() => setShowContrib((v) => !v)}
               className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-700 font-semibold transition"
             >
-              👥 Kontribusi Anggota {showContrib ? "▲" : "▼"}
+              👥 Kontribusi Member {showContrib ? "▲" : "▼"}
             </button>
 
             {showContrib && (
@@ -313,7 +313,7 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
                 <table className="w-full text-sm border-collapse">
                   <thead>
                     <tr className="border-b border-slate-100">
-                      <th className="text-left py-2 pr-3 text-xs font-semibold text-slate-400">Anggota</th>
+                      <th className="text-left py-2 pr-3 text-xs font-semibold text-slate-400">Member</th>
                       {obj.keyResults.filter((kr) => kr.memberContributions.length > 0).map((kr) => (
                         <th key={kr.id} className="text-right py-2 px-2 text-xs font-semibold text-slate-400 min-w-[80px]">
                           <span className="break-words">{kr.title}</span>
@@ -414,7 +414,7 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
         <div className="flex items-center gap-3 flex-wrap print:hidden">
           {data && (
             <div className={`border rounded-2xl px-6 py-3 text-center ${achBg}`}>
-              <p className="text-xs font-semibold mb-0.5">🏆 Pencapaian Divisi</p>
+              <p className="text-xs font-semibold mb-0.5">🏆 Achievement Division</p>
               <p className="text-3xl font-bold leading-tight">{data.divisionAchievement.toFixed(1)}%</p>
             </div>
           )}
@@ -435,7 +435,7 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
         </div>
         {data && (
           <div className={`border rounded-2xl px-6 py-3 text-center hidden print:block ${achBg}`}>
-            <p className="text-xs font-semibold mb-0.5">🏆 Pencapaian Divisi</p>
+            <p className="text-xs font-semibold mb-0.5">🏆 Achievement Division</p>
             <p className="text-3xl font-bold leading-tight">{data.divisionAchievement.toFixed(1)}%</p>
           </div>
         )}
@@ -449,14 +449,14 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
 
       {!loading && data && quarters.length === 0 && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-amber-700 text-sm">
-          ⚠️ Belum ada quarter. Tambahkan di Admin → Quarter.
+          ⚠️ No quarter. Tambahkan di Admin → Quarter.
         </div>
       )}
 
       {!loading && data && data.objectives.length === 0 && (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
           <div className="text-4xl mb-2">🎯</div>
-          <p className="text-slate-500 text-sm">Belum ada objective untuk quarter ini.</p>
+          <p className="text-slate-500 text-sm">No objectives for this quarter yet.</p>
         </div>
       )}
 
@@ -491,7 +491,7 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
           {data.members.length > 0 && (
             <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
-                <h2 className="font-bold text-slate-700 text-sm">🏅 Ranking Pencapaian Anggota</h2>
+                <h2 className="font-bold text-slate-700 text-sm">🏅 Ranking Achievement Member</h2>
               </div>
 
               <div className="divide-y divide-slate-50">

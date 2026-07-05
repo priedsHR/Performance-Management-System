@@ -102,3 +102,13 @@ export type FeedbackManualPeer = Prisma.FeedbackManualPeerModel
  * 
  */
 export type FeedbackComment = Prisma.FeedbackCommentModel
+/**
+ * Model FeedbackPeerExclusion
+ * 
+ */
+export type FeedbackPeerExclusion = Prisma.FeedbackPeerExclusionModel
+/**
+ * Model IdpPlan
+ * 
+ */
+export type IdpPlan = Prisma.IdpPlanModel

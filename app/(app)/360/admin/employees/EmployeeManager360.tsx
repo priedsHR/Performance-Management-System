@@ -76,6 +76,33 @@ export default function EmployeeManager360() {
   const [pairA, setPairA] = useState("");
   const [pairB, setPairB] = useState("");
   const [pairMsg, setPairMsg] = useState("");
+  const [peerEdit, setPeerEdit] = useState<{ userId: string; name: string } | null>(null);
+  const [peerCands, setPeerCands] = useState<{ userId: string; name: string; department: string | null; position: string | null; isDeptDefault: boolean; isPeer: boolean }[]>([]);
+  const [peerSel, setPeerSel] = useState<Set<string>>(new Set());
+  const [peerSaving, setPeerSaving] = useState(false);
+
+  async function openPeers(p: Profile) {
+    setPeerEdit({ userId: p.userId, name: p.name });
+    setPeerCands([]);
+    const r = await fetch(`/api/feedback/peers?userId=${p.userId}`);
+    const d = await r.json();
+    const list = d.candidates || [];
+    setPeerCands(list);
+    setPeerSel(new Set(list.filter((c: { isPeer: boolean }) => c.isPeer).map((c: { userId: string }) => c.userId)));
+  }
+  async function savePeers() {
+    if (!peerEdit) return;
+    setPeerSaving(true);
+    await fetch("/api/feedback/peers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: peerEdit.userId, peerIds: [...peerSel] }),
+    });
+    setPeerSaving(false);
+    setPeerEdit(null);
+    setMsg("Peers updated — assignments refresh immediately.");
+    await load();
+  }
 
   async function load() {
     const [p, c, u, mp] = await Promise.all([
@@ -407,6 +434,9 @@ export default function EmployeeManager360() {
                   <td className="px-3 py-2 text-slate-500">{p.managerName || "—"}</td>
                   <td className="px-3 py-2 text-center text-slate-500">{p.competencyIds.length}</td>
                   <td className="px-3 py-2 text-right whitespace-nowrap">
+                    <button onClick={() => openPeers(p)} className="px-2 py-1 rounded text-xs text-teal-600 hover:bg-teal-50">
+                      Peers
+                    </button>
                     <button onClick={() => startEdit(p)} className="px-2 py-1 rounded text-xs text-slate-500 hover:bg-slate-100">
                       Edit
                     </button>
@@ -479,6 +509,40 @@ export default function EmployeeManager360() {
           <p className="text-xs text-slate-400">No cross-department peer pairs yet.</p>
         )}
       </div>
+
+      {peerEdit && (
+        <div className="fixed inset-0 bg-slate-900/40 z-50 flex items-center justify-center p-4" onClick={(e) => { if (e.target === e.currentTarget) setPeerEdit(null); }}>
+          <div className="bg-white rounded-2xl max-w-lg w-full max-h-[85vh] overflow-auto p-5 shadow-2xl">
+            <p className="font-bold text-slate-800 mb-1">Peers — {peerEdit.name}</p>
+            <p className="text-xs text-slate-400 mb-3">
+              Tick everyone who should rate {peerEdit.name.split(" ")[0]} as a <b>peer</b> (mutual). Untick same-department
+              colleagues who don't actually work together; tick people from other departments who do.
+            </p>
+            {peerCands.length === 0 ? (
+              <p className="text-sm text-slate-400">Loading…</p>
+            ) : (
+              <div className="border border-slate-200 rounded-xl divide-y divide-slate-100 max-h-[50vh] overflow-auto">
+                {peerCands.map((c) => (
+                  <label key={c.userId} className="flex items-center gap-2.5 px-3 py-2 text-sm cursor-pointer hover:bg-slate-50">
+                    <input
+                      type="checkbox"
+                      checked={peerSel.has(c.userId)}
+                      onChange={() => setPeerSel((prev) => { const n = new Set(prev); if (n.has(c.userId)) n.delete(c.userId); else n.add(c.userId); return n; })}
+                    />
+                    <span className="font-medium text-slate-700">{c.name}</span>
+                    <span className="text-[11px] text-slate-400">{c.department || "—"} · {c.position || "—"}</span>
+                    {c.isDeptDefault && <span className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded bg-teal-50 text-teal-600">same dept</span>}
+                  </label>
+                ))}
+              </div>
+            )}
+            <div className="flex justify-end gap-2 mt-4">
+              <button onClick={() => setPeerEdit(null)} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">Cancel</button>
+              <button onClick={savePeers} disabled={peerSaving || peerCands.length === 0} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50">{peerSaving ? "Saving…" : "Save peers"}</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         :global(.inp) {

@@ -30,7 +30,7 @@ type FormState = {
 
 const emptyForm: FormState = { name: "", email: "", password: "", role: "MEMBER", division: "", teamMemberId: "" };
 
-const ROLE_LABELS: Record<string, string> = { ADMIN: "Admin", LEAD: "Lead Divisi", MEMBER: "Member" };
+const ROLE_LABELS: Record<string, string> = { ADMIN: "Admin", LEAD: "Division Lead", MEMBER: "Member" };
 const ROLE_COLORS: Record<string, string> = {
   ADMIN: "bg-red-100 text-red-700",
   LEAD: "bg-amber-100 text-amber-700",
@@ -68,12 +68,12 @@ function UserForm({ form, isEdit, onChange, onSave, onCancel, teamMembers, editU
   return (
     <div className="bg-white rounded-2xl border border-amber-200 p-6 mb-5">
       <h2 className="font-semibold text-slate-800 mb-4">
-        {isEdit ? "✏️ Edit Pengguna" : "➕ Pengguna Baru"}
+        {isEdit ? "✏️ Edit User" : "➕ New User"}
       </h2>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">👤 Nama</label>
-          <input className={inputCls} value={form.name} onChange={(e) => onChange({ ...form, name: e.target.value })} placeholder="Nama lengkap" />
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">👤 Name</label>
+          <input className={inputCls} value={form.name} onChange={(e) => onChange({ ...form, name: e.target.value })} placeholder="Full name" />
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-500 mb-1.5">📧 Email</label>
@@ -82,31 +82,31 @@ function UserForm({ form, isEdit, onChange, onSave, onCancel, teamMembers, editU
         <div>
           <label className="block text-xs font-medium text-slate-500 mb-1.5">
             🔒 Password{" "}
-            {isEdit && <span className="text-slate-400 font-normal">(kosongkan jika tidak diubah)</span>}
+            {isEdit && <span className="text-slate-400 font-normal">(leave blank to keep)</span>}
           </label>
           <input type="password" className={inputCls} value={form.password} onChange={(e) => onChange({ ...form, password: e.target.value })} placeholder="••••••••" />
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-500 mb-1.5">🎭 Role</label>
           <select className={inputCls} value={form.role} onChange={(e) => onChange({ ...form, role: e.target.value, teamMemberId: "" })}>
-            <option value="MEMBER">👤 Member (anggota divisi)</option>
-            <option value="LEAD">⭐ Lead Divisi</option>
+            <option value="MEMBER">👤 Member (anggota division)</option>
+            <option value="LEAD">⭐ Division Lead</option>
             <option value="ADMIN">🛡️ Admin (HR)</option>
           </select>
         </div>
         <div className="col-span-2">
           <label className="block text-xs font-medium text-slate-500 mb-1.5">
-            🏢 Divisi
+            🏢 Division
             {form.role === "LEAD" && (
-              <span className="text-amber-600 ml-1 font-normal">— Lead & Member dengan nama divisi yang sama akan tergroup</span>
+              <span className="text-amber-600 ml-1 font-normal">— Leads & Members with the same division name are grouped</span>
             )}
           </label>
-          <input className={inputCls} value={form.division} onChange={(e) => onChange({ ...form, division: e.target.value })} placeholder="contoh: Designer Brand, Content Creator, Visual Designer" />
+          <input className={inputCls} value={form.division} onChange={(e) => onChange({ ...form, division: e.target.value })} placeholder="e.g. Designer Brand, Content Creator, Visual Designer" />
         </div>
         {form.role === "MEMBER" && (
           <div className="col-span-2">
             <label className="block text-xs font-medium text-slate-500 mb-1.5">
-              🔗 Link ke Anggota Tim
+              🔗 Link ke Member Tim
               <span className="text-slate-400 font-normal ml-1">— hubungkan ke data distribusi OKR dari Lead</span>
             </label>
             <select
@@ -114,22 +114,22 @@ function UserForm({ form, isEdit, onChange, onSave, onCancel, teamMembers, editU
               value={form.teamMemberId}
               onChange={(e) => onChange({ ...form, teamMemberId: e.target.value })}
             >
-              <option value="">— Tidak ditautkan —</option>
+              <option value="">— Not linked —</option>
               {availableTeamMembers.map((tm) => (
                 <option key={tm.id} value={tm.id}>
-                  {tm.name} ({tm.lead.division ?? "Tanpa Divisi"})
+                  {tm.name} ({tm.lead.division ?? "No Division"})
                 </option>
               ))}
             </select>
             {availableTeamMembers.length === 0 && (
-              <p className="text-xs text-slate-400 mt-1">Belum ada anggota tim yang bisa ditautkan. Tambahkan dulu di halaman Distribusi Anggota.</p>
+              <p className="text-xs text-slate-400 mt-1">No team members to link yet. Add them first on the Member Distribution page.</p>
             )}
           </div>
         )}
       </div>
       <div className="flex gap-2 mt-5">
-        <button onClick={onSave} className={btnPrimary}>💾 Simpan</button>
-        <button onClick={onCancel} className={btnSecondary}>✕ Batal</button>
+        <button onClick={onSave} className={btnPrimary}>💾 Save</button>
+        <button onClick={onCancel} className={btnSecondary}>✕ Cancel</button>
       </div>
     </div>
   );
@@ -160,7 +160,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
       });
       if (!res.ok) {
         const err = await res.json();
-        alert("Gagal menyimpan link: " + (err.error ?? JSON.stringify(err)));
+        alert("Failed to save link: " + (err.error ?? JSON.stringify(err)));
         return;
       }
       setTms((prev) => prev.map((tm) => {
@@ -171,7 +171,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
       setLinkingUserId(null);
       setLinkSelectValue("");
     } catch {
-      alert("Terjadi kesalahan jaringan.");
+      alert("A network error occurred.");
     } finally {
       setLinkSaving(false);
     }
@@ -195,10 +195,10 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
         const reloadedTms = await fetch("/api/admin/team-members").then((r) => r.json()).catch(() => null);
         if (Array.isArray(reloadedTms)) setTms(reloadedTms);
       } else {
-        setImportResult({ type: "error", message: data.error ?? "Import gagal.", errors: data.errors, linkLog: data.linkLog });
+        setImportResult({ type: "error", message: data.error ?? "Import failed.", errors: data.errors, linkLog: data.linkLog });
       }
     } catch {
-      setImportResult({ type: "error", message: "Terjadi kesalahan jaringan." });
+      setImportResult({ type: "error", message: "A network error occurred." });
     } finally {
       setImporting(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -206,9 +206,9 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
   }
 
   async function createUser() {
-    if (!form.name || !form.email || !form.password) { alert("Nama, email, dan password wajib diisi."); return; }
+    if (!form.name || !form.email || !form.password) { alert("Name, email, and password are required."); return; }
     const res = await fetch("/api/users", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-    if (!res.ok) { alert((await res.json()).error ?? "Gagal membuat pengguna"); return; }
+    if (!res.ok) { alert((await res.json()).error ?? "Failed to create user"); return; }
     const user = await res.json();
     setUsers((prev) => [...prev, user].sort((a, b) => a.name.localeCompare(b.name)));
     if (form.teamMemberId) {
@@ -236,7 +236,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
   }
 
   async function deleteUser(id: string) {
-    if (!confirm("Hapus pengguna ini? Semua OKR mereka akan terhapus.")) return;
+    if (!confirm("Delete this user? All of their OKRs will be deleted.")) return;
     await fetch(`/api/users/${id}`, { method: "DELETE" });
     setUsers((prev) => prev.filter((u) => u.id !== id));
   }
@@ -249,7 +249,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
   }
 
   const grouped = users.reduce<Record<string, User[]>>((acc, u) => {
-    const key = u.division || "(Tanpa Divisi)";
+    const key = u.division || "(No Division)";
     if (!acc[key]) acc[key] = [];
     acc[key].push(u);
     return acc;
@@ -263,15 +263,15 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
             onClick={() => { setShowForm((v) => !v); setEditId(null); setForm(emptyForm); }}
             className={btnPrimary}
           >
-            ➕ Tambah Pengguna
+            ➕ Add User
           </button>
           <a href="/api/users/import" className={btnSecondary}>📋 Download Template</a>
           <label className={`${btnSecondary} cursor-pointer ${importing ? "opacity-50 pointer-events-none" : ""}`}>
-            {importing ? "⏳ Mengimpor..." : "📤 Bulk Import Excel"}
+            {importing ? "⏳ Importing..." : "📤 Bulk Import Excel"}
             <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
           </label>
         </div>
-        <p className="text-xs text-slate-400">Download template → isi → upload untuk buat akun massal</p>
+        <p className="text-xs text-slate-400">Download the template → fill it in → upload to create accounts in bulk</p>
       </div>
 
       {importResult && (
@@ -313,7 +313,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
                           const linked = tms.find((tm) => tm.userId === user.id);
                           return linked
                             ? <span className="text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">🔗 {linked.name}</span>
-                            : <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">⚠️ Belum di-link</span>;
+                            : <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">⚠️ Not yet di-link</span>;
                         })()}
                       </div>
                       {/* Inline link UI */}
@@ -324,7 +324,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
                             onChange={(e) => setLinkSelectValue(e.target.value)}
                             className="border border-slate-200 rounded-lg px-2 py-1 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"
                           >
-                            <option value="">— Tidak ditautkan —</option>
+                            <option value="">— Not linked —</option>
                             {tms.filter((tm) => tm.userId === null || tm.userId === user.id).map((tm) => (
                               <option key={tm.id} value={tm.id}>{tm.name} ({tm.lead.division ?? "—"})</option>
                             ))}
@@ -334,7 +334,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
                             disabled={linkSaving}
                             className="text-xs font-semibold px-3 py-1 bg-amber-400 text-white rounded-lg shadow-[0_2px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-px transition-all disabled:opacity-50"
                           >
-                            {linkSaving ? "⏳" : "💾 Simpan"}
+                            {linkSaving ? "⏳" : "💾 Save"}
                           </button>
                           <button onClick={() => { setLinkingUserId(null); setLinkSelectValue(""); }} className="text-xs text-slate-400 hover:text-slate-600">✕</button>
                         </div>
@@ -350,7 +350,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
                               setLinkSelectValue(linked?.id ?? "");
                             }}
                             className="text-xs font-semibold text-blue-600 px-2 py-1 rounded-lg hover:bg-blue-50 border border-blue-200 transition"
-                            title="Link ke anggota tim"
+                            title="Link to a team member"
                           >
                             🔗
                           </button>
@@ -383,7 +383,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
         {users.length === 0 && (
           <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
             <div className="text-4xl mb-3">👥</div>
-            <p className="text-slate-500 text-sm">Belum ada pengguna. Klik "Tambah Pengguna" untuk mulai.</p>
+            <p className="text-slate-500 text-sm">No users. Click "Add User" to get started.</p>
           </div>
         )}
       </div>

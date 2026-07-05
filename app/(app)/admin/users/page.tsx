@@ -19,7 +19,7 @@ export default async function UsersPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-slate-900 mb-6">Manajemen Pengguna</h1>
+      <h1 className="text-xl font-bold text-slate-900 mb-6">Manajemen User</h1>
       <UserManager
         initialUsers={JSON.parse(JSON.stringify(users))}
         teamMembers={JSON.parse(JSON.stringify(teamMembers))}

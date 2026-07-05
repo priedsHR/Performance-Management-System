@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     const isSelf = session.user.id === userId;
     const isManager = profile.managerId === session.user.id;
     if (!isAdmin && !isManager && !isSelf)
-      return NextResponse.json({ error: "Tidak diizinkan." }, { status: 403 });
+      return NextResponse.json({ error: "Not allowed." }, { status: 403 });
 
     const periods = await prisma.feedbackPeriod.findMany({ orderBy: [{ year: "asc" }, { half: "asc" }] });
     const series: {

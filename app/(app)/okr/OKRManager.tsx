@@ -39,7 +39,7 @@ type Props = {
   isLead?: boolean;
 };
 
-const UNITS = ["%", "pcs", "x", "score", "hari", "bulan", "orang", "lainnya"];
+const UNITS = ["%", "pcs", "x", "score", "day", "month", "people", "other"];
 
 const btnPrimary =
   "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-4 py-2 rounded-xl " +
@@ -68,13 +68,13 @@ function WeightBar({ objectives }: { objectives: Objective[] }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-5">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="font-semibold text-slate-700 text-sm">⚖️ Distribusi Bobot Objective</h2>
+        <h2 className="font-semibold text-slate-700 text-sm">⚖️ Objective Weight Distribution</h2>
         <span className={`text-xs font-bold px-2.5 py-1 rounded-lg ${
           total === 0 ? "bg-slate-100 text-slate-500"
           : isOk ? "bg-green-100 text-green-700"
           : "bg-red-100 text-red-600"
         }`}>
-          {total}%{isOk ? " ✅" : total > 0 ? " · harus 100%" : ""}
+          {total}%{isOk ? " ✅" : total > 0 ? " · must be 100%" : ""}
         </span>
       </div>
 
@@ -206,7 +206,7 @@ function ImportModal({
       body: JSON.stringify({ fromQuarterId: sourceId, toQuarterId: currentQuarterId, selections }),
     });
     if (res.ok) { onImport(await res.json()); onClose(); }
-    else { alert((await res.json()).error ?? "Gagal mengimpor OKR"); }
+    else { alert((await res.json()).error ?? "Failed to import OKRs"); }
     setImporting(false);
   }
 
@@ -222,25 +222,25 @@ function ImportModal({
           {/* Destination indicator */}
           <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-xs text-amber-700">
             <span>📥</span>
-            <span>Objective akan di-import ke quarter ini: <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name ?? currentQuarterId}</strong></span>
+            <span>Objectives to be imported into this quarter: <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name ?? currentQuarterId}</strong></span>
           </div>
 
           {otherQuarters.length === 0 ? (
-            <p className="text-slate-500 text-sm text-center py-8">Tidak ada quarter lain yang tersedia.</p>
+            <p className="text-slate-500 text-sm text-center py-8">No other quarters available.</p>
           ) : (
             <>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-1.5">Pilih Quarter Sumber (ambil dari)</label>
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5">Select Quarter Sumber (ambil dari)</label>
                 <select value={sourceId} onChange={(e) => loadObjectives(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white">
-                  <option value="">-- Pilih Quarter --</option>
+                  <option value="">-- Select Quarter --</option>
                   {otherQuarters.map((q) => <option key={q.id} value={q.id}>{q.name}</option>)}
                 </select>
               </div>
 
               {loadingObjs && <p className="text-slate-400 text-sm text-center py-4">⏳ Memuat objective...</p>}
               {!loadingObjs && sourceId && sourceObjs.length === 0 && (
-                <p className="text-slate-400 text-sm text-center py-4">Tidak ada objective di quarter ini.</p>
+                <p className="text-slate-400 text-sm text-center py-4">No objectives in this quarter.</p>
               )}
 
               {!loadingObjs && sourceObjs.length > 0 && (
@@ -250,7 +250,7 @@ function ImportModal({
                       {selectedObjCount} obj · {selectedKRCount} KR dipilih
                     </span>
                     <button onClick={toggleAllObjs} className="text-xs text-amber-600 font-bold hover:text-amber-700">
-                      {sourceObjs.some((o) => isObjSelected(o.id)) ? "Batal semua" : "Pilih semua"}
+                      {sourceObjs.some((o) => isObjSelected(o.id)) ? "Cancel all" : "Select all"}
                     </button>
                   </div>
 
@@ -268,7 +268,7 @@ function ImportModal({
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-semibold text-slate-700 break-words">{obj.title}</p>
                               <p className="text-xs text-slate-400 mt-0.5">
-                                bobot {obj.weight}% · <span className={krCount > 0 ? "text-amber-600 font-medium" : ""}>{krCount}/{obj.keyResults.length} KR</span>
+                                weight {obj.weight}% · <span className={krCount > 0 ? "text-amber-600 font-medium" : ""}>{krCount}/{obj.keyResults.length} KR</span>
                               </p>
                             </div>
                             {obj.keyResults.length > 0 && (
@@ -299,7 +299,7 @@ function ImportModal({
                       );
                     })}
                   </div>
-                  <p className="text-xs text-slate-400 mt-3">💡 Objective diimpor ke <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name}</strong> sebagai DRAFT baru. Progress dari quarter sumber <strong>tidak ikut</strong> (mulai dari 0).</p>
+                  <p className="text-xs text-slate-400 mt-3">💡 Objective diimpor ke <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name}</strong> as a new DRAFT. Progress from the source quarter <strong>tidak ikut</strong> (starting from 0).</p>
                 </div>
               )}
             </>
@@ -307,9 +307,9 @@ function ImportModal({
         </div>
 
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-slate-100">
-          <button onClick={onClose} className={btnSecondary}>Batal</button>
+          <button onClick={onClose} className={btnSecondary}>Cancel</button>
           <button onClick={doImport} disabled={importing || selectedObjCount === 0} className={btnPrimary}>
-            {importing ? "⏳ Mengimpor..." : `📥 Import ${selectedObjCount > 0 ? `(${selectedObjCount} obj, ${selectedKRCount} KR)` : ""}`}
+            {importing ? "⏳ Importing..." : `📥 Import ${selectedObjCount > 0 ? `(${selectedObjCount} obj, ${selectedKRCount} KR)` : ""}`}
           </button>
         </div>
       </div>
@@ -361,7 +361,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
 
   async function bulkDelete() {
     if (selectedIds.size === 0) return;
-    if (!confirm(`Hapus ${selectedIds.size} objective beserta semua key result-nya?`)) return;
+    if (!confirm(`Delete ${selectedIds.size} objective beserta all key result-nya?`)) return;
     setBulkDeleting(true);
     await Promise.all(
       [...selectedIds].map((id) => fetch(`/api/objectives/${id}`, { method: "DELETE" }))
@@ -378,7 +378,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
     const res = await fetch("/api/objectives", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: "Objective baru", weight: 0, quarterId, userId }),
+      body: JSON.stringify({ title: "New objective", weight: 0, quarterId, userId }),
     });
     const obj = await res.json();
     setObjectives((prev) => [...prev, { ...obj, keyResults: [] }]);
@@ -401,7 +401,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
   }
 
   async function deleteObjective(id: string) {
-    if (!confirm("Hapus objective ini beserta semua key result-nya?")) return;
+    if (!confirm("Delete this objective along with all of its key results?")) return;
     const res = await fetch(`/api/objectives/${id}`, { method: "DELETE" });
     if (!res.ok) { alert((await res.json()).error); return; }
     setObjectives((prev) => prev.filter((o) => o.id !== id));
@@ -409,8 +409,8 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
   }
 
   async function submitAllOKR() {
-    if (!weightOk) { alert("Total bobot objective harus 100% sebelum dikumpulkan."); return; }
-    if (!confirm("Cek kembali OKR yang sudah diisi di bawah ini sebelum mengumpulkan.\n\nSetelah dikumpulkan, OKR masih bisa diubah dengan kembali ke status Draft.\n\nLanjutkan kumpulkan OKR?")) return;
+    if (!weightOk) { alert("Total objective weight must be 100% before submitting."); return; }
+    if (!confirm("Review the OKRs below before submitting.\n\nAfter submitting, OKRs can still be changed by returning to Draft status.\n\nSubmit the OKRs now?")) return;
     setSaving(true);
     for (const obj of objectives.filter((o) => o.status === "DRAFT")) {
       await fetch(`/api/objectives/${obj.id}`, {
@@ -425,7 +425,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
   }
 
   async function recallOKR(id: string) {
-    if (!confirm("Tarik kembali OKR ini ke draft?")) return;
+    if (!confirm("Pull this OKR back to draft?")) return;
     await fetch(`/api/objectives/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -438,7 +438,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
     const res = await fetch("/api/key-results", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: "Key Result baru", target: 100, unit: "%", weight: 0, objectiveId }),
+      body: JSON.stringify({ title: "New key result", target: 100, unit: "%", weight: 0, objectiveId }),
     });
     const kr = await res.json();
     setObjectives((prev) => prev.map((o) => o.id === objectiveId ? { ...o, keyResults: [...o.keyResults, kr] } : o));
@@ -473,7 +473,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
   }
 
   async function deleteKR(objectiveId: string, krId: string) {
-    if (!confirm("Hapus key result ini?")) return;
+    if (!confirm("Delete this key result?")) return;
     await fetch(`/api/key-results/${krId}`, { method: "DELETE" });
     setObjectives((prev) => prev.map((o) => o.id === objectiveId ? { ...o, keyResults: o.keyResults.filter((kr) => kr.id !== krId) } : o));
   }
@@ -502,7 +502,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
         {allQuarters.length > 0 && (
           <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-500">
             <span>⏱️</span>
-            <span>Quarter yang sedang diedit: <strong className="text-slate-700">{allQuarters.find((q) => q.id === quarterId)?.name ?? quarterId}</strong></span>
+            <span>Quarter being edited: <strong className="text-slate-700">{allQuarters.find((q) => q.id === quarterId)?.name ?? quarterId}</strong></span>
           </div>
         )}
 
@@ -511,22 +511,22 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
           <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-3">
             <span className="text-lg">✅</span>
             <div>
-              <p className="font-semibold text-green-700 text-sm">OKR sudah dikumpulkan!</p>
-              <p className="text-green-600 text-xs mt-0.5">Progress diisi oleh anggota di bagian Distribusi Anggota di bawah.</p>
+              <p className="font-semibold text-green-700 text-sm">OKR done dikumpulkan!</p>
+              <p className="text-green-600 text-xs mt-0.5">Progress is filled in by members in the Member Distribution section below.</p>
             </div>
           </div>
         ) : someSubmitted ? (
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
             <span className="text-lg">ℹ️</span>
-            <p className="text-blue-700 text-sm">Sebagian OKR sudah dikumpulkan. Selesaikan semua objective lalu kumpulkan.</p>
+            <p className="text-blue-700 text-sm">Some OKRs are already submitted. Finish all objectives, then submit.</p>
           </div>
         ) : null}
 
         {/* Action bar */}
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="text-xs text-slate-400 space-y-0.5">
-            <p>{saving ? "⏳ Menyimpan..." : "💾 Tersimpan otomatis"}</p>
-            {!allSubmitted && <p className="text-amber-500 font-medium">⚠️ Tersimpan ≠ dikumpulkan. Klik "Kumpulkan OKR" jika sudah selesai.</p>}
+            <p>{saving ? "⏳ Saving..." : "💾 Saved automatically"}</p>
+            {!allSubmitted && <p className="text-amber-500 font-medium">⚠️ Tersimpan ≠ dikumpulkan. Klik "Kumpulkan OKR" jika done selesai.</p>}
           </div>
 
           <div className="flex gap-2 flex-wrap justify-end">
@@ -538,7 +538,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                     onClick={selectAll}
                     className={btnSecondary}
                   >
-                    ☑️ Pilih Semua ({draftObjectives.length})
+                    ☑️ Select All ({draftObjectives.length})
                   </button>
                   <button
                     onClick={bulkDelete}
@@ -546,15 +546,15 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                     className="flex items-center gap-2 bg-red-500 text-white font-bold text-sm px-4 py-2 rounded-xl shadow-[0_4px_0_#dc2626] hover:shadow-[0_2px_0_#dc2626] hover:translate-y-0.5 active:shadow-[0_1px_0_#dc2626] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75"
                   >
                     <Trash2 size={14} />
-                    {bulkDeleting ? "Menghapus..." : `Hapus (${selectedIds.size})`}
+                    {bulkDeleting ? "Deleting..." : `Delete (${selectedIds.size})`}
                   </button>
                   <button onClick={toggleSelectMode} className={btnSecondary}>
-                    <X size={14} /> Batal
+                    <X size={14} /> Cancel
                   </button>
                 </>
               ) : (
                 <button onClick={toggleSelectMode} className={btnSecondary}>
-                  <CheckSquare size={14} /> Pilih
+                  <CheckSquare size={14} /> Select
                 </button>
               )
             )}
@@ -569,7 +569,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
             {/* Add objective */}
             {!allSubmitted && !selectMode && (
               <button onClick={addObjective} className={btnSecondary}>
-                ➕ Tambah Objective
+                ➕ Add Objective
               </button>
             )}
 
@@ -586,7 +586,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
         {objectives.length === 0 && (
           <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
             <div className="text-4xl mb-3">🎯</div>
-            <p className="text-slate-500 text-sm">Belum ada objective. Klik "Tambah Objective" atau import dari quarter sebelumnya.</p>
+            <p className="text-slate-500 text-sm">No objectives. Click "Add Objective" or import from a previous quarter.</p>
           </div>
         )}
 
@@ -646,7 +646,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                 />
 
                 <div className="flex items-center gap-1.5 flex-shrink-0 mt-0.5">
-                  <span className="text-xs text-slate-400">Bobot</span>
+                  <span className="text-xs text-slate-400">Weight</span>
                   <input
                     type="number"
                     className="w-14 text-right border border-slate-200 rounded-lg px-2 py-1 text-sm focus:outline-none focus:border-amber-400 disabled:bg-slate-50 disabled:cursor-default"
@@ -671,7 +671,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                   <button
                     onClick={() => recallOKR(obj.id)}
                     className="text-slate-400 hover:text-orange-500 transition flex-shrink-0 text-base mt-0.5"
-                    title="Tarik kembali ke draft"
+                    title="Pull back to draft"
                   >
                     🔄
                   </button>
@@ -701,12 +701,12 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                 <div className="px-4 pb-4 pt-1">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-medium text-slate-500">🔑 Bobot KR: {krTotalWeight}%</span>
+                      <span className="text-xs font-medium text-slate-500">🔑 Weight KR: {krTotalWeight}%</span>
                       {obj.keyResults.length > 0 && (
                         <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${
                           krWeightOk ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
                         }`}>
-                          {krWeightOk ? "✅" : "harus 100%"}
+                          {krWeightOk ? "✅" : "must be 100%"}
                         </span>
                       )}
                     </div>
@@ -717,14 +717,14 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                           shadow-[0_3px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-0.5
                           active:shadow-none active:translate-y-[3px] transition-all duration-75"
                       >
-                        ➕ Tambah KR
+                        ➕ Add KR
                       </button>
                     )}
                   </div>
 
                   {obj.keyResults.length === 0 && (
                     <p className="text-slate-400 text-sm text-center py-6 border-2 border-dashed border-slate-100 rounded-xl">
-                      🔑 Belum ada key result.
+                      🔑 No key result.
                     </p>
                   )}
 
@@ -780,7 +780,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                               </select>
                             </div>
                             <div>
-                              <label className="block text-slate-400 mb-1 font-medium">⚖️ Bobot (%)</label>
+                              <label className="block text-slate-400 mb-1 font-medium">⚖️ Weight (%)</label>
                               <input
                                 type="number"
                                 className="w-full border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:border-amber-400 bg-white disabled:bg-slate-50 disabled:cursor-default"
@@ -795,7 +795,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
 
                           {isLead ? (
                             <div className="flex items-center gap-2 mb-2">
-                              <span className="text-xs font-medium text-blue-600 flex-shrink-0">📝 Kontribusi Lead Divisi</span>
+                              <span className="text-xs font-medium text-blue-600 flex-shrink-0">📝 Kontribusi Division Lead</span>
                               <input
                                 type="number"
                                 className="w-20 border border-blue-200 rounded-lg px-2 py-1 text-xs text-right bg-blue-50 focus:outline-none focus:border-blue-400"
@@ -823,7 +823,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                           ) : (
                             <p className="text-xs text-slate-400 italic mb-2">
                               💡 Progress anggota diisi di halaman{" "}
-                              <a href="/distribusi" className="text-amber-600 hover:underline font-semibold">Distribusi Anggota →</a>
+                              <a href="/distribusi" className="text-amber-600 hover:underline font-semibold">Distribusi Member →</a>
                             </p>
                           )}
 

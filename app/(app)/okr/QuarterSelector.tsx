@@ -49,7 +49,7 @@ export default function QuarterSelector({
       });
       if (!res.ok) {
         const err = await res.json();
-        alert(err.error ?? "Gagal membuat quarter");
+        alert(err.error ?? "Failed to create quarter");
         return;
       }
       const q = await res.json();
@@ -81,7 +81,7 @@ export default function QuarterSelector({
             onChange={(id) => { window.location.href = `${basePath}?quarterId=${id}`; }}
           />
         ) : (
-          <span className="text-sm text-slate-400 italic">Belum ada quarter</span>
+          <span className="text-sm text-slate-400 italic">No quarter</span>
         )}
 
         {selectedQuarter && (
@@ -102,7 +102,7 @@ export default function QuarterSelector({
             }`}
           >
             {showCreate ? <X size={13} /> : <Plus size={13} />}
-            {showCreate ? "Batal" : "Buat Quarter"}
+            {showCreate ? "Cancel" : "Buat Quarter"}
           </button>
         )}
       </div>
@@ -112,10 +112,10 @@ export default function QuarterSelector({
           <p className="text-xs font-semibold text-slate-500 mb-3">📋 Quarter Baru</p>
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
-              <label className="block text-xs text-slate-400 mb-1">Nama Quarter</label>
+              <label className="block text-xs text-slate-400 mb-1">Name Quarter</label>
               <input
                 className={inputCls}
-                placeholder="contoh: Q1 2026"
+                placeholder="e.g. Q1 2026"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
@@ -165,7 +165,7 @@ export default function QuarterSelector({
             disabled={saving || !form.name || !form.startDate || !form.endDate}
             className="mt-3 flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-4 py-2 rounded-xl shadow-[0_3px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-0.5 active:shadow-none active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75"
           >
-            {saving ? "⏳ Menyimpan..." : "💾 Simpan Quarter"}
+            {saving ? "⏳ Saving..." : "💾 Save Quarter"}
           </button>
         </div>
       )}

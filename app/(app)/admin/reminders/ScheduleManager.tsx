@@ -18,9 +18,9 @@ type Schedule = {
   nextRun: string;
 };
 
-const DAYS = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+const DAYS = ["Week", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 const TYPE_LABEL: Record<string, string> = { settings: "🎯 Setting OKR", collection: "📋 Pengumpulan" };
-const FREQ_LABEL: Record<string, string> = { weekly: "Setiap Minggu", biweekly: "Setiap 2 Minggu", monthly: "Setiap Bulan" };
+const FREQ_LABEL: Record<string, string> = { weekly: "Every Week", biweekly: "Every 2 Weeks", monthly: "Every Month" };
 
 function fmtWIB(iso: string) {
   const d = new Date(iso);
@@ -30,7 +30,7 @@ function fmtWIB(iso: string) {
 function scheduleDesc(s: Schedule) {
   const freq = FREQ_LABEL[s.frequency] ?? s.frequency;
   if (s.frequency === "monthly") return `${freq}, tgl ${s.dayOfMonth}, jam ${String(s.hourWIB).padStart(2, "0")}:00 WIB`;
-  return `${freq}, hari ${DAYS[s.dayOfWeek ?? 0]}, jam ${String(s.hourWIB).padStart(2, "0")}:00 WIB`;
+  return `${freq}, day ${DAYS[s.dayOfWeek ?? 0]}, jam ${String(s.hourWIB).padStart(2, "0")}:00 WIB`;
 }
 
 export default function ScheduleManager({ quarters, initialSchedules }: { quarters: Quarter[]; initialSchedules: Schedule[] }) {
@@ -62,10 +62,10 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
         }),
       });
       const data = await res.json();
-      if (!res.ok) { setError(data.error ?? "Gagal menyimpan."); return; }
+      if (!res.ok) { setError(data.error ?? "Failed to save."); return; }
       setSchedules((prev) => [data, ...prev]);
     } catch {
-      setError("Terjadi kesalahan jaringan.");
+      setError("A network error occurred.");
     } finally {
       setSaving(false);
     }
@@ -84,7 +84,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Hapus jadwal ini?")) return;
+    if (!confirm("Delete this schedule?")) return;
     const res = await fetch(`/api/admin/reminder-schedules/${id}`, { method: "DELETE" });
     if (res.ok) setSchedules((prev) => prev.filter((s) => s.id !== id));
   }
@@ -93,7 +93,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
     <div className="space-y-5">
       {/* Create form */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5">
-        <h3 className="font-bold text-slate-800 mb-4">➕ Buat Jadwal Otomatis</h3>
+        <h3 className="font-bold text-slate-800 mb-4">➕ Buat Schedule Otomatis</h3>
         <form onSubmit={handleCreate} className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           {/* Type */}
           <div className="space-y-1">
@@ -116,9 +116,9 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
             <label className="text-xs font-semibold text-slate-500">Frekuensi</label>
             <select value={frequency} onChange={e => setFrequency(e.target.value)}
               className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400">
-              <option value="weekly">Setiap Minggu</option>
-              <option value="biweekly">Setiap 2 Minggu</option>
-              <option value="monthly">Setiap Bulan</option>
+              <option value="weekly">Every Week</option>
+              <option value="biweekly">Every 2 Weeks</option>
+              <option value="monthly">Every Month</option>
             </select>
           </div>
 
@@ -158,7 +158,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
               className="w-full flex items-center justify-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2 rounded-xl
                 shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5
                 active:shadow-none active:translate-y-1 disabled:opacity-50 disabled:shadow-none transition-all duration-75">
-              {saving ? "⏳ Menyimpan..." : "💾 Simpan Jadwal"}
+              {saving ? "⏳ Saving..." : "💾 Save Schedule"}
             </button>
           </div>
         </form>
@@ -168,12 +168,12 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
       {/* Schedule list */}
       {schedules.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-400 text-sm">
-          Belum ada jadwal otomatis. Buat jadwal di atas.
+          No schedule otomatis. Buat schedule di atas.
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <div className="px-5 py-3 bg-slate-50 border-b border-slate-100">
-            <p className="font-semibold text-slate-700 text-sm">🗓️ Jadwal Aktif ({schedules.length})</p>
+            <p className="font-semibold text-slate-700 text-sm">🗓️ Schedule Active ({schedules.length})</p>
           </div>
           <div className="divide-y divide-slate-50">
             {schedules.map((s) => (
@@ -198,7 +198,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
                         ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
                         : "bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100"
                     }`}>
-                    {s.isActive ? "✅ Aktif" : "⏸️ Nonaktif"}
+                    {s.isActive ? "✅ Active" : "⏸️ Inactive"}
                   </button>
                   {/* Delete */}
                   <button onClick={() => handleDelete(s.id)}

@@ -37,6 +37,9 @@ model User {
   commentsReceived  FeedbackComment[]   @relation("CommentRatee")
   manualPeersGiven  FeedbackManualPeer[] @relation("ManualPeerRater")
   manualPeersReceived FeedbackManualPeer[] @relation("ManualPeerRatee")
+  peerExclusionsA   FeedbackPeerExclusion[] @relation("PeerExclA")
+  peerExclusionsB   FeedbackPeerExclusion[] @relation("PeerExclB")
+  idpPlans          IdpPlan[]            @relation("IdpUser")
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 }
@@ -171,6 +174,7 @@ model FeedbackPeriod {
   responses      FeedbackResponse[]
   comments       FeedbackComment[]
   manualPeers    FeedbackManualPeer[]
+  idpPlans       IdpPlan[]
   createdAt      DateTime             @default(now())
 
   @@unique([year, half])
@@ -288,4 +292,45 @@ model FeedbackComment {
   updatedAt DateTime       @updatedAt
 
   @@unique([periodId, raterId, rateeId, category])
+}
+
+// Symmetric peer exclusion: this pair must NOT rate each other as same-department
+// peers, even though the default rule would pair them.
+model FeedbackPeerExclusion {
+  id        String   @id @default(cuid())
+  userAId   String
+  userA     User     @relation("PeerExclA", fields: [userAId], references: [id], onDelete: Cascade)
+  userBId   String
+  userB     User     @relation("PeerExclB", fields: [userBId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userAId, userBId])
+}
+
+// Individual Development Plan — one per employee per semester (feedback period).
+// Follows the PRIEDS 70-20-10 template.
+model IdpPlan {
+  id               String         @id @default(cuid())
+  userId           String
+  user             User           @relation("IdpUser", fields: [userId], references: [id], onDelete: Cascade)
+  periodId         String
+  period           FeedbackPeriod @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  careerAspiration String         @default("")
+  coreStrength     String         @default("")
+  technicalFocus   String         @default("")
+  technicalAction  String         @default("")
+  technicalMetric  String         @default("")
+  behavioralFocus  String         @default("")
+  behavioralAction String         @default("")
+  behavioralMetric String         @default("")
+  learningFocus    String         @default("")
+  learningAction   String         @default("")
+  learningMetric   String         @default("")
+  impactProject    String         @default("")
+  status           String         @default("DRAFT") // DRAFT | SUBMITTED
+  leadNote         String         @default("")
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@unique([userId, periodId])
 }

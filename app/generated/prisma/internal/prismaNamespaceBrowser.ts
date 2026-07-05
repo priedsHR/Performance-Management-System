@@ -67,7 +67,9 @@ export const ModelName = {
   FeedbackResponse: 'FeedbackResponse',
   FeedbackSetting: 'FeedbackSetting',
   FeedbackManualPeer: 'FeedbackManualPeer',
-  FeedbackComment: 'FeedbackComment'
+  FeedbackComment: 'FeedbackComment',
+  FeedbackPeerExclusion: 'FeedbackPeerExclusion',
+  IdpPlan: 'IdpPlan'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -321,6 +323,41 @@ export const FeedbackCommentScalarFieldEnum = {
 } as const
 
 export type FeedbackCommentScalarFieldEnum = (typeof FeedbackCommentScalarFieldEnum)[keyof typeof FeedbackCommentScalarFieldEnum]
+
+
+export const FeedbackPeerExclusionScalarFieldEnum = {
+  id: 'id',
+  userAId: 'userAId',
+  userBId: 'userBId',
+  createdAt: 'createdAt'
+} as const
+
+export type FeedbackPeerExclusionScalarFieldEnum = (typeof FeedbackPeerExclusionScalarFieldEnum)[keyof typeof FeedbackPeerExclusionScalarFieldEnum]
+
+
+export const IdpPlanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  periodId: 'periodId',
+  careerAspiration: 'careerAspiration',
+  coreStrength: 'coreStrength',
+  technicalFocus: 'technicalFocus',
+  technicalAction: 'technicalAction',
+  technicalMetric: 'technicalMetric',
+  behavioralFocus: 'behavioralFocus',
+  behavioralAction: 'behavioralAction',
+  behavioralMetric: 'behavioralMetric',
+  learningFocus: 'learningFocus',
+  learningAction: 'learningAction',
+  learningMetric: 'learningMetric',
+  impactProject: 'impactProject',
+  status: 'status',
+  leadNote: 'leadNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IdpPlanScalarFieldEnum = (typeof IdpPlanScalarFieldEnum)[keyof typeof IdpPlanScalarFieldEnum]
 
 
 export const SortOrder = {

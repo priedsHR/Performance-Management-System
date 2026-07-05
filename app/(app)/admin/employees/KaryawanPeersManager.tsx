@@ -32,8 +32,8 @@ const inp = "w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus
 const btnPrimary = "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] transition-all duration-75";
 const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
 
-export default function KaryawanPeersManager() {
-  const [tab, setTab] = useState<"karyawan" | "peers">("karyawan");
+export default function EmployeePeersManager() {
+  const [tab, setTab] = useState<"employee" | "peers">("employee");
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [comps, setComps] = useState<Comp[]>([]);
   const [users, setUsers] = useState<UserLite[]>([]);
@@ -89,11 +89,11 @@ export default function KaryawanPeersManager() {
       ? await fetch("/api/feedback/profiles", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
       : await fetch(`/api/feedback/profiles/${editing}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     if (res.ok) { setEditing(null); await load(); }
-    else { const d = await res.json().catch(() => ({})); setMsg(d.error || "Gagal menyimpan."); }
+    else { const d = await res.json().catch(() => ({})); setMsg(d.error || "Failed to save."); }
   }
 
   async function del(p: Profile) {
-    const withUser = confirm(`Hapus profil 360 "${p.name}".\n\nOK = hapus juga akun login.\nCancel = hapus profil 360 saja.`);
+    const withUser = confirm(`Delete profil 360 "${p.name}".\n\nOK = hapus juga akun login.\nCancel = hapus profil 360 saja.`);
     await fetch(`/api/feedback/profiles/${p.id}${withUser ? "?withUser=1" : ""}`, { method: "DELETE" });
     await load();
   }
@@ -105,15 +105,15 @@ export default function KaryawanPeersManager() {
     const res = await fetch("/api/feedback/profiles/import", { method: "POST", body: fd });
     const d = await res.json().catch(() => ({}));
     setImporting(false); if (fileRef.current) fileRef.current.value = "";
-    if (res.ok) { setMsg((d.message || "Impor selesai.") + (d.errors ? ` (${d.errors.length} catatan)` : "")); await load(); }
-    else setMsg(d.error || "Gagal mengimpor.");
+    if (res.ok) { setMsg((d.message || "Import complete.") + (d.errors ? ` (${d.errors.length} catatan)` : "")); await load(); }
+    else setMsg(d.error || "Failed to import.");
   }
 
   async function addPair() {
-    if (!pairA || !pairB || pairA === pairB) { setMsg("Pilih dua karyawan berbeda."); return; }
+    if (!pairA || !pairB || pairA === pairB) { setMsg("Choose two different employees."); return; }
     const res = await fetch("/api/feedback/manual-peers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ userAId: pairA, userBId: pairB, type: pairType }) });
     if (res.ok) { setPairA(""); setPairB(""); setPairType("peer"); await load(); }
-    else { const d = await res.json().catch(() => ({})); setMsg(d.error || "Gagal."); }
+    else { const d = await res.json().catch(() => ({})); setMsg(d.error || "Failed."); }
   }
 
   async function removePair(pair: ManualPair) {
@@ -134,27 +134,27 @@ export default function KaryawanPeersManager() {
     <div className="space-y-4">
       {/* Tabs */}
       <div className="flex bg-slate-100 p-1 rounded-xl gap-1 w-fit">
-        {(["karyawan", "peers"] as const).map((t) => (
+        {(["employee", "peers"] as const).map((t) => (
           <button key={t} onClick={() => setTab(t)}
             className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${tab === t ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>
-            {t === "karyawan" ? "🧑‍💼 Karyawan" : "🔗 Penilaian Lintas Dept"}
+            {t === "employee" ? "🧑‍💼 Employee" : "🔗 Cross-Dept Assignments"}
           </button>
         ))}
       </div>
 
-      {tab === "karyawan" && (
+      {tab === "employee" && (
         <>
           {/* Toolbar */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2">
-              <button onClick={startNew} className={btnPrimary}>➕ Tambah Karyawan</button>
+              <button onClick={startNew} className={btnPrimary}>➕ Add Employee</button>
               <a href="/api/feedback/profiles/import" className={btnSecondary}>📋 Download Template</a>
               <button onClick={() => fileRef.current?.click()} disabled={importing} className={`${btnSecondary} ${importing ? "opacity-50 pointer-events-none" : ""}`}>
-                {importing ? "⏳ Mengimpor…" : "📤 Bulk Import Excel"}
+                {importing ? "⏳ Importing…" : "📤 Bulk Import Excel"}
               </button>
               <input ref={fileRef} type="file" accept=".xlsx" hidden onChange={doImport} />
             </div>
-            <input className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white" placeholder="🔍 Cari nama / departemen…" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <input className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white" placeholder="🔍 Search name / department…" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
 
           {msg && <p className="text-sm text-amber-700 bg-amber-50 px-4 py-2 rounded-xl border border-amber-200">{msg}</p>}
@@ -162,35 +162,35 @@ export default function KaryawanPeersManager() {
           {/* Form */}
           {editing && (
             <div className="bg-white border border-amber-200 rounded-2xl p-6 space-y-4">
-              <p className="font-semibold text-slate-800">{editing === "new" ? "➕ Karyawan Baru" : "✏️ Ubah Karyawan"}</p>
+              <p className="font-semibold text-slate-800">{editing === "new" ? "➕ New Employee" : "✏️ Edit Employee"}</p>
               <div className="grid sm:grid-cols-2 gap-4">
-                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Nama*</label><input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inp} /></div>
+                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Name*</label><input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inp} /></div>
                 <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Email* (login)</label><input value={form.email} disabled={editing !== "new"} onChange={(e) => setForm({ ...form, email: e.target.value })} className={`${inp} disabled:bg-slate-50 disabled:text-slate-400`} /></div>
-                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">{editing === "new" ? "Password*" : "Password (kosong = tidak berubah)"}</label><input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className={inp} /></div>
-                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Hak Akses</label>
+                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">{editing === "new" ? "Password*" : "Password (blank = unchanged)"}</label><input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} className={inp} /></div>
+                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Access Role</label>
                   <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} className={inp}>
-                    <option value="MEMBER">Anggota</option><option value="LEAD">Lead</option><option value="ADMIN">Admin</option>
+                    <option value="MEMBER">Member</option><option value="LEAD">Lead</option><option value="ADMIN">Admin</option>
                   </select>
                 </div>
                 <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Departemen</label>
                   <input list="dept-list" value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} placeholder="mis. HR, Finance, Tech…" className={inp} />
                   <datalist id="dept-list">{DEPARTMENTS.map((d) => <option key={d} value={d} />)}</datalist>
                 </div>
-                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Posisi / Jabatan</label><input value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} className={inp} /></div>
+                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Position / Title</label><input value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} className={inp} /></div>
                 <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Level</label>
                   <select value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} className={inp}>
                     <option value="">—</option>{LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
                   </select>
                 </div>
-                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Target Penilaian</label>
+                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Assessment Target</label>
                   <select value={form.targetMode} onChange={(e) => setForm({ ...form, targetMode: e.target.value })} className={inp}>
-                    <option value="auto">Otomatis dari level</option><option value="none">Tanpa target</option>
+                    <option value="auto">Automatic from level</option><option value="none">Tanpa target</option>
                     <option value="1">Target L1</option><option value="2">Target L2</option><option value="3">Target L3</option><option value="4">Target L4</option>
                   </select>
                 </div>
-                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Atasan (superordinate)</label>
+                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Manager (superordinate)</label>
                   <select value={form.managerId} onChange={(e) => setForm({ ...form, managerId: e.target.value })} className={inp}>
-                    <option value="">— tidak ada —</option>
+                    <option value="">— none —</option>
                     {users.map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
                   </select>
                 </div>
@@ -208,10 +208,10 @@ export default function KaryawanPeersManager() {
                   <p className="text-sm font-semibold text-slate-700">Kompetensi yang dinilai ({selected.size})</p>
                   <div className="flex gap-2">
                     <button onClick={() => setSelected((prev) => new Set([...prev, ...autoIds(form.department, form.role)]))} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100">Terapkan otomatis</button>
-                    <button onClick={() => setSelected(new Set())} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-500 hover:bg-slate-50">Kosongkan</button>
+                    <button onClick={() => setSelected(new Set())} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-500 hover:bg-slate-50">Clear</button>
                   </div>
                 </div>
-                <p className="text-[11px] text-slate-400 mb-3">Core (semua) + Leadership (Lead/Admin) + Job Family (sesuai dept) + AI Fluency.</p>
+                <p className="text-[11px] text-slate-400 mb-3">Core (all) + Leadership (Lead/Admin) + Job Family (sesuai dept) + AI Fluency.</p>
                 <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
                   {CATS.map((cat) => {
                     const list = activeComps.filter((c) => c.category === cat && (cat === "CORE" || cat === "LEADERSHIP" || !c.department || c.department === form.department || c.department == null));
@@ -234,8 +234,8 @@ export default function KaryawanPeersManager() {
               </div>
 
               <div className="flex gap-2 pt-1">
-                <button onClick={save} className={btnPrimary}>💾 Simpan</button>
-                <button onClick={() => setEditing(null)} className={btnSecondary}>✕ Batal</button>
+                <button onClick={save} className={btnPrimary}>💾 Save</button>
+                <button onClick={() => setEditing(null)} className={btnSecondary}>✕ Cancel</button>
               </div>
             </div>
           )}
@@ -247,13 +247,13 @@ export default function KaryawanPeersManager() {
                 <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
                   <span>🏢</span>
                   <span className="font-semibold text-slate-700 text-sm">{dept}</span>
-                  <span className="text-slate-400 text-xs">({emps.length} karyawan)</span>
+                  <span className="text-slate-400 text-xs">({emps.length} employee)</span>
                 </div>
                 <table className="w-full text-sm">
                   <thead><tr className="border-b border-slate-100">
-                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Nama</th>
-                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Jabatan</th>
-                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Atasan</th>
+                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Name</th>
+                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Title</th>
+                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Manager</th>
                     <th className="text-center px-5 py-2.5 text-xs font-semibold text-slate-400">Komp.</th>
                     <th className="px-5 py-2.5" />
                   </tr></thead>
@@ -285,7 +285,7 @@ export default function KaryawanPeersManager() {
             {filteredProfiles.length === 0 && (
               <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
                 <div className="text-4xl mb-3">👥</div>
-                <p className="text-slate-500 text-sm">{profiles.length === 0 ? "Belum ada karyawan. Tambah manual atau bulk import." : "Tidak ada karyawan yang sesuai pencarian."}</p>
+                <p className="text-slate-500 text-sm">{profiles.length === 0 ? "No employees yet. Add manually or bulk import." : "No employees match your search."}</p>
               </div>
             )}
           </div>
@@ -296,14 +296,14 @@ export default function KaryawanPeersManager() {
         <div className="space-y-4">
           <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
             <div>
-              <p className="font-semibold text-slate-800">Tambah Penilaian Lintas Departemen</p>
-              <p className="text-xs text-slate-400 mt-0.5">Assign relasi penilaian antara dua karyawan dari departemen berbeda.</p>
+              <p className="font-semibold text-slate-800">Add Assessment Lintas Departemen</p>
+              <p className="text-xs text-slate-400 mt-0.5">Assign an assessment relation between two employees from different departments.</p>
             </div>
             <div className="flex flex-wrap gap-3 items-end">
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1.5">Karyawan A</label>
+                <label className="block text-xs font-medium text-slate-500 mb-1.5">Employee A</label>
                 <select value={pairA} onChange={(e) => setPairA(e.target.value)} className={inp} style={{ width: 200 }}>
-                  <option value="">— pilih —</option>
+                  <option value="">— select —</option>
                   {profiles.filter((p) => p.active).map((p) => <option key={p.userId} value={p.userId}>{p.name} ({p.department || "—"})</option>)}
                 </select>
               </div>
@@ -316,26 +316,26 @@ export default function KaryawanPeersManager() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1.5">Karyawan B</label>
+                <label className="block text-xs font-medium text-slate-500 mb-1.5">Employee B</label>
                 <select value={pairB} onChange={(e) => setPairB(e.target.value)} className={inp} style={{ width: 200 }}>
-                  <option value="">— pilih —</option>
+                  <option value="">— select —</option>
                   {profiles.filter((p) => p.active && p.userId !== pairA).map((p) => <option key={p.userId} value={p.userId}>{p.name} ({p.department || "—"})</option>)}
                 </select>
               </div>
-              <button onClick={addPair} className={btnPrimary}>➕ Tambah</button>
+              <button onClick={addPair} className={btnPrimary}>➕ Add</button>
             </div>
           </div>
 
           {manualPairs.length > 0 ? (
             <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-3 bg-slate-50 border-b border-slate-100">
-                <span className="font-semibold text-slate-700 text-sm">🔗 Penilaian Lintas Departemen ({manualPairs.length})</span>
+                <span className="font-semibold text-slate-700 text-sm">🔗 Assessment Lintas Departemen ({manualPairs.length})</span>
               </div>
               <table className="w-full text-sm">
                 <thead><tr className="border-b border-slate-100">
-                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Karyawan A</th>
+                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Employee A</th>
                   <th className="text-center px-3 py-2.5 text-xs font-semibold text-slate-400">Relasi</th>
-                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Karyawan B</th>
+                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Employee B</th>
                   <th className="px-5 py-2.5" />
                 </tr></thead>
                 <tbody>
@@ -345,7 +345,7 @@ export default function KaryawanPeersManager() {
                       <td className="px-3 py-3 text-center">
                         {pair.isPeer
                           ? <span className="text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">🤝 Peer</span>
-                          : <span className="text-xs font-semibold text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-lg">⬆️ Atasan Lintas Dept</span>
+                          : <span className="text-xs font-semibold text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-lg">⬆️ Manager Lintas Dept</span>
                         }
                       </td>
                       <td className="px-5 py-3 font-medium text-slate-800">{pair.rateeName}</td>
@@ -360,7 +360,7 @@ export default function KaryawanPeersManager() {
           ) : (
             <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
               <div className="text-4xl mb-3">🔗</div>
-              <p className="text-slate-500 text-sm">Belum ada penilaian lintas departemen.</p>
+              <p className="text-slate-500 text-sm">No cross-department assignments yet.</p>
             </div>
           )}
         </div>

@@ -30,7 +30,7 @@ function ObjCard({ obj, index }: { obj: ObjItem; index: number }) {
           <div className="min-w-0">
             <p className="text-xs font-semibold text-amber-600 mb-0.5">Objective #{index + 1}</p>
             <h3 className="font-bold text-slate-800 text-sm leading-snug">{obj.title}</h3>
-            <span className="text-xs text-slate-400">⚖️ Bobot {obj.weight}%</span>
+            <span className="text-xs text-slate-400">⚖️ Weight {obj.weight}%</span>
           </div>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0 ml-3">
@@ -53,7 +53,7 @@ function ObjCard({ obj, index }: { obj: ObjItem; index: number }) {
 
           <div className="p-5">
             {obj.krs.length === 0 ? (
-              <p className="text-xs text-slate-400 text-center py-4">Belum ada KR yang di-assign ke kamu.</p>
+              <p className="text-xs text-slate-400 text-center py-4">No KRs assigned to you yet.</p>
             ) : (
               <table className="w-full text-sm border-collapse">
                 <thead>
@@ -61,9 +61,9 @@ function ObjCard({ obj, index }: { obj: ObjItem; index: number }) {
                     <th className="text-left py-2 pr-3 text-xs font-semibold text-slate-400">Key Result</th>
                     <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Target</th>
                     <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Satuan</th>
-                    <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Bobot</th>
+                    <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Weight</th>
                     <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Progress</th>
-                    <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Capaian</th>
+                    <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Achievement</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -141,7 +141,7 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
         </div>
         {objectives.length > 0 && !loading && (
           <div className={`border rounded-2xl px-6 py-3 text-center ${achBg}`}>
-            <p className="text-xs font-semibold mb-0.5">🏆 Pencapaian Saya</p>
+            <p className="text-xs font-semibold mb-0.5">🏆 Achievement Saya</p>
             <p className="text-3xl font-bold leading-tight">{totalAchievement.toFixed(1)}%</p>
           </div>
         )}
@@ -149,7 +149,7 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
 
       {loading && (
         <div className="flex items-center justify-center py-16 text-slate-400">
-          <span className="text-2xl animate-spin mr-3">⏳</span> Memuat...
+          <span className="text-2xl animate-spin mr-3">⏳</span> Loading...
         </div>
       )}
 
@@ -162,15 +162,15 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
       {!loading && linked === false && (
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-8 text-center">
           <div className="text-3xl mb-2">🔗</div>
-          <p className="font-semibold text-amber-800 mb-1">Akun belum terhubung ke tim</p>
-          <p className="text-sm text-amber-700">Hubungi admin untuk menghubungkan akun kamu ke data distribusi tim.</p>
+          <p className="font-semibold text-amber-800 mb-1">Account not linked to a team yet</p>
+          <p className="text-sm text-amber-700">Contact the admin to link your account to the team distribution data.</p>
         </div>
       )}
 
       {!loading && linked && objectives.length === 0 && (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
           <div className="text-4xl mb-2">📋</div>
-          <p className="text-slate-500 text-sm">Belum ada KR yang di-assign ke kamu untuk quarter ini.</p>
+          <p className="text-slate-500 text-sm">No KRs assigned to you for this quarter yet.</p>
         </div>
       )}
 

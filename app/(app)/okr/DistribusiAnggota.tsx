@@ -89,7 +89,7 @@ function KRRow({
       <div className="flex items-center gap-3 flex-wrap">
         {/* Weight */}
         <div className="flex items-center gap-1.5">
-          <span className="text-xs text-slate-400">⚖️ Bobot</span>
+          <span className="text-xs text-slate-400">⚖️ Weight</span>
           <input
             type="number"
             className="w-14 border border-slate-200 rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:border-amber-400 bg-slate-50"
@@ -125,7 +125,7 @@ function KRRow({
             <button
               onClick={() => onTargetChange(kra.id, null)}
               className="text-slate-300 hover:text-slate-500 text-xs transition"
-              title="Reset ke target divisi"
+              title="Reset to division target"
             >✕</button>
           )}
         </div>
@@ -151,7 +151,7 @@ function KRRow({
 
       {kra.target !== null && (
         <p className="text-xs text-amber-600">
-          ⚡ Target individu: <strong>{kra.target} {kr.unit}</strong> (divisi: {kr.target} {kr.unit})
+          ⚡ Target individu: <strong>{kra.target} {kr.unit}</strong> (division: {kr.target} {kr.unit})
         </p>
       )}
 
@@ -217,7 +217,7 @@ function AssignmentRow({
         <span className="text-xs text-slate-500">🔑 Key Results ({assignment.krAssignments.length} dipilih)</span>
         {assignment.krAssignments.length > 0 && (
           <span className={`ml-auto text-xs font-bold px-2 py-0.5 rounded-md ${krOk ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
-            {krTotal.toFixed(0)}%{krOk ? " ✅" : " · harus 100%"}
+            {krTotal.toFixed(0)}%{krOk ? " ✅" : " · must be 100%"}
           </span>
         )}
       </button>
@@ -248,15 +248,15 @@ function AssignmentRow({
               value=""
               onChange={(e) => { if (e.target.value) onAddKR(assignment.id, e.target.value); }}
             >
-              <option value="">➕ Pilih Key Result...</option>
+              <option value="">➕ Select Key Result...</option>
               {unassignedKRs.map((kr) => (
-                <option key={kr.id} value={kr.id}>{kr.title} (target divisi: {kr.target} {kr.unit})</option>
+                <option key={kr.id} value={kr.id}>{kr.title} (target division: {kr.target} {kr.unit})</option>
               ))}
             </select>
           )}
 
           {allKRs.length === 0 && (
-            <p className="text-xs text-slate-400 italic text-center py-2">Objective ini belum punya Key Result.</p>
+            <p className="text-xs text-slate-400 italic text-center py-2">This objective has no Key Results yet.</p>
           )}
         </div>
       )}
@@ -334,7 +334,7 @@ function MemberCard({
           </div>
           <div className="min-w-0">
             <p className="font-semibold text-slate-800 text-sm">👤 {member.name}</p>
-            <p className="text-xs text-slate-400">{member.assignments.length} objective · {open ? "klik untuk tutup" : "klik untuk buka"}</p>
+            <p className="text-xs text-slate-400">{member.assignments.length} objective · {open ? "click to close" : "click to open"}</p>
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -367,9 +367,9 @@ function MemberCard({
       {open && (
         <>
           <div className="px-4 py-2.5 border-t border-slate-100 space-y-1.5">
-            {/* Bar 1: bobot distribution */}
+            {/* Bar 1: weight distribution */}
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400 w-14 flex-shrink-0">Bobot</span>
+              <span className="text-xs text-slate-400 w-14 flex-shrink-0">Weight</span>
               <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                 <div
                   className={`h-1.5 rounded-full transition-all ${
@@ -385,7 +385,7 @@ function MemberCard({
             {/* Bar 2: achievement */}
             {achievement !== null && (
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400 w-14 flex-shrink-0">Capaian</span>
+                <span className="text-xs text-slate-400 w-14 flex-shrink-0">Achievement</span>
                 <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                   <div
                     className={`h-1.5 rounded-full transition-all ${achBarColor(achievement)}`}
@@ -422,7 +422,7 @@ function MemberCard({
                 value=""
                 onChange={(e) => { if (e.target.value) onAddAssignment(member.id, e.target.value); }}
               >
-                <option value="">➕ Tambah objective...</option>
+                <option value="">➕ Add objective...</option>
                 {unassigned.map((o) => <option key={o.id} value={o.id}>{o.title}</option>)}
               </select>
             )}
@@ -480,10 +480,10 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
           setTimeout(() => window.location.reload(), 1400);
         }
       } else {
-        setResult({ type: "error", message: data.error ?? "Import gagal.", errors: data.errors, debug: data.debug });
+        setResult({ type: "error", message: data.error ?? "Import failed.", errors: data.errors, debug: data.debug });
       }
     } catch {
-      setResult({ type: "error", message: "Terjadi kesalahan jaringan." });
+      setResult({ type: "error", message: "A network error occurred." });
     } finally {
       setImporting(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -521,24 +521,24 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
         <span>📥</span>
         <div>
           <h3 className="font-bold text-slate-800 text-sm">Import / Export Distribusi</h3>
-          <p className="text-xs text-slate-400">Template sudah berisi daftar objective & KR. Tinggal isi anggota, bobot, & target individu.</p>
+          <p className="text-xs text-slate-400">The template lists all objectives & KRs. Just fill in members, weights, & individual targets.</p>
         </div>
       </div>
       <div className="p-4 space-y-3">
         <div className="flex flex-wrap gap-3">
           <button onClick={handleTemplate} className={btnSlate} disabled={objectives.length === 0}>📋 Download Template</button>
           <label className={btnAmber + " cursor-pointer"}>
-            {importing ? <><span className="animate-spin">⏳</span> Mengimpor…</> : <>📤 Import Excel</>}
+            {importing ? <><span className="animate-spin">⏳</span> Importing…</> : <>📤 Import Excel</>}
             <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
           </label>
           <button onClick={handleExport} className={btnGreen}>📥 Export</button>
-          <label className={btnViolet + " cursor-pointer"} title="Cek isi file & matching sebelum import">
+          <label className={btnViolet + " cursor-pointer"} title="Check the file contents & matching before importing">
             {previewing ? <><span className="animate-spin">⏳</span></> : <>🔍 Preview</>}
             <input ref={previewRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handlePreview} disabled={previewing} />
           </label>
         </div>
 
-        {objectives.length === 0 && <p className="text-xs text-slate-400 italic">⚠️ Buat objective dulu sebelum download template.</p>}
+        {objectives.length === 0 && <p className="text-xs text-slate-400 italic">⚠️ Create objectives first before downloading the template.</p>}
 
         {result && (
           <div className="space-y-2">
@@ -547,7 +547,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
               <div className="min-w-0 w-full">
                 <p className="font-semibold">{result.message}</p>
                 {result.debug && <p className="text-xs mt-0.5 opacity-70">Baris terbaca: {result.debug.rowsParsed}</p>}
-                {result.type === "success" && !result.errors?.length && <p className="text-xs mt-0.5 opacity-75">Halaman akan dimuat ulang…</p>}
+                {result.type === "success" && !result.errors?.length && <p className="text-xs mt-0.5 opacity-75">The page will reload…</p>}
               </div>
             </div>
             {result.errors && result.errors.length > 0 && (
@@ -603,14 +603,14 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
                     <div key={i} className={`flex items-start gap-2 ${o.matched ? "text-green-700" : "text-red-600"}`}>
                       <span className="flex-shrink-0">{o.matched ? "✅" : "❌"}</span>
                       <span className="font-mono break-all">[Obj] {o.title}</span>
-                      {!o.matched && <span className="text-slate-400 ml-1">(tidak ditemukan di DB)</span>}
+                      {!o.matched && <span className="text-slate-400 ml-1">(not found in DB)</span>}
                     </div>
                   ))}
                   {preview.matching.keyResults.map((k, i) => (
                     <div key={i} className={`flex items-start gap-2 ${k.matched ? "text-green-700" : "text-red-600"}`}>
                       <span className="flex-shrink-0">{k.matched ? "✅" : "❌"}</span>
                       <span className="font-mono break-all">[KR] {k.title}</span>
-                      {!k.matched && <span className="text-slate-400 ml-1">(tidak ditemukan)</span>}
+                      {!k.matched && <span className="text-slate-400 ml-1">(not found)</span>}
                     </div>
                   ))}
                 </div>
@@ -640,7 +640,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
               <table className="w-full font-mono border-collapse">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200">
-                    {["#","A Anggota","B Objective","C Bobot","D Key Result","E Target","F Satuan","G BobotKR"].map((h) => (
+                    {["#","A Member","B Objective","C Weight","D Key Result","E Target","F Satuan","G WeightKR"].map((h) => (
                       <th key={h} className="text-left px-2 py-1.5 text-slate-500 font-semibold whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
@@ -663,7 +663,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
                   })}
                 </tbody>
               </table>
-              <p className="px-3 py-1.5 text-slate-400">Tampil 30 baris pertama · baris hijau = ada KR di kolom D</p>
+              <p className="px-3 py-1.5 text-slate-400">Showing the first 30 rows · green rows = KR present in column D</p>
             </div>
           </div>
         )}
@@ -671,9 +671,9 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-xs text-amber-700 space-y-1">
           <p className="font-semibold">💡 Tips</p>
           <ul className="list-disc list-inside space-y-0.5 text-amber-600">
-            <li>Klik <strong>🔍 Preview</strong> dulu untuk cek apakah nama objective & KR terbaca dengan benar sebelum import</li>
-            <li>Kolom B (Objective) & D (Key Result) harus persis sama dengan yang ada di database</li>
-            <li>Import menggantikan semua assignment yang ada</li>
+            <li>Klik <strong>🔍 Preview</strong> first to check that objective & KR names are read correctly before importing</li>
+            <li>Columns B (Objective) & D (Key Result) must exactly match what is in the database</li>
+            <li>Import replaces all existing assignments</li>
           </ul>
         </div>
       </div>
@@ -804,7 +804,7 @@ function CopyFromQuarterModal({
         setTimeout(() => onClose(), 1200);
       }
     } else {
-      setResult({ type: "error", message: data.error ?? "Gagal menyalin.", errors: data.errors });
+      setResult({ type: "error", message: data.error ?? "Failed to copy.", errors: data.errors });
     }
     setCopying(false);
   }
@@ -822,7 +822,7 @@ function CopyFromQuarterModal({
 
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {allQuarters.length < 2 ? (
-            <p className="text-slate-500 text-sm text-center py-8">Tidak ada quarter lain yang tersedia.</p>
+            <p className="text-slate-500 text-sm text-center py-8">No other quarters available.</p>
           ) : (
             <>
               {/* Source + Destination */}
@@ -831,17 +831,17 @@ function CopyFromQuarterModal({
                   <label className="block text-xs font-semibold text-slate-500 mb-1.5">📤 Salin dari</label>
                   <select value={sourceId} onChange={(e) => { setDestId(""); loadPreview(e.target.value); }}
                     className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white">
-                    <option value="">-- Pilih --</option>
-                    {allQuarters.map((q) => <option key={q.id} value={q.id}>{q.name}{q.id === currentQuarterId ? " (aktif)" : ""}</option>)}
+                    <option value="">-- Select --</option>
+                    {allQuarters.map((q) => <option key={q.id} value={q.id}>{q.name}{q.id === currentQuarterId ? " (active)" : ""}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 mb-1.5">📥 Salin ke</label>
                   <select value={destId} onChange={(e) => setDestId(e.target.value)}
                     className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white">
-                    <option value="">-- Pilih --</option>
+                    <option value="">-- Select --</option>
                     {allQuarters.filter((q) => q.id !== sourceId).map((q) => (
-                      <option key={q.id} value={q.id}>{q.name}{q.id === currentQuarterId ? " (aktif)" : ""}</option>
+                      <option key={q.id} value={q.id}>{q.name}{q.id === currentQuarterId ? " (active)" : ""}</option>
                     ))}
                   </select>
                 </div>
@@ -850,7 +850,7 @@ function CopyFromQuarterModal({
               {loadingPreview && <p className="text-slate-400 text-sm text-center py-4">⏳ Memuat data...</p>}
               {!loadingPreview && sourceId && preview.length === 0 && (
                 <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-500 text-center space-y-1">
-                  <p>Belum ada distribusi di quarter ini.</p>
+                  <p>No distribution for this quarter yet.</p>
                   {debugInfo && <p className="font-mono text-slate-400 break-all">{debugInfo}</p>}
                 </div>
               )}
@@ -860,7 +860,7 @@ function CopyFromQuarterModal({
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-slate-500">{totalSel}/{totalAll} KR dipilih</span>
                     <button onClick={toggleAll} className="text-xs text-amber-600 font-bold hover:text-amber-700 transition">
-                      {totalSel > 0 ? "Batal semua" : "Pilih semua"}
+                      {totalSel > 0 ? "Cancel all" : "Select all"}
                     </button>
                   </div>
 
@@ -907,7 +907,7 @@ function CopyFromQuarterModal({
                                          : <Square size={14} className="text-slate-300" />}
                                       </button>
                                       <span className="text-xs font-semibold text-slate-600 flex-1 truncate">🎯 {obj.title}</span>
-                                      <span className="text-xs text-slate-400 flex-shrink-0">bobot {obj.weight}%</span>
+                                      <span className="text-xs text-slate-400 flex-shrink-0">weight {obj.weight}%</span>
                                     </div>
                                     {/* KR checkboxes */}
                                     <div className="space-y-1 pl-5">
@@ -933,7 +933,7 @@ function CopyFromQuarterModal({
                       );
                     })}
                   </div>
-                  <p className="text-xs text-slate-400 mt-3">💡 Bobot & target disalin. Progress yang sudah diisi <strong>tidak terhapus</strong>.</p>
+                  <p className="text-xs text-slate-400 mt-3">💡 Weights & targets are copied. Completed progress is filled <strong>is not deleted</strong>.</p>
                 </div>
               )}
 
@@ -948,9 +948,9 @@ function CopyFromQuarterModal({
         </div>
 
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-slate-100">
-          <button onClick={onClose} className={btnSecondary}>Batal</button>
+          <button onClick={onClose} className={btnSecondary}>Cancel</button>
           <button onClick={doCopy} disabled={copying || !destId || totalSel === 0 || !!result} className={btnPrimary}>
-            {copying ? "⏳ Menyalin..." : !destId ? "Pilih tujuan dulu" : `📋 Salin${totalSel > 0 ? ` (${totalSel} KR)` : ""}`}
+            {copying ? "⏳ Menyalin..." : !destId ? "Choose a destination first" : `📋 Salin${totalSel > 0 ? ` (${totalSel} KR)` : ""}`}
           </button>
         </div>
       </div>
@@ -985,10 +985,10 @@ function ProgressExcel({ leadId, quarterId }: { leadId: string; quarterId: strin
         setResult({ type: "success", message: data.message, errors: data.errors });
         if (!data.errors?.length) setTimeout(() => window.location.reload(), 1400);
       } else {
-        setResult({ type: "error", message: data.error ?? "Import gagal.", errors: data.errors });
+        setResult({ type: "error", message: data.error ?? "Import failed.", errors: data.errors });
       }
     } catch {
-      setResult({ type: "error", message: "Terjadi kesalahan jaringan." });
+      setResult({ type: "error", message: "A network error occurred." });
     } finally {
       setImporting(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -999,7 +999,7 @@ function ProgressExcel({ leadId, quarterId }: { leadId: string; quarterId: strin
     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
       <div className="px-5 py-4 bg-slate-50 border-b border-slate-100">
         <h3 className="font-bold text-slate-700 text-sm">📈 Update Progress OKR Individu via Excel</h3>
-        <p className="text-xs text-slate-400 mt-0.5">Setelah OKR Divisi selesai & distribusi dilakukan, download template — template sudah berisi daftar OKR Individu semua anggota. Isi kolom Progress, lalu upload kembali.</p>
+        <p className="text-xs text-slate-400 mt-0.5">Once the Division OKR is done & distributed, download the template — it lists every member's individual OKRs. Fill in the Progress column, then upload it back.</p>
       </div>
       <div className="p-4 flex flex-wrap gap-2 items-center">
         <button
@@ -1016,7 +1016,7 @@ function ProgressExcel({ leadId, quarterId }: { leadId: string; quarterId: strin
           active:shadow-none active:translate-y-[3px] transition-all duration-75
           ${importing ? "opacity-50 pointer-events-none" : ""}`}
         >
-          {importing ? "⏳ Mengimpor..." : "📤 Import Progress"}
+          {importing ? "⏳ Importing..." : "📤 Import Progress"}
           <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
         </label>
       </div>
@@ -1082,7 +1082,7 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
   }
 
   async function deleteMember(id: string) {
-    if (!confirm("Hapus anggota ini dari quarter ini? Assignment di quarter lain tidak terpengaruh.")) return;
+    if (!confirm("Remove this member from this quarter? Assignments in other quarters are not affected.")) return;
     const res = await fetch(`/api/team-members/${id}?quarterId=${encodeURIComponent(quarterId)}`, { method: "DELETE" });
     if (res.ok) setMembers((prev) => prev.filter((m) => m.id !== id));
   }
@@ -1207,14 +1207,14 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
         />
       )}
 
-      {/* ── 1. Tambah Anggota ─────────────────────────────────────────── */}
+      {/* ── 1. Add Member ─────────────────────────────────────────── */}
       <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">➕ Tambah Anggota</p>
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">➕ Add Member</p>
         <div className="flex gap-2">
           <div className="relative flex-1" ref={comboRef}>
             <input
               className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition"
-              placeholder="🔍 Cari atau ketik nama anggota..."
+              placeholder="🔍 Search or type a member name..."
               value={newName}
               onChange={(e) => { setNewName(e.target.value); setShowSuggestions(true); }}
               onFocus={() => setShowSuggestions(true)}
@@ -1260,12 +1260,12 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
               active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px]
               disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75"
           >
-            ➕ Tambah
+            ➕ Add
           </button>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
           {employees.length === 0 && (
-            <p className="text-xs text-slate-400">💡 Daftar karyawan kosong — Admin bisa tambahkan di Admin → Karyawan.</p>
+            <p className="text-xs text-slate-400">💡 Daftar employee blank — Admin bisa tambahkan di Admin → Employee.</p>
           )}
           {allQuarters.length > 1 && (
             <button
@@ -1282,8 +1282,8 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
       {members.length === 0 ? (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
           <div className="text-4xl mb-3">👥</div>
-          <p className="text-slate-600 text-sm font-medium">Belum ada anggota</p>
-          <p className="text-slate-400 text-xs mt-1">Tambah nama di atas, atau salin distribusi dari quarter lain.</p>
+          <p className="text-slate-600 text-sm font-medium">No members yet</p>
+          <p className="text-slate-400 text-xs mt-1">Add a name above, or copy the distribution from another quarter.</p>
         </div>
       ) : (
         <div className="space-y-4">

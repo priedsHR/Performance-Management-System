@@ -19,8 +19,8 @@ function StatusBadge({ status }: { status: LeadStatus }) {
   if (status === "complete")
     return <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-lg">✅ Lengkap</span>;
   if (status === "incomplete")
-    return <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">⚠️ Belum Lengkap</span>;
-  return <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-lg">❌ Belum Buat</span>;
+    return <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">⚠️ Not yet Lengkap</span>;
+  return <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-lg">❌ Not yet Buat</span>;
 }
 
 const btnAmber =
@@ -75,9 +75,9 @@ export default function ReminderManager({
         body: JSON.stringify({ type, quarterId: selectedQuarterId }),
       });
       const data = await res.json();
-      setResult({ type, message: data.message ?? (res.ok ? "Terkirim." : "Gagal."), results: data.results ?? [], success: data.success ?? res.ok });
+      setResult({ type, message: data.message ?? (res.ok ? "Sent." : "Failed."), results: data.results ?? [], success: data.success ?? res.ok });
     } catch {
-      setResult({ type, message: "Terjadi kesalahan jaringan.", results: [], success: false });
+      setResult({ type, message: "A network error occurred.", results: [], success: false });
     } finally {
       setSending(null);
     }
@@ -87,7 +87,7 @@ export default function ReminderManager({
     <div className="space-y-5">
       {/* Quarter selector */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5">
-        <label className="block text-sm font-semibold text-slate-700 mb-2">⏱️ Pilih Quarter</label>
+        <label className="block text-sm font-semibold text-slate-700 mb-2">⏱️ Select Quarter</label>
         <YearQuarterPicker
           quarters={quarters}
           value={selectedQuarterId}
@@ -105,7 +105,7 @@ export default function ReminderManager({
               <h3 className="font-bold text-slate-800">Reminder Setting OKR</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Kirim email ke semua Lead Divisi untuk segera membuat Objective &amp; Key Results di halaman OKR Divisi.
+              Kirim email ke all Division Lead untuk segera membuat Objective &amp; Key Results di halaman Division OKR.
               Cocok dikirim di <strong>awal quarter</strong>.
             </p>
           </div>
@@ -114,7 +114,7 @@ export default function ReminderManager({
             disabled={!selectedQuarterId || sending !== null}
             className={btnAmber}
           >
-            {sending === "settings" ? "⏳ Mengirim..." : "📧 Kirim Reminder Setting"}
+            {sending === "settings" ? "⏳ Sending..." : "📧 Send Setup Reminder"}
           </button>
         </div>
 
@@ -126,7 +126,7 @@ export default function ReminderManager({
               <h3 className="font-bold text-slate-800">Reminder Pengumpulan</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Cek menyeluruh di <strong>akhir quarter</strong>: bobot, target, satuan, progress anggota, dan capaian lead.
+              Cek menyeluruh di <strong>akhir quarter</strong>: weight, target, satuan, progress anggota, dan capaian lead.
               Hanya kirim ke yang datanya belum lengkap.
             </p>
           </div>
@@ -135,7 +135,7 @@ export default function ReminderManager({
             disabled={!selectedQuarterId || sending !== null}
             className={btnSlate}
           >
-            {sending === "collection" ? "⏳ Mengirim..." : "📧 Kirim Reminder Pengumpulan"}
+            {sending === "collection" ? "⏳ Sending..." : "📧 Send Submission Reminder"}
           </button>
         </div>
       </div>
@@ -170,22 +170,22 @@ export default function ReminderManager({
       <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
           <div>
-            <p className="font-semibold text-slate-700 text-sm">📋 Daftar Lead Divisi ({leads.length} orang)</p>
+            <p className="font-semibold text-slate-700 text-sm">📋 Daftar Division Lead ({leads.length} orang)</p>
             <p className="text-xs text-slate-400 mt-0.5">
-              Reminder hanya dikirim ke yang statusnya <span className="font-semibold text-amber-600">⚠️ Belum Lengkap</span> atau <span className="font-semibold text-red-600">❌ Belum Buat</span>.
+              Reminder hanya dikirim ke yang statusnya <span className="font-semibold text-amber-600">⚠️ Not yet Lengkap</span> or <span className="font-semibold text-red-600">❌ Not yet Buat</span>.
             </p>
           </div>
           {loadingLeads && <span className="text-xs text-slate-400 animate-pulse">Memuat status...</span>}
         </div>
         {leads.length === 0 ? (
-          <div className="p-8 text-center text-slate-400 text-sm">Belum ada Lead Divisi terdaftar.</div>
+          <div className="p-8 text-center text-slate-400 text-sm">No Division Leads registered yet.</div>
         ) : (
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-100 text-xs text-slate-400">
-                <th className="text-left px-5 py-2.5 font-semibold">Nama</th>
+                <th className="text-left px-5 py-2.5 font-semibold">Name</th>
                 <th className="text-left px-5 py-2.5 font-semibold">Email</th>
-                <th className="text-left px-5 py-2.5 font-semibold">Divisi</th>
+                <th className="text-left px-5 py-2.5 font-semibold">Division</th>
                 <th className="text-center px-3 py-2.5 font-semibold">🎯 Setting OKR</th>
                 <th className="text-center px-3 py-2.5 font-semibold">📋 Pengumpulan</th>
               </tr>

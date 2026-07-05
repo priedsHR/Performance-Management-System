@@ -155,7 +155,8 @@ export interface ProfileLite {
 export function computeAssignmentsFor(
   raterUserId: string,
   profiles: ProfileLite[],
-  manualPeerRateeIds: string[] = []
+  manualPeerRateeIds: string[] = [],
+  excludedPeerPairs: Set<string> = new Set()
 ): { ratee: ProfileLite; relation: RelationType }[] {
   const me = profiles.find((p) => p.userId === raterUserId);
   if (!me || !me.active) return [];
@@ -168,6 +169,7 @@ export function computeAssignmentsFor(
     else if (p.managerId && p.managerId === raterUserId) rel = "SUPERORDINATE";
     else if (me.department && p.department && me.department === p.department) rel = "PEER";
     else if (manualPeerRateeIds.includes(p.userId)) rel = "PEER";
+    if (rel === "PEER" && excludedPeerPairs.has(peerPairKey(raterUserId, p.userId))) rel = null;
     if (rel) out.push({ ratee: p, relation: rel });
   }
   const rank: Record<RelationType, number> = { SELF: 0, SUBORDINATE: 1, PEER: 2, SUPERORDINATE: 3 };
@@ -197,4 +199,15 @@ export async function loadProfilesLite(): Promise<ProfileLite[]> {
 
 export async function getActivePeriod() {
   return prisma.feedbackPeriod.findFirst({ where: { isActive: true } });
+}
+
+// Canonical key for a symmetric peer pair.
+export function peerPairKey(a: string, b: string): string {
+  return [a, b].sort().join(":");
+}
+
+// All excluded peer pairs as canonical keys, for computeAssignmentsFor.
+export async function loadPeerExclusions(): Promise<Set<string>> {
+  const rows = await prisma.feedbackPeerExclusion.findMany({ select: { userAId: true, userBId: true } });
+  return new Set(rows.map((r) => peerPairKey(r.userAId, r.userBId)));
 }

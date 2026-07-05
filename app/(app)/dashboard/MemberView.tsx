@@ -11,10 +11,10 @@ type Props = {
   divisionName: string | null;
 };
 
-type Tab = "divisi" | "progress";
+type Tab = "division" | "progress";
 
 export default function MemberView({ quarters, initialQuarterId, leadId, divisionName }: Props) {
-  const [tab, setTab] = useState<Tab>(leadId ? "divisi" : "progress");
+  const [tab, setTab] = useState<Tab>(leadId ? "division" : "progress");
 
   return (
     <div className="space-y-5">
@@ -22,14 +22,14 @@ export default function MemberView({ quarters, initialQuarterId, leadId, divisio
       <div className="flex gap-1 bg-slate-100 p-1 rounded-2xl w-fit">
         {leadId && (
           <button
-            onClick={() => setTab("divisi")}
+            onClick={() => setTab("division")}
             className={`px-5 py-2 rounded-xl text-sm font-semibold transition-all ${
-              tab === "divisi"
+              tab === "division"
                 ? "bg-white text-slate-800 shadow-sm"
                 : "text-slate-500 hover:text-slate-700"
             }`}
           >
-            📊 {divisionName ?? "Divisi"}
+            📊 {divisionName ?? "Division"}
           </button>
         )}
         <button
@@ -45,11 +45,11 @@ export default function MemberView({ quarters, initialQuarterId, leadId, divisio
       </div>
 
       {/* Tab content */}
-      {tab === "divisi" && leadId && (
+      {tab === "division" && leadId && (
         <DivisionView
           quarters={quarters}
           leadId={leadId}
-          divisionName={divisionName ?? "Divisi"}
+          divisionName={divisionName ?? "Division"}
         />
       )}
 

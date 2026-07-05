@@ -9,6 +9,8 @@ type Item = { href: string; label: string; icon: string };
 const adminDashboard: Item[] = [
   { href: "/dashboard", label: "OKR", icon: "🎯" },
   { href: "/360", label: "360 Feedback", icon: "📝" },
+  { href: "/admin/ninebox", label: "9-Box Matrix", icon: "🧭" },
+  { href: "/idp", label: "IDP", icon: "🌱" },
 ];
 const adminSettingOkr: Item[] = [
   { href: "/admin/quarters", label: "Quarter", icon: "⏱️" },
@@ -33,12 +35,14 @@ const leadOkr: Item[] = [
 const lead360: Item[] = [
   { href: "/360", label: "360° Feedback", icon: "📝" },
   { href: "/360/report", label: "My Report", icon: "📄" },
+  { href: "/idp", label: "My IDP", icon: "🌱" },
 ];
 
 const memberDashboard: Item[] = [{ href: "/dashboard", label: "Dashboard", icon: "📊" }];
 const member360: Item[] = [
   { href: "/360", label: "360° Feedback", icon: "📝" },
   { href: "/360/report", label: "My Report", icon: "📄" },
+  { href: "/idp", label: "My IDP", icon: "🌱" },
 ];
 
 export default function Sidebar({ role, name, division }: { role: string; name?: string | null; division?: string | null }) {

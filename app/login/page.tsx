@@ -22,7 +22,7 @@ export default function LoginPage() {
     });
     setLoading(false);
     if (res?.error) {
-      setError("Email atau password salah.");
+      setError("Incorrect email or password.");
     } else {
       window.location.href = "/dashboard";
     }
@@ -65,7 +65,7 @@ export default function LoginPage() {
 
           <div className="mb-7">
             <h1 className="text-2xl font-bold text-slate-900">Selamat datang 👋</h1>
-            <p className="text-slate-500 text-sm mt-1">Masuk ke akun kamu untuk melanjutkan</p>
+            <p className="text-slate-500 text-sm mt-1">Sign in to your account to continue</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -77,7 +77,7 @@ export default function LoginPage() {
                 name="email"
                 type="email"
                 required
-                placeholder="nama@perusahaan.com"
+                placeholder="name@perusahaan.com"
                 className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition"
               />
             </div>
@@ -114,10 +114,10 @@ export default function LoginPage() {
               {loading ? (
                 <>
                   <Loader2 size={15} className="animate-spin" />
-                  Masuk...
+                  Sign in...
                 </>
               ) : (
-                <>🚀 Masuk</>
+                <>🚀 Sign in</>
               )}
             </button>
           </form>

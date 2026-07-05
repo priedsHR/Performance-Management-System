@@ -82,7 +82,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
   }
 
   async function deleteQuarter(id: string) {
-    if (!confirm("Hapus quarter ini? Semua OKR dalam quarter ini akan terhapus permanen.")) return;
+    if (!confirm("Delete this quarter? All OKRs in it will be permanently deleted.")) return;
     await fetch(`/api/quarters/${id}`, { method: "DELETE" });
     setQuarters((prev) => prev.filter((q) => q.id !== id));
   }
@@ -107,7 +107,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
       {/* Top bar */}
       <div className="flex justify-end">
         <button onClick={() => setShowForm(!showForm)} className={btnPrimary}>
-          ➕ Tambah Quarter
+          ➕ Add Quarter
         </button>
       </div>
 
@@ -117,8 +117,8 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
           <h2 className="font-semibold text-slate-800 mb-4">⏱️ Quarter Baru</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-xs font-medium text-slate-500 mb-1.5">Nama Quarter</label>
-              <input className={inputCls} placeholder="contoh: Q1 2025" value={form.name}
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">Name Quarter</label>
+              <input className={inputCls} placeholder="e.g. Q1 2025" value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </div>
             <div>
@@ -145,8 +145,8 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
             </div>
           </div>
           <div className="flex gap-2 mt-5">
-            <button onClick={createQuarter} className={btnPrimary}>💾 Simpan</button>
-            <button onClick={() => setShowForm(false)} className={btnSecondary}>✕ Batal</button>
+            <button onClick={createQuarter} className={btnPrimary}>💾 Save</button>
+            <button onClick={() => setShowForm(false)} className={btnSecondary}>✕ Cancel</button>
           </div>
         </div>
       )}
@@ -154,8 +154,8 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
       {/* Export all divisions card */}
       {quarters.length > 0 && (
         <div className="bg-white rounded-2xl border border-slate-200 p-5">
-          <h2 className="font-semibold text-slate-800 mb-1">📊 Export Semua Divisi</h2>
-          <p className="text-xs text-slate-400 mb-4">Download data OKR seluruh divisi dalam satu file Excel (satu tab per divisi).</p>
+          <h2 className="font-semibold text-slate-800 mb-1">📊 Export All Division</h2>
+          <p className="text-xs text-slate-400 mb-4">Download all divisions' OKR data in one Excel file (one tab per division).</p>
           <div className="flex items-center gap-3 flex-wrap">
             <YearQuarterPicker
               quarters={quarters}
@@ -181,7 +181,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
         {quarters.length === 0 ? (
           <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
             <div className="text-4xl mb-3">⏱️</div>
-            <p className="text-slate-500 text-sm">Belum ada quarter. Tambah quarter pertama.</p>
+            <p className="text-slate-500 text-sm">No quarter. Add quarter pertama.</p>
           </div>
         ) : (
           grouped.map(({ year, quarters: qs }) => {
@@ -198,7 +198,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                     <span className="text-sm font-bold text-slate-700">📅 {year}</span>
                     {hasActive && (
                       <span className="bg-amber-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                        ✅ Aktif
+                        ✅ Active
                       </span>
                     )}
                     <span className="text-xs text-slate-400">{qs.length} quarter</span>
@@ -222,7 +222,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                             <h3 className="font-semibold text-slate-800 text-sm">⏱️ {q.name}</h3>
                             {q.isActive && (
                               <span className="bg-amber-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                                ✅ Aktif
+                                ✅ Active
                               </span>
                             )}
                           </div>
@@ -240,7 +240,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                                 : "bg-white border border-slate-200 text-slate-600 shadow-[0_3px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-none active:translate-y-[3px]"
                             }`}
                           >
-                            {q.isActive ? "✅ Aktif" : "▶️ Set Aktif"}
+                            {q.isActive ? "✅ Active" : "▶️ Set Active"}
                           </button>
                           <button
                             onClick={() => deleteQuarter(q.id)}

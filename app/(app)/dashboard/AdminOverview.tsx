@@ -73,15 +73,15 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">📊 Dashboard Semua Divisi</h1>
-          <p className="text-xs text-slate-400 mt-1">Klik divisi untuk lihat detail OKR & individu</p>
+          <h1 className="text-xl font-bold text-slate-900">📊 Dashboard All Division</h1>
+          <p className="text-xs text-slate-400 mt-1">Click a division to view OKR & individual details</p>
         </div>
 
         {/* Controls */}
         <div className="flex items-center gap-2 flex-wrap">
           <input
             className="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white shadow-[0_2px_0_#e2e8f0]"
-            placeholder="🔍 Cari divisi..."
+            placeholder="🔍 Search division..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -92,7 +92,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
       {/* Overall summary bar */}
       {!loading && overallAch !== null && (
         <div className="bg-white rounded-2xl border border-slate-200 px-5 py-3 flex items-center gap-4 flex-wrap">
-          <span className="text-xs text-slate-500 font-semibold">Rata-rata semua divisi:</span>
+          <span className="text-xs text-slate-500 font-semibold">Rata-rata all division:</span>
           <span className={`text-sm font-bold px-3 py-1 rounded-lg ${achClass(overallAch)}`}>
             {achEmoji(overallAch)} {overallAch.toFixed(1)}%
           </span>
@@ -102,7 +102,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
               style={{ width: `${Math.min(overallAch, 100)}%` }}
             />
           </div>
-          <span className="text-xs text-slate-400">{leads.length} divisi</span>
+          <span className="text-xs text-slate-400">{leads.length} division</span>
         </div>
       )}
 
@@ -110,9 +110,9 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
       <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         {/* Table header */}
         <div className="grid grid-cols-[1fr_auto_auto_auto] items-center gap-3 px-5 py-2.5 bg-slate-50 border-b border-slate-100">
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Divisi</span>
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Division</span>
           <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide w-24 hidden sm:block text-center">Progress</span>
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide w-28 text-right">Pencapaian</span>
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide w-28 text-right">Achievement</span>
           <span className="w-6" />
         </div>
 
@@ -124,7 +124,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
 
         {!loading && filtered.length === 0 && (
           <div className="py-12 text-center text-slate-400 text-sm">
-            Tidak ada divisi yang cocok dengan pencarian.
+            Tidak ada division yang cocok dengan pencarian.
           </div>
         )}
 
@@ -152,7 +152,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
                           {summary.memberCount} anggota · {summary.objectiveCount} objective
                         </p>
                       ) : (
-                        <p className="text-xs text-slate-300 mt-0.5">Memuat...</p>
+                        <p className="text-xs text-slate-300 mt-0.5">Loading...</p>
                       )}
                     </div>
 

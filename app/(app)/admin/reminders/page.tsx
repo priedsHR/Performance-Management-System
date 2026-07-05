@@ -58,7 +58,7 @@ export default async function RemindersPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-xl font-bold text-slate-900 mb-1">📧 Reminder</h1>
-        <p className="text-sm text-slate-400">Kirim manual atau atur jadwal otomatis ke semua Lead Divisi.</p>
+        <p className="text-sm text-slate-400">Send manually or set an automatic schedule for all Division Leads.</p>
       </div>
 
       <div>
@@ -67,7 +67,7 @@ export default async function RemindersPage() {
       </div>
 
       <div>
-        <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Jadwal Otomatis</h2>
+        <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Schedule Otomatis</h2>
         <ScheduleManager
           quarters={JSON.parse(JSON.stringify(quarters))}
           initialSchedules={JSON.parse(JSON.stringify(schedules))}

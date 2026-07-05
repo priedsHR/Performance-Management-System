@@ -92,7 +92,7 @@ export default function YearQuarterPicker({ quarters, value, onChange }: Props) 
                   {y}
                 </button>
               )) : (
-                <p className="px-3 py-2 text-xs text-slate-400">Tidak ditemukan</p>
+                <p className="px-3 py-2 text-xs text-slate-400">Not found</p>
               )}
             </div>
           </div>

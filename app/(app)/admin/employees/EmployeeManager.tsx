@@ -25,31 +25,31 @@ function EmployeeForm({ form, isEdit, onChange, onSave, onCancel }: {
 }) {
   return (
     <div className="bg-white rounded-2xl border border-amber-200 p-6 mb-5">
-      <h2 className="font-semibold text-slate-800 mb-4">{isEdit ? "✏️ Edit Karyawan" : "➕ Karyawan Baru"}</h2>
+      <h2 className="font-semibold text-slate-800 mb-4">{isEdit ? "✏️ Edit Employee" : "➕ New Employee"}</h2>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">👤 Nama*</label>
-          <input className={inputCls} value={form.name} onChange={(e) => onChange({ ...form, name: e.target.value })} placeholder="Nama lengkap" />
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">👤 Name*</label>
+          <input className={inputCls} value={form.name} onChange={(e) => onChange({ ...form, name: e.target.value })} placeholder="Full name" />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">🏢 Divisi</label>
-          <input className={inputCls} value={form.division} onChange={(e) => onChange({ ...form, division: e.target.value })} placeholder="contoh: HR, Marketing, Finance" />
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">🏢 Division</label>
+          <input className={inputCls} value={form.division} onChange={(e) => onChange({ ...form, division: e.target.value })} placeholder="e.g. HR, Marketing, Finance" />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">💼 Jabatan / Posisi</label>
-          <input className={inputCls} value={form.position} onChange={(e) => onChange({ ...form, position: e.target.value })} placeholder="contoh: Recruiter, HRBP, Content Creator" />
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">💼 Title / Position</label>
+          <input className={inputCls} value={form.position} onChange={(e) => onChange({ ...form, position: e.target.value })} placeholder="e.g. Recruiter, HRBP, Content Creator" />
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-500 mb-1.5">📌 Status</label>
           <select className={inputCls} value={form.isActive ? "true" : "false"} onChange={(e) => onChange({ ...form, isActive: e.target.value === "true" })}>
-            <option value="true">✅ Aktif</option>
-            <option value="false">⏸️ Non-aktif</option>
+            <option value="true">✅ Active</option>
+            <option value="false">⏸️ Non-active</option>
           </select>
         </div>
       </div>
       <div className="flex gap-2 mt-5">
-        <button onClick={onSave} className={btnPrimary}>💾 Simpan</button>
-        <button onClick={onCancel} className={btnSecondary}>✕ Batal</button>
+        <button onClick={onSave} className={btnPrimary}>💾 Save</button>
+        <button onClick={onCancel} className={btnSecondary}>✕ Cancel</button>
       </div>
     </div>
   );
@@ -70,9 +70,9 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
   function cancel() { setShowForm(false); setEditId(null); setForm(emptyForm); }
 
   async function createEmployee() {
-    if (!form.name.trim()) { alert("Nama wajib diisi."); return; }
+    if (!form.name.trim()) { alert("Name is required."); return; }
     const res = await fetch("/api/employees", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-    if (!res.ok) { alert((await res.json()).error ?? "Gagal membuat karyawan"); return; }
+    if (!res.ok) { alert((await res.json()).error ?? "Failed to create employee"); return; }
     const emp = await res.json();
     setEmployees((prev) => [...prev, emp].sort((a, b) => (a.division ?? "").localeCompare(b.division ?? "") || a.name.localeCompare(b.name)));
     cancel();
@@ -87,7 +87,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
   }
 
   async function deleteEmployee(id: string) {
-    if (!confirm("Hapus karyawan ini dari daftar?")) return;
+    if (!confirm("Remove this employee from the list?")) return;
     await fetch(`/api/employees/${id}`, { method: "DELETE" });
     setEmployees((prev) => prev.filter((e) => e.id !== id));
   }
@@ -120,10 +120,10 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
         const reloaded = await fetch("/api/employees").then((r) => r.json());
         setEmployees(Array.isArray(reloaded) ? reloaded : []);
       } else {
-        setImportResult({ type: "error", message: data.error ?? "Import gagal.", errors: data.errors });
+        setImportResult({ type: "error", message: data.error ?? "Import failed.", errors: data.errors });
       }
     } catch {
-      setImportResult({ type: "error", message: "Terjadi kesalahan jaringan." });
+      setImportResult({ type: "error", message: "A network error occurred." });
     } finally {
       setImporting(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -138,7 +138,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
   });
 
   const grouped = filtered.reduce<Record<string, Employee[]>>((acc, e) => {
-    const key = e.division || "(Tanpa Divisi)";
+    const key = e.division || "(No Division)";
     if (!acc[key]) acc[key] = [];
     acc[key].push(e);
     return acc;
@@ -153,11 +153,11 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
       <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
         <div className="flex flex-wrap items-center gap-2">
           <button onClick={() => { setShowForm((v) => !v); setEditId(null); setForm(emptyForm); }} className={btnPrimary}>
-            ➕ Tambah Karyawan
+            ➕ Add Employee
           </button>
           <a href="/api/employees/import" className={btnSecondary}>📋 Download Template</a>
           <label className={`${btnSecondary} cursor-pointer ${importing ? "opacity-50 pointer-events-none" : ""}`}>
-            {importing ? "⏳ Mengimpor..." : "📤 Bulk Import Excel"}
+            {importing ? "⏳ Importing..." : "📤 Bulk Import Excel"}
             <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
           </label>
         </div>
@@ -165,7 +165,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
         <div className="flex items-center gap-2 flex-wrap">
           <input
             className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white"
-            placeholder="🔍 Cari nama / divisi..."
+            placeholder="🔍 Search name / division..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -173,7 +173,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
             {(["all", "active", "inactive"] as const).map((f) => (
               <button key={f} onClick={() => setFilter(f)}
                 className={`px-3 py-1.5 rounded-md transition-all ${filter === f ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>
-                {f === "all" ? `Semua (${employees.length})` : f === "active" ? `✅ Aktif (${activeCount})` : `⏸️ Non-aktif (${inactiveCount})`}
+                {f === "all" ? `All (${employees.length})` : f === "active" ? `✅ Active (${activeCount})` : `⏸️ Non-active (${inactiveCount})`}
               </button>
             ))}
           </div>
@@ -197,13 +197,13 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
             <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
               <span className="text-base">🏢</span>
               <span className="font-semibold text-slate-700 text-sm">{division}</span>
-              <span className="text-slate-400 text-xs">({emps.length} karyawan)</span>
+              <span className="text-slate-400 text-xs">({emps.length} employee)</span>
             </div>
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100">
-                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Nama</th>
-                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Jabatan</th>
+                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Name</th>
+                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Title</th>
                   <th className="text-center px-5 py-2.5 text-xs font-semibold text-slate-400">Status</th>
                   <th className="px-5 py-2.5" />
                 </tr>
@@ -214,11 +214,11 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
                     <td className="px-5 py-3 font-medium text-slate-800">{emp.name}</td>
                     <td className="px-5 py-3 text-slate-500 text-xs">{emp.position || <span className="text-slate-300 italic">—</span>}</td>
                     <td className="px-5 py-3 text-center">
-                      <button onClick={() => toggleActive(emp)} title={emp.isActive ? "Klik untuk non-aktifkan" : "Klik untuk aktifkan"}
+                      <button onClick={() => toggleActive(emp)} title={emp.isActive ? "Click to deactivate" : "Click to activate"}
                         className="transition-transform hover:scale-110">
                         {emp.isActive
-                          ? <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-100 px-2.5 py-1 rounded-lg"><ToggleRight size={14} /> Aktif</span>
-                          : <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg"><ToggleLeft size={14} /> Non-aktif</span>
+                          ? <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-100 px-2.5 py-1 rounded-lg"><ToggleRight size={14} /> Active</span>
+                          : <span className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg"><ToggleLeft size={14} /> Non-active</span>
                         }
                       </button>
                     </td>
@@ -245,7 +245,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
           <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
             <div className="text-4xl mb-3">👥</div>
             <p className="text-slate-500 text-sm">
-              {employees.length === 0 ? "Belum ada karyawan. Tambah manual atau bulk import dari Excel." : "Tidak ada karyawan yang sesuai filter."}
+              {employees.length === 0 ? "No employees yet. Add manually or bulk import from Excel." : "No employees match the filter."}
             </p>
           </div>
         )}

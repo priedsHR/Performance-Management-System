@@ -22,7 +22,7 @@ export default function SetupPage() {
     e.preventDefault();
     setError("");
     if (password !== confirm) {
-      setError("Password tidak cocok");
+      setError("Passwords do not match");
       return;
     }
     if (password.length < 6) {
@@ -40,14 +40,14 @@ export default function SetupPage() {
       router.push("/login");
     } else {
       const d = await res.json();
-      setError(d.error ?? "Terjadi kesalahan");
+      setError(d.error ?? "Something went wrong");
     }
   }
 
   if (done === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <p className="text-slate-400">Memuat…</p>
+        <p className="text-slate-400">Loading…</p>
       </div>
     );
   }
@@ -57,8 +57,8 @@ export default function SetupPage() {
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
           <p className="text-2xl mb-2">🔒</p>
-          <p className="font-semibold text-slate-700">Setup sudah selesai</p>
-          <p className="text-sm text-slate-400 mt-1 mb-4">Silakan login dengan akun yang sudah ada.</p>
+          <p className="font-semibold text-slate-700">Setup done selesai</p>
+          <p className="text-sm text-slate-400 mt-1 mb-4">Silakan login dengan akun yang done ada.</p>
           <a href="/login" className="inline-block bg-blue-600 text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-blue-700 transition">
             Ke halaman login
           </a>
@@ -75,13 +75,13 @@ export default function SetupPage() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Nama</label>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Name</label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Nama lengkap"
+              placeholder="Full name"
               className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
             />
           </div>

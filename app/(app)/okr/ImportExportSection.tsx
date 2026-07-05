@@ -52,10 +52,10 @@ export default function ImportExportSection({ quarterId }: Props) {
         setResult({ type: "success", message: data.message, detail: data.errors?.join("; "), debug: debugInfo });
         setTimeout(() => window.location.reload(), 1400);
       } else {
-        setResult({ type: "error", message: data.error ?? "Import gagal.", debug: data.debug ? JSON.stringify(data.debug) : undefined });
+        setResult({ type: "error", message: data.error ?? "Import failed.", debug: data.debug ? JSON.stringify(data.debug) : undefined });
       }
     } catch {
-      setResult({ type: "error", message: "Terjadi kesalahan jaringan." });
+      setResult({ type: "error", message: "A network error occurred." });
     } finally {
       setImporting(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -93,13 +93,13 @@ export default function ImportExportSection({ quarterId }: Props) {
           <button onClick={handleTemplate} className={btnSlate}>📋 Download Template</button>
 
           <label className={btnAmber + " cursor-pointer"}>
-            {importing ? <><span className="animate-spin">⏳</span> Mengimpor…</> : <>📤 Import Excel</>}
+            {importing ? <><span className="animate-spin">⏳</span> Importing…</> : <>📤 Import Excel</>}
             <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
           </label>
 
           <button onClick={handleExport} className={btnGreen}>📥 Export OKR</button>
 
-          <label className={btnViolet + " cursor-pointer"} title="Cek isi file sebelum import — tidak mengubah data">
+          <label className={btnViolet + " cursor-pointer"} title="Preview the file before importing — no data is changed">
             {previewing ? <><span className="animate-spin">⏳</span> Membaca…</> : <>🔍 Preview File</>}
             <input ref={previewRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handlePreview} disabled={previewing} />
           </label>
@@ -114,7 +114,7 @@ export default function ImportExportSection({ quarterId }: Props) {
               <p className="font-semibold">{result.message}</p>
               {result.detail && <p className="text-xs mt-0.5 opacity-75">{result.detail}</p>}
               {result.debug && <p className="text-xs mt-1 opacity-60 font-mono bg-black/5 px-2 py-1 rounded">{result.debug}</p>}
-              {result.type === "success" && <p className="text-xs mt-0.5 opacity-75">Halaman akan dimuat ulang…</p>}
+              {result.type === "success" && <p className="text-xs mt-0.5 opacity-75">The page will reload…</p>}
             </div>
           </div>
         )}
@@ -140,7 +140,7 @@ export default function ImportExportSection({ quarterId }: Props) {
                 <table className="w-full text-xs font-mono border-collapse">
                   <thead>
                     <tr className="bg-slate-50 border-b border-slate-200">
-                      {["#", "A (Objective)", "B (Bobot Obj)", "C (Key Result)", "D (Target)", "E (Satuan)", "F (Bobot KR)"].map(h => (
+                      {["#", "A (Objective)", "B (Weight Obj)", "C (Key Result)", "D (Target)", "E (Satuan)", "F (Weight KR)"].map(h => (
                         <th key={h} className="text-left px-3 py-2 text-slate-500 font-semibold whitespace-nowrap">{h}</th>
                       ))}
                     </tr>
@@ -164,7 +164,7 @@ export default function ImportExportSection({ quarterId }: Props) {
                     })}
                   </tbody>
                 </table>
-                <p className="px-4 py-2 text-xs text-slate-400">Menampilkan 20 baris pertama. Baris dengan kolom C terisi = akan diimport.</p>
+                <p className="px-4 py-2 text-xs text-slate-400">Showing the first 20 rows. Rows with column C filled = will be imported.</p>
               </div>
             )}
           </div>
@@ -173,9 +173,9 @@ export default function ImportExportSection({ quarterId }: Props) {
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-700 space-y-1">
           <p className="font-semibold">💡 Tips</p>
           <ul className="list-disc list-inside space-y-0.5 text-amber-600">
-            <li>Klik <strong>🔍 Preview File</strong> dulu untuk cek apakah kolom A & C terbaca sebelum import</li>
-            <li>OKR status <strong>Draft</strong> akan digantikan · yang sudah <strong>Terkumpul</strong> aman</li>
-            <li>Kolom C (Key Result) harus terisi di setiap baris</li>
+            <li>Klik <strong>🔍 Preview File</strong> first to check that columns A & C are read correctly before importing</li>
+            <li>OKR status <strong>Draft</strong> will be replaced · completed ones <strong>Terkumpul</strong> aman</li>
+            <li>Column C (Key Result) must be filled in every row</li>
           </ul>
         </div>
     </div>

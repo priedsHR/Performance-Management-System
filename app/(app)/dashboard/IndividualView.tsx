@@ -66,7 +66,7 @@ function TrendChart({ trend }: { trend: TrendPoint[] }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
       <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
-        <h2 className="font-bold text-slate-700 text-sm">📈 Tren Pencapaian per Quarter</h2>
+        <h2 className="font-bold text-slate-700 text-sm">📈 Tren Achievement per Quarter</h2>
       </div>
       <div className="p-5 h-52">
         <ResponsiveContainer width="100%" height="100%">
@@ -75,7 +75,7 @@ function TrendChart({ trend }: { trend: TrendPoint[] }) {
             <XAxis dataKey="name" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
             <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} tickLine={false} axisLine={false} unit="%" />
             <Tooltip
-              formatter={(v) => [`${v}%`, "Pencapaian"]}
+              formatter={(v) => [`${v}%`, "Achievement"]}
               contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #e2e8f0" }}
             />
             <ReferenceLine y={100} stroke="#22c55e" strokeDasharray="4 2" label={{ value: "100%", fontSize: 10, fill: "#22c55e" }} />
@@ -140,7 +140,7 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
           <div className="min-w-0">
             <p className="text-xs font-semibold text-amber-600 mb-0.5">Objective #{index + 1}</p>
             <h3 className="font-bold text-slate-800 text-sm leading-snug">{a.objectiveTitle}</h3>
-            <span className="text-xs text-slate-400">⚖️ Bobot {a.weight}%</span>
+            <span className="text-xs text-slate-400">⚖️ Weight {a.weight}%</span>
           </div>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0 ml-3">
@@ -162,7 +162,7 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
             <div>
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">🔑 Key Results (Kontribusi Saya)</p>
               {a.krAssignments.length === 0 ? (
-                <p className="text-xs text-slate-400 italic">Belum ada KR yang di-assign.</p>
+                <p className="text-xs text-slate-400 italic">No KRs assigned yet.</p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm border-collapse">
@@ -171,9 +171,9 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
                         <th className="text-left py-2 pr-3 text-xs font-semibold text-slate-400">Key Result</th>
                         <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Target</th>
                         <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Satuan</th>
-                        <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Bobot</th>
+                        <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Weight</th>
                         <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Progress Saya</th>
-                        <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Pencapaian</th>
+                        <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Achievement</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -188,7 +188,7 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
                           <td className="py-2.5 px-2 text-right text-slate-600 tabular-nums">
                             {k.target}
                             {k.individualTarget != null && k.targetDivisi != null && k.targetDivisi !== k.target && (
-                              <span className="block text-xs text-slate-400">(divisi: {k.targetDivisi})</span>
+                              <span className="block text-xs text-slate-400">(division: {k.targetDivisi})</span>
                             )}
                           </td>
                           <td className="py-2.5 px-2 text-right text-slate-400">{k.unit}</td>
@@ -272,7 +272,7 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
             <YearQuarterPicker quarters={quarters} value={selectedQ} onChange={setSelectedQ} />
           </div>
           <div>
-            <p className="text-xs text-slate-400 mb-1.5">👤 Anggota</p>
+            <p className="text-xs text-slate-400 mb-1.5">👤 Member</p>
             <select
               value={selectedMember}
               onChange={(e) => setSelectedMember(e.target.value)}
@@ -289,7 +289,7 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
         <div className="flex items-center gap-3 flex-wrap">
           {data && data.assignments.length > 0 && (
             <div className={`border rounded-2xl px-6 py-3 text-center ${achBg}`}>
-              <p className="text-xs font-semibold mb-0.5">🏆 Pencapaian</p>
+              <p className="text-xs font-semibold mb-0.5">🏆 Achievement</p>
               <p className="text-3xl font-bold leading-tight">{data.achievement.toFixed(1)}%</p>
             </div>
           )}
@@ -311,7 +311,7 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
       {members.length === 0 && (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
           <div className="text-4xl mb-2">👥</div>
-          <p className="text-slate-500 text-sm">Belum ada anggota. Tambahkan di halaman OKR Divisi.</p>
+          <p className="text-slate-500 text-sm">No members yet. Add them on the Division OKR page.</p>
         </div>
       )}
 
@@ -324,7 +324,7 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
       {!loading && data && data.assignments.length === 0 && (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
           <div className="text-4xl mb-2">🎯</div>
-          <p className="text-slate-500 text-sm">Anggota ini belum punya assignment untuk quarter ini.</p>
+          <p className="text-slate-500 text-sm">This member has no assignments for this quarter yet.</p>
         </div>
       )}
 

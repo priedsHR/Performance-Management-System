@@ -6,6 +6,7 @@ import MemberDashboard from "./MemberDashboard";
 import MemberView from "./MemberView";
 import DashboardTabs from "./DashboardTabs";
 import AdminOverview from "./AdminOverview";
+import My360Card from "./My360Card";
 
 // Find the quarter that actually has assignments for a lead; fall back to active → first
 async function resolveDefaultQuarter(
@@ -37,12 +38,15 @@ export default async function DashboardPage() {
       : null;
 
     return (
-      <MemberView
-        quarters={JSON.parse(JSON.stringify(quarters))}
-        initialQuarterId={activeQuarter?.id ?? ""}
-        leadId={myLead?.id ?? null}
-        divisionName={myLead?.division ?? session!.user.division ?? null}
-      />
+      <div className="space-y-5">
+        <My360Card userId={session!.user.id} />
+        <MemberView
+          quarters={JSON.parse(JSON.stringify(quarters))}
+          initialQuarterId={activeQuarter?.id ?? ""}
+          leadId={myLead?.id ?? null}
+          divisionName={myLead?.division ?? session!.user.division ?? null}
+        />
+      </div>
     );
   }
 
@@ -55,13 +59,16 @@ export default async function DashboardPage() {
     });
     const defaultQuarterId = await resolveDefaultQuarter(session!.user.id, quarters);
     return (
-      <DashboardTabs
-        title={session!.user.division ?? "Divisi Saya"}
-        quarters={JSON.parse(JSON.stringify(quarters))}
-        members={JSON.parse(JSON.stringify(members))}
-        leadId={session!.user.id}
-        defaultQuarterId={defaultQuarterId}
-      />
+      <div className="space-y-5">
+        <My360Card userId={session!.user.id} />
+        <DashboardTabs
+          title={session!.user.division ?? "My Division"}
+          quarters={JSON.parse(JSON.stringify(quarters))}
+          members={JSON.parse(JSON.stringify(members))}
+          leadId={session!.user.id}
+          defaultQuarterId={defaultQuarterId}
+        />
+      </div>
     );
   }
 
@@ -78,7 +85,7 @@ export default async function DashboardPage() {
         <h1 className="text-xl font-bold text-slate-900">📊 Dashboard Admin</h1>
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
           <div className="text-4xl mb-2">👥</div>
-          <p className="text-slate-500 text-sm">Belum ada Lead Divisi. Tambahkan di Admin → Pengguna.</p>
+          <p className="text-slate-500 text-sm">No Division Leads yet. Add them in Admin → Users.</p>
         </div>
       </div>
     );

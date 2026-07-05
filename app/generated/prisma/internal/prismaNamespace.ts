@@ -400,7 +400,9 @@ export const ModelName = {
   FeedbackResponse: 'FeedbackResponse',
   FeedbackSetting: 'FeedbackSetting',
   FeedbackManualPeer: 'FeedbackManualPeer',
-  FeedbackComment: 'FeedbackComment'
+  FeedbackComment: 'FeedbackComment',
+  FeedbackPeerExclusion: 'FeedbackPeerExclusion',
+  IdpPlan: 'IdpPlan'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -416,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment"
+    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment" | "feedbackPeerExclusion" | "idpPlan"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1678,6 +1680,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    FeedbackPeerExclusion: {
+      payload: Prisma.$FeedbackPeerExclusionPayload<ExtArgs>
+      fields: Prisma.FeedbackPeerExclusionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FeedbackPeerExclusionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FeedbackPeerExclusionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload>
+        }
+        findFirst: {
+          args: Prisma.FeedbackPeerExclusionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FeedbackPeerExclusionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload>
+        }
+        findMany: {
+          args: Prisma.FeedbackPeerExclusionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload>[]
+        }
+        create: {
+          args: Prisma.FeedbackPeerExclusionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload>
+        }
+        createMany: {
+          args: Prisma.FeedbackPeerExclusionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FeedbackPeerExclusionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload>[]
+        }
+        delete: {
+          args: Prisma.FeedbackPeerExclusionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload>
+        }
+        update: {
+          args: Prisma.FeedbackPeerExclusionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload>
+        }
+        deleteMany: {
+          args: Prisma.FeedbackPeerExclusionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FeedbackPeerExclusionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FeedbackPeerExclusionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload>[]
+        }
+        upsert: {
+          args: Prisma.FeedbackPeerExclusionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPeerExclusionPayload>
+        }
+        aggregate: {
+          args: Prisma.FeedbackPeerExclusionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFeedbackPeerExclusion>
+        }
+        groupBy: {
+          args: Prisma.FeedbackPeerExclusionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeedbackPeerExclusionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FeedbackPeerExclusionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeedbackPeerExclusionCountAggregateOutputType> | number
+        }
+      }
+    }
+    IdpPlan: {
+      payload: Prisma.$IdpPlanPayload<ExtArgs>
+      fields: Prisma.IdpPlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.IdpPlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.IdpPlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload>
+        }
+        findFirst: {
+          args: Prisma.IdpPlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.IdpPlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload>
+        }
+        findMany: {
+          args: Prisma.IdpPlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload>[]
+        }
+        create: {
+          args: Prisma.IdpPlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload>
+        }
+        createMany: {
+          args: Prisma.IdpPlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.IdpPlanCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload>[]
+        }
+        delete: {
+          args: Prisma.IdpPlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload>
+        }
+        update: {
+          args: Prisma.IdpPlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.IdpPlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.IdpPlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.IdpPlanUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload>[]
+        }
+        upsert: {
+          args: Prisma.IdpPlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$IdpPlanPayload>
+        }
+        aggregate: {
+          args: Prisma.IdpPlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIdpPlan>
+        }
+        groupBy: {
+          args: Prisma.IdpPlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdpPlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.IdpPlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.IdpPlanCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1952,6 +2102,41 @@ export const FeedbackCommentScalarFieldEnum = {
 } as const
 
 export type FeedbackCommentScalarFieldEnum = (typeof FeedbackCommentScalarFieldEnum)[keyof typeof FeedbackCommentScalarFieldEnum]
+
+
+export const FeedbackPeerExclusionScalarFieldEnum = {
+  id: 'id',
+  userAId: 'userAId',
+  userBId: 'userBId',
+  createdAt: 'createdAt'
+} as const
+
+export type FeedbackPeerExclusionScalarFieldEnum = (typeof FeedbackPeerExclusionScalarFieldEnum)[keyof typeof FeedbackPeerExclusionScalarFieldEnum]
+
+
+export const IdpPlanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  periodId: 'periodId',
+  careerAspiration: 'careerAspiration',
+  coreStrength: 'coreStrength',
+  technicalFocus: 'technicalFocus',
+  technicalAction: 'technicalAction',
+  technicalMetric: 'technicalMetric',
+  behavioralFocus: 'behavioralFocus',
+  behavioralAction: 'behavioralAction',
+  behavioralMetric: 'behavioralMetric',
+  learningFocus: 'learningFocus',
+  learningAction: 'learningAction',
+  learningMetric: 'learningMetric',
+  impactProject: 'impactProject',
+  status: 'status',
+  leadNote: 'leadNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IdpPlanScalarFieldEnum = (typeof IdpPlanScalarFieldEnum)[keyof typeof IdpPlanScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2245,6 +2430,8 @@ export type GlobalOmitConfig = {
   feedbackSetting?: Prisma.FeedbackSettingOmit
   feedbackManualPeer?: Prisma.FeedbackManualPeerOmit
   feedbackComment?: Prisma.FeedbackCommentOmit
+  feedbackPeerExclusion?: Prisma.FeedbackPeerExclusionOmit
+  idpPlan?: Prisma.IdpPlanOmit
 }
 
 /* Types for Logging */

@@ -5,6 +5,7 @@ import {
   computeAssignmentsFor,
   ensureFeedbackBootstrap,
   getActivePeriod,
+  loadPeerExclusions,
   loadProfilesLite,
 } from "@/lib/feedback/service";
 
@@ -24,7 +25,8 @@ export async function GET() {
     }),
   ]);
   const manualPeerRateeIds = manualPeers.map((p) => p.rateeId);
-  const assignments = computeAssignmentsFor(session.user.id, profiles, manualPeerRateeIds);
+  const excluded = await loadPeerExclusions();
+  const assignments = computeAssignmentsFor(session.user.id, profiles, manualPeerRateeIds, excluded);
 
   const comps = await prisma.competency.findMany();
   const compMap = new Map(comps.map((c) => [c.id, c]));
@@ -102,7 +104,7 @@ export async function POST(req: NextRequest) {
       select: { rateeId: true },
     }),
   ]);
-  const assignments = computeAssignmentsFor(session.user.id, profiles, manualPeersPost.map((p) => p.rateeId));
+  const assignments = computeAssignmentsFor(session.user.id, profiles, manualPeersPost.map((p) => p.rateeId), await loadPeerExclusions());
   const assignment = assignments.find((a) => a.ratee.userId === rateeUserId);
   if (!assignment)
     return NextResponse.json({ error: "You are not assigned to rate this person." }, { status: 403 });

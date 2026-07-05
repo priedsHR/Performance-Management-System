@@ -217,6 +217,9 @@ export type UserWhereInput = {
   commentsReceived?: Prisma.FeedbackCommentListRelationFilter
   manualPeersGiven?: Prisma.FeedbackManualPeerListRelationFilter
   manualPeersReceived?: Prisma.FeedbackManualPeerListRelationFilter
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionListRelationFilter
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionListRelationFilter
+  idpPlans?: Prisma.IdpPlanListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -239,6 +242,9 @@ export type UserOrderByWithRelationInput = {
   commentsReceived?: Prisma.FeedbackCommentOrderByRelationAggregateInput
   manualPeersGiven?: Prisma.FeedbackManualPeerOrderByRelationAggregateInput
   manualPeersReceived?: Prisma.FeedbackManualPeerOrderByRelationAggregateInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionOrderByRelationAggregateInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionOrderByRelationAggregateInput
+  idpPlans?: Prisma.IdpPlanOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -264,6 +270,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   commentsReceived?: Prisma.FeedbackCommentListRelationFilter
   manualPeersGiven?: Prisma.FeedbackManualPeerListRelationFilter
   manualPeersReceived?: Prisma.FeedbackManualPeerListRelationFilter
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionListRelationFilter
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionListRelationFilter
+  idpPlans?: Prisma.IdpPlanListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -314,6 +323,9 @@ export type UserCreateInput = {
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -336,6 +348,9 @@ export type UserUncheckedCreateInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -358,6 +373,9 @@ export type UserUpdateInput = {
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -380,6 +398,9 @@ export type UserUncheckedUpdateInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -632,6 +653,48 @@ export type UserUpdateOneRequiredWithoutCommentsReceivedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommentsReceivedInput, Prisma.UserUpdateWithoutCommentsReceivedInput>, Prisma.UserUncheckedUpdateWithoutCommentsReceivedInput>
 }
 
+export type UserCreateNestedOneWithoutPeerExclusionsAInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPeerExclusionsAInput, Prisma.UserUncheckedCreateWithoutPeerExclusionsAInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPeerExclusionsAInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutPeerExclusionsBInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPeerExclusionsBInput, Prisma.UserUncheckedCreateWithoutPeerExclusionsBInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPeerExclusionsBInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPeerExclusionsANestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPeerExclusionsAInput, Prisma.UserUncheckedCreateWithoutPeerExclusionsAInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPeerExclusionsAInput
+  upsert?: Prisma.UserUpsertWithoutPeerExclusionsAInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPeerExclusionsAInput, Prisma.UserUpdateWithoutPeerExclusionsAInput>, Prisma.UserUncheckedUpdateWithoutPeerExclusionsAInput>
+}
+
+export type UserUpdateOneRequiredWithoutPeerExclusionsBNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPeerExclusionsBInput, Prisma.UserUncheckedCreateWithoutPeerExclusionsBInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPeerExclusionsBInput
+  upsert?: Prisma.UserUpsertWithoutPeerExclusionsBInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPeerExclusionsBInput, Prisma.UserUpdateWithoutPeerExclusionsBInput>, Prisma.UserUncheckedUpdateWithoutPeerExclusionsBInput>
+}
+
+export type UserCreateNestedOneWithoutIdpPlansInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutIdpPlansInput, Prisma.UserUncheckedCreateWithoutIdpPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutIdpPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutIdpPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutIdpPlansInput, Prisma.UserUncheckedCreateWithoutIdpPlansInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutIdpPlansInput
+  upsert?: Prisma.UserUpsertWithoutIdpPlansInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutIdpPlansInput, Prisma.UserUpdateWithoutIdpPlansInput>, Prisma.UserUncheckedUpdateWithoutIdpPlansInput>
+}
+
 export type UserCreateWithoutObjectivesInput = {
   id?: string
   name: string
@@ -651,6 +714,9 @@ export type UserCreateWithoutObjectivesInput = {
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutObjectivesInput = {
@@ -672,6 +738,9 @@ export type UserUncheckedCreateWithoutObjectivesInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutObjectivesInput = {
@@ -709,6 +778,9 @@ export type UserUpdateWithoutObjectivesInput = {
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutObjectivesInput = {
@@ -730,6 +802,9 @@ export type UserUncheckedUpdateWithoutObjectivesInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTeamMembersInput = {
@@ -751,6 +826,9 @@ export type UserCreateWithoutTeamMembersInput = {
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTeamMembersInput = {
@@ -772,6 +850,9 @@ export type UserUncheckedCreateWithoutTeamMembersInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTeamMembersInput = {
@@ -798,6 +879,9 @@ export type UserCreateWithoutTeamMembershipInput = {
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTeamMembershipInput = {
@@ -819,6 +903,9 @@ export type UserUncheckedCreateWithoutTeamMembershipInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTeamMembershipInput = {
@@ -856,6 +943,9 @@ export type UserUpdateWithoutTeamMembersInput = {
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeamMembersInput = {
@@ -877,6 +967,9 @@ export type UserUncheckedUpdateWithoutTeamMembersInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutTeamMembershipInput = {
@@ -909,6 +1002,9 @@ export type UserUpdateWithoutTeamMembershipInput = {
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTeamMembershipInput = {
@@ -930,6 +1026,9 @@ export type UserUncheckedUpdateWithoutTeamMembershipInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFeedbackProfileInput = {
@@ -951,6 +1050,9 @@ export type UserCreateWithoutFeedbackProfileInput = {
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackProfileInput = {
@@ -972,6 +1074,9 @@ export type UserUncheckedCreateWithoutFeedbackProfileInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackProfileInput = {
@@ -998,6 +1103,9 @@ export type UserCreateWithoutManagedProfilesInput = {
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutManagedProfilesInput = {
@@ -1019,6 +1127,9 @@ export type UserUncheckedCreateWithoutManagedProfilesInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutManagedProfilesInput = {
@@ -1056,6 +1167,9 @@ export type UserUpdateWithoutFeedbackProfileInput = {
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackProfileInput = {
@@ -1077,6 +1191,9 @@ export type UserUncheckedUpdateWithoutFeedbackProfileInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutManagedProfilesInput = {
@@ -1109,6 +1226,9 @@ export type UserUpdateWithoutManagedProfilesInput = {
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutManagedProfilesInput = {
@@ -1130,6 +1250,9 @@ export type UserUncheckedUpdateWithoutManagedProfilesInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFeedbackGivenInput = {
@@ -1151,6 +1274,9 @@ export type UserCreateWithoutFeedbackGivenInput = {
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackGivenInput = {
@@ -1172,6 +1298,9 @@ export type UserUncheckedCreateWithoutFeedbackGivenInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackGivenInput = {
@@ -1198,6 +1327,9 @@ export type UserCreateWithoutFeedbackReceivedInput = {
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFeedbackReceivedInput = {
@@ -1219,6 +1351,9 @@ export type UserUncheckedCreateWithoutFeedbackReceivedInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFeedbackReceivedInput = {
@@ -1256,6 +1391,9 @@ export type UserUpdateWithoutFeedbackGivenInput = {
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackGivenInput = {
@@ -1277,6 +1415,9 @@ export type UserUncheckedUpdateWithoutFeedbackGivenInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutFeedbackReceivedInput = {
@@ -1309,6 +1450,9 @@ export type UserUpdateWithoutFeedbackReceivedInput = {
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFeedbackReceivedInput = {
@@ -1330,6 +1474,9 @@ export type UserUncheckedUpdateWithoutFeedbackReceivedInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutManualPeersGivenInput = {
@@ -1351,6 +1498,9 @@ export type UserCreateWithoutManualPeersGivenInput = {
   commentsGiven?: Prisma.FeedbackCommentCreateNestedManyWithoutRaterInput
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutManualPeersGivenInput = {
@@ -1372,6 +1522,9 @@ export type UserUncheckedCreateWithoutManualPeersGivenInput = {
   commentsGiven?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRaterInput
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutManualPeersGivenInput = {
@@ -1398,6 +1551,9 @@ export type UserCreateWithoutManualPeersReceivedInput = {
   commentsGiven?: Prisma.FeedbackCommentCreateNestedManyWithoutRaterInput
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutManualPeersReceivedInput = {
@@ -1419,6 +1575,9 @@ export type UserUncheckedCreateWithoutManualPeersReceivedInput = {
   commentsGiven?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRaterInput
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutManualPeersReceivedInput = {
@@ -1456,6 +1615,9 @@ export type UserUpdateWithoutManualPeersGivenInput = {
   commentsGiven?: Prisma.FeedbackCommentUpdateManyWithoutRaterNestedInput
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutManualPeersGivenInput = {
@@ -1477,6 +1639,9 @@ export type UserUncheckedUpdateWithoutManualPeersGivenInput = {
   commentsGiven?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRaterNestedInput
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutManualPeersReceivedInput = {
@@ -1509,6 +1674,9 @@ export type UserUpdateWithoutManualPeersReceivedInput = {
   commentsGiven?: Prisma.FeedbackCommentUpdateManyWithoutRaterNestedInput
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutManualPeersReceivedInput = {
@@ -1530,6 +1698,9 @@ export type UserUncheckedUpdateWithoutManualPeersReceivedInput = {
   commentsGiven?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRaterNestedInput
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommentsGivenInput = {
@@ -1551,6 +1722,9 @@ export type UserCreateWithoutCommentsGivenInput = {
   commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentsGivenInput = {
@@ -1572,6 +1746,9 @@ export type UserUncheckedCreateWithoutCommentsGivenInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentsGivenInput = {
@@ -1598,6 +1775,9 @@ export type UserCreateWithoutCommentsReceivedInput = {
   commentsGiven?: Prisma.FeedbackCommentCreateNestedManyWithoutRaterInput
   manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentsReceivedInput = {
@@ -1619,6 +1799,9 @@ export type UserUncheckedCreateWithoutCommentsReceivedInput = {
   commentsGiven?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRaterInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentsReceivedInput = {
@@ -1656,6 +1839,9 @@ export type UserUpdateWithoutCommentsGivenInput = {
   commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsGivenInput = {
@@ -1677,6 +1863,9 @@ export type UserUncheckedUpdateWithoutCommentsGivenInput = {
   commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCommentsReceivedInput = {
@@ -1709,6 +1898,9 @@ export type UserUpdateWithoutCommentsReceivedInput = {
   commentsGiven?: Prisma.FeedbackCommentUpdateManyWithoutRaterNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsReceivedInput = {
@@ -1730,6 +1922,345 @@ export type UserUncheckedUpdateWithoutCommentsReceivedInput = {
   commentsGiven?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
   manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPeerExclusionsAInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  division?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  objectives?: Prisma.ObjectiveCreateNestedManyWithoutUserInput
+  teamMembers?: Prisma.TeamMemberCreateNestedManyWithoutLeadInput
+  teamMembership?: Prisma.TeamMemberCreateNestedOneWithoutUserInput
+  feedbackProfile?: Prisma.FeedbackProfileCreateNestedOneWithoutUserInput
+  managedProfiles?: Prisma.FeedbackProfileCreateNestedManyWithoutManagerInput
+  feedbackGiven?: Prisma.FeedbackResponseCreateNestedManyWithoutRaterInput
+  feedbackReceived?: Prisma.FeedbackResponseCreateNestedManyWithoutRateeInput
+  commentsGiven?: Prisma.FeedbackCommentCreateNestedManyWithoutRaterInput
+  commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPeerExclusionsAInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  division?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  objectives?: Prisma.ObjectiveUncheckedCreateNestedManyWithoutUserInput
+  teamMembers?: Prisma.TeamMemberUncheckedCreateNestedManyWithoutLeadInput
+  teamMembership?: Prisma.TeamMemberUncheckedCreateNestedOneWithoutUserInput
+  feedbackProfile?: Prisma.FeedbackProfileUncheckedCreateNestedOneWithoutUserInput
+  managedProfiles?: Prisma.FeedbackProfileUncheckedCreateNestedManyWithoutManagerInput
+  feedbackGiven?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutRaterInput
+  feedbackReceived?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutRateeInput
+  commentsGiven?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRaterInput
+  commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPeerExclusionsAInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPeerExclusionsAInput, Prisma.UserUncheckedCreateWithoutPeerExclusionsAInput>
+}
+
+export type UserCreateWithoutPeerExclusionsBInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  division?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  objectives?: Prisma.ObjectiveCreateNestedManyWithoutUserInput
+  teamMembers?: Prisma.TeamMemberCreateNestedManyWithoutLeadInput
+  teamMembership?: Prisma.TeamMemberCreateNestedOneWithoutUserInput
+  feedbackProfile?: Prisma.FeedbackProfileCreateNestedOneWithoutUserInput
+  managedProfiles?: Prisma.FeedbackProfileCreateNestedManyWithoutManagerInput
+  feedbackGiven?: Prisma.FeedbackResponseCreateNestedManyWithoutRaterInput
+  feedbackReceived?: Prisma.FeedbackResponseCreateNestedManyWithoutRateeInput
+  commentsGiven?: Prisma.FeedbackCommentCreateNestedManyWithoutRaterInput
+  commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPeerExclusionsBInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  division?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  objectives?: Prisma.ObjectiveUncheckedCreateNestedManyWithoutUserInput
+  teamMembers?: Prisma.TeamMemberUncheckedCreateNestedManyWithoutLeadInput
+  teamMembership?: Prisma.TeamMemberUncheckedCreateNestedOneWithoutUserInput
+  feedbackProfile?: Prisma.FeedbackProfileUncheckedCreateNestedOneWithoutUserInput
+  managedProfiles?: Prisma.FeedbackProfileUncheckedCreateNestedManyWithoutManagerInput
+  feedbackGiven?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutRaterInput
+  feedbackReceived?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutRateeInput
+  commentsGiven?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRaterInput
+  commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPeerExclusionsBInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPeerExclusionsBInput, Prisma.UserUncheckedCreateWithoutPeerExclusionsBInput>
+}
+
+export type UserUpsertWithoutPeerExclusionsAInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPeerExclusionsAInput, Prisma.UserUncheckedUpdateWithoutPeerExclusionsAInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPeerExclusionsAInput, Prisma.UserUncheckedCreateWithoutPeerExclusionsAInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPeerExclusionsAInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPeerExclusionsAInput, Prisma.UserUncheckedUpdateWithoutPeerExclusionsAInput>
+}
+
+export type UserUpdateWithoutPeerExclusionsAInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  division?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  objectives?: Prisma.ObjectiveUpdateManyWithoutUserNestedInput
+  teamMembers?: Prisma.TeamMemberUpdateManyWithoutLeadNestedInput
+  teamMembership?: Prisma.TeamMemberUpdateOneWithoutUserNestedInput
+  feedbackProfile?: Prisma.FeedbackProfileUpdateOneWithoutUserNestedInput
+  managedProfiles?: Prisma.FeedbackProfileUpdateManyWithoutManagerNestedInput
+  feedbackGiven?: Prisma.FeedbackResponseUpdateManyWithoutRaterNestedInput
+  feedbackReceived?: Prisma.FeedbackResponseUpdateManyWithoutRateeNestedInput
+  commentsGiven?: Prisma.FeedbackCommentUpdateManyWithoutRaterNestedInput
+  commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPeerExclusionsAInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  division?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  objectives?: Prisma.ObjectiveUncheckedUpdateManyWithoutUserNestedInput
+  teamMembers?: Prisma.TeamMemberUncheckedUpdateManyWithoutLeadNestedInput
+  teamMembership?: Prisma.TeamMemberUncheckedUpdateOneWithoutUserNestedInput
+  feedbackProfile?: Prisma.FeedbackProfileUncheckedUpdateOneWithoutUserNestedInput
+  managedProfiles?: Prisma.FeedbackProfileUncheckedUpdateManyWithoutManagerNestedInput
+  feedbackGiven?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutRaterNestedInput
+  feedbackReceived?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutRateeNestedInput
+  commentsGiven?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRaterNestedInput
+  commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutPeerExclusionsBInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPeerExclusionsBInput, Prisma.UserUncheckedUpdateWithoutPeerExclusionsBInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPeerExclusionsBInput, Prisma.UserUncheckedCreateWithoutPeerExclusionsBInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPeerExclusionsBInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPeerExclusionsBInput, Prisma.UserUncheckedUpdateWithoutPeerExclusionsBInput>
+}
+
+export type UserUpdateWithoutPeerExclusionsBInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  division?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  objectives?: Prisma.ObjectiveUpdateManyWithoutUserNestedInput
+  teamMembers?: Prisma.TeamMemberUpdateManyWithoutLeadNestedInput
+  teamMembership?: Prisma.TeamMemberUpdateOneWithoutUserNestedInput
+  feedbackProfile?: Prisma.FeedbackProfileUpdateOneWithoutUserNestedInput
+  managedProfiles?: Prisma.FeedbackProfileUpdateManyWithoutManagerNestedInput
+  feedbackGiven?: Prisma.FeedbackResponseUpdateManyWithoutRaterNestedInput
+  feedbackReceived?: Prisma.FeedbackResponseUpdateManyWithoutRateeNestedInput
+  commentsGiven?: Prisma.FeedbackCommentUpdateManyWithoutRaterNestedInput
+  commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPeerExclusionsBInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  division?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  objectives?: Prisma.ObjectiveUncheckedUpdateManyWithoutUserNestedInput
+  teamMembers?: Prisma.TeamMemberUncheckedUpdateManyWithoutLeadNestedInput
+  teamMembership?: Prisma.TeamMemberUncheckedUpdateOneWithoutUserNestedInput
+  feedbackProfile?: Prisma.FeedbackProfileUncheckedUpdateOneWithoutUserNestedInput
+  managedProfiles?: Prisma.FeedbackProfileUncheckedUpdateManyWithoutManagerNestedInput
+  feedbackGiven?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutRaterNestedInput
+  feedbackReceived?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutRateeNestedInput
+  commentsGiven?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRaterNestedInput
+  commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutIdpPlansInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  division?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  objectives?: Prisma.ObjectiveCreateNestedManyWithoutUserInput
+  teamMembers?: Prisma.TeamMemberCreateNestedManyWithoutLeadInput
+  teamMembership?: Prisma.TeamMemberCreateNestedOneWithoutUserInput
+  feedbackProfile?: Prisma.FeedbackProfileCreateNestedOneWithoutUserInput
+  managedProfiles?: Prisma.FeedbackProfileCreateNestedManyWithoutManagerInput
+  feedbackGiven?: Prisma.FeedbackResponseCreateNestedManyWithoutRaterInput
+  feedbackReceived?: Prisma.FeedbackResponseCreateNestedManyWithoutRateeInput
+  commentsGiven?: Prisma.FeedbackCommentCreateNestedManyWithoutRaterInput
+  commentsReceived?: Prisma.FeedbackCommentCreateNestedManyWithoutRateeInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRaterInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionCreateNestedManyWithoutUserBInput
+}
+
+export type UserUncheckedCreateWithoutIdpPlansInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  division?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  objectives?: Prisma.ObjectiveUncheckedCreateNestedManyWithoutUserInput
+  teamMembers?: Prisma.TeamMemberUncheckedCreateNestedManyWithoutLeadInput
+  teamMembership?: Prisma.TeamMemberUncheckedCreateNestedOneWithoutUserInput
+  feedbackProfile?: Prisma.FeedbackProfileUncheckedCreateNestedOneWithoutUserInput
+  managedProfiles?: Prisma.FeedbackProfileUncheckedCreateNestedManyWithoutManagerInput
+  feedbackGiven?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutRaterInput
+  feedbackReceived?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutRateeInput
+  commentsGiven?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRaterInput
+  commentsReceived?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutRateeInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRaterInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutRateeInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserAInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedCreateNestedManyWithoutUserBInput
+}
+
+export type UserCreateOrConnectWithoutIdpPlansInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutIdpPlansInput, Prisma.UserUncheckedCreateWithoutIdpPlansInput>
+}
+
+export type UserUpsertWithoutIdpPlansInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutIdpPlansInput, Prisma.UserUncheckedUpdateWithoutIdpPlansInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutIdpPlansInput, Prisma.UserUncheckedCreateWithoutIdpPlansInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutIdpPlansInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutIdpPlansInput, Prisma.UserUncheckedUpdateWithoutIdpPlansInput>
+}
+
+export type UserUpdateWithoutIdpPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  division?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  objectives?: Prisma.ObjectiveUpdateManyWithoutUserNestedInput
+  teamMembers?: Prisma.TeamMemberUpdateManyWithoutLeadNestedInput
+  teamMembership?: Prisma.TeamMemberUpdateOneWithoutUserNestedInput
+  feedbackProfile?: Prisma.FeedbackProfileUpdateOneWithoutUserNestedInput
+  managedProfiles?: Prisma.FeedbackProfileUpdateManyWithoutManagerNestedInput
+  feedbackGiven?: Prisma.FeedbackResponseUpdateManyWithoutRaterNestedInput
+  feedbackReceived?: Prisma.FeedbackResponseUpdateManyWithoutRateeNestedInput
+  commentsGiven?: Prisma.FeedbackCommentUpdateManyWithoutRaterNestedInput
+  commentsReceived?: Prisma.FeedbackCommentUpdateManyWithoutRateeNestedInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerUpdateManyWithoutRaterNestedInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUpdateManyWithoutUserBNestedInput
+}
+
+export type UserUncheckedUpdateWithoutIdpPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  division?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  objectives?: Prisma.ObjectiveUncheckedUpdateManyWithoutUserNestedInput
+  teamMembers?: Prisma.TeamMemberUncheckedUpdateManyWithoutLeadNestedInput
+  teamMembership?: Prisma.TeamMemberUncheckedUpdateOneWithoutUserNestedInput
+  feedbackProfile?: Prisma.FeedbackProfileUncheckedUpdateOneWithoutUserNestedInput
+  managedProfiles?: Prisma.FeedbackProfileUncheckedUpdateManyWithoutManagerNestedInput
+  feedbackGiven?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutRaterNestedInput
+  feedbackReceived?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutRateeNestedInput
+  commentsGiven?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRaterNestedInput
+  commentsReceived?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutRateeNestedInput
+  manualPeersGiven?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRaterNestedInput
+  manualPeersReceived?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutRateeNestedInput
+  peerExclusionsA?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserANestedInput
+  peerExclusionsB?: Prisma.FeedbackPeerExclusionUncheckedUpdateManyWithoutUserBNestedInput
 }
 
 
@@ -1747,6 +2278,9 @@ export type UserCountOutputType = {
   commentsReceived: number
   manualPeersGiven: number
   manualPeersReceived: number
+  peerExclusionsA: number
+  peerExclusionsB: number
+  idpPlans: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1759,6 +2293,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   commentsReceived?: boolean | UserCountOutputTypeCountCommentsReceivedArgs
   manualPeersGiven?: boolean | UserCountOutputTypeCountManualPeersGivenArgs
   manualPeersReceived?: boolean | UserCountOutputTypeCountManualPeersReceivedArgs
+  peerExclusionsA?: boolean | UserCountOutputTypeCountPeerExclusionsAArgs
+  peerExclusionsB?: boolean | UserCountOutputTypeCountPeerExclusionsBArgs
+  idpPlans?: boolean | UserCountOutputTypeCountIdpPlansArgs
 }
 
 /**
@@ -1834,6 +2371,27 @@ export type UserCountOutputTypeCountManualPeersReceivedArgs<ExtArgs extends runt
   where?: Prisma.FeedbackManualPeerWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPeerExclusionsAArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeedbackPeerExclusionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPeerExclusionsBArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeedbackPeerExclusionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountIdpPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IdpPlanWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1855,6 +2413,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   commentsReceived?: boolean | Prisma.User$commentsReceivedArgs<ExtArgs>
   manualPeersGiven?: boolean | Prisma.User$manualPeersGivenArgs<ExtArgs>
   manualPeersReceived?: boolean | Prisma.User$manualPeersReceivedArgs<ExtArgs>
+  peerExclusionsA?: boolean | Prisma.User$peerExclusionsAArgs<ExtArgs>
+  peerExclusionsB?: boolean | Prisma.User$peerExclusionsBArgs<ExtArgs>
+  idpPlans?: boolean | Prisma.User$idpPlansArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1904,6 +2465,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   commentsReceived?: boolean | Prisma.User$commentsReceivedArgs<ExtArgs>
   manualPeersGiven?: boolean | Prisma.User$manualPeersGivenArgs<ExtArgs>
   manualPeersReceived?: boolean | Prisma.User$manualPeersReceivedArgs<ExtArgs>
+  peerExclusionsA?: boolean | Prisma.User$peerExclusionsAArgs<ExtArgs>
+  peerExclusionsB?: boolean | Prisma.User$peerExclusionsBArgs<ExtArgs>
+  idpPlans?: boolean | Prisma.User$idpPlansArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1923,6 +2487,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     commentsReceived: Prisma.$FeedbackCommentPayload<ExtArgs>[]
     manualPeersGiven: Prisma.$FeedbackManualPeerPayload<ExtArgs>[]
     manualPeersReceived: Prisma.$FeedbackManualPeerPayload<ExtArgs>[]
+    peerExclusionsA: Prisma.$FeedbackPeerExclusionPayload<ExtArgs>[]
+    peerExclusionsB: Prisma.$FeedbackPeerExclusionPayload<ExtArgs>[]
+    idpPlans: Prisma.$IdpPlanPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2338,6 +2905,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   commentsReceived<T extends Prisma.User$commentsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   manualPeersGiven<T extends Prisma.User$manualPeersGivenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$manualPeersGivenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackManualPeerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   manualPeersReceived<T extends Prisma.User$manualPeersReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$manualPeersReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackManualPeerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  peerExclusionsA<T extends Prisma.User$peerExclusionsAArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$peerExclusionsAArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPeerExclusionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  peerExclusionsB<T extends Prisma.User$peerExclusionsBArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$peerExclusionsBArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPeerExclusionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  idpPlans<T extends Prisma.User$idpPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$idpPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdpPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3019,6 +3589,78 @@ export type User$manualPeersReceivedArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.FeedbackManualPeerScalarFieldEnum | Prisma.FeedbackManualPeerScalarFieldEnum[]
+}
+
+/**
+ * User.peerExclusionsA
+ */
+export type User$peerExclusionsAArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FeedbackPeerExclusion
+   */
+  select?: Prisma.FeedbackPeerExclusionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FeedbackPeerExclusion
+   */
+  omit?: Prisma.FeedbackPeerExclusionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeedbackPeerExclusionInclude<ExtArgs> | null
+  where?: Prisma.FeedbackPeerExclusionWhereInput
+  orderBy?: Prisma.FeedbackPeerExclusionOrderByWithRelationInput | Prisma.FeedbackPeerExclusionOrderByWithRelationInput[]
+  cursor?: Prisma.FeedbackPeerExclusionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeedbackPeerExclusionScalarFieldEnum | Prisma.FeedbackPeerExclusionScalarFieldEnum[]
+}
+
+/**
+ * User.peerExclusionsB
+ */
+export type User$peerExclusionsBArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FeedbackPeerExclusion
+   */
+  select?: Prisma.FeedbackPeerExclusionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FeedbackPeerExclusion
+   */
+  omit?: Prisma.FeedbackPeerExclusionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeedbackPeerExclusionInclude<ExtArgs> | null
+  where?: Prisma.FeedbackPeerExclusionWhereInput
+  orderBy?: Prisma.FeedbackPeerExclusionOrderByWithRelationInput | Prisma.FeedbackPeerExclusionOrderByWithRelationInput[]
+  cursor?: Prisma.FeedbackPeerExclusionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeedbackPeerExclusionScalarFieldEnum | Prisma.FeedbackPeerExclusionScalarFieldEnum[]
+}
+
+/**
+ * User.idpPlans
+ */
+export type User$idpPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IdpPlan
+   */
+  select?: Prisma.IdpPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IdpPlan
+   */
+  omit?: Prisma.IdpPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IdpPlanInclude<ExtArgs> | null
+  where?: Prisma.IdpPlanWhereInput
+  orderBy?: Prisma.IdpPlanOrderByWithRelationInput | Prisma.IdpPlanOrderByWithRelationInput[]
+  cursor?: Prisma.IdpPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IdpPlanScalarFieldEnum | Prisma.IdpPlanScalarFieldEnum[]
 }
 
 /**

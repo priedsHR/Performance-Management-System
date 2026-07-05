@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import nodemailer from "nodemailer";
-import { computeAssignmentsFor, loadProfilesLite } from "@/lib/feedback/service";
+import { computeAssignmentsFor, loadPeerExclusions, loadProfilesLite } from "@/lib/feedback/service";
 
 const APP_URL = process.env.NEXTAUTH_URL ?? "";
 const GMAIL_USER = process.env.GMAIL_USER ?? "";
@@ -137,9 +137,10 @@ export async function POST(req: NextRequest) {
   });
   const userById = new Map(users.map((u) => [u.id, u]));
 
+  const excludedPairs = await loadPeerExclusions();
   const usersWithPending: { id: string; name: string | null; email: string | null; pendingCount: number }[] = [];
   for (const p of activeProfiles) {
-    const assignments = computeAssignmentsFor(p.userId, activeProfiles, manualByRater.get(p.userId) ?? []);
+    const assignments = computeAssignmentsFor(p.userId, activeProfiles, manualByRater.get(p.userId) ?? [], excludedPairs);
     const pendingCount = assignments.filter((a) => !submittedPairs.has(`${p.userId}:${a.ratee.userId}`)).length;
     if (pendingCount > 0) {
       const u = userById.get(p.userId);

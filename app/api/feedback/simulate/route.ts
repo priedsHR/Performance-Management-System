@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { computeAssignmentsFor, loadProfilesLite } from "@/lib/feedback/service";
+import { computeAssignmentsFor, loadPeerExclusions, loadProfilesLite } from "@/lib/feedback/service";
 
 const DEMO_EMAIL_SUFFIX = "@demo360.local";
 
@@ -48,8 +48,9 @@ export async function POST(req: Request) {
     relation: string; score: number; submitted: boolean;
   }[] = [];
 
+  const excluded = await loadPeerExclusions();
   for (const rater of profiles) {
-    const assignments = computeAssignmentsFor(rater.userId, profiles, manualByRater.get(rater.userId) ?? []);
+    const assignments = computeAssignmentsFor(rater.userId, profiles, manualByRater.get(rater.userId) ?? [], excluded);
     for (const { ratee, relation } of assignments) {
       const target = ratee.targetLevel ?? 2;
       for (const competencyId of compIdsByUser.get(ratee.userId) ?? []) {

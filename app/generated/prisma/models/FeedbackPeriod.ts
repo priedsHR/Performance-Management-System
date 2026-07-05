@@ -235,6 +235,7 @@ export type FeedbackPeriodWhereInput = {
   responses?: Prisma.FeedbackResponseListRelationFilter
   comments?: Prisma.FeedbackCommentListRelationFilter
   manualPeers?: Prisma.FeedbackManualPeerListRelationFilter
+  idpPlans?: Prisma.IdpPlanListRelationFilter
 }
 
 export type FeedbackPeriodOrderByWithRelationInput = {
@@ -248,6 +249,7 @@ export type FeedbackPeriodOrderByWithRelationInput = {
   responses?: Prisma.FeedbackResponseOrderByRelationAggregateInput
   comments?: Prisma.FeedbackCommentOrderByRelationAggregateInput
   manualPeers?: Prisma.FeedbackManualPeerOrderByRelationAggregateInput
+  idpPlans?: Prisma.IdpPlanOrderByRelationAggregateInput
 }
 
 export type FeedbackPeriodWhereUniqueInput = Prisma.AtLeast<{
@@ -265,6 +267,7 @@ export type FeedbackPeriodWhereUniqueInput = Prisma.AtLeast<{
   responses?: Prisma.FeedbackResponseListRelationFilter
   comments?: Prisma.FeedbackCommentListRelationFilter
   manualPeers?: Prisma.FeedbackManualPeerListRelationFilter
+  idpPlans?: Prisma.IdpPlanListRelationFilter
 }, "id" | "year_half">
 
 export type FeedbackPeriodOrderByWithAggregationInput = {
@@ -306,6 +309,7 @@ export type FeedbackPeriodCreateInput = {
   responses?: Prisma.FeedbackResponseCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerCreateNestedManyWithoutPeriodInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutPeriodInput
 }
 
 export type FeedbackPeriodUncheckedCreateInput = {
@@ -319,6 +323,7 @@ export type FeedbackPeriodUncheckedCreateInput = {
   responses?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutPeriodInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutPeriodInput
 }
 
 export type FeedbackPeriodUpdateInput = {
@@ -332,6 +337,7 @@ export type FeedbackPeriodUpdateInput = {
   responses?: Prisma.FeedbackResponseUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUpdateManyWithoutPeriodNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutPeriodNestedInput
 }
 
 export type FeedbackPeriodUncheckedUpdateInput = {
@@ -345,6 +351,7 @@ export type FeedbackPeriodUncheckedUpdateInput = {
   responses?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutPeriodNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutPeriodNestedInput
 }
 
 export type FeedbackPeriodCreateManyInput = {
@@ -474,6 +481,20 @@ export type FeedbackPeriodUpdateOneRequiredWithoutCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FeedbackPeriodUpdateToOneWithWhereWithoutCommentsInput, Prisma.FeedbackPeriodUpdateWithoutCommentsInput>, Prisma.FeedbackPeriodUncheckedUpdateWithoutCommentsInput>
 }
 
+export type FeedbackPeriodCreateNestedOneWithoutIdpPlansInput = {
+  create?: Prisma.XOR<Prisma.FeedbackPeriodCreateWithoutIdpPlansInput, Prisma.FeedbackPeriodUncheckedCreateWithoutIdpPlansInput>
+  connectOrCreate?: Prisma.FeedbackPeriodCreateOrConnectWithoutIdpPlansInput
+  connect?: Prisma.FeedbackPeriodWhereUniqueInput
+}
+
+export type FeedbackPeriodUpdateOneRequiredWithoutIdpPlansNestedInput = {
+  create?: Prisma.XOR<Prisma.FeedbackPeriodCreateWithoutIdpPlansInput, Prisma.FeedbackPeriodUncheckedCreateWithoutIdpPlansInput>
+  connectOrCreate?: Prisma.FeedbackPeriodCreateOrConnectWithoutIdpPlansInput
+  upsert?: Prisma.FeedbackPeriodUpsertWithoutIdpPlansInput
+  connect?: Prisma.FeedbackPeriodWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.FeedbackPeriodUpdateToOneWithWhereWithoutIdpPlansInput, Prisma.FeedbackPeriodUpdateWithoutIdpPlansInput>, Prisma.FeedbackPeriodUncheckedUpdateWithoutIdpPlansInput>
+}
+
 export type FeedbackPeriodCreateWithoutResponsesInput = {
   id?: string
   name: string
@@ -484,6 +505,7 @@ export type FeedbackPeriodCreateWithoutResponsesInput = {
   createdAt?: Date | string
   comments?: Prisma.FeedbackCommentCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerCreateNestedManyWithoutPeriodInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutPeriodInput
 }
 
 export type FeedbackPeriodUncheckedCreateWithoutResponsesInput = {
@@ -496,6 +518,7 @@ export type FeedbackPeriodUncheckedCreateWithoutResponsesInput = {
   createdAt?: Date | string
   comments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutPeriodInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutPeriodInput
 }
 
 export type FeedbackPeriodCreateOrConnectWithoutResponsesInput = {
@@ -524,6 +547,7 @@ export type FeedbackPeriodUpdateWithoutResponsesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.FeedbackCommentUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUpdateManyWithoutPeriodNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutPeriodNestedInput
 }
 
 export type FeedbackPeriodUncheckedUpdateWithoutResponsesInput = {
@@ -536,6 +560,7 @@ export type FeedbackPeriodUncheckedUpdateWithoutResponsesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutPeriodNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutPeriodNestedInput
 }
 
 export type FeedbackPeriodCreateWithoutManualPeersInput = {
@@ -548,6 +573,7 @@ export type FeedbackPeriodCreateWithoutManualPeersInput = {
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentCreateNestedManyWithoutPeriodInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutPeriodInput
 }
 
 export type FeedbackPeriodUncheckedCreateWithoutManualPeersInput = {
@@ -560,6 +586,7 @@ export type FeedbackPeriodUncheckedCreateWithoutManualPeersInput = {
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutPeriodInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutPeriodInput
 }
 
 export type FeedbackPeriodCreateOrConnectWithoutManualPeersInput = {
@@ -588,6 +615,7 @@ export type FeedbackPeriodUpdateWithoutManualPeersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUpdateManyWithoutPeriodNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutPeriodNestedInput
 }
 
 export type FeedbackPeriodUncheckedUpdateWithoutManualPeersInput = {
@@ -600,6 +628,7 @@ export type FeedbackPeriodUncheckedUpdateWithoutManualPeersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutPeriodNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutPeriodNestedInput
 }
 
 export type FeedbackPeriodCreateWithoutCommentsInput = {
@@ -612,6 +641,7 @@ export type FeedbackPeriodCreateWithoutCommentsInput = {
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerCreateNestedManyWithoutPeriodInput
+  idpPlans?: Prisma.IdpPlanCreateNestedManyWithoutPeriodInput
 }
 
 export type FeedbackPeriodUncheckedCreateWithoutCommentsInput = {
@@ -624,6 +654,7 @@ export type FeedbackPeriodUncheckedCreateWithoutCommentsInput = {
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutPeriodInput
+  idpPlans?: Prisma.IdpPlanUncheckedCreateNestedManyWithoutPeriodInput
 }
 
 export type FeedbackPeriodCreateOrConnectWithoutCommentsInput = {
@@ -652,6 +683,7 @@ export type FeedbackPeriodUpdateWithoutCommentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUpdateManyWithoutPeriodNestedInput
+  idpPlans?: Prisma.IdpPlanUpdateManyWithoutPeriodNestedInput
 }
 
 export type FeedbackPeriodUncheckedUpdateWithoutCommentsInput = {
@@ -664,6 +696,75 @@ export type FeedbackPeriodUncheckedUpdateWithoutCommentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutPeriodNestedInput
+  idpPlans?: Prisma.IdpPlanUncheckedUpdateManyWithoutPeriodNestedInput
+}
+
+export type FeedbackPeriodCreateWithoutIdpPlansInput = {
+  id?: string
+  name: string
+  half: string
+  year: number
+  isActive?: boolean
+  releaseReports?: boolean
+  createdAt?: Date | string
+  responses?: Prisma.FeedbackResponseCreateNestedManyWithoutPeriodInput
+  comments?: Prisma.FeedbackCommentCreateNestedManyWithoutPeriodInput
+  manualPeers?: Prisma.FeedbackManualPeerCreateNestedManyWithoutPeriodInput
+}
+
+export type FeedbackPeriodUncheckedCreateWithoutIdpPlansInput = {
+  id?: string
+  name: string
+  half: string
+  year: number
+  isActive?: boolean
+  releaseReports?: boolean
+  createdAt?: Date | string
+  responses?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutPeriodInput
+  comments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutPeriodInput
+  manualPeers?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutPeriodInput
+}
+
+export type FeedbackPeriodCreateOrConnectWithoutIdpPlansInput = {
+  where: Prisma.FeedbackPeriodWhereUniqueInput
+  create: Prisma.XOR<Prisma.FeedbackPeriodCreateWithoutIdpPlansInput, Prisma.FeedbackPeriodUncheckedCreateWithoutIdpPlansInput>
+}
+
+export type FeedbackPeriodUpsertWithoutIdpPlansInput = {
+  update: Prisma.XOR<Prisma.FeedbackPeriodUpdateWithoutIdpPlansInput, Prisma.FeedbackPeriodUncheckedUpdateWithoutIdpPlansInput>
+  create: Prisma.XOR<Prisma.FeedbackPeriodCreateWithoutIdpPlansInput, Prisma.FeedbackPeriodUncheckedCreateWithoutIdpPlansInput>
+  where?: Prisma.FeedbackPeriodWhereInput
+}
+
+export type FeedbackPeriodUpdateToOneWithWhereWithoutIdpPlansInput = {
+  where?: Prisma.FeedbackPeriodWhereInput
+  data: Prisma.XOR<Prisma.FeedbackPeriodUpdateWithoutIdpPlansInput, Prisma.FeedbackPeriodUncheckedUpdateWithoutIdpPlansInput>
+}
+
+export type FeedbackPeriodUpdateWithoutIdpPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  half?: Prisma.StringFieldUpdateOperationsInput | string
+  year?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  responses?: Prisma.FeedbackResponseUpdateManyWithoutPeriodNestedInput
+  comments?: Prisma.FeedbackCommentUpdateManyWithoutPeriodNestedInput
+  manualPeers?: Prisma.FeedbackManualPeerUpdateManyWithoutPeriodNestedInput
+}
+
+export type FeedbackPeriodUncheckedUpdateWithoutIdpPlansInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  half?: Prisma.StringFieldUpdateOperationsInput | string
+  year?: Prisma.IntFieldUpdateOperationsInput | number
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  responses?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutPeriodNestedInput
+  comments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutPeriodNestedInput
+  manualPeers?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutPeriodNestedInput
 }
 
 
@@ -675,12 +776,14 @@ export type FeedbackPeriodCountOutputType = {
   responses: number
   comments: number
   manualPeers: number
+  idpPlans: number
 }
 
 export type FeedbackPeriodCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   responses?: boolean | FeedbackPeriodCountOutputTypeCountResponsesArgs
   comments?: boolean | FeedbackPeriodCountOutputTypeCountCommentsArgs
   manualPeers?: boolean | FeedbackPeriodCountOutputTypeCountManualPeersArgs
+  idpPlans?: boolean | FeedbackPeriodCountOutputTypeCountIdpPlansArgs
 }
 
 /**
@@ -714,6 +817,13 @@ export type FeedbackPeriodCountOutputTypeCountManualPeersArgs<ExtArgs extends ru
   where?: Prisma.FeedbackManualPeerWhereInput
 }
 
+/**
+ * FeedbackPeriodCountOutputType without action
+ */
+export type FeedbackPeriodCountOutputTypeCountIdpPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IdpPlanWhereInput
+}
+
 
 export type FeedbackPeriodSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -726,6 +836,7 @@ export type FeedbackPeriodSelect<ExtArgs extends runtime.Types.Extensions.Intern
   responses?: boolean | Prisma.FeedbackPeriod$responsesArgs<ExtArgs>
   comments?: boolean | Prisma.FeedbackPeriod$commentsArgs<ExtArgs>
   manualPeers?: boolean | Prisma.FeedbackPeriod$manualPeersArgs<ExtArgs>
+  idpPlans?: boolean | Prisma.FeedbackPeriod$idpPlansArgs<ExtArgs>
   _count?: boolean | Prisma.FeedbackPeriodCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["feedbackPeriod"]>
 
@@ -764,6 +875,7 @@ export type FeedbackPeriodInclude<ExtArgs extends runtime.Types.Extensions.Inter
   responses?: boolean | Prisma.FeedbackPeriod$responsesArgs<ExtArgs>
   comments?: boolean | Prisma.FeedbackPeriod$commentsArgs<ExtArgs>
   manualPeers?: boolean | Prisma.FeedbackPeriod$manualPeersArgs<ExtArgs>
+  idpPlans?: boolean | Prisma.FeedbackPeriod$idpPlansArgs<ExtArgs>
   _count?: boolean | Prisma.FeedbackPeriodCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type FeedbackPeriodIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -775,6 +887,7 @@ export type $FeedbackPeriodPayload<ExtArgs extends runtime.Types.Extensions.Inte
     responses: Prisma.$FeedbackResponsePayload<ExtArgs>[]
     comments: Prisma.$FeedbackCommentPayload<ExtArgs>[]
     manualPeers: Prisma.$FeedbackManualPeerPayload<ExtArgs>[]
+    idpPlans: Prisma.$IdpPlanPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1181,6 +1294,7 @@ export interface Prisma__FeedbackPeriodClient<T, Null = never, ExtArgs extends r
   responses<T extends Prisma.FeedbackPeriod$responsesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FeedbackPeriod$responsesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackResponsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.FeedbackPeriod$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FeedbackPeriod$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   manualPeers<T extends Prisma.FeedbackPeriod$manualPeersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FeedbackPeriod$manualPeersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackManualPeerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  idpPlans<T extends Prisma.FeedbackPeriod$idpPlansArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.FeedbackPeriod$idpPlansArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdpPlanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1679,6 +1793,30 @@ export type FeedbackPeriod$manualPeersArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.FeedbackManualPeerScalarFieldEnum | Prisma.FeedbackManualPeerScalarFieldEnum[]
+}
+
+/**
+ * FeedbackPeriod.idpPlans
+ */
+export type FeedbackPeriod$idpPlansArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IdpPlan
+   */
+  select?: Prisma.IdpPlanSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IdpPlan
+   */
+  omit?: Prisma.IdpPlanOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IdpPlanInclude<ExtArgs> | null
+  where?: Prisma.IdpPlanWhereInput
+  orderBy?: Prisma.IdpPlanOrderByWithRelationInput | Prisma.IdpPlanOrderByWithRelationInput[]
+  cursor?: Prisma.IdpPlanWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IdpPlanScalarFieldEnum | Prisma.IdpPlanScalarFieldEnum[]
 }
 
 /**
