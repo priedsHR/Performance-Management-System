@@ -23,27 +23,27 @@ export default function Reminder360Manager({
 }) {
   const activePeriod = periods.find((p) => p.isActive) ?? periods[0];
   const [selectedPeriodId, setSelectedPeriodId] = useState(activePeriod?.id ?? "");
-  const [sending, setSending] = useState<"initial" | "followup" | null>(null);
-  const [result, setResult] = useState<{ type: "initial" | "followup"; message: string; results: SendResult[]; success: boolean } | null>(null);
+  const [sending, setSending] = useState<"initial" | "followup" | "test" | null>(null);
+  const [result, setResult] = useState<{ type: "initial" | "followup" | "test"; message: string; results: SendResult[]; success: boolean } | null>(null);
 
   useEffect(() => {
     setResult(null);
   }, [selectedPeriodId]);
 
-  async function sendReminder(type: "initial" | "followup") {
+  async function sendReminder(type: "initial" | "followup", test = false) {
     if (!selectedPeriodId) return;
-    setSending(type);
+    setSending(test ? "test" : type);
     setResult(null);
     try {
       const res = await fetch("/api/admin/send-reminder-360", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, periodId: selectedPeriodId }),
+        body: JSON.stringify({ type, periodId: selectedPeriodId, test }),
       });
       const data = await res.json();
-      setResult({ type, message: data.message ?? (res.ok ? "Sent." : "Failed."), results: data.results ?? [], success: data.success ?? res.ok });
+      setResult({ type: test ? "test" : type, message: data.message ?? (res.ok ? "Sent." : "Failed."), results: data.results ?? [], success: data.success ?? res.ok });
     } catch {
-      setResult({ type, message: "A network error occurred.", results: [], success: false });
+      setResult({ type: test ? "test" : type, message: "A network error occurred.", results: [], success: false });
     } finally {
       setSending(null);
     }
@@ -74,6 +74,21 @@ export default function Reminder360Manager({
             </option>
           ))}
         </select>
+      </div>
+
+      {/* Trial send to my own email */}
+      <div className="bg-[#eef9fd] border border-[#b7e7f7] rounded-2xl p-5 flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <p className="font-bold text-slate-800 text-sm">🧪 Trial — send to my email first</p>
+          <p className="text-xs text-slate-500 mt-0.5">Sends ONE test email to your own inbox (subject prefixed [TEST]) so you can check the layout before blasting everyone.</p>
+        </div>
+        <button
+          onClick={() => sendReminder("initial", true)}
+          disabled={!selectedPeriodId || sending !== null}
+          className={btnSlate}
+        >
+          {sending === "test" ? "⏳ Sending…" : "📨 Send test to me"}
+        </button>
       </div>
 
       {/* Reminder cards */}
@@ -124,7 +139,7 @@ export default function Reminder360Manager({
         <div className={`rounded-2xl border p-5 space-y-3 ${result.success ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
           <p className={`font-semibold text-sm ${result.success ? "text-green-700" : "text-red-700"}`}>
             {result.success ? "✅" : "❌"}{" "}
-            {result.type === "initial" ? "Completion Reminder" : "Follow Up"} — {result.message}
+            {result.type === "test" ? "Test Email" : result.type === "initial" ? "Completion Reminder" : "Follow Up"} — {result.message}
           </p>
           {result.results.length > 0 && (
             <div className="space-y-1">

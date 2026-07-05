@@ -90,13 +90,27 @@ export async function POST(req: NextRequest) {
   if (session?.user.role !== "ADMIN")
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-  const { type, periodId }: { type: "initial" | "followup"; periodId: string } = await req.json();
+  const { type, periodId, test }: { type: "initial" | "followup"; periodId: string; test?: boolean } = await req.json();
 
   if (!type || !periodId)
     return NextResponse.json({ error: "type and periodId are required." }, { status: 400 });
 
   const period = await prisma.feedbackPeriod.findUnique({ where: { id: periodId } });
   if (!period) return NextResponse.json({ error: "Period not found." }, { status: 404 });
+
+  // Trial mode: send one email to the logged-in admin only, so the layout can
+  // be checked before blasting everyone.
+  if (test) {
+    const me = await prisma.user.findUnique({ where: { id: session.user.id }, select: { name: true, email: true } });
+    if (!me?.email) return NextResponse.json({ error: "Your account has no email address." }, { status: 400 });
+    const { subject, html } = buildEmail360Html({ name: me.name ?? me.email, type, periodName: period.name, pendingCount: 5 });
+    try {
+      await createTransporter().sendMail({ from: `Performance Management <${GMAIL_USER}>`, to: me.email, subject: `[TEST] ${subject}`, html });
+      return NextResponse.json({ success: true, message: `Test email sent to ${me.email}. Check your inbox before blasting everyone.`, results: [{ name: me.name ?? "-", email: me.email, status: "sent" }] });
+    } catch (err) {
+      return NextResponse.json({ success: false, message: err instanceof Error ? err.message : "Failed to send test email.", results: [] });
+    }
+  }
 
   // Recipients = every active employee whose assignments are not fully
   // submitted yet. Computed from the assignment rule (not from existing
