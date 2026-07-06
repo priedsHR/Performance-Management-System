@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (!selections || !Array.isArray(selections) || selections.length === 0) {
-    return NextResponse.json({ error: "Pilih minimal satu objective untuk diimpor" }, { status: 400 });
+    return NextResponse.json({ error: "Select at least one objective to import" }, { status: 400 });
   }
 
   // Fetch all source objectives for this user in the source quarter

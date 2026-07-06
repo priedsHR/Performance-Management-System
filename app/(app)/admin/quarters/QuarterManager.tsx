@@ -134,12 +134,12 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1.5">📅 Tanggal Mulai</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">📅 Start Date</label>
               <input type="date" className={inputCls} value={form.startDate}
                 onChange={(e) => setForm({ ...form, startDate: e.target.value })} />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1.5">📅 Tanggal Selesai</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">📅 End Date</label>
               <input type="date" className={inputCls} value={form.endDate}
                 onChange={(e) => setForm({ ...form, endDate: e.target.value })} />
             </div>

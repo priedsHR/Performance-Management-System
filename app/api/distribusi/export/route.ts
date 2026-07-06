@@ -67,7 +67,7 @@ export async function GET(req: Request) {
   sheet.getRow(1).height = 30;
 
   // Row 2: headers
-  const headers = ["Anggota", "Objective", "Bobot Obj (%)", "Key Result", "Target Divisi", "Target Individu", "Satuan", "Bobot KR (%)", "Progress", "Pencapaian (%)"];
+  const headers = ["Member", "Objective", "Obj Weight (%)", "Key Result", "Division Target", "Individual Target", "Unit", "KR Weight (%)", "Progress", "Achievement (%)"];
   const hRow = sheet.getRow(2);
   hRow.height = 24;
   headers.forEach((h, i) => {
@@ -123,7 +123,7 @@ export async function GET(req: Request) {
           setCell(6, kra.target, { align: "center", bg: CUSTOM_BG, bold: true, color: "FF1D4ED8" });
         } else {
           setCell(6, null, { align: "center", color: "FFD1D5DB", italic: true });
-          dataRow.getCell(6).value = "(divisi)";
+          dataRow.getCell(6).value = "(division)";
         }
         // Col G: Unit
         setCell(7, kr.unit, { align: "center", color: "FF94A3B8" });
@@ -169,7 +169,7 @@ export async function GET(req: Request) {
   // Legend row
   const legendRow = sheet.getRow(rowIdx + 1);
   sheet.mergeCells(`A${rowIdx + 1}:J${rowIdx + 1}`);
-  legendRow.getCell(1).value = "💡  Kolom F biru = target individu berbeda dari target divisi";
+  legendRow.getCell(1).value = "💡  Blue column F = individual target differs from the division target";
   legendRow.getCell(1).font = { name: "Arial", size: 9, italic: true, color: { argb: "FF94A3B8" } };
   legendRow.height = 18;
 

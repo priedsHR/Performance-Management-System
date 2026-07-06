@@ -133,7 +133,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
             </div>
           ) : (
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-500">Tanggal</label>
+              <label className="text-xs font-semibold text-slate-500">Date</label>
               <select value={dayOfMonth} onChange={e => setDayOfMonth(Number(e.target.value))}
                 className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400">
                 {Array.from({ length: 28 }, (_, i) => i + 1).map(d => <option key={d} value={d}>{d}</option>)}

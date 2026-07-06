@@ -269,14 +269,6 @@ function SingleReport({ data }: { data: SinglePayload }) {
                   </tbody>
                 </table>
               </div>
-              {comments[cat.category] && comments[cat.category].length > 0 && (
-                <div className="mt-2 bg-slate-50 rounded-lg p-3 space-y-1.5">
-                  <p className="text-[11px] font-semibold text-slate-500">Qualitative notes (anonymous):</p>
-                  {comments[cat.category].map((cm, i) => (
-                    <p key={i} className="text-[12px] text-slate-600 border-l-2 border-teal-300 pl-2">“{cm}”</p>
-                  ))}
-                </div>
-              )}
             </div>
           ))}
           <Recommendation report={report} comments={comments} personName={person.name} />

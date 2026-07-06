@@ -317,7 +317,7 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
 
       {loading && (
         <div className="flex items-center justify-center py-16 text-slate-400">
-          <span className="text-2xl animate-spin mr-3">⏳</span> Memuat data...
+          <span className="text-2xl animate-spin mr-3">⏳</span> Loading data...
         </div>
       )}
 

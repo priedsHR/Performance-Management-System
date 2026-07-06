@@ -58,9 +58,9 @@ export default function SetupPage() {
         <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
           <p className="text-2xl mb-2">🔒</p>
           <p className="font-semibold text-slate-700">Setup done selesai</p>
-          <p className="text-sm text-slate-400 mt-1 mb-4">Silakan login dengan akun yang done ada.</p>
+          <p className="text-sm text-slate-400 mt-1 mb-4">Please sign in with an existing account.</p>
           <a href="/login" className="inline-block bg-blue-600 text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-blue-700 transition">
-            Ke halaman login
+            Go to the login page
           </a>
         </div>
       </div>
@@ -126,7 +126,7 @@ export default function SetupPage() {
             disabled={loading}
             className="bg-blue-600 text-white font-medium text-sm py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
           >
-            {loading ? "Membuat akun…" : "Buat Admin & Mulai"}
+            {loading ? "Membuat akun…" : "Create Admin & Start"}
           </button>
         </form>
       </div>

@@ -24,29 +24,29 @@ export async function getSettingsIssues(leadId: string, quarterId: string): Prom
   const summaryIssues: string[] = [];
   const totalObjWeight = objectives.reduce((s, obj) => s + obj.weight, 0);
   if (Math.abs(totalObjWeight - 100) > 0.1)
-    summaryIssues.push(`Total bobot semua Objective: ${totalObjWeight.toFixed(0)}% (harus 100%)`);
+    summaryIssues.push(`Total weight of all Objectives: ${totalObjWeight.toFixed(0)}% (must be 100%)`);
 
   const objectiveIssues: ObjectiveIssue[] = [];
 
   for (const obj of objectives) {
     const issues: string[] = [];
-    if (obj.status === "DRAFT") issues.push("Belum dikumpulkan (masih Draft)");
+    if (obj.status === "DRAFT") issues.push("Not submitted yet (still Draft)");
 
     if (obj.keyResults.length === 0) {
-      issues.push("Belum ada Key Result yang dibuat");
+      issues.push("No Key Results created yet");
       objectiveIssues.push({ title: obj.title, issues, krIssues: [] });
       continue;
     }
 
     const totalKRWeight = obj.keyResults.reduce((s, kr) => s + kr.weight, 0);
     if (Math.abs(totalKRWeight - 100) > 0.1)
-      issues.push(`Total bobot KR: ${totalKRWeight.toFixed(0)}% (harus 100%)`);
+      issues.push(`Total KR weight: ${totalKRWeight.toFixed(0)}% (must be 100%)`);
 
     const krIssues = obj.keyResults.flatMap((kr) => {
       const krIss: string[] = [];
-      if (kr.weight === 0) krIss.push("bobot 0%");
-      if (kr.target === 0) krIss.push("target belum diisi");
-      if (!kr.unit || kr.unit.trim() === "") krIss.push("satuan belum dipilih");
+      if (kr.weight === 0) krIss.push("weight 0%");
+      if (kr.target === 0) krIss.push("target not filled");
+      if (!kr.unit || kr.unit.trim() === "") krIss.push("unit not selected");
       return krIss.length > 0 ? [{ title: kr.title, issues: krIss }] : [];
     });
 
@@ -58,7 +58,7 @@ export async function getSettingsIssues(leadId: string, quarterId: string): Prom
       }
     for (const [name, total] of memberWeightMap.entries())
       if (Math.abs(total - 100) > 0.1)
-        issues.push(`Bobot ${name}: ${total.toFixed(0)}% (harus 100%)`);
+        issues.push(`Weight ${name}: ${total.toFixed(0)}% (must be 100%)`);
 
     if (issues.length > 0 || krIssues.length > 0)
       objectiveIssues.push({ title: obj.title, issues, krIssues });
@@ -88,7 +88,7 @@ export async function getCollectionIssues(leadId: string, quarterId: string): Pr
   const summaryIssues: string[] = [];
   const totalObjWeight = objectives.reduce((s, obj) => s + obj.weight, 0);
   if (Math.abs(totalObjWeight - 100) > 0.1)
-    summaryIssues.push(`Total bobot semua Objective: ${totalObjWeight.toFixed(0)}% (harus 100%)`);
+    summaryIssues.push(`Total weight of all Objectives: ${totalObjWeight.toFixed(0)}% (must be 100%)`);
 
   const objectiveIssues: ObjectiveIssue[] = [];
 
@@ -96,14 +96,14 @@ export async function getCollectionIssues(leadId: string, quarterId: string): Pr
     const issues: string[] = [];
 
     if (obj.keyResults.length === 0) {
-      issues.push("Belum ada Key Result yang dibuat");
+      issues.push("No Key Results created yet");
       objectiveIssues.push({ title: obj.title, issues, krIssues: [] });
       continue;
     }
 
     const totalKRWeight = obj.keyResults.reduce((s, kr) => s + kr.weight, 0);
     if (Math.abs(totalKRWeight - 100) > 0.1)
-      issues.push(`Total bobot KR: ${totalKRWeight.toFixed(0)}% (harus 100%)`);
+      issues.push(`Total KR weight: ${totalKRWeight.toFixed(0)}% (must be 100%)`);
 
     const memberWeightMap = new Map<string, number>();
     for (const kr of obj.keyResults)
@@ -113,15 +113,15 @@ export async function getCollectionIssues(leadId: string, quarterId: string): Pr
       }
     for (const [name, total] of memberWeightMap.entries())
       if (Math.abs(total - 100) > 0.1)
-        issues.push(`Bobot ${name}: ${total.toFixed(0)}% (harus 100%)`);
+        issues.push(`Weight ${name}: ${total.toFixed(0)}% (must be 100%)`);
 
     const krIssues = obj.keyResults.flatMap((kr) => {
       const krIss: string[] = [];
-      if (kr.weight === 0) krIss.push("bobot 0%");
-      if (kr.target === 0) krIss.push("target belum diisi");
-      if (!kr.unit || kr.unit.trim() === "") krIss.push("satuan belum dipilih");
+      if (kr.weight === 0) krIss.push("weight 0%");
+      if (kr.target === 0) krIss.push("target not filled");
+      if (!kr.unit || kr.unit.trim() === "") krIss.push("unit not selected");
       const emptyMembers = kr.krAssignments.filter((a) => a.progress === 0).map((a) => a.assignment.member.name);
-      if (emptyMembers.length > 0) krIss.push(`progress belum diisi: ${emptyMembers.join(", ")}`);
+      if (emptyMembers.length > 0) krIss.push(`progress not filled: ${emptyMembers.join(", ")}`);
       return krIss.length > 0 ? [{ title: kr.title, issues: krIss }] : [];
     });
 

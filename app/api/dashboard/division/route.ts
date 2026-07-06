@@ -15,9 +15,9 @@ export async function GET(req: Request) {
   // MEMBER: auto-resolve leadId from their division
   let leadId = searchParams.get("leadId") ?? session.user.id;
   if (session.user.role === "MEMBER") {
-    if (!session.user.division) return NextResponse.json({ error: "Division tidak ditemukan." }, { status: 404 });
+    if (!session.user.division) return NextResponse.json({ error: "Division not found." }, { status: 404 });
     const lead = await prisma.user.findFirst({ where: { role: "LEAD", division: session.user.division }, select: { id: true } });
-    if (!lead) return NextResponse.json({ error: "Lead divisi tidak ditemukan." }, { status: 404 });
+    if (!lead) return NextResponse.json({ error: "Division lead not found." }, { status: 404 });
     leadId = lead.id;
   }
 

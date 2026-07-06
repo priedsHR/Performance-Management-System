@@ -15,9 +15,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (!obj || obj.userId !== session.user.id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
-    // Member tidak bisa edit kalau sudah SUBMITTED
+    // Members cannot edit once SUBMITTED
     if (obj.status === "SUBMITTED" && body.status !== "DRAFT") {
-      return NextResponse.json({ error: "OKR sudah dikumpulkan, tidak bisa diedit." }, { status: 400 });
+      return NextResponse.json({ error: "OKR already submitted, cannot be edited." }, { status: 400 });
     }
   }
 
@@ -47,7 +47,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
     if (obj.status === "SUBMITTED") {
-      return NextResponse.json({ error: "OKR sudah dikumpulkan." }, { status: 400 });
+      return NextResponse.json({ error: "OKR already submitted." }, { status: 400 });
     }
   }
 

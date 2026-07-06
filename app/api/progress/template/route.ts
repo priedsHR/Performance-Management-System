@@ -66,25 +66,25 @@ export async function GET(req: Request) {
     ["", ""],
     ["📌 CARA PENGGUNAAN", ""],
     ["1.", "Buka sheet \"Progress\" (tab di bawah)"],
-    ["2.", "Isi kolom G (Progress) untuk setiap anggota & KR"],
+    ["2.", "Fill column G (Progress) for every member & KR"],
     ["3.", "Kolom A-F dan H adalah referensi — jangan diubah"],
     ["4.", "Upload file ini via tombol \"Import Progress\" di aplikasi"],
     ["", ""],
     ["📊 KETERANGAN KOLOM", ""],
     ["A  ID", "ID unik KR assignment — JANGAN diubah, dipakai untuk matching"],
-    ["B  Anggota", "Nama anggota"],
+    ["B  Member", "Member name"],
     ["C  Objective", "Judul objective"],
     ["D  Key Result", "Judul key result"],
-    ["E  Target", "Target (divisi atau individu)"],
+    ["E  Target", "Target (division or individual)"],
     ["F  Satuan", "Satuan pengukuran"],
-    ["G  Progress", "← ISI INI: nilai progress terbaru anggota"],
-    ["H  Pencapaian (%)", "Dihitung otomatis (untuk referensi)"],
+    ["G  Progress", "← FILL THIS: the member's latest progress value"],
+    ["H  Achievement (%)", "Dihitung otomatis (untuk referensi)"],
     ["", ""],
     ["⚠️ ATURAN PENTING", ""],
-    ["•", "Hanya kolom G (Progress) yang perlu diisi"],
-    ["•", "Kosongkan atau isi 0 jika belum ada progress"],
-    ["•", "Nilai progress tidak boleh negatif"],
-    ["•", "Import hanya update progress — bobot dan target tidak berubah"],
+    ["•", "Only column G (Progress) needs to be filled"],
+    ["•", "Leave blank or enter 0 if there is no progress yet"],
+    ["•", "Progress value cannot be negative"],
+    ["•", "Import only updates progress — weights and targets stay unchanged"],
   ];
 
   let r = 2;
@@ -121,7 +121,7 @@ export async function GET(req: Request) {
   sheet.getRow(1).height = 30;
 
   // Row 2: headers
-  const headers = ["ID (jangan diubah)", "Anggota", "Objective", "Key Result", "Target", "Satuan", "Progress ✏️", "Pencapaian (%)"];
+  const headers = ["ID (jangan diubah)", "Member", "Objective", "Key Result", "Target", "Satuan", "Progress ✏️", "Achievement (%)"];
   const hRow = sheet.getRow(2);
   hRow.height = 24;
   headers.forEach((h, i) => {
@@ -187,7 +187,7 @@ export async function GET(req: Request) {
     // No assignments — show placeholder
     sheet.mergeCells(`A3:H3`);
     const empty = sheet.getCell("A3");
-    empty.value = "⚠️  Belum ada assignment untuk quarter ini. Lakukan distribusi terlebih dahulu.";
+    empty.value = "⚠️  No assignments for this quarter yet. Do the distribution first.";
     empty.font = { name: "Arial", italic: true, size: 10, color: { argb: "FF94A3B8" } };
     empty.alignment = { vertical: "middle", horizontal: "center" };
     sheet.getRow(3).height = 24;
@@ -196,7 +196,7 @@ export async function GET(req: Request) {
   // Legend
   const legRow = sheet.getRow(rowIdx + 1);
   sheet.mergeCells(`A${rowIdx + 1}:H${rowIdx + 1}`);
-  legRow.getCell(1).value = "💡  Hanya kolom G (Progress) yang perlu diisi. Kolom lain jangan diubah.";
+  legRow.getCell(1).value = "💡  Only column G (Progress) needs to be filled. Kolom lain jangan diubah.";
   legRow.getCell(1).font = { name: "Arial", size: 9, italic: true, color: { argb: "FF94A3B8" } };
   legRow.height = 18;
 

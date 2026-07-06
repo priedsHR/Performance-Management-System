@@ -39,11 +39,11 @@ export async function GET(req: Request) {
   // ── Summary sheet ────────────────────────────────────────────────────────────
   const wsSummary = wb.addWorksheet("📋 Ringkasan");
   wsSummary.columns = [
-    { header: "Divisi", key: "division", width: 22 },
+    { header: "Division", key: "division", width: 22 },
     { header: "Lead", key: "lead", width: 24 },
     { header: "Objectives", key: "objectives", width: 12 },
-    { header: "Anggota", key: "members", width: 10 },
-    { header: "Pencapaian (%)", key: "achievement", width: 16 },
+    { header: "Member", key: "members", width: 10 },
+    { header: "Achievement (%)", key: "achievement", width: 16 },
   ];
   const sumHeaderRow = wsSummary.getRow(1);
   sumHeaderRow.font = HEADER_FONT;
@@ -109,30 +109,30 @@ export async function GET(req: Request) {
     if (objectives.length === 0) {
       // Still add the sheet but mark as empty
       const ws = wb.addWorksheet(sheetName);
-      ws.addRow([`${divisionName} — belum ada OKR di quarter ini`]);
+      ws.addRow([`${divisionName} — no OKRs in this quarter yet`]);
       continue;
     }
 
     const ws = wb.addWorksheet(sheetName);
 
     // Division info rows
-    ws.addRow(["Divisi", divisionName]);
+    ws.addRow(["Division", divisionName]);
     ws.addRow(["Lead", lead.name]);
     ws.addRow(["Quarter", quarter.name]);
-    ws.addRow(["Pencapaian Divisi (%)", parseFloat(divAch.toFixed(1))]);
+    ws.addRow(["Division Achievement (%)", parseFloat(divAch.toFixed(1))]);
     ws.addRow([]);
 
     // OKR detail header
     const cols = [
       { header: "Objective", key: "objective", width: 36 },
-      { header: "Bobot Obj (%)", key: "objWeight", width: 14 },
-      { header: "Capaian Obj (%)", key: "objAch", width: 16 },
+      { header: "Obj Weight (%)", key: "objWeight", width: 14 },
+      { header: "Obj Achievement (%)", key: "objAch", width: 16 },
       { header: "Key Result", key: "kr", width: 36 },
-      { header: "Bobot KR (%)", key: "krWeight", width: 13 },
+      { header: "KR Weight (%)", key: "krWeight", width: 13 },
       { header: "Target", key: "target", width: 10 },
       { header: "Satuan", key: "unit", width: 10 },
       { header: "Progress", key: "totalProgress", width: 12 },
-      { header: "Capaian KR (%)", key: "krAch", width: 15 },
+      { header: "KR Achievement (%)", key: "krAch", width: 15 },
     ];
     ws.columns = cols.map((c) => ({ key: c.key, width: c.width }));
 
@@ -172,7 +172,7 @@ export async function GET(req: Request) {
     // Member ranking
     if (memberAchs.length > 0) {
       ws.addRow([]);
-      const rankHeader = ws.addRow(["Peringkat", "Nama Anggota", "Pencapaian (%)"]);
+      const rankHeader = ws.addRow(["Peringkat", "Member Name", "Achievement (%)"]);
       rankHeader.font = HEADER_FONT;
       rankHeader.fill = HEADER_FILL;
       memberAchs.forEach((m, i) => {
@@ -184,7 +184,7 @@ export async function GET(req: Request) {
     // ── Detail OKR per anggota ──────────────────────────────────────────────
     if (membersDetail.length > 0) {
       ws.addRow([]);
-      const sectionTitle = ws.addRow(["Detail OKR per Anggota"]);
+      const sectionTitle = ws.addRow(["OKR Detail per Member"]);
       sectionTitle.font = { bold: true, name: "Arial", size: 11 };
 
       for (const member of membersDetail) {
@@ -195,18 +195,18 @@ export async function GET(req: Request) {
         ws.addRow([]);
 
         // Member name row
-        const memberRow = ws.addRow([`👤 ${member.name}`, "", `Pencapaian: ${memberAch.toFixed(1)}%`]);
+        const memberRow = ws.addRow([`👤 ${member.name}`, "", `Achievement: ${memberAch.toFixed(1)}%`]);
         memberRow.font = { bold: true, name: "Arial", size: 10, color: { argb: "FF1E293B" } };
         memberRow.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF1F5F9" } };
 
         if (member.assignments.length === 0) {
-          ws.addRow(["", "(Belum ada penugasan KR)"]);
+          ws.addRow(["", "(No KR assignments yet)"]);
           continue;
         }
 
         // Column headers for this member
         const memberHeader = ws.addRow([
-          "Objective", "Key Result", "Bobot (%)", "Target", "Satuan", "Progress", "Capaian (%)",
+          "Objective", "Key Result", "Weight (%)", "Target", "Satuan", "Progress", "Achievement (%)",
         ]);
         memberHeader.font = HEADER_FONT;
         memberHeader.fill = HEADER_FILL;
@@ -246,7 +246,7 @@ export async function GET(req: Request) {
   });
 
   const buffer = await wb.xlsx.writeBuffer();
-  const fileName = `OKR-Semua-Divisi-${quarter.name.replace(/\s+/g, "-")}.xlsx`;
+  const fileName = `OKR-All-Divisions-${quarter.name.replace(/\s+/g, "-")}.xlsx`;
 
   return new Response(buffer as ArrayBuffer, {
     headers: {

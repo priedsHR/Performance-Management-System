@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     fileBuffer = await (file as File).arrayBuffer();
     quarterIdParam = formData.get("quarterId") as string | null;
   } catch {
-    return Response.json({ error: "Gagal membaca file." }, { status: 400 });
+    return Response.json({ error: "Failed to read the file." }, { status: 400 });
   }
 
   const activeQuarter = quarterIdParam
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
     const krTitle     = readCellString(row.getCell(3));
     const target      = readCellNumber(row.getCell(4));
     const unit        = readCellString(row.getCell(5)) || "pcs";
-    const krWeight    = readCellNumber(row.getCell(6)); // col F = Bobot KR (%)
+    const krWeight    = readCellNumber(row.getCell(6)); // col F = KR Weight (%)
 
     if (objTitle) {
       lastObjective = objTitle;
@@ -173,7 +173,7 @@ export async function POST(req: Request) {
 
   return Response.json({
     success: true,
-    message: `Berhasil mengimpor ${createdObj} objective dan ${createdKR} key result.`,
+    message: `Imported ${createdObj} objectives and ${createdKR} key results.`,
     created: { objectives: createdObj, keyResults: createdKR },
     debug: { rowsParsed: rows.length, skipped: skipped.length > 0 ? skipped : undefined },
     errors: errors.length > 0 ? errors : undefined,

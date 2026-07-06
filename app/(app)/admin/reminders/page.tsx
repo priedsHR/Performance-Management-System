@@ -62,7 +62,7 @@ export default async function RemindersPage() {
       </div>
 
       <div>
-        <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Kirim Sekarang</h2>
+        <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Send Now</h2>
         <ReminderManager quarters={JSON.parse(JSON.stringify(quarters))} initialLeads={leadsWithStatus} />
       </div>
 

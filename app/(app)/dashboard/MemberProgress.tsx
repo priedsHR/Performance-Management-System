@@ -155,7 +155,7 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
 
       {!loading && error && (
         <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center text-red-700 text-sm">
-          ❌ Gagal memuat data. Coba refresh halaman.
+          ❌ Failed to load data. Try refreshing the page.
         </div>
       )}
 

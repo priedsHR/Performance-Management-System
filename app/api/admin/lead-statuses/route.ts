@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   if (session?.user.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const quarterId = req.nextUrl.searchParams.get("quarterId");
-  if (!quarterId) return NextResponse.json({ error: "quarterId wajib diisi." }, { status: 400 });
+  if (!quarterId) return NextResponse.json({ error: "quarterId is required." }, { status: 400 });
 
   const leads = await prisma.user.findMany({
     where: { role: "LEAD" },

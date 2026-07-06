@@ -80,6 +80,9 @@ export default function EmployeeManager360() {
   const [peerCands, setPeerCands] = useState<{ userId: string; name: string; department: string | null; position: string | null; isDeptDefault: boolean; isPeer: boolean }[]>([]);
   const [peerSel, setPeerSel] = useState<Set<string>>(new Set());
   const [peerSaving, setPeerSaving] = useState(false);
+  const [q, setQ] = useState("");
+  const [deptFilter, setDeptFilter] = useState("");
+  const [sortBy, setSortBy] = useState<"name" | "dept" | "manager">("name");
 
   async function openPeers(p: Profile) {
     setPeerEdit({ userId: p.userId, name: p.name });
@@ -405,6 +408,27 @@ export default function EmployeeManager360() {
         </div>
       )}
 
+      {/* search / filter / sort */}
+      <div className="flex flex-wrap items-center gap-2">
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="🔍 Search name / position / email…"
+          className="border border-slate-200 rounded-lg px-3 py-2 text-sm flex-1 min-w-[200px]"
+        />
+        <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="border border-slate-200 rounded-lg px-3 py-2 text-sm">
+          <option value="">All departments</option>
+          {[...new Set(profiles.map((p) => p.department).filter(Boolean))].sort().map((d) => (
+            <option key={d as string} value={d as string}>{d}</option>
+          ))}
+        </select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value as "name" | "dept" | "manager")} className="border border-slate-200 rounded-lg px-3 py-2 text-sm">
+          <option value="name">Sort: Name A-Z</option>
+          <option value="dept">Sort: Department</option>
+          <option value="manager">Sort: Manager</option>
+        </select>
+      </div>
+
       {/* list */}
       <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
         {profiles.length === 0 ? (
@@ -421,7 +445,21 @@ export default function EmployeeManager360() {
               </tr>
             </thead>
             <tbody>
-              {profiles.map((p) => (
+              {profiles
+                .filter((p) => !deptFilter || p.department === deptFilter)
+                .filter((p) => {
+                  const t = q.trim().toLowerCase();
+                  if (!t) return true;
+                  return [p.name, p.email, p.position, p.department, p.managerName].some((v) => (v || "").toLowerCase().includes(t));
+                })
+                .sort((a, b) =>
+                  sortBy === "dept"
+                    ? (a.department || "").localeCompare(b.department || "") || a.name.localeCompare(b.name)
+                    : sortBy === "manager"
+                    ? (a.managerName || "").localeCompare(b.managerName || "") || a.name.localeCompare(b.name)
+                    : a.name.localeCompare(b.name)
+                )
+                .map((p) => (
                 <tr key={p.id} className="border-t border-slate-100">
                   <td className="px-4 py-2">
                     <p className={`font-medium ${p.active ? "text-slate-700" : "text-slate-300"}`}>

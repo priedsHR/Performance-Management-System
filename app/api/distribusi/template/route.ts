@@ -55,7 +55,7 @@ export async function GET(req: Request) {
   info.getColumn("B").width = 72;
 
   const titleCell = info.getCell("A1");
-  titleCell.value = "📋 Panduan Pengisian Distribusi Anggota";
+  titleCell.value = "📋 Member Distribution Filling Guide";
   titleCell.font = { name: "Arial", bold: true, size: 13, color: { argb: "FF1E293B" } };
   titleCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFBBF24" } };
   titleCell.alignment = { vertical: "middle" };
@@ -65,27 +65,27 @@ export async function GET(req: Request) {
     ["", ""],
     ["📌 CARA PENGGUNAAN", ""],
     ["1.", 'Buka sheet "Distribusi" (tab di bawah)'],
-    ["2.", "Kolom A (Anggota) sudah diisi daftar anggota yang ada. Tambahkan nama baru jika perlu."],
-    ["3.", "Kolom B (Objective) & D (Key Result) sudah diisi dari data OKR yang ada — jangan diubah"],
-    ["4.", "Isi Bobot Objective (%) per anggota — total per anggota harus = 100"],
-    ["5.", "Isi Target Individu jika berbeda dari target divisi (kosongkan = pakai target divisi)"],
-    ["6.", "Isi Bobot KR (%) — total per objective per anggota harus = 100"],
+    ["2.", "Column A (Member) is pre-filled with existing members. Add new names if needed."],
+    ["3.", "Columns B (Objective) & D (Key Result) are pre-filled from existing OKR data — do not change them"],
+    ["4.", "Fill Objective Weight (%) per member — total per member must be 100"],
+    ["5.", "Fill Individual Target if it differs from the division target (blank = use division target)"],
+    ["6.", "Fill KR Weight (%) — total per objective per member must be 100"],
     ["7.", "Upload file ini via tombol Import Distribusi di aplikasi"],
     ["", ""],
     ["📊 KETERANGAN KOLOM", ""],
-    ["A  Anggota", "Nama anggota (harus persis sama dengan yang ada di daftar)"],
+    ["A  Member", "Member name (must exactly match the list)"],
     ["B  Objective", "Nama objective (jangan diubah, dipakai untuk matching)"],
-    ["C  Bobot Objective (%)", "Bobot objective untuk anggota ini (total per anggota = 100)"],
+    ["C  Objective Weight (%)", "Objective weight for this member (total per member = 100)"],
     ["D  Key Result", "Nama key result (jangan diubah)"],
-    ["E  Target Individu", "Target khusus anggota ini (kosong = ikut target divisi)"],
-    ["F  Satuan", "Otomatis dari divisi (tidak perlu diubah)"],
-    ["G  Bobot KR (%)", "Bobot KR dalam objective anggota ini (total per objective = 100)"],
+    ["E  Target Individu", "Custom target for this member (blank = use division target)"],
+    ["F  Satuan", "Automatic from the division (no need to change)"],
+    ["G  KR Weight (%)", "KR weight within this member's objective (total per objective = 100)"],
     ["", ""],
     ["⚠️ ATURAN PENTING", ""],
-    ["•", "Import akan MENGGANTIKAN semua assignment yang ada"],
-    ["•", "Baris dengan kolom A (Anggota) kosong akan menggunakan anggota dari baris sebelumnya"],
-    ["•", "Baris dengan kolom D (Key Result) kosong akan diabaikan"],
-    ["•", "Anggota baru (tidak ada di daftar) akan dibuat otomatis"],
+    ["•", "Import REPLACES all existing assignments"],
+    ["•", "Rows with a blank column A (Member) reuse the member from the previous row"],
+    ["•", "Rows with a blank column D (Key Result) are ignored"],
+    ["•", "New members (not in the list) are created automatically"],
   ];
 
   let r = 2;
@@ -116,7 +116,7 @@ export async function GET(req: Request) {
   const DARK = "FF1E293B";
 
   // Header row 1
-  const headers = ["Anggota", "Objective", "Bobot Objective (%)", "Key Result", "Target Individu", "Satuan", "Bobot KR (%)"];
+  const headers = ["Member", "Objective", "Objective Weight (%)", "Key Result", "Target Individu", "Satuan", "KR Weight (%)"];
   const hRow = sheet.getRow(1);
   hRow.height = 28;
   headers.forEach((h, i) => {
@@ -131,7 +131,7 @@ export async function GET(req: Request) {
   // Note row 2
   sheet.mergeCells("A2:G2");
   const noteCell = sheet.getCell("A2");
-  noteCell.value = "ℹ️  Kolom B, C, D, F sudah diisi dari data OKR. Kolom A wajib diisi. Kolom E & G wajib diisi. Kosongkan Target Individu (E) jika sama dengan target divisi.";
+  noteCell.value = "ℹ️  Columns B, C, D, F are pre-filled from OKR data. Column A is required. Columns E & G are required. Leave Individual Target (E) blank if it equals the division target.";
   noteCell.font = { name: "Arial", italic: true, size: 10, color: { argb: "FF64748B" } };
   noteCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF8FAFC" } };
   noteCell.alignment = { vertical: "middle" };
@@ -189,7 +189,7 @@ export async function GET(req: Request) {
           cellE.fill = { type: "pattern", pattern: "solid", fgColor: { argb: INPUT_BG } };
           cellE.font = { name: "Arial", size: 10, color: { argb: "FF6B7280" } };
           cellE.alignment = { vertical: "middle", horizontal: "center" };
-          cellE.note = `Target divisi: ${kr.target} ${kr.unit}\nKosongkan jika sama.`;
+          cellE.note = `Division target: ${kr.target} ${kr.unit}\nLeave blank if the same.`;
 
           // F: Unit — pre-filled for reference, import ignores this column
           const cellF = dataRow.getCell(6);

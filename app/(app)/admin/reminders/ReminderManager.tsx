@@ -105,7 +105,7 @@ export default function ReminderManager({
               <h3 className="font-bold text-slate-800">Reminder Setting OKR</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Kirim email ke all Division Lead untuk segera membuat Objective &amp; Key Results di halaman Division OKR.
+              Email all Division Leads to create their Objectives &amp; Key Results on the Division OKR page.
               Cocok dikirim di <strong>awal quarter</strong>.
             </p>
           </div>
@@ -126,8 +126,8 @@ export default function ReminderManager({
               <h3 className="font-bold text-slate-800">Reminder Pengumpulan</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Cek menyeluruh di <strong>akhir quarter</strong>: weight, target, satuan, progress anggota, dan capaian lead.
-              Hanya kirim ke yang datanya belum lengkap.
+              Cek menyeluruh di <strong>akhir quarter</strong>: weights, targets, units, member progress, and lead achievement.
+              Only sends to those with incomplete data.
             </p>
           </div>
           <button
@@ -170,12 +170,12 @@ export default function ReminderManager({
       <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
           <div>
-            <p className="font-semibold text-slate-700 text-sm">📋 Daftar Division Lead ({leads.length} orang)</p>
+            <p className="font-semibold text-slate-700 text-sm">📋 Division Leads ({leads.length} people)</p>
             <p className="text-xs text-slate-400 mt-0.5">
               Reminder hanya dikirim ke yang statusnya <span className="font-semibold text-amber-600">⚠️ Not yet Lengkap</span> or <span className="font-semibold text-red-600">❌ Not yet Buat</span>.
             </p>
           </div>
-          {loadingLeads && <span className="text-xs text-slate-400 animate-pulse">Memuat status...</span>}
+          {loadingLeads && <span className="text-xs text-slate-400 animate-pulse">Loading status...</span>}
         </div>
         {leads.length === 0 ? (
           <div className="p-8 text-center text-slate-400 text-sm">No Division Leads registered yet.</div>

@@ -15,12 +15,12 @@ export async function GET(req: Request) {
 
   let leadId = searchParams.get("leadId") ?? session.user.id;
   if (session.user.role === "MEMBER") {
-    if (!session.user.division) return NextResponse.json({ error: "Division tidak ditemukan." }, { status: 404 });
+    if (!session.user.division) return NextResponse.json({ error: "Division not found." }, { status: 404 });
     const lead = await prisma.user.findFirst({ where: { role: "LEAD", division: session.user.division }, select: { id: true } });
-    if (!lead) return NextResponse.json({ error: "Lead divisi tidak ditemukan." }, { status: 404 });
+    if (!lead) return NextResponse.json({ error: "Division lead not found." }, { status: 404 });
     leadId = lead.id;
   }
-  const divisionName = searchParams.get("divisionName") ?? "Divisi";
+  const divisionName = searchParams.get("divisionName") ?? "Division";
 
   if (!quarterId) return NextResponse.json({ error: "quarterId required" }, { status: 400 });
 
@@ -57,12 +57,12 @@ export async function GET(req: Request) {
   const ws1 = wb.addWorksheet("Ringkasan");
   ws1.columns = [{ key: "label", width: 28 }, { key: "value", width: 36 }];
   ws1.addRows([
-    { label: "Divisi", value: divisionName },
+    { label: "Division", value: divisionName },
     { label: "Quarter", value: quarter?.name ?? quarterId },
-    { label: "Tanggal Export", value: new Date().toLocaleDateString("id-ID") },
-    { label: "Pencapaian Divisi (%)", value: parseFloat(divisionAchievement.toFixed(1)) },
+    { label: "Export Date", value: new Date().toLocaleDateString("id-ID") },
+    { label: "Division Achievement (%)", value: parseFloat(divisionAchievement.toFixed(1)) },
     { label: "Jumlah Objective", value: objectives.length },
-    { label: "Jumlah Anggota", value: members.length },
+    { label: "Member Count", value: members.length },
   ]);
   ws1.getRow(1).font = { bold: true };
 
@@ -70,16 +70,16 @@ export async function GET(req: Request) {
   const ws2 = wb.addWorksheet("OKR Detail");
   ws2.columns = [
     { header: "Objective", key: "objective", width: 38 },
-    { header: "Bobot Obj (%)", key: "objWeight", width: 14 },
-    { header: "Pencapaian Obj (%)", key: "objAch", width: 18 },
+    { header: "Obj Weight (%)", key: "objWeight", width: 14 },
+    { header: "Obj Achievement (%)", key: "objAch", width: 18 },
     { header: "Key Result", key: "kr", width: 38 },
-    { header: "Bobot KR (%)", key: "krWeight", width: 13 },
+    { header: "KR Weight (%)", key: "krWeight", width: 13 },
     { header: "Target", key: "target", width: 10 },
     { header: "Satuan", key: "unit", width: 10 },
     { header: "Progress Tim", key: "teamProgress", width: 13 },
     { header: "Kontribusi Lead", key: "leadProgress", width: 15 },
     { header: "Total Progress", key: "totalProgress", width: 13 },
-    { header: "Pencapaian KR (%)", key: "krAch", width: 17 },
+    { header: "KR Achievement (%)", key: "krAch", width: 17 },
   ];
   ws2.getRow(1).font = { bold: true };
   ws2.getRow(1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFEF3C7" } };
@@ -105,12 +105,12 @@ export async function GET(req: Request) {
     }
   }
 
-  // Sheet 3: Ranking Anggota
-  const ws3 = wb.addWorksheet("Ranking Anggota");
+  // Sheet 3: Member Ranking
+  const ws3 = wb.addWorksheet("Member Ranking");
   ws3.columns = [
     { header: "Peringkat", key: "rank", width: 10 },
-    { header: "Nama Anggota", key: "name", width: 30 },
-    { header: "Pencapaian (%)", key: "achievement", width: 16 },
+    { header: "Member Name", key: "name", width: 30 },
+    { header: "Achievement (%)", key: "achievement", width: 16 },
   ];
   ws3.getRow(1).font = { bold: true };
   ws3.getRow(1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFEF3C7" } };
@@ -119,7 +119,7 @@ export async function GET(req: Request) {
   });
 
   const buffer = await wb.xlsx.writeBuffer();
-  const fileName = `dashboard-divisi-${(quarter?.name ?? quarterId).replace(/\s+/g, "-")}.xlsx`;
+  const fileName = `division-dashboard-${(quarter?.name ?? quarterId).replace(/\s+/g, "-")}.xlsx`;
   return new Response(buffer as ArrayBuffer, {
     headers: {
       "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

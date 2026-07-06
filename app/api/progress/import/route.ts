@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
   } catch {
-    return Response.json({ error: "Gagal membaca form." }, { status: 400 });
+    return Response.json({ error: "Failed to read the form." }, { status: 400 });
   }
 
   const wb = new ExcelJS.Workbook();
@@ -88,7 +88,7 @@ export async function POST(req: Request) {
     if (progress === null) continue; // skip rows with no progress value
 
     if (!validKraIds.has(kraId)) {
-      errors.push(`Baris ${rowNum}: KRA ID "${kraId.slice(0, 12)}..." tidak valid atau bukan milik divisi ini.`);
+      errors.push(`Row ${rowNum}: KRA ID "${kraId.slice(0, 12)}..." is invalid or not part of this division.`);
       continue;
     }
 
@@ -114,13 +114,13 @@ export async function POST(req: Request) {
       await prisma.kRAssignment.update({ where: { id: kraId }, data: { progress } });
       updated++;
     } catch (e) {
-      errors.push(`Gagal update KRA ${kraId.slice(-8)}: ${String(e)}`);
+      errors.push(`Failed to update KRA ${kraId.slice(-8)}: ${String(e)}`);
     }
   }
 
   return Response.json({
     success: true,
-    message: `Berhasil update progress ${updated} KR assignment.`,
+    message: `Updated progress for ${updated} KR assignments.`,
     updated,
     errors: errors.length > 0 ? errors : undefined,
   });

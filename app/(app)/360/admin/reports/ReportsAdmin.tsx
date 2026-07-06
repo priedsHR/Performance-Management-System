@@ -33,6 +33,9 @@ export default function ReportsAdmin() {
   const [periodId, setPeriodId] = useState<string>("");
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(false);
+  const [q, setQ] = useState("");
+  const [deptFilter, setDeptFilter] = useState("");
+  const [sortBy, setSortBy] = useState<"name" | "dept" | "scoreDesc" | "scoreAsc">("scoreDesc");
 
   useEffect(() => {
     fetch("/api/feedback/periods")
@@ -71,6 +74,24 @@ export default function ReportsAdmin() {
         </select>
       </div>
 
+      {/* search / filter / sort */}
+      <div className="flex flex-wrap items-center gap-2">
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="🔍 Search name / position…"
+          className="border border-slate-200 rounded-xl px-3 py-2.5 text-sm flex-1 min-w-[200px] bg-white" />
+        <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white">
+          <option value="">All departments</option>
+          {[...new Set(rows.map((r) => r.department).filter(Boolean))].sort().map((d) => (
+            <option key={d as string} value={d as string}>{d}</option>
+          ))}
+        </select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value as "name" | "dept" | "scoreDesc" | "scoreAsc")} className="border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white">
+          <option value="scoreDesc">Sort: Score high → low</option>
+          <option value="scoreAsc">Sort: Score low → high</option>
+          <option value="name">Sort: Name A-Z</option>
+          <option value="dept">Sort: Department</option>
+        </select>
+      </div>
+
       <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
         {loading ? (
           <div className="divide-y divide-slate-50">
@@ -105,7 +126,20 @@ export default function ReportsAdmin() {
               </tr>
             </thead>
             <tbody>
-              {rows.map((r) => (
+              {rows
+                .filter((r) => !deptFilter || r.department === deptFilter)
+                .filter((r) => {
+                  const t = q.trim().toLowerCase();
+                  if (!t) return true;
+                  return [r.name, r.position, r.department].some((v) => (v || "").toLowerCase().includes(t));
+                })
+                .sort((a, b) =>
+                  sortBy === "name" ? a.name.localeCompare(b.name)
+                  : sortBy === "dept" ? (a.department || "").localeCompare(b.department || "") || a.name.localeCompare(b.name)
+                  : sortBy === "scoreAsc" ? (a.overall ?? 99) - (b.overall ?? 99)
+                  : (b.overall ?? -1) - (a.overall ?? -1)
+                )
+                .map((r) => (
                 <tr key={r.userId} className="border-t border-slate-50 hover:bg-slate-50/50 transition">
                   <td className="px-5 py-3">
                     <p className="font-medium text-slate-800">{r.name}</p>

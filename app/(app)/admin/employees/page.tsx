@@ -11,7 +11,7 @@ export default async function EmployeesPage() {
       <div className="mb-6">
         <h1 className="text-xl font-bold text-slate-900">🧑‍💼 Manajemen Employee</h1>
         <p className="text-sm text-slate-500 mt-0.5">
-          Kelola data employee, akun login, profil 360, atasan, dan assessment lintas departemen.
+          Manage employee data, login accounts, 360 profiles, managers, and cross-department assignments.
         </p>
       </div>
       <EmployeePeersManager />

@@ -134,7 +134,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
                 Distribusi ke Member
               </p>
               <p className="text-xs text-slate-400">
-                Assign objective &amp; KR ke anggota, atur weight dan target individu
+                Assign objectives &amp; KRs to members, set weights and individual targets
               </p>
             </div>
           </div>

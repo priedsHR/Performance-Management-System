@@ -188,7 +188,7 @@ export default function MemberDashboard({ quarters, userId, initialObjectives, i
         </div>
       ) : objectives.length > 0 && !loading ? (
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-amber-700 text-sm">
-          ⚠️ OKR belum dikumpulkan. <a href="/okr" className="underline font-semibold">Kumpulkan →</a>
+          ⚠️ OKR not submitted yet. <a href="/okr" className="underline font-semibold">Submit →</a>
         </div>
       ) : null}
 

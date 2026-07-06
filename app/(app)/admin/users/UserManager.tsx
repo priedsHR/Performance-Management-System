@@ -89,7 +89,7 @@ function UserForm({ form, isEdit, onChange, onSave, onCancel, teamMembers, editU
         <div>
           <label className="block text-xs font-medium text-slate-500 mb-1.5">🎭 Role</label>
           <select className={inputCls} value={form.role} onChange={(e) => onChange({ ...form, role: e.target.value, teamMemberId: "" })}>
-            <option value="MEMBER">👤 Member (anggota division)</option>
+            <option value="MEMBER">👤 Member (division member)</option>
             <option value="LEAD">⭐ Division Lead</option>
             <option value="ADMIN">🛡️ Admin (HR)</option>
           </select>
@@ -296,7 +296,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
             <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
               <span className="text-base">🏢</span>
               <span className="font-semibold text-slate-700 text-sm">{division}</span>
-              <span className="text-slate-400 text-xs">({divUsers.length} orang)</span>
+              <span className="text-slate-400 text-xs">({divUsers.length} people)</span>
             </div>
             <table className="w-full text-sm">
               <tbody>

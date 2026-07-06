@@ -23,12 +23,12 @@ export async function GET(req: Request) {
 
   let leadId = searchParams.get("leadId") ?? session.user.id;
   if (session.user.role === "MEMBER") {
-    if (!session.user.division) return new Response("Division tidak ditemukan.", { status: 404 });
+    if (!session.user.division) return new Response("Division not found.", { status: 404 });
     const lead = await prisma.user.findFirst({ where: { role: "LEAD", division: session.user.division }, select: { id: true } });
-    if (!lead) return new Response("Lead divisi tidak ditemukan.", { status: 404 });
+    if (!lead) return new Response("Division lead not found.", { status: 404 });
     leadId = lead.id;
   }
-  const divisionName = searchParams.get("divisionName") ?? "Divisi";
+  const divisionName = searchParams.get("divisionName") ?? "Division";
 
   if (!quarterId) return new Response("quarterId required", { status: 400 });
 
@@ -153,7 +153,7 @@ export async function GET(req: Request) {
 
   <div class="summary">
     <div class="card">
-      <div class="card-label">Pencapaian Divisi</div>
+      <div class="card-label">Division Achievement</div>
       <div class="card-val">${divisionAchievement.toFixed(1)}%</div>
     </div>
     <div class="card">
@@ -161,13 +161,13 @@ export async function GET(req: Request) {
       <div class="card-val">${objectives.length}</div>
     </div>
     <div class="card">
-      <div class="card-label">Anggota</div>
+      <div class="card-label">Member</div>
       <div class="card-val">${members.length}</div>
     </div>
   </div>
 
   ${objectives.length > 0 ? `
-  <h2>📊 Visualisasi Capaian Objective</h2>
+  <h2>📊 Objective Achievement Visualization</h2>
   <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;margin-bottom:20px;">
     ${objectiveChartRows}
   </div>` : ""}
@@ -177,27 +177,27 @@ export async function GET(req: Request) {
     <thead>
       <tr>
         <th style="width:26%">Objective</th>
-        <th style="width:7%;text-align:center">Bobot</th>
-        <th style="width:9%;text-align:center">Capaian Obj</th>
+        <th style="width:7%;text-align:center">Weight</th>
+        <th style="width:9%;text-align:center">Obj Achievement</th>
         <th style="width:28%">Key Result</th>
         <th style="width:6%;text-align:right">Target</th>
         <th style="width:6%;text-align:center">Satuan</th>
-        <th style="width:6%;text-align:center">Bobot KR</th>
+        <th style="width:6%;text-align:center">KR Weight</th>
         <th style="width:7%;text-align:right">Progress</th>
-        <th style="width:9%;text-align:center">Capaian KR</th>
+        <th style="width:9%;text-align:center">KR Achievement</th>
       </tr>
     </thead>
     <tbody>${objRows}</tbody>
   </table>
 
   ${memberAchievements.length > 0 ? `
-  <h2>🏅 Ranking Anggota</h2>
+  <h2>🏅 Member Ranking</h2>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;">
     <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;">
       ${memberChartRows}
     </div>
     <table>
-      <thead><tr><th style="width:40px">No</th><th>Nama</th><th style="width:110px;text-align:center">Pencapaian</th></tr></thead>
+      <thead><tr><th style="width:40px">No</th><th>Nama</th><th style="width:110px;text-align:center">Achievement</th></tr></thead>
       <tbody>${memberRows}</tbody>
     </table>
   </div>` : ""}

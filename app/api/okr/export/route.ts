@@ -58,9 +58,9 @@ export async function GET(req: Request) {
 
   // Row 2: headers
   const headers = [
-    "Objective", "Bobot Obj (%)", "Status",
-    "Key Result", "Target", "Satuan", "Bobot KR (%)",
-    "Progress", "Pencapaian (%)", "Catatan",
+    "Objective", "Obj Weight (%)", "Status",
+    "Key Result", "Target", "Satuan", "KR Weight (%)",
+    "Progress", "Achievement (%)", "Catatan",
   ];
   const hRow = sheet.getRow(2);
   hRow.height = 24;
@@ -120,7 +120,7 @@ export async function GET(req: Request) {
       setCell(7, kr.weight, { align: "center" });
       setCell(8, `${progress} / ${kr.target}`, { align: "center" });
 
-      // Pencapaian % — color-coded
+      // Achievement % — color-coded
       const { bg: achBg, fg: achFg } = achColors(krAch);
       const achCell = dataRow.getCell(9);
       achCell.value = parseFloat(krAch.toFixed(1));
@@ -132,7 +132,7 @@ export async function GET(req: Request) {
       // Notes col
       const notes: string[] = [];
       if (kr.leadProgress !== null) notes.push("🔒 di-override lead");
-      if (ki === 0 && obj.keyResults.length > 1) notes.push(`Pencapaian Obj: ${objAch.toFixed(1)}%`);
+      if (ki === 0 && obj.keyResults.length > 1) notes.push(`Obj Achievement: ${objAch.toFixed(1)}%`);
       const noteCell = dataRow.getCell(10);
       noteCell.value = notes.join(" · ") || null;
       noteCell.font = { name: "Arial", size: 9, italic: true, color: { argb: "FF94A3B8" } };
@@ -157,7 +157,7 @@ export async function GET(req: Request) {
   sumRow.height = 28;
 
   const sumLabel = sumRow.getCell(1);
-  sumLabel.value = "🏆 Total Pencapaian OKR";
+  sumLabel.value = "🏆 Total OKR Achievement";
   sumLabel.font = { name: "Arial", bold: true, size: 11, color: { argb: DARK } };
   sumLabel.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF1F5F9" } };
   sumLabel.alignment = { horizontal: "right", vertical: "middle" };

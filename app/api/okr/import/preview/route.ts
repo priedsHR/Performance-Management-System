@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     if (!file || typeof file === "string") return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
   } catch {
-    return Response.json({ error: "Gagal membaca file." }, { status: 400 });
+    return Response.json({ error: "Failed to read the file." }, { status: 400 });
   }
 
   const wb = new ExcelJS.Workbook();

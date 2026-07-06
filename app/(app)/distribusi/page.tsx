@@ -94,11 +94,11 @@ export default async function DistribusiPage({
           <div>
             <p className="font-semibold">No Division OKR untuk {selectedQuarter.name}</p>
             <p className="mt-0.5 text-amber-600">
-              Buat objective & key result di halaman{" "}
+              Create objectives & key results on the{" "}
               <a href={`/okr?quarterId=${selectedQuarter.id}`} className="underline font-semibold hover:text-amber-800">
                 Division OKR
               </a>{" "}
-              terlebih dahulu sebelum mendistribusikan ke anggota.
+              page first before distributing them to members.
             </p>
           </div>
         </div>

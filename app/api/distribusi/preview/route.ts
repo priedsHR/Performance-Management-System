@@ -119,7 +119,7 @@ export async function POST(req: Request) {
         where: { id: { in: [...foundQuarterIds] } },
         select: { name: true },
       });
-      quarterHint = `Objective di file ditemukan di quarter: ${quarters.map((q) => q.name).join(", ")}. Pindah ke quarter tersebut sebelum import.`;
+      quarterHint = `The objectives in the file belong to quarter: ${quarters.map((q) => q.name).join(", ")}. Switch to that quarter before importing.`;
     }
   }
 

@@ -70,7 +70,7 @@ export async function POST(req: Request) {
   const leadId: string = body.leadId ?? session.user.id;
 
   if (!fromQuarterId || !toQuarterId)
-    return Response.json({ error: "fromQuarterId dan toQuarterId wajib diisi." }, { status: 400 });
+    return Response.json({ error: "fromQuarterId and toQuarterId are required." }, { status: 400 });
 
   // Build selection map: norm(memberName) → Set<norm("objTitle::krTitle")>
   type SelEntry = { memberName: string; krKeys: string[] };
@@ -103,7 +103,7 @@ export async function POST(req: Request) {
     include: { keyResults: true },
   });
   if (targetObjectives.length === 0)
-    return Response.json({ error: "Quarter tujuan belum punya objective. Buat OKR Divisi dulu." }, { status: 400 });
+    return Response.json({ error: "The destination quarter has no objectives yet. Create the Division OKR first." }, { status: 400 });
 
   const targetObjMap = new Map(targetObjectives.map((o) => [norm(o.title), o]));
   const targetKrMap = new Map(
@@ -184,7 +184,7 @@ export async function POST(req: Request) {
 
   return Response.json({
     success: true,
-    message: `Berhasil menyalin ${copiedAssignments} assignment (${copiedKRAs} KR). Progress yang sudah diisi tetap terjaga.`,
+    message: `Copied ${copiedAssignments} assignments (${copiedKRAs} KRs). Existing progress is preserved.`,
     errors: errors.length > 0 ? errors : undefined,
   });
 }

@@ -43,6 +43,21 @@ export default function Dashboard360() {
       .finally(() => setLoading(false));
   }
 
+  async function toggleRelease() {
+    const period = periods.find((p) => p.id === periodId);
+    if (!period) return;
+    const next = !period.releaseReports;
+    if (!confirm(next ? "Release reports? Employees will be able to see their own 360 report." : "Hide reports from employees again?")) return;
+    await fetch(`/api/feedback/periods/${period.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ releaseReports: next }),
+    });
+    const ps: Period[] = await fetch("/api/feedback/periods").then((r) => r.json());
+    setPeriods(ps);
+    setToolMsg(next ? "Reports released ✓ — employees can now open My Report." : "Reports hidden from employees.");
+  }
+
   async function runTool(action: "fill" | "reset") {
     if (action === "fill" && !confirm("Fill this period with random simulated answers for all employees?")) return;
     if (
@@ -128,9 +143,13 @@ export default function Dashboard360() {
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           {period && (
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${period.releaseReports ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-500"}`}>
-              {period.releaseReports ? "Reports released" : "Reports not released"}
-            </span>
+            <button
+              onClick={toggleRelease}
+              title="Click to toggle report visibility for employees"
+              className={`text-xs font-semibold px-3 py-2 rounded-lg border transition ${period.releaseReports ? "bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-100" : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"}`}
+            >
+              {period.releaseReports ? "🔓 Reports released — click to hide" : "📊 Release Reports"}
+            </button>
           )}
           <button
             onClick={() => runTool("fill")}

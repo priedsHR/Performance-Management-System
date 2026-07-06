@@ -92,7 +92,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
       {/* Overall summary bar */}
       {!loading && overallAch !== null && (
         <div className="bg-white rounded-2xl border border-slate-200 px-5 py-3 flex items-center gap-4 flex-wrap">
-          <span className="text-xs text-slate-500 font-semibold">Rata-rata all division:</span>
+          <span className="text-xs text-slate-500 font-semibold">Average across divisions:</span>
           <span className={`text-sm font-bold px-3 py-1 rounded-lg ${achClass(overallAch)}`}>
             {achEmoji(overallAch)} {overallAch.toFixed(1)}%
           </span>
@@ -118,7 +118,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
 
         {loading && (
           <div className="py-12 text-center text-slate-400 text-sm">
-            <span className="animate-spin mr-2 text-lg inline-block">⏳</span> Memuat data...
+            <span className="animate-spin mr-2 text-lg inline-block">⏳</span> Loading data...
           </div>
         )}
 
@@ -149,7 +149,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
                       </p>
                       {summary ? (
                         <p className="text-xs text-slate-400 mt-0.5">
-                          {summary.memberCount} anggota · {summary.objectiveCount} objective
+                          {summary.memberCount} members · {summary.objectiveCount} objective
                         </p>
                       ) : (
                         <p className="text-xs text-slate-300 mt-0.5">Loading...</p>

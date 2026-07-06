@@ -75,7 +75,7 @@ export async function POST(req: Request) {
     fileBuffer = await (file as File).arrayBuffer();
     leadId = urlLeadId ?? (formData.get("leadId") as string) ?? session.user.id;
   } catch {
-    return Response.json({ error: "Gagal membaca form." }, { status: 400 });
+    return Response.json({ error: "Failed to read the form." }, { status: 400 });
   }
 
   const wb = new ExcelJS.Workbook();
@@ -118,7 +118,7 @@ export async function POST(req: Request) {
     else if (objWeight > 0) lastObjectiveWeight = objWeight;
 
     if (!krTitle) continue;
-    if (!lastMember) { parseErrors.push(`Baris ${rowNum}: KR "${krTitle}" tidak punya anggota.`); continue; }
+    if (!lastMember) { parseErrors.push(`Row ${rowNum}: KR "${krTitle}" has no member.`); continue; }
     if (!lastObjective) { parseErrors.push(`Baris ${rowNum}: KR "${krTitle}" tidak punya objective.`); continue; }
 
     rows.push({ memberName: lastMember, objectiveTitle: lastObjective, objectiveWeight: lastObjectiveWeight, krTitle, individualTarget: indTarget, krWeight });
@@ -156,7 +156,7 @@ export async function POST(req: Request) {
       resolvedQuarterId = hintQuarterId;
     } else {
       const quarters = await prisma.quarter.findMany({ where: { id: { in: [...matchingQuarterIds] } }, select: { name: true } });
-      return Response.json({ error: `Objective ditemukan di beberapa quarter: ${quarters.map((q) => q.name).join(", ")}. Pilih salah satu quarter tersebut di UI, lalu import ulang.` }, { status: 400 });
+      return Response.json({ error: `Objectives found in several quarters: ${quarters.map((q) => q.name).join(", ")}. Select one of those quarters in the UI, then re-import.` }, { status: 400 });
     }
   } else {
     // Not found in any quarter under this leadId
@@ -223,7 +223,7 @@ export async function POST(req: Request) {
         existingMemberMap.set(norm(memberName), member);
         createdMembers++;
       } catch (e) {
-        errors.push(`Gagal buat anggota "${memberName}": ${String(e)}`);
+        errors.push(`Failed to create member "${memberName}": ${String(e)}`);
         continue;
       }
     }
@@ -309,9 +309,9 @@ export async function POST(req: Request) {
 
   return Response.json({
     success: true,
-    message: `Berhasil import ke quarter "${resolvedQuarter.name}": ${upsertedAssignments} assignment, ${upsertedKRAs} KR assignment.` +
-      (createdMembers > 0 ? ` (${createdMembers} anggota baru)` : "") +
-      ` Progress yang sudah diisi tetap terjaga.`,
+    message: `Imported into quarter "${resolvedQuarter.name}": ${upsertedAssignments} assignments, ${upsertedKRAs} KR assignments.` +
+      (createdMembers > 0 ? ` (${createdMembers} new members)` : "") +
+      ` Existing progress is preserved.`,
     created: { members: createdMembers, assignments: upsertedAssignments, krAssignments: upsertedKRAs },
     errors: errors.length > 0 ? errors : undefined,
     debug: { rowsParsed: rows.length, lookups: debugLookups },

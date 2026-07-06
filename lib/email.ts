@@ -30,8 +30,8 @@ function buildIssuesHtml(issues: CompletionIssues): string {
   if (issues.hasNoObjectives) {
     return `
       <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:16px 20px;margin:20px 0;">
-        <p style="margin:0;font-size:14px;font-weight:bold;color:#dc2626;">⚠️ Belum ada Objective yang dibuat</p>
-        <p style="margin:6px 0 0;font-size:13px;color:#ef4444;">Silakan buat minimal satu Objective beserta Key Results-nya.</p>
+        <p style="margin:0;font-size:14px;font-weight:bold;color:#dc2626;">⚠️ No objectives created yet</p>
+        <p style="margin:6px 0 0;font-size:13px;color:#ef4444;">Please create at least one Objective with its Key Results.</p>
       </div>`;
   }
 
@@ -102,27 +102,27 @@ export async function sendReminderEmail({
   const isCollection = type === "collection";
 
   const subject = isSettings
-    ? `[Reminder] Mohon lengkapi OKR Divisi – ${quarterName}`
+    ? `[Reminder] Please complete the Division OKR – ${quarterName}`
     : isCollection
-    ? `[Reminder Pengumpulan] Mohon lengkapi data OKR – ${quarterName}`
-    : `[Reminder] Mohon update progress OKR – ${quarterName}`;
+    ? `[Submission Reminder] Please complete the OKR data – ${quarterName}`
+    : `[Reminder] Please update OKR progress – ${quarterName}`;
 
-  const actionLabel = isSettings ? "Buka Halaman OKR" : "Buka Halaman Distribusi";
+  const actionLabel = isSettings ? "Open the OKR Page" : "Open the Distribution Page";
   const link = isSettings
     ? `${APP_URL}/okr?quarterId=${quarterId}`
     : `${APP_URL}/distribusi?quarterId=${quarterId}`;
 
   const introParagraph = isSettings
-    ? `Halo <strong>${name}</strong>,<br><br>
-       Berikut adalah ringkasan <strong>OKR Divisi</strong> kamu untuk quarter <strong>${quarterName}</strong>
-       yang masih perlu dilengkapi sebelum batas waktu pengumpulan.`
+    ? `Hello <strong>${name}</strong>,<br><br>
+       Here is a summary of your <strong>Division OKR</strong> for <strong>${quarterName}</strong>
+       that still needs to be completed before the submission deadline.`
     : isCollection
-    ? `Halo <strong>${name}</strong>,<br><br>
-       Ini adalah <strong>reminder pengumpulan akhir quarter</strong> untuk <strong>${quarterName}</strong>.
-       Pastikan seluruh data OKR sudah lengkap — bobot, target, satuan, progress anggota, dan capaian.`
-    : `Halo <strong>${name}</strong>,<br><br>
-       Berikut adalah ringkasan <strong>progress/hasil OKR</strong> divisi kamu
-       untuk quarter <strong>${quarterName}</strong> yang masih perlu diupdate.`;
+    ? `Hello <strong>${name}</strong>,<br><br>
+       This is the <strong>end-of-quarter submission reminder</strong> for <strong>${quarterName}</strong>.
+       Make sure all OKR data is complete — weights, targets, units, member progress, and achievement.`
+    : `Hello <strong>${name}</strong>,<br><br>
+       Here is a summary of your division's <strong>OKR progress</strong>
+       for <strong>${quarterName}</strong> that still needs updating.`;
 
   const issuesHtml = buildIssuesHtml(completionIssues);
 

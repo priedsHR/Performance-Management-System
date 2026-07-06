@@ -16,7 +16,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   if (!session || session.user.role === "MEMBER") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   const { id } = await params;
   const quarterId = req.nextUrl.searchParams.get("quarterId");
-  if (!quarterId) return NextResponse.json({ error: "quarterId wajib diisi." }, { status: 400 });
+  if (!quarterId) return NextResponse.json({ error: "quarterId is required." }, { status: 400 });
 
   // Delete this quarter's assignments only
   const toDelete = await prisma.objectiveAssignment.findMany({

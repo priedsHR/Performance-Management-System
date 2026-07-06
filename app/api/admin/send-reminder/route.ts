@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const { type, quarterId }: { type: ReminderType; quarterId: string } = await req.json();
 
   if (!type || !quarterId) {
-    return NextResponse.json({ error: "type dan quarterId wajib diisi." }, { status: 400 });
+    return NextResponse.json({ error: "type and quarterId are required." }, { status: 400 });
   }
 
   const quarter = await prisma.quarter.findUnique({ where: { id: quarterId } });
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     orderBy: { name: "asc" },
   });
 
-  if (leads.length === 0) return NextResponse.json({ error: "Tidak ada Lead Divisi yang terdaftar." }, { status: 404 });
+  if (leads.length === 0) return NextResponse.json({ error: "No Division Leads registered." }, { status: 404 });
 
   const results: { name: string; email: string; status: "sent" | "skipped" | "error"; reason?: string; error?: string }[] = [];
 
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       completionIssues.objectives.length === 0;
 
     if (isComplete) {
-      results.push({ name: lead.name ?? "-", email: lead.email, status: "skipped", reason: "OKR sudah lengkap ✅" });
+      results.push({ name: lead.name ?? "-", email: lead.email, status: "skipped", reason: "OKR is complete ✅" });
       continue;
     }
 
@@ -63,9 +63,9 @@ export async function POST(req: NextRequest) {
   const errCount = results.filter((r) => r.status === "error").length;
 
   const parts = [];
-  if (sentCount > 0) parts.push(`${sentCount} email terkirim`);
-  if (skippedCount > 0) parts.push(`${skippedCount} sudah lengkap (tidak dikirim)`);
-  if (errCount > 0) parts.push(`${errCount} gagal`);
+  if (sentCount > 0) parts.push(`${sentCount} emails sent`);
+  if (skippedCount > 0) parts.push(`${skippedCount} already complete (not sent)`);
+  if (errCount > 0) parts.push(`${errCount} failed`);
 
   return NextResponse.json({ success: sentCount > 0 || skippedCount > 0, message: parts.join(", ") + ".", results });
 }

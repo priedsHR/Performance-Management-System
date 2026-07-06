@@ -25,29 +25,29 @@ export async function GET() {
     ["", ""],
     ["CARA PENGGUNAAN", ""],
     ["1.", 'Buka sheet "OKR" (tab di bawah)'],
-    ["2.", "Isi data mulai dari baris ke-3 (setelah baris header)"],
-    ["3.", "Satu objective bisa punya banyak Key Result. Tulis nama Objective hanya di baris pertama KR-nya. Baris KR berikutnya di objective yang sama: kosongkan kolom A & B."],
-    ["4.", "Total Bobot Objective (%) harus = 100"],
-    ["5.", "Total Bobot KR (%) per objective harus = 100"],
-    ["6.", "Simpan file lalu upload via tombol Import di halaman OKR"],
+    ["2.", "Enter data starting from row 3 (below the header rows)"],
+    ["3.", "One objective can have many Key Results. Write the Objective name only on its first KR row. For subsequent KR rows of the same objective: leave columns A & B blank."],
+    ["4.", "Total Objective Weight (%) harus = 100"],
+    ["5.", "Total KR Weight (%) per objective harus = 100"],
+    ["6.", "Save the file, then upload it via the Import button on the OKR page"],
     ["", ""],
     ["KETERANGAN KOLOM", ""],
     ["A  Objective", "Nama objective (isi hanya di baris pertama KR tiap objective)"],
-    ["B  Bobot Objective (%)", "Bobot objective, total semua = 100 (isi hanya di baris pertama)"],
-    ["C  Key Result", "Nama key result — WAJIB diisi setiap baris"],
-    ["D  Target", "Angka target (wajib, angka saja)"],
-    ["E  Satuan", "Satuan: %, pcs, x, score, hari, bulan, orang, lainnya"],
-    ["F  Bobot KR (%)", "Bobot KR, total per objective = 100"],
+    ["B  Objective Weight (%)", "Objective weight, grand total = 100 (fill only on the first row)"],
+    ["C  Key Result", "Key result name — REQUIRED on every row"],
+    ["D  Target", "Target number (required, numbers only)"],
+    ["E  Satuan", "Units: %, pcs, x, score, day, month, people, other"],
+    ["F  KR Weight (%)", "KR weight, total per objective = 100"],
     ["", ""],
     ["CONTOH", ""],
     ["Baris 3:", "A=Meningkatkan Revenue, B=60, C=Target Revenue Q1, D=500, E=juta, F=100"],
-    ["Baris 4:", "A=(kosong), B=(kosong), C=Ini salah — KR kedua dalam obj sama harusnya di objective yang sama"],
+    ["Baris 4:", "A=(blank), B=(blank), C=Wrong — the second KR of the same objective must stay in the same objective"],
     ["", ""],
     ["ATURAN PENTING", ""],
-    ["*", "Jangan ubah atau hapus baris header (baris 1 dan 2) di sheet OKR"],
-    ["*", "Kolom C (Key Result) harus selalu diisi"],
-    ["*", "Baris yang kolom C-nya kosong akan diabaikan"],
-    ["*", "Objective yang sudah Terkumpul tidak akan dihapus, hanya yang masih Draft"],
+    ["*", "Do not change or delete the header rows (rows 1 and 2) in the OKR sheet"],
+    ["*", "Column C (Key Result) must always be filled"],
+    ["*", "Rows with a blank column C are ignored"],
+    ["*", "Submitted objectives are kept; only Drafts are replaced"],
   ];
 
   let r = 2;
@@ -78,7 +78,7 @@ export async function GET() {
   const AMBER_BG = "FFFBBF24";
   const HEADER_FG = "FF1E293B";
 
-  const headers = ["Objective", "Bobot Objective (%)", "Key Result", "Target", "Satuan", "Bobot KR (%)"];
+  const headers = ["Objective", "Objective Weight (%)", "Key Result", "Target", "Satuan", "KR Weight (%)"];
   const colWidths = [38, 20, 38, 12, 14, 14];
 
   // Row 1: headers

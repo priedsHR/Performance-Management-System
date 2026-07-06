@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   }
 
   const quarterId = req.nextUrl.searchParams.get("quarterId");
-  if (!quarterId) return NextResponse.json({ error: "quarterId wajib diisi." }, { status: 400 });
+  if (!quarterId) return NextResponse.json({ error: "quarterId is required." }, { status: 400 });
 
   const teamMember = await prisma.teamMember.findUnique({
     where: { userId: session.user.id },

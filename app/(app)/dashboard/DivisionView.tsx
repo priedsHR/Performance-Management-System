@@ -64,7 +64,7 @@ function RadarObjectivesChart({ objectives }: { objectives: ObjData[] }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5">
       <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">🕸️ Radar Objective</p>
-      <p className="text-xs text-slate-400 mb-3">Keseimbangan capaian antar objective</p>
+      <p className="text-xs text-slate-400 mb-3">Balance of achievement across objectives</p>
       <ResponsiveContainer width="100%" height={260}>
         <RadarChart data={data} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
           <PolarGrid stroke="#e2e8f0" />
@@ -94,7 +94,7 @@ function BarObjectivesChart({ objectives }: { objectives: ObjData[] }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5">
       <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">📊 Achievement per Objective</p>
-      <p className="text-xs text-slate-400 mb-3">Perbandingan % capaian tiap objective</p>
+      <p className="text-xs text-slate-400 mb-3">Comparison of achievement % per objective</p>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -125,7 +125,7 @@ function DonutObjectivesChart({ objectives, divisionAchievement }: { objectives:
             <Pie data={data} cx="50%" cy="50%" innerRadius={65} outerRadius={95} dataKey="value" paddingAngle={3}>
               {data.map((_, i) => <Cell key={i} fill={PALETTE[i % PALETTE.length]} />)}
             </Pie>
-            <Tooltip formatter={(v: unknown, _: unknown, p: { payload?: { achievement?: number; title?: string } }) => [`${v}% weight · ${(p.payload?.achievement ?? 0).toFixed(1)}% capaian`, p.payload?.title ?? ""]} contentStyle={{ fontSize: "11px", padding: "4px 10px", borderRadius: "8px", border: "1px solid #e2e8f0" }} />
+            <Tooltip formatter={(v: unknown, _: unknown, p: { payload?: { achievement?: number; title?: string } }) => [`${v}% weight · ${(p.payload?.achievement ?? 0).toFixed(1)}% achievement`, p.payload?.title ?? ""]} contentStyle={{ fontSize: "11px", padding: "4px 10px", borderRadius: "8px", border: "1px solid #e2e8f0" }} />
           </PieChart>
         </ResponsiveContainer>
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -443,7 +443,7 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
 
       {loading && (
         <div className="flex items-center justify-center py-20 text-slate-400">
-          <span className="text-2xl animate-spin mr-3">⏳</span> Memuat data...
+          <span className="text-2xl animate-spin mr-3">⏳</span> Loading data...
         </div>
       )}
 

@@ -74,7 +74,7 @@ export default function ImportExportSection({ quarterId }: Props) {
       const data = await res.json();
       setPreview(data);
     } catch {
-      setPreview({ sheetNames: [], selectedSheet: "", maxRow: 0, rawRows: [], error: "Gagal membaca file." });
+      setPreview({ sheetNames: [], selectedSheet: "", maxRow: 0, rawRows: [], error: "Failed to read the file." });
     } finally {
       setPreviewing(false);
       if (previewRef.current) previewRef.current.value = "";

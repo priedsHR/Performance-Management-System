@@ -65,10 +65,10 @@ export async function GET(req: Request) {
   const ws1 = wb.addWorksheet("Ringkasan");
   ws1.columns = [{ key: "label", width: 28 }, { key: "value", width: 36 }];
   ws1.addRows([
-    { label: "Nama Anggota", value: member.name },
+    { label: "Member Name", value: member.name },
     { label: "Quarter", value: quarter?.name ?? quarterId },
-    { label: "Tanggal Export", value: new Date().toLocaleDateString("id-ID") },
-    { label: "Total Pencapaian (%)", value: parseFloat(achievement.toFixed(1)) },
+    { label: "Export Date", value: new Date().toLocaleDateString("id-ID") },
+    { label: "Total Achievement (%)", value: parseFloat(achievement.toFixed(1)) },
     { label: "Jumlah Objective", value: assignments.length },
   ]);
   ws1.getRow(1).font = { bold: true };
@@ -77,14 +77,14 @@ export async function GET(req: Request) {
   const ws2 = wb.addWorksheet("KR Detail");
   ws2.columns = [
     { header: "Objective", key: "objective", width: 38 },
-    { header: "Bobot Obj (%)", key: "objWeight", width: 14 },
+    { header: "Obj Weight (%)", key: "objWeight", width: 14 },
     { header: "Key Result", key: "kr", width: 38 },
-    { header: "Bobot KR (%)", key: "krWeight", width: 13 },
+    { header: "KR Weight (%)", key: "krWeight", width: 13 },
     { header: "Target", key: "target", width: 10 },
     { header: "Satuan", key: "unit", width: 10 },
     { header: "Target Individu", key: "individualTarget", width: 15 },
     { header: "Progress", key: "progress", width: 12 },
-    { header: "Pencapaian (%)", key: "krAch", width: 15 },
+    { header: "Achievement (%)", key: "krAch", width: 15 },
   ];
   ws2.getRow(1).font = { bold: true };
   ws2.getRow(1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFEF3C7" } };

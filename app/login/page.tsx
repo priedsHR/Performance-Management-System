@@ -36,7 +36,7 @@ export default function LoginPage() {
           <div className="text-6xl mb-5">📈</div>
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Performance Management System</h2>
           <p className="text-slate-500 text-sm leading-relaxed">
-            Pantau pencapaian OKR tim kamu secara real-time dan transparan.
+            Track your team's OKR achievement in real time, transparently.
           </p>
           <div className="mt-8 grid grid-cols-3 gap-3">
             {[

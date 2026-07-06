@@ -73,7 +73,7 @@ export default function YearQuarterPicker({ quarters, value, onChange }: Props) 
                   autoFocus
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Cari..."
+                  placeholder="Search..."
                   className="w-full text-xs px-2 py-1 rounded-lg border border-slate-200 focus:outline-none focus:ring-1 focus:ring-amber-400"
                 />
               </div>

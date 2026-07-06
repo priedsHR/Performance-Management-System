@@ -36,7 +36,7 @@ export async function GET() {
     "Email*",
     "Password*",
     "Role (ADMIN/LEAD/MEMBER)*",
-    "Divisi",
+    "Division",
   ];
   const hRow = sheet.getRow(1);
   hRow.height = 26;
@@ -61,7 +61,7 @@ export async function GET() {
 
   // Note row
   const noteRow = sheet.getRow(6);
-  noteRow.getCell(1).value = "Catatan: Jika email sudah ada, data akan diperbarui kecuali password (kosongkan kolom password untuk tidak mengubah password).";
+  noteRow.getCell(1).value = "Note: If the email already exists, the data is updated except the password (leave the password column blank to keep it).";
   noteRow.getCell(1).font = { name: "Arial", italic: true, size: 10, color: { argb: "FF94A3B8" } };
   sheet.mergeCells("A6:E6");
 
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
       return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
   } catch {
-    return Response.json({ error: "Gagal membaca form." }, { status: 400 });
+    return Response.json({ error: "Failed to read the form." }, { status: 400 });
   }
 
   const wb = new ExcelJS.Workbook();
@@ -145,7 +145,7 @@ export async function POST(req: Request) {
       if (role === "MEMBER" && division) {
         const alreadyLinked = await prisma.teamMember.findUnique({ where: { userId } });
         if (alreadyLinked) {
-          linkLog.push(`${name}: sudah ter-link ke "${alreadyLinked.name}"`);
+          linkLog.push(`${name}: already linked to "${alreadyLinked.name}"`);
         } else {
           const pool = await prisma.teamMember.findMany({
             include: { lead: { select: { division: true } } },

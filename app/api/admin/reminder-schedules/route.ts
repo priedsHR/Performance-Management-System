@@ -26,10 +26,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Field tidak lengkap." }, { status: 400 });
   }
   if ((frequency === "weekly" || frequency === "biweekly") && dayOfWeek === undefined) {
-    return NextResponse.json({ error: "Hari wajib dipilih untuk jadwal mingguan." }, { status: 400 });
+    return NextResponse.json({ error: "A day is required for weekly schedules." }, { status: 400 });
   }
   if (frequency === "monthly" && !dayOfMonth) {
-    return NextResponse.json({ error: "Tanggal wajib dipilih untuk jadwal bulanan." }, { status: 400 });
+    return NextResponse.json({ error: "A date is required for monthly schedules." }, { status: 400 });
   }
 
   const nextRun = computeInitialNextRun(frequency, dayOfWeek ?? null, dayOfMonth ?? null, hourWIB);

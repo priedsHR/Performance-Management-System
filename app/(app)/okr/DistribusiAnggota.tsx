@@ -502,7 +502,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
       const res = await fetch(`/api/distribusi/preview?leadId=${encodeURIComponent(leadId)}&quarterId=${encodeURIComponent(quarterId)}`, { method: "POST", body: form });
       setPreview(await res.json());
     } catch {
-      setPreview({ sheetNames: [], selectedSheet: "", maxRow: 0, rows: [], matching: { objectives: [], keyResults: [] }, db: { objectives: [], keyResults: [] }, error: "Gagal membaca file." });
+      setPreview({ sheetNames: [], selectedSheet: "", maxRow: 0, rows: [], matching: { objectives: [], keyResults: [] }, db: { objectives: [], keyResults: [] }, error: "Failed to read the file." });
     } finally {
       setPreviewing(false);
       if (previewRef.current) previewRef.current.value = "";
@@ -847,7 +847,7 @@ function CopyFromQuarterModal({
                 </div>
               </div>
 
-              {loadingPreview && <p className="text-slate-400 text-sm text-center py-4">⏳ Memuat data...</p>}
+              {loadingPreview && <p className="text-slate-400 text-sm text-center py-4">⏳ Loading data...</p>}
               {!loadingPreview && sourceId && preview.length === 0 && (
                 <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-500 text-center space-y-1">
                   <p>No distribution for this quarter yet.</p>
@@ -1265,7 +1265,7 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
         </div>
         <div className="flex items-center gap-4 flex-wrap">
           {employees.length === 0 && (
-            <p className="text-xs text-slate-400">💡 Daftar employee blank — Admin bisa tambahkan di Admin → Employee.</p>
+            <p className="text-xs text-slate-400">💡 Employee list is empty — the Admin can add them in Admin → Employee.</p>
           )}
           {allQuarters.length > 1 && (
             <button
@@ -1278,7 +1278,7 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
         </div>
       </div>
 
-      {/* ── 2. Kartu anggota ──────────────────────────────────────────── */}
+      {/* ── 2. Member cards ──────────────────────────────────────────── */}
       {members.length === 0 ? (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
           <div className="text-4xl mb-3">👥</div>

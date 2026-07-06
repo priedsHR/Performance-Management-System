@@ -93,7 +93,7 @@ export default function EmployeePeersManager() {
   }
 
   async function del(p: Profile) {
-    const withUser = confirm(`Delete profil 360 "${p.name}".\n\nOK = hapus juga akun login.\nCancel = hapus profil 360 saja.`);
+    const withUser = confirm(`Delete profil 360 "${p.name}".\n\nOK = also delete the login account.\nCancel = delete only the 360 profile.`);
     await fetch(`/api/feedback/profiles/${p.id}${withUser ? "?withUser=1" : ""}`, { method: "DELETE" });
     await load();
   }
@@ -198,14 +198,14 @@ export default function EmployeePeersManager() {
 
               {(form.role === "LEAD" || form.role === "ADMIN") && (
                 <p className="text-xs text-amber-700 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
-                  Role Lead/Admin otomatis mendapat kompetensi Leadership.
+                  Lead/Admin roles automatically get the Leadership competencies.
                 </p>
               )}
 
               {/* Competency picker */}
               <div className="border-t border-slate-100 pt-4">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm font-semibold text-slate-700">Kompetensi yang dinilai ({selected.size})</p>
+                  <p className="text-sm font-semibold text-slate-700">Competencies assessed ({selected.size})</p>
                   <div className="flex gap-2">
                     <button onClick={() => setSelected((prev) => new Set([...prev, ...autoIds(form.department, form.role)]))} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100">Terapkan otomatis</button>
                     <button onClick={() => setSelected(new Set())} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-500 hover:bg-slate-50">Clear</button>
@@ -310,9 +310,9 @@ export default function EmployeePeersManager() {
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1.5">Tipe Relasi</label>
                 <select value={pairType} onChange={(e) => setPairType(e.target.value as typeof pairType)} className={inp} style={{ width: 230 }}>
-                  <option value="peer">🤝 Peer (A ↔ B, saling menilai)</option>
-                  <option value="a_rates_b">⬆️ A menilai B (A adalah atasan B)</option>
-                  <option value="b_rates_a">⬇️ B menilai A (B adalah atasan A)</option>
+                  <option value="peer">🤝 Peer (A ↔ B, rate each other)</option>
+                  <option value="a_rates_b">⬆️ A rates B (A is B's manager)</option>
+                  <option value="b_rates_a">⬇️ B rates A (B is A's manager)</option>
                 </select>
               </div>
               <div>

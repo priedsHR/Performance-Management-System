@@ -26,7 +26,7 @@ export async function GET() {
   const AMBER = "FFFBBF24";
   const DARK = "FF1E293B";
 
-  const headers = ["Nama*", "Divisi", "Jabatan/Posisi", "Status (aktif/nonaktif)"];
+  const headers = ["Nama*", "Division", "Jabatan/Posisi", "Status (aktif/nonaktif)"];
   const hRow = sheet.getRow(1);
   hRow.height = 26;
   headers.forEach((h, i) => {
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
       return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
   } catch {
-    return Response.json({ error: "Gagal membaca form." }, { status: 400 });
+    return Response.json({ error: "Failed to read the form." }, { status: 400 });
   }
 
   const wb = new ExcelJS.Workbook();
@@ -115,7 +115,7 @@ export async function POST(req: Request) {
 
   return Response.json({
     success: true,
-    message: `Berhasil: ${created} karyawan baru, ${updated} diperbarui.`,
+    message: `Done: ${created} new employees, ${updated} updated.`,
     created, updated,
     errors: errors.length > 0 ? errors : undefined,
   });
