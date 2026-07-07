@@ -247,7 +247,7 @@ function ImportModal({
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-slate-500">
-                      {selectedObjCount} obj · {selectedKRCount} KR dipilih
+                      {selectedObjCount} obj · {selectedKRCount} KRs selected
                     </span>
                     <button onClick={toggleAllObjs} className="text-xs text-amber-600 font-bold hover:text-amber-700">
                       {sourceObjs.some((o) => isObjSelected(o.id)) ? "Cancel all" : "Select all"}
@@ -562,7 +562,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
             {/* Import button */}
             {!allSubmitted && allQuarters.length > 1 && (
               <button onClick={() => setShowImport(true)} className={btnSecondary}>
-                Import dari Quarter Lain
+                Import from Another Quarter
               </button>
             )}
 
@@ -766,7 +766,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                               />
                             </div>
                             <div>
-                              <label className="block text-slate-400 mb-1 font-medium">Satuan</label>
+                              <label className="block text-slate-400 mb-1 font-medium">Unit</label>
                               <select
                                 className="w-full border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:border-amber-400 bg-white disabled:cursor-default"
                                 value={kr.unit}
@@ -821,7 +821,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                           ) : (
                             <p className="text-xs text-slate-400 italic mb-2">
                               Member progress is filled in on the{" "}
-                              <a href="/distribusi" className="text-amber-600 hover:underline font-semibold">Distribusi Member →</a>
+                              <a href="/distribusi" className="text-amber-600 hover:underline font-semibold">Member Distribution →</a>
                             </p>
                           )}
 

@@ -343,7 +343,7 @@ export default function EmployeePeersManager() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1.5">Tipe Relasi</label>
+                <label className="block text-xs font-medium text-slate-500 mb-1.5">Relation Type</label>
                 <select value={pairType} onChange={(e) => setPairType(e.target.value as typeof pairType)} className={inp} style={{ width: 230 }}>
                   <option value="peer">Peer (A ↔ B, rate each other)</option>
                   <option value="a_rates_b">A rates B (A is B's manager)</option>

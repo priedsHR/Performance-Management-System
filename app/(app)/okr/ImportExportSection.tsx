@@ -173,7 +173,7 @@ export default function ImportExportSection({ quarterId }: Props) {
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-700 space-y-1">
           <p className="font-semibold">Tips</p>
           <ul className="list-disc list-inside space-y-0.5 text-amber-600">
-            <li>Klik <strong>Preview File</strong> first to check that columns A & C are read correctly before importing</li>
+            <li>Click <strong>Preview File</strong> first to check that columns A & C are read correctly before importing</li>
             <li>OKR status <strong>Draft</strong> will be replaced · completed ones <strong>Terkumpul</strong> aman</li>
             <li>Column C (Key Result) must be filled in every row</li>
           </ul>

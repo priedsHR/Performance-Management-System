@@ -181,7 +181,7 @@ export async function GET(req: Request) {
         <th style="width:9%;text-align:center">Obj Achievement</th>
         <th style="width:28%">Key Result</th>
         <th style="width:6%;text-align:right">Target</th>
-        <th style="width:6%;text-align:center">Satuan</th>
+        <th style="width:6%;text-align:center">Unit</th>
         <th style="width:6%;text-align:center">KR Weight</th>
         <th style="width:7%;text-align:right">Progress</th>
         <th style="width:9%;text-align:center">KR Achievement</th>

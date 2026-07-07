@@ -151,7 +151,7 @@ function KRRow({
 
       {kra.target !== null && (
         <p className="text-xs text-amber-600">
-          Target individu: <strong>{kra.target} {kr.unit}</strong> (division: {kr.target} {kr.unit})
+          Individual target: <strong>{kra.target} {kr.unit}</strong> (division: {kr.target} {kr.unit})
         </p>
       )}
 
@@ -520,7 +520,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
       <div className="px-5 py-3.5 border-b border-slate-100 bg-slate-50 flex items-center gap-2">
         <span></span>
         <div>
-          <h3 className="font-bold text-slate-800 text-sm">Import / Export Distribusi</h3>
+          <h3 className="font-bold text-slate-800 text-sm">Import / Export Distribution</h3>
           <p className="text-xs text-slate-400">The template lists all objectives & KRs. Just fill in members, weights, & individual targets.</p>
         </div>
       </div>
@@ -578,7 +578,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
               <div>
                 <p className="font-bold text-violet-800">Preview — sheet: {preview.selectedSheet}</p>
                 <p className="text-violet-500">
-                  {preview.maxRow} baris · sheets: {preview.sheetNames.join(", ")}
+                  {preview.maxRow} rows · sheets: {preview.sheetNames.join(", ")}
                   {preview.selectedQuarter && <> · DB quarter: <strong>{preview.selectedQuarter}</strong></>}
                 </p>
               </div>
@@ -671,7 +671,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-xs text-amber-700 space-y-1">
           <p className="font-semibold">Tips</p>
           <ul className="list-disc list-inside space-y-0.5 text-amber-600">
-            <li>Klik <strong>Preview</strong> first to check that objective & KR names are read correctly before importing</li>
+            <li>Click <strong>Preview</strong> first to check that objective & KR names are read correctly before importing</li>
             <li>Columns B (Objective) & D (Key Result) must exactly match what is in the database</li>
             <li>Import replaces all existing assignments</li>
           </ul>
@@ -858,7 +858,7 @@ function CopyFromQuarterModal({
               {!loadingPreview && preview.length > 0 && (
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-semibold text-slate-500">{totalSel}/{totalAll} KR dipilih</span>
+                    <span className="text-xs font-semibold text-slate-500">{totalSel}/{totalAll} KRs selected</span>
                     <button onClick={toggleAll} className="text-xs text-amber-600 font-bold hover:text-amber-700 transition">
                       {totalSel > 0 ? "Cancel all" : "Select all"}
                     </button>
@@ -882,7 +882,7 @@ function CopyFromQuarterModal({
                             </button>
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-semibold text-slate-700">{m.name}</p>
-                              <p className="text-xs text-slate-400">{mSel}/{mTotal} KR dipilih</p>
+                              <p className="text-xs text-slate-400">{mSel}/{mTotal} KRs selected</p>
                             </div>
                             <button onClick={() => toggleExpand(m.name)}
                               className="flex-shrink-0 flex items-center gap-1 text-xs text-slate-400 hover:text-slate-600 px-2 py-1 rounded-lg hover:bg-slate-100 transition">
@@ -998,7 +998,7 @@ function ProgressExcel({ leadId, quarterId }: { leadId: string; quarterId: strin
   return (
     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
       <div className="px-5 py-4 bg-slate-50 border-b border-slate-100">
-        <h3 className="font-bold text-slate-700 text-sm">Update Progress OKR Individu via Excel</h3>
+        <h3 className="font-bold text-slate-700 text-sm">Update Individual OKR Progress via Excel</h3>
         <p className="text-xs text-slate-400 mt-0.5">Once the Division OKR is done & distributed, download the template — it lists every member's individual OKRs. Fill in the Progress column, then upload it back.</p>
       </div>
       <div className="p-4 flex flex-wrap gap-2 items-center">
@@ -1272,7 +1272,7 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
               onClick={() => setShowCopyModal(true)}
               className="text-xs text-slate-500 hover:text-amber-600 font-semibold flex items-center gap-1 transition-colors"
             >
-              Salin dari quarter lain
+              Copy from another quarter
             </button>
           )}
         </div>
@@ -1315,7 +1315,7 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
           <div className="flex items-center gap-2">
             <span className="text-sm"></span>
             <span className="text-sm font-semibold text-slate-600">Alat Bantu Excel</span>
-            <span className="text-xs text-slate-400">— import/export distribusi & update progress</span>
+            <span className="text-xs text-slate-400">— import/export distribution & update progress</span>
           </div>
           <span className="text-slate-400 text-xs">{showTools ? "▲" : "▼"}</span>
         </button>

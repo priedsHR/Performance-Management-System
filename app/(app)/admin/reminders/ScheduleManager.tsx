@@ -186,7 +186,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
                   </div>
                   <p className="text-xs text-slate-500">{scheduleDesc(s)}</p>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    Berikutnya: <span className="font-medium text-slate-600">{fmtWIB(s.nextRun)}</span>
+                    Next: <span className="font-medium text-slate-600">{fmtWIB(s.nextRun)}</span>
                     {s.lastRun && <> · Last: {fmtWIB(s.lastRun)}</>}
                   </p>
                 </div>

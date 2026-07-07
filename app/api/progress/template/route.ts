@@ -76,7 +76,7 @@ export async function GET(req: Request) {
     ["C  Objective", "Judul objective"],
     ["D  Key Result", "Judul key result"],
     ["E  Target", "Target (division or individual)"],
-    ["F  Satuan", "Satuan pengukuran"],
+    ["F  Unit", "Unit of measurement"],
     ["G  Progress", "← FILL THIS: the member's latest progress value"],
     ["H  Achievement (%)", "Calculated automatically (for reference)"],
     ["", ""],

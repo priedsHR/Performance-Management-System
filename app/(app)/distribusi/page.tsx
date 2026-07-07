@@ -27,9 +27,9 @@ export default async function DistribusiPage({
   if (quarters.length === 0) {
     return (
       <div className="space-y-4">
-        <h1 className="text-xl font-bold text-slate-900">Distribusi Member</h1>
+        <h1 className="text-xl font-bold text-slate-900">Member Distribution</h1>
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
-          No quarter. Buat quarter terlebih dahulu.
+          No quarters. Create a quarter first.
         </div>
       </div>
     );
@@ -45,7 +45,7 @@ export default async function DistribusiPage({
           basePath="/distribusi"
         />
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
-          Select quarter di atas untuk melihat distribusi.
+          Select a quarter above to view the distribution.
         </div>
       </div>
     );
@@ -92,7 +92,7 @@ export default async function DistribusiPage({
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-sm text-amber-700 flex items-start gap-3">
           <span className="text-lg flex-shrink-0"></span>
           <div>
-            <p className="font-semibold">No Division OKR untuk {selectedQuarter.name}</p>
+            <p className="font-semibold">No Division OKR for {selectedQuarter.name}</p>
             <p className="mt-0.5 text-amber-600">
               Create objectives & key results on the{" "}
               <a href={`/okr?quarterId=${selectedQuarter.id}`} className="underline font-semibold hover:text-amber-800">

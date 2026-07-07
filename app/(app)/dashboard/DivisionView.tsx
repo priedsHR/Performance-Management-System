@@ -256,7 +256,7 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
                 <tr className="border-b border-slate-100">
                   <th className="text-left py-2 pr-3 text-xs font-semibold text-slate-400">Key Result</th>
                   <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Target</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Satuan</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Unit</th>
                   <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Weight</th>
                   <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Progress</th>
                   <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Achievement</th>

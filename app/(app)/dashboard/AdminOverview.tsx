@@ -124,7 +124,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
 
         {!loading && filtered.length === 0 && (
           <div className="py-12 text-center text-slate-400 text-sm">
-            Tidak ada division yang cocok dengan pencarian.
+            No divisions match your search.
           </div>
         )}
 

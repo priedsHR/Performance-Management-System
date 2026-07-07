@@ -108,7 +108,7 @@ export default function SetupPage() {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Konfirmasi Password</label>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Confirm Password</label>
             <input
               type="password"
               required

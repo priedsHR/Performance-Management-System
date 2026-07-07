@@ -60,7 +60,7 @@ export async function GET(req: Request) {
   // Row 1: title
   sheet.mergeCells("A1:J1");
   const titleCell = sheet.getCell("A1");
-  titleCell.value = `📊 Distribusi OKR — ${activeQuarter.name}`;
+  titleCell.value = `OKR Distribution — ${activeQuarter.name}`;
   titleCell.font = { name: "Arial", bold: true, size: 13, color: { argb: DARK } };
   titleCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: AMBER } };
   titleCell.alignment = { vertical: "middle" };

@@ -159,7 +159,7 @@ export async function sendReminderEmail({
         <tr>
           <td style="padding:16px 32px;background:#f8fafc;border-top:1px solid #e2e8f0;">
             <p style="margin:0;color:#94a3b8;font-size:12px;">
-              Email ini dikirim otomatis oleh sistem OKR Tracker. Jangan balas email ini.
+              This email was sent automatically by the OKR Tracker system. Please do not reply.
             </p>
           </td>
         </tr>

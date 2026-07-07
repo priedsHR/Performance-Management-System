@@ -69,7 +69,7 @@ export async function GET(req: Request) {
     { label: "Quarter", value: quarter?.name ?? quarterId },
     { label: "Export Date", value: new Date().toLocaleDateString("id-ID") },
     { label: "Total Achievement (%)", value: parseFloat(achievement.toFixed(1)) },
-    { label: "Jumlah Objective", value: assignments.length },
+    { label: "Objective Count", value: assignments.length },
   ]);
   ws1.getRow(1).font = { bold: true };
 
@@ -82,7 +82,7 @@ export async function GET(req: Request) {
     { header: "KR Weight (%)", key: "krWeight", width: 13 },
     { header: "Target", key: "target", width: 10 },
     { header: "Satuan", key: "unit", width: 10 },
-    { header: "Target Individu", key: "individualTarget", width: 15 },
+    { header: "Individual Target", key: "individualTarget", width: 15 },
     { header: "Progress", key: "progress", width: 12 },
     { header: "Achievement (%)", key: "krAch", width: 15 },
   ];

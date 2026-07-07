@@ -80,7 +80,7 @@ function ObjectiveCard({ obj, oa, index }: { obj: Objective; oa: number; index: 
                 <tr className="border-b border-slate-100">
                   <th className="text-left py-2 pr-3 text-xs font-semibold text-slate-400">Key Result</th>
                   <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Target</th>
-                  <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Satuan</th>
+                  <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Unit</th>
                   <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Weight</th>
                   <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Progress</th>
                   <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Achievement</th>
@@ -184,7 +184,7 @@ export default function MemberDashboard({ quarters, userId, initialObjectives, i
       {/* Status banner */}
       {allSubmitted && !loading ? (
         <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-green-700 text-sm font-medium">
-          OKR kamu done dikumpulkan.
+          Your OKR has been submitted.
         </div>
       ) : objectives.length > 0 && !loading ? (
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-amber-700 text-sm">

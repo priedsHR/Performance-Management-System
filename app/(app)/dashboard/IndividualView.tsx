@@ -170,7 +170,7 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
                       <tr className="border-b border-slate-100">
                         <th className="text-left py-2 pr-3 text-xs font-semibold text-slate-400">Key Result</th>
                         <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Target</th>
-                        <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Satuan</th>
+                        <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Unit</th>
                         <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Weight</th>
                         <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">My Progress</th>
                         <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Achievement</th>
@@ -182,7 +182,7 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
                           <td className="py-2.5 pr-3 font-medium text-slate-700">
                             <span className="break-words">{k.krTitle}</span>
                             {k.individualTarget != null && (
-                              <span className="text-xs text-blue-500">target individu</span>
+                              <span className="text-xs text-blue-500">individual target</span>
                             )}
                           </td>
                           <td className="py-2.5 px-2 text-right text-slate-600 tabular-nums">
@@ -343,7 +343,7 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
 
       {!trendLoading && trend.length === 1 && (
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-slate-400 text-sm text-center">
-          Tren akan tampil setelah ada data dari 2+ quarter.
+          The trend appears once data exists for 2+ quarters.
         </div>
       )}
     </div>

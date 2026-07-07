@@ -8,6 +8,7 @@ import DashboardTabs from "./DashboardTabs";
 import AdminOverview from "./AdminOverview";
 import My360Card from "./My360Card";
 import MonthlyProgressChart from "./MonthlyProgressChart";
+import TeamIdpCard from "./TeamIdpCard";
 
 // Find the quarter that actually has assignments for a lead; fall back to active → first
 async function resolveDefaultQuarter(
@@ -63,6 +64,7 @@ export default async function DashboardPage() {
     return (
       <div className="space-y-5">
         <My360Card userId={session!.user.id} />
+        <TeamIdpCard />
         <DashboardTabs
           title={session!.user.division ?? "My Division"}
           quarters={JSON.parse(JSON.stringify(quarters))}

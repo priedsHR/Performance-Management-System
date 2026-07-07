@@ -64,7 +64,7 @@ export async function GET(req: Request) {
   const guide: [string, string][] = [
     ["", ""],
     ["📌 CARA PENGGUNAAN", ""],
-    ["1.", 'Buka sheet "Distribusi" (tab below)'],
+    ["1.", 'Open sheet "Distribusi" (tab below)'],
     ["2.", "Column A (Member) is pre-filled with existing members. Add new names if needed."],
     ["3.", "Columns B (Objective) & D (Key Result) are pre-filled from existing OKR data — do not change them"],
     ["4.", "Fill Objective Weight (%) per member — total per member must be 100"],
@@ -77,8 +77,8 @@ export async function GET(req: Request) {
     ["B  Objective", "Objective name (do not change, used for matching)"],
     ["C  Objective Weight (%)", "Objective weight for this member (total per member = 100)"],
     ["D  Key Result", "Key result name (do not change)"],
-    ["E  Target Individu", "Custom target for this member (blank = use division target)"],
-    ["F  Satuan", "Automatic from the division (no need to change)"],
+    ["E  Individual Target", "Custom target for this member (blank = use division target)"],
+    ["F  Unit", "Automatic from the division (no need to change)"],
     ["G  KR Weight (%)", "KR weight within this member's objective (total per objective = 100)"],
     ["", ""],
     ["⚠️ ATURAN PENTING", ""],
@@ -116,7 +116,7 @@ export async function GET(req: Request) {
   const DARK = "FF1E293B";
 
   // Header row 1
-  const headers = ["Member", "Objective", "Objective Weight (%)", "Key Result", "Target Individu", "Satuan", "KR Weight (%)"];
+  const headers = ["Member", "Objective", "Objective Weight (%)", "Key Result", "Individual Target", "Satuan", "KR Weight (%)"];
   const hRow = sheet.getRow(1);
   hRow.height = 28;
   headers.forEach((h, i) => {

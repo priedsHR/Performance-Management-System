@@ -27,7 +27,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
           <QuarterSelector quarters={[]} selectedQuarterId={null} isLead={isLead} />
         ) : (
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
-            No quarter. Tunggu Lead atau Admin membuat quarter terlebih dahulu.
+            No quarters. Wait for a Lead or Admin to create one first.
           </div>
         )}
       </div>
@@ -39,7 +39,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
       <div className="space-y-4">
         <QuarterSelector quarters={JSON.parse(JSON.stringify(quarters))} selectedQuarterId={null} isLead={isLead} />
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
-          Select quarter di atas untuk melihat OKR.
+          Select a quarter above to view the OKR.
         </div>
       </div>
     );
@@ -121,7 +121,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
         </div>
       </CollapsibleSection>
 
-      {/* Link ke Distribusi Member untuk LEAD */}
+      {/* Link ke Member Distribution untuk LEAD */}
       {isLead && (
         <a
           href={`/distribusi?quarterId=${selectedQuarter.id}`}
@@ -131,7 +131,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
             <span className="text-xl"></span>
             <div>
               <p className="font-semibold text-slate-800 text-sm group-hover:text-amber-700 transition-colors">
-                Distribusi ke Member
+                Distribute to Members
               </p>
               <p className="text-xs text-slate-400">
                 Assign objectives &amp; KRs to members, set weights and individual targets

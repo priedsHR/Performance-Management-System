@@ -61,7 +61,7 @@ export async function GET(req: Request) {
     { label: "Quarter", value: quarter?.name ?? quarterId },
     { label: "Export Date", value: new Date().toLocaleDateString("id-ID") },
     { label: "Division Achievement (%)", value: parseFloat(divisionAchievement.toFixed(1)) },
-    { label: "Jumlah Objective", value: objectives.length },
+    { label: "Objective Count", value: objectives.length },
     { label: "Member Count", value: members.length },
   ]);
   ws1.getRow(1).font = { bold: true };
