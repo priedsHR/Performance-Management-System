@@ -136,7 +136,7 @@ export async function POST(req: Request) {
       const targetObj = targetObjMap.get(srcObjNorm)
         ?? targetObjectives.find((o) => { const on = norm(o.title); return on.includes(srcObjNorm) || srcObjNorm.includes(on); });
       if (!targetObj) {
-        errors.push(`Objective "${srcAss.objective.title}" tidak ditemukan di quarter tujuan.`);
+        errors.push(`Objective "${srcAss.objective.title}" not found in the destination quarter.`);
         continue;
       }
 
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
         const targetKr = targetKrMap.get(krKey)
           ?? targetObj.keyResults.find((k) => { const kn = norm(k.title); return kn.includes(krNorm) || krNorm.includes(kn); });
         if (!targetKr) {
-          errors.push(`KR "${srcKra.keyResult.title}" tidak ditemukan di "${targetObj.title}".`);
+          errors.push(`KR "${srcKra.keyResult.title}" not found in "${targetObj.title}".`);
           continue;
         }
 

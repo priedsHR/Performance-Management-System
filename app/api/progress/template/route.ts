@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   const quarter = quarterIdParam
     ? await prisma.quarter.findUnique({ where: { id: quarterIdParam } })
     : await prisma.quarter.findFirst({ where: { isActive: true } });
-  if (!quarter) return new Response("Quarter tidak ditemukan.", { status: 404 });
+  if (!quarter) return new Response("Quarter not found.", { status: 404 });
 
   // Fetch objectives for this quarter
   const objectives = await prisma.objective.findMany({
@@ -65,20 +65,20 @@ export async function GET(req: Request) {
   const guide: [string, string][] = [
     ["", ""],
     ["📌 CARA PENGGUNAAN", ""],
-    ["1.", "Buka sheet \"Progress\" (tab di bawah)"],
+    ["1.", "Buka sheet \"Progress\" (tab below)"],
     ["2.", "Fill column G (Progress) for every member & KR"],
-    ["3.", "Kolom A-F dan H adalah referensi — jangan diubah"],
+    ["3.", "Columns A-F and H are reference only — do not change"],
     ["4.", "Upload file ini via tombol \"Import Progress\" di aplikasi"],
     ["", ""],
     ["📊 KETERANGAN KOLOM", ""],
-    ["A  ID", "ID unik KR assignment — JANGAN diubah, dipakai untuk matching"],
+    ["A  ID", "Unique KR assignment ID — DO NOT change, used for matching"],
     ["B  Member", "Member name"],
     ["C  Objective", "Judul objective"],
     ["D  Key Result", "Judul key result"],
     ["E  Target", "Target (division or individual)"],
     ["F  Satuan", "Satuan pengukuran"],
     ["G  Progress", "← FILL THIS: the member's latest progress value"],
-    ["H  Achievement (%)", "Dihitung otomatis (untuk referensi)"],
+    ["H  Achievement (%)", "Calculated automatically (for reference)"],
     ["", ""],
     ["⚠️ ATURAN PENTING", ""],
     ["•", "Only column G (Progress) needs to be filled"],
@@ -121,7 +121,7 @@ export async function GET(req: Request) {
   sheet.getRow(1).height = 30;
 
   // Row 2: headers
-  const headers = ["ID (jangan diubah)", "Member", "Objective", "Key Result", "Target", "Satuan", "Progress ✏️", "Achievement (%)"];
+  const headers = ["ID (do not change)", "Member", "Objective", "Key Result", "Target", "Satuan", "Progress ✏️", "Achievement (%)"];
   const hRow = sheet.getRow(2);
   hRow.height = 24;
   headers.forEach((h, i) => {
@@ -196,7 +196,7 @@ export async function GET(req: Request) {
   // Legend
   const legRow = sheet.getRow(rowIdx + 1);
   sheet.mergeCells(`A${rowIdx + 1}:H${rowIdx + 1}`);
-  legRow.getCell(1).value = "💡  Only column G (Progress) needs to be filled. Kolom lain jangan diubah.";
+  legRow.getCell(1).value = "💡  Only column G (Progress) needs to be filled. Do not change the other columns.";
   legRow.getCell(1).font = { name: "Arial", size: 9, italic: true, color: { argb: "FF94A3B8" } };
   legRow.height = 18;
 

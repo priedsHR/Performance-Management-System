@@ -19,7 +19,7 @@ type Schedule = {
 };
 
 const DAYS = ["Week", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-const TYPE_LABEL: Record<string, string> = { settings: "🎯 Setting OKR", collection: "📋 Pengumpulan" };
+const TYPE_LABEL: Record<string, string> = { settings: "🎯 Setting OKR", collection: "📋 Submission" };
 const FREQ_LABEL: Record<string, string> = { weekly: "Every Week", biweekly: "Every 2 Weeks", monthly: "Every Month" };
 
 function fmtWIB(iso: string) {
@@ -93,7 +93,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
     <div className="space-y-5">
       {/* Create form */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5">
-        <h3 className="font-bold text-slate-800 mb-4">➕ Buat Schedule Otomatis</h3>
+        <h3 className="font-bold text-slate-800 mb-4">➕ Create Automatic Schedule</h3>
         <form onSubmit={handleCreate} className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           {/* Type */}
           <div className="space-y-1">
@@ -101,7 +101,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
             <select value={type} onChange={e => setType(e.target.value)}
               className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400">
               <option value="settings">🎯 Setting OKR</option>
-              <option value="collection">📋 Pengumpulan</option>
+              <option value="collection">📋 Submission</option>
             </select>
           </div>
 

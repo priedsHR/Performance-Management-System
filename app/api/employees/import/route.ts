@@ -71,7 +71,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const file = formData.get("file");
     if (!file || typeof file === "string")
-      return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
+      return Response.json({ error: "File not found." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
   } catch {
     return Response.json({ error: "Failed to read the form." }, { status: 400 });
@@ -79,11 +79,11 @@ export async function POST(req: Request) {
 
   const wb = new ExcelJS.Workbook();
   try { await wb.xlsx.load(fileBuffer); } catch {
-    return Response.json({ error: "File Excel tidak valid." }, { status: 400 });
+    return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
 
   const sheet = wb.getWorksheet("Karyawan") ?? wb.worksheets[0];
-  if (!sheet) return Response.json({ error: "Sheet tidak ditemukan." }, { status: 400 });
+  if (!sheet) return Response.json({ error: "Sheet not found." }, { status: 400 });
 
   let created = 0, updated = 0;
   const errors: string[] = [];
@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     const division = readStr(row.getCell(2)).trim() || null;
     const position = readStr(row.getCell(3)).trim() || null;
     const statusRaw = readStr(row.getCell(4)).trim().toLowerCase();
-    const isActive = statusRaw !== "nonaktif" && statusRaw !== "tidak aktif" && statusRaw !== "inactive" && statusRaw !== "false" && statusRaw !== "0";
+    const isActive = statusRaw !== "nonaktif" && statusRaw !== "inactive" && statusRaw !== "inactive" && statusRaw !== "false" && statusRaw !== "0";
 
     try {
       // Upsert by name + division
@@ -109,7 +109,7 @@ export async function POST(req: Request) {
         created++;
       }
     } catch (e) {
-      errors.push(`Baris ${rowNum} "${name}": ${String(e)}`);
+      errors.push(`Row ${rowNum} "${name}": ${String(e)}`);
     }
   }
 

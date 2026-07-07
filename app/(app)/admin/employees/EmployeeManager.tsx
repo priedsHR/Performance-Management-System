@@ -66,6 +66,14 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
 
   const [filter, setFilter] = useState<"all" | "active" | "inactive">("all");
   const [search, setSearch] = useState("");
+  const [sortKey, setSortKey] = useState<"name" | "position">("name");
+  const [sortDir, setSortDir] = useState<1 | -1>(1);
+
+  function toggleSort(key: "name" | "position") {
+    if (sortKey === key) setSortDir((d) => (d === 1 ? -1 : 1));
+    else { setSortKey(key); setSortDir(1); }
+  }
+  const sortIcon = (key: "name" | "position") => (sortKey === key ? (sortDir === 1 ? " ▲" : " ▼") : " ⇅");
 
   function cancel() { setShowForm(false); setEditId(null); setForm(emptyForm); }
 
@@ -137,7 +145,10 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
     return true;
   });
 
-  const grouped = filtered.reduce<Record<string, Employee[]>>((acc, e) => {
+  const sorted = [...filtered].sort(
+    (a, b) => sortDir * ((sortKey === "position" ? (a.position || "") : a.name).localeCompare(sortKey === "position" ? (b.position || "") : b.name))
+  );
+  const grouped = sorted.reduce<Record<string, Employee[]>>((acc, e) => {
     const key = e.division || "(No Division)";
     if (!acc[key]) acc[key] = [];
     acc[key].push(e);
@@ -202,8 +213,12 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100">
-                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Name</th>
-                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Title</th>
+                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">
+                    <button onClick={() => toggleSort("name")} className="hover:text-slate-700 uppercase tracking-inherit">Name{sortIcon("name")}</button>
+                  </th>
+                  <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">
+                    <button onClick={() => toggleSort("position")} className="hover:text-slate-700">Title{sortIcon("position")}</button>
+                  </th>
                   <th className="text-center px-5 py-2.5 text-xs font-semibold text-slate-400">Status</th>
                   <th className="px-5 py-2.5" />
                 </tr>

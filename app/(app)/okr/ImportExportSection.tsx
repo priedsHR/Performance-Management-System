@@ -47,7 +47,7 @@ export default function ImportExportSection({ quarterId }: Props) {
       const data = await res.json();
       if (res.ok && data.success) {
         const debugInfo = data.debug
-          ? `${data.debug.rowsParsed} baris terbaca` + (data.debug.skipped?.length ? `, ${data.debug.skipped.length} dilewati` : "")
+          ? `${data.debug.rowsParsed} rows read` + (data.debug.skipped?.length ? `, ${data.debug.skipped.length} dilewati` : "")
           : undefined;
         setResult({ type: "success", message: data.message, detail: data.errors?.join("; "), debug: debugInfo });
         setTimeout(() => window.location.reload(), 1400);

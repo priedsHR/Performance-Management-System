@@ -133,7 +133,7 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">🎯 Progress OKR Saya</h2>
+          <h2 className="text-lg font-bold text-slate-900">🎯 My OKR Progress</h2>
           <div className="flex items-center gap-2 mt-2">
             <span className="text-xs text-slate-400 flex-shrink-0">⏱️ Quarter:</span>
             <YearQuarterPicker quarters={quarters} value={selectedQ} onChange={setSelectedQ} />
@@ -141,7 +141,7 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
         </div>
         {objectives.length > 0 && !loading && (
           <div className={`border rounded-2xl px-6 py-3 text-center ${achBg}`}>
-            <p className="text-xs font-semibold mb-0.5">🏆 Achievement Saya</p>
+            <p className="text-xs font-semibold mb-0.5">🏆 My Achievement</p>
             <p className="text-3xl font-bold leading-tight">{totalAchievement.toFixed(1)}%</p>
           </div>
         )}

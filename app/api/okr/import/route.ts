@@ -44,7 +44,7 @@ export async function POST(req: Request) {
   try {
     const formData = await req.formData();
     const file = formData.get("file");
-    if (!file || typeof file === "string") return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
+    if (!file || typeof file === "string") return Response.json({ error: "File not found." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
     quarterIdParam = formData.get("quarterId") as string | null;
   } catch {
@@ -54,11 +54,11 @@ export async function POST(req: Request) {
   const activeQuarter = quarterIdParam
     ? await prisma.quarter.findUnique({ where: { id: quarterIdParam } })
     : await prisma.quarter.findFirst({ where: { isActive: true } });
-  if (!activeQuarter) return Response.json({ error: "Quarter tidak ditemukan." }, { status: 400 });
+  if (!activeQuarter) return Response.json({ error: "Quarter not found." }, { status: 400 });
 
   const wb = new ExcelJS.Workbook();
   try { await wb.xlsx.load(fileBuffer); } catch {
-    return Response.json({ error: "File Excel tidak valid." }, { status: 400 });
+    return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
 
   // Find the data sheet — prefer "OKR", fallback to any non-Petunjuk sheet
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
       if (!/petunjuk/i.test(ws.name)) { sheet = ws; break; }
     }
   }
-  if (!sheet) return Response.json({ error: "Sheet 'OKR' tidak ditemukan dalam file." }, { status: 400 });
+  if (!sheet) return Response.json({ error: "Sheet 'OKR' not found in the file." }, { status: 400 });
 
   // ── Parse rows ───────────────────────────────────────────────────────────────
   type RowData = {
@@ -103,7 +103,7 @@ export async function POST(req: Request) {
     if (!krTitle) continue; // row has no KR — skip
 
     if (!lastObjective) {
-      skipped.push(`Baris ${rowNum}: KR "${krTitle}" tidak punya objective (kolom A kosong).`);
+      skipped.push(`Row ${rowNum}: KR "${krTitle}" has no objective (column A blank).`);
       continue;
     }
 
@@ -119,7 +119,7 @@ export async function POST(req: Request) {
 
   if (rows.length === 0) {
     return Response.json({
-      error: "Tidak ada data yang terbaca. Pastikan menggunakan template resmi dan isi data mulai baris 3, kolom C (Key Result) harus terisi.",
+      error: "No data could be read. Make sure you use the official template, enter data from row 3, and column C (Key Result) is filled.",
       debug: { sheetName: sheet.name, sheetRowCount: maxRow, skipped },
     }, { status: 400 });
   }

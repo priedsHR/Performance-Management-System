@@ -23,7 +23,7 @@ export async function GET(req: Request) {
   if (!quarterId) return new Response("quarterId required", { status: 400 });
 
   const quarter = await prisma.quarter.findUnique({ where: { id: quarterId } });
-  if (!quarter) return new Response("Quarter tidak ditemukan", { status: 404 });
+  if (!quarter) return new Response("Quarter not found", { status: 404 });
 
   // Fetch all LEAD users
   const leads = await prisma.user.findMany({
@@ -232,7 +232,7 @@ export async function GET(req: Request) {
             row.getCell(7).fill = achFill(kraAch);
           }
           if (assignment.krAssignments.length === 0) {
-            ws.addRow([objTitle, "(Tidak ada KR)"]);
+            ws.addRow([objTitle, "(No KRs)"]);
           }
         }
       }

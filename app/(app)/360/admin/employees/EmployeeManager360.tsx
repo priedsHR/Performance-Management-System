@@ -440,7 +440,7 @@ export default function EmployeeManager360() {
                 <th className="text-left px-4 py-2 font-semibold">Name</th>
                 <th className="text-left px-3 py-2 font-semibold">Department</th>
                 <th className="text-left px-3 py-2 font-semibold">Manager</th>
-                <th className="text-center px-3 py-2 font-semibold">Komp.</th>
+                <th className="text-center px-3 py-2 font-semibold">Comps</th>
                 <th className="px-3 py-2"></th>
               </tr>
             </thead>

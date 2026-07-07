@@ -428,7 +428,7 @@ function MemberCard({
             )}
 
             {objectives.length === 0 && (
-              <p className="text-xs text-slate-400 text-center py-3">🎯 Buat objective dulu di atas.</p>
+              <p className="text-xs text-slate-400 text-center py-3">🎯 Create an objective above first.</p>
             )}
           </div>
         </>
@@ -597,7 +597,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
             {/* Matching check */}
             {(preview.matching.objectives.length > 0 || preview.matching.keyResults.length > 0) && (
               <div className="px-4 py-3 border-b border-violet-100 space-y-2">
-                <p className="font-semibold text-slate-600">📋 Matching dengan database:</p>
+                <p className="font-semibold text-slate-600">📋 Matching against the database:</p>
                 <div className="space-y-1">
                   {preview.matching.objectives.map((o, i) => (
                     <div key={i} className={`flex items-start gap-2 ${o.matched ? "text-green-700" : "text-red-600"}`}>
@@ -816,7 +816,7 @@ function CopyFromQuarterModal({
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[85vh] flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-          <h3 className="font-bold text-slate-800">📋 Salin Distribusi dari Quarter Lain</h3>
+          <h3 className="font-bold text-slate-800">📋 Copy Distribution from Another Quarter</h3>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition"><X size={18} /></button>
         </div>
 
@@ -828,7 +828,7 @@ function CopyFromQuarterModal({
               {/* Source + Destination */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">📤 Salin dari</label>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">📤 Copy from</label>
                   <select value={sourceId} onChange={(e) => { setDestId(""); loadPreview(e.target.value); }}
                     className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white">
                     <option value="">-- Select --</option>
@@ -836,7 +836,7 @@ function CopyFromQuarterModal({
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">📥 Salin ke</label>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">📥 Copy to</label>
                   <select value={destId} onChange={(e) => setDestId(e.target.value)}
                     className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white">
                     <option value="">-- Select --</option>
@@ -950,7 +950,7 @@ function CopyFromQuarterModal({
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-slate-100">
           <button onClick={onClose} className={btnSecondary}>Cancel</button>
           <button onClick={doCopy} disabled={copying || !destId || totalSel === 0 || !!result} className={btnPrimary}>
-            {copying ? "⏳ Menyalin..." : !destId ? "Choose a destination first" : `📋 Salin${totalSel > 0 ? ` (${totalSel} KR)` : ""}`}
+            {copying ? "⏳ Menyalin..." : !destId ? "Choose a destination first" : `📋 Copy${totalSel > 0 ? ` (${totalSel} KR)` : ""}`}
           </button>
         </div>
       </div>

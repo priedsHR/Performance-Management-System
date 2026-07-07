@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   const { type, quarterId, frequency, dayOfWeek, dayOfMonth, hourWIB } = body;
 
   if (!type || !quarterId || !frequency || hourWIB === undefined) {
-    return NextResponse.json({ error: "Field tidak lengkap." }, { status: 400 });
+    return NextResponse.json({ error: "Incomplete fields." }, { status: 400 });
   }
   if ((frequency === "weekly" || frequency === "biweekly") && dayOfWeek === undefined) {
     return NextResponse.json({ error: "A day is required for weekly schedules." }, { status: 400 });

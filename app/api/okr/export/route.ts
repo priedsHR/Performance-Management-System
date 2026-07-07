@@ -29,7 +29,7 @@ export async function GET(req: Request) {
     ? await prisma.quarter.findUnique({ where: { id: quarterId } })
     : await prisma.quarter.findFirst({ where: { isActive: true } });
 
-  if (!quarter) return new Response("Quarter tidak ditemukan.", { status: 404 });
+  if (!quarter) return new Response("Quarter not found.", { status: 404 });
 
   const objectives = await prisma.objective.findMany({
     where: { userId: session.user.id, quarterId: quarter.id },

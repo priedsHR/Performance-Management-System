@@ -114,7 +114,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
       {/* Create form */}
       {showForm && (
         <div className="bg-white rounded-2xl border border-amber-200 p-6">
-          <h2 className="font-semibold text-slate-800 mb-4">⏱️ Quarter Baru</h2>
+          <h2 className="font-semibold text-slate-800 mb-4">⏱️ New Quarter</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className="block text-xs font-medium text-slate-500 mb-1.5">Name Quarter</label>
@@ -181,7 +181,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
         {quarters.length === 0 ? (
           <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
             <div className="text-4xl mb-3">⏱️</div>
-            <p className="text-slate-500 text-sm">No quarter. Add quarter pertama.</p>
+            <p className="text-slate-500 text-sm">No quarters. Add the first quarter.</p>
           </div>
         ) : (
           grouped.map(({ year, quarters: qs }) => {

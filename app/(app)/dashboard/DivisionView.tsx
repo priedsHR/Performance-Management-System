@@ -118,7 +118,7 @@ function DonutObjectivesChart({ objectives, divisionAchievement }: { objectives:
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5">
       <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">🍩 Komposisi Weight</p>
-      <p className="text-xs text-slate-400 mb-3">Proporsi weight tiap objective</p>
+      <p className="text-xs text-slate-400 mb-3">Weight proportion of each objective</p>
       <div className="relative">
         <ResponsiveContainer width="100%" height={220}>
           <PieChart>
@@ -168,7 +168,7 @@ function MemberStackedChart({ keyResults }: { keyResults: KRData[] }) {
 
   return (
     <div className="mt-5 pt-5 border-t border-slate-100">
-      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">📊 Kontribusi Member per KR</p>
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">📊 Member Contribution per KR</p>
       <ResponsiveContainer width="100%" height={200}>
         <BarChart data={data} margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />

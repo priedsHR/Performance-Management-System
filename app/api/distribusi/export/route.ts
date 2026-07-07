@@ -29,7 +29,7 @@ export async function GET(req: Request) {
   const activeQuarter = quarterIdParam
     ? await prisma.quarter.findUnique({ where: { id: quarterIdParam } })
     : await prisma.quarter.findFirst({ where: { isActive: true } });
-  if (!activeQuarter) return new Response("Quarter tidak ditemukan.", { status: 404 });
+  if (!activeQuarter) return new Response("Quarter not found.", { status: 404 });
 
   // Fetch all team members with their full assignment tree
   const members = await prisma.teamMember.findMany({

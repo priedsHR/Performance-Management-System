@@ -107,7 +107,7 @@ function UserForm({ form, isEdit, onChange, onSave, onCancel, teamMembers, editU
           <div className="col-span-2">
             <label className="block text-xs font-medium text-slate-500 mb-1.5">
               🔗 Link ke Member Tim
-              <span className="text-slate-400 font-normal ml-1">— hubungkan ke data distribusi OKR dari Lead</span>
+              <span className="text-slate-400 font-normal ml-1">— link to the Lead's OKR distribution data</span>
             </label>
             <select
               className={inputCls}

@@ -22,7 +22,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
   if (quarters.length === 0) {
     return (
       <div className="space-y-4">
-        <h1 className="text-xl font-bold text-slate-900">{isLead ? "Division OKR" : "OKR Saya"}</h1>
+        <h1 className="text-xl font-bold text-slate-900">{isLead ? "Division OKR" : "My OKR"}</h1>
         {isLead ? (
           <QuarterSelector quarters={[]} selectedQuarterId={null} isLead={isLead} />
         ) : (
@@ -92,7 +92,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
 
       {/* Bagian 1: OKR + Import/Export (satu section) */}
       <CollapsibleSection
-        title={isLead ? "Division OKR" : "OKR Saya"}
+        title={isLead ? "Division OKR" : "My OKR"}
         subtitle={selectedQuarter.name}
         badge={
           objCount > 0 ? (

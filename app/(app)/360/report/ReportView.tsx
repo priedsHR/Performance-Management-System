@@ -42,7 +42,8 @@ interface TrendItem { periodId: string; name: string; year: number; half: string
 
 const fmt = (v: number | null | undefined) => (v == null ? "—" : v.toFixed(2));
 
-function Bar({ value, target }: { value: number | null; target: number | null }) {
+const MIN_STANDARD = 3; // red line: minimum expected score (Meet Expectation)
+function Bar({ value }: { value: number | null; target?: number | null }) {
   const pct = value == null ? 0 : Math.max(0, Math.min(100, (value / 4) * 100));
   return (
     <div className="relative h-5 bg-slate-100 rounded-md overflow-hidden">
@@ -51,7 +52,7 @@ function Bar({ value, target }: { value: number | null; target: number | null })
           {value.toFixed(2)}
         </div>
       )}
-      {target != null && <div className="absolute top-0 bottom-0 w-0.5 bg-red-500" style={{ left: `${(target / 4) * 100}%` }} />}
+      <div className="absolute top-0 bottom-0 w-0.5 bg-red-500" style={{ left: `${(MIN_STANDARD / 4) * 100}%` }} />
     </div>
   );
 }
@@ -238,7 +239,7 @@ function SingleReport({ data }: { data: SinglePayload }) {
               </div>
             ))}
           </div>
-          {tgt && <p className="text-[11px] text-slate-400 mt-2 text-right">Red line = target level L{tgt}</p>}
+          <p className="text-[11px] text-slate-400 mt-2 text-right">Red line = minimum standard (3.00 · Meet Expectation)</p>
 
           {report.categories.map((cat) => (
             <div key={cat.category} className="mt-5">

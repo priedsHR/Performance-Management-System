@@ -71,7 +71,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const file = formData.get("file");
     if (!file || typeof file === "string")
-      return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
+      return Response.json({ error: "File not found." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
     leadId = urlLeadId ?? (formData.get("leadId") as string) ?? session.user.id;
   } catch {
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
 
   const wb = new ExcelJS.Workbook();
   try { await wb.xlsx.load(fileBuffer); } catch {
-    return Response.json({ error: "File Excel tidak valid." }, { status: 400 });
+    return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
 
   let sheet: ExcelJS.Worksheet | undefined = wb.getWorksheet("Distribusi");
@@ -90,7 +90,7 @@ export async function POST(req: Request) {
     }
   }
   if (!sheet)
-    return Response.json({ error: "Sheet 'Distribusi' tidak ditemukan." }, { status: 400 });
+    return Response.json({ error: "Sheet 'Distribusi' not found." }, { status: 400 });
 
   // ── Parse rows first — quarter detection comes after ─────────────────────────
   type RowData = {
@@ -119,13 +119,13 @@ export async function POST(req: Request) {
 
     if (!krTitle) continue;
     if (!lastMember) { parseErrors.push(`Row ${rowNum}: KR "${krTitle}" has no member.`); continue; }
-    if (!lastObjective) { parseErrors.push(`Baris ${rowNum}: KR "${krTitle}" tidak punya objective.`); continue; }
+    if (!lastObjective) { parseErrors.push(`Row ${rowNum}: KR "${krTitle}" has no objective.`); continue; }
 
     rows.push({ memberName: lastMember, objectiveTitle: lastObjective, objectiveWeight: lastObjectiveWeight, krTitle, individualTarget: indTarget, krWeight });
   }
 
   if (rows.length === 0)
-    return Response.json({ error: "Tidak ada data KR yang terbaca. Pastikan kolom D (Key Result) terisi.", debug: { maxRow, parseErrors } }, { status: 400 });
+    return Response.json({ error: "No KR data could be read. Make sure column D (Key Result) is filled.", debug: { maxRow, parseErrors } }, { status: 400 });
 
   // ── Auto-detect which quarter the file belongs to ────────────────────────────
   const fileObjNorms = [...new Set(rows.map((r) => norm(r.objectiveTitle)))];
@@ -164,7 +164,7 @@ export async function POST(req: Request) {
       ? await prisma.quarter.findUnique({ where: { id: hintQuarterId } })
       : await prisma.quarter.findFirst({ where: { isActive: true } });
     return Response.json({
-      error: `Tidak ada objective di file yang cocok dengan database. Pastikan kolom B (Objective) tidak diubah dari template.`,
+      error: `No objectives in the file match the database. Make sure column B (Objective) was not changed from the template.`,
       debug: {
         leadId: leadId.slice(-8),
         hintQuarter: fallback?.name ?? hintQuarterId,
@@ -176,7 +176,7 @@ export async function POST(req: Request) {
 
   const resolvedQuarter = await prisma.quarter.findUnique({ where: { id: resolvedQuarterId } });
   if (!resolvedQuarter)
-    return Response.json({ error: "Quarter tidak dapat ditemukan." }, { status: 400 });
+    return Response.json({ error: "Quarter not found." }, { status: 400 });
 
   // ── Fetch objectives + KRs for the resolved quarter ──────────────────────────
   const objectives = await prisma.objective.findMany({
@@ -238,7 +238,7 @@ export async function POST(req: Request) {
       }
 
       debugLookups.push(`Obj "${objNorm}" → ${obj ? `FOUND (${obj.id.slice(-6)})` : "NOT FOUND"}`);
-      if (!obj) { errors.push(`Objective tidak ditemukan: "${objectiveTitle}"`); continue; }
+      if (!obj) { errors.push(`Objective not found: "${objectiveTitle}"`); continue; }
 
       // Upsert assignment — update weight, preserve everything else (progress untouched)
       let assignment;
@@ -266,7 +266,7 @@ export async function POST(req: Request) {
         if (!kr) {
           const fuzzy = obj.keyResults.find((k) => norm(k.title).includes(krNorm) || krNorm.includes(norm(k.title)));
           if (!fuzzy) {
-            errors.push(`KR tidak ditemukan: "${kra.krTitle}" di "${obj.title}"`);
+            errors.push(`KR not found: "${kra.krTitle}" in "${obj.title}"`);
             continue;
           }
           kr = fuzzy;

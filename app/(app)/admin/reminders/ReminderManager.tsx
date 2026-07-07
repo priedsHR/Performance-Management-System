@@ -17,10 +17,10 @@ type SendResult = { name: string; email: string; status: "sent" | "skipped" | "e
 
 function StatusBadge({ status }: { status: LeadStatus }) {
   if (status === "complete")
-    return <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-lg">✅ Lengkap</span>;
+    return <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 px-2 py-0.5 rounded-lg">✅ Complete</span>;
   if (status === "incomplete")
-    return <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">⚠️ Not yet Lengkap</span>;
-  return <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-lg">❌ Not yet Buat</span>;
+    return <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">⚠️ Incomplete</span>;
+  return <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-lg">❌ Not created yet</span>;
 }
 
 const btnAmber =
@@ -123,7 +123,7 @@ export default function ReminderManager({
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xl">📋</span>
-              <h3 className="font-bold text-slate-800">Reminder Pengumpulan</h3>
+              <h3 className="font-bold text-slate-800">Submission Reminder</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
               Cek menyeluruh di <strong>akhir quarter</strong>: weights, targets, units, member progress, and lead achievement.
@@ -145,7 +145,7 @@ export default function ReminderManager({
         <div className={`rounded-2xl border p-5 space-y-3 ${result.success ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
           <p className={`font-semibold text-sm ${result.success ? "text-green-700" : "text-red-700"}`}>
             {result.success ? "✅" : "❌"}{" "}
-            {result.type === "settings" ? "Reminder Setting OKR" : "Reminder Pengumpulan"} —{" "}
+            {result.type === "settings" ? "Reminder Setting OKR" : "Submission Reminder"} —{" "}
             {result.message}
           </p>
           {result.results.length > 0 && (
@@ -172,7 +172,7 @@ export default function ReminderManager({
           <div>
             <p className="font-semibold text-slate-700 text-sm">📋 Division Leads ({leads.length} people)</p>
             <p className="text-xs text-slate-400 mt-0.5">
-              Reminder hanya dikirim ke yang statusnya <span className="font-semibold text-amber-600">⚠️ Not yet Lengkap</span> or <span className="font-semibold text-red-600">❌ Not yet Buat</span>.
+              Reminder hanya dikirim ke yang statusnya <span className="font-semibold text-amber-600">⚠️ Incomplete</span> or <span className="font-semibold text-red-600">❌ Not created yet</span>.
             </p>
           </div>
           {loadingLeads && <span className="text-xs text-slate-400 animate-pulse">Loading status...</span>}
@@ -187,7 +187,7 @@ export default function ReminderManager({
                 <th className="text-left px-5 py-2.5 font-semibold">Email</th>
                 <th className="text-left px-5 py-2.5 font-semibold">Division</th>
                 <th className="text-center px-3 py-2.5 font-semibold">🎯 Setting OKR</th>
-                <th className="text-center px-3 py-2.5 font-semibold">📋 Pengumpulan</th>
+                <th className="text-center px-3 py-2.5 font-semibold">📋 Submission</th>
               </tr>
             </thead>
             <tbody className={loadingLeads ? "opacity-40 pointer-events-none" : ""}>

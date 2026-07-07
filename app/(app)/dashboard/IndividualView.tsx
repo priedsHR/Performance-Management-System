@@ -160,7 +160,7 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
           <div className="p-5 space-y-4">
             {/* KR Table */}
             <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">🔑 Key Results (Kontribusi Saya)</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">🔑 Key Results (My Contribution)</p>
               {a.krAssignments.length === 0 ? (
                 <p className="text-xs text-slate-400 italic">No KRs assigned yet.</p>
               ) : (
@@ -172,7 +172,7 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
                         <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Target</th>
                         <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Satuan</th>
                         <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Weight</th>
-                        <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">Progress Saya</th>
+                        <th className="text-right py-2 px-2 text-xs font-semibold text-slate-400">My Progress</th>
                         <th className="text-right py-2 pl-2 text-xs font-semibold text-slate-400">Achievement</th>
                       </tr>
                     </thead>

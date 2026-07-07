@@ -125,7 +125,7 @@ export default function EmployeePeersManager() {
     !search || p.name.toLowerCase().includes(search.toLowerCase()) || (p.department || "").toLowerCase().includes(search.toLowerCase())
   );
   const grouped = filteredProfiles.reduce<Record<string, Profile[]>>((acc, p) => {
-    const key = p.department || "(Tanpa Departemen)";
+    const key = p.department || "(No Department)";
     if (!acc[key]) acc[key] = [];
     acc[key].push(p); return acc;
   }, {});
@@ -184,7 +184,7 @@ export default function EmployeePeersManager() {
                 </div>
                 <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Assessment Target</label>
                   <select value={form.targetMode} onChange={(e) => setForm({ ...form, targetMode: e.target.value })} className={inp}>
-                    <option value="auto">Automatic from level</option><option value="none">Tanpa target</option>
+                    <option value="auto">Automatic from level</option><option value="none">No target</option>
                     <option value="1">Target L1</option><option value="2">Target L2</option><option value="3">Target L3</option><option value="4">Target L4</option>
                   </select>
                 </div>
@@ -207,11 +207,11 @@ export default function EmployeePeersManager() {
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm font-semibold text-slate-700">Competencies assessed ({selected.size})</p>
                   <div className="flex gap-2">
-                    <button onClick={() => setSelected((prev) => new Set([...prev, ...autoIds(form.department, form.role)]))} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100">Terapkan otomatis</button>
+                    <button onClick={() => setSelected((prev) => new Set([...prev, ...autoIds(form.department, form.role)]))} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 hover:bg-amber-100">Apply automatic rule</button>
                     <button onClick={() => setSelected(new Set())} className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-500 hover:bg-slate-50">Clear</button>
                   </div>
                 </div>
-                <p className="text-[11px] text-slate-400 mb-3">Core (all) + Leadership (Lead/Admin) + Job Family (sesuai dept) + AI Fluency.</p>
+                <p className="text-[11px] text-slate-400 mb-3">Core (all) + Leadership (Lead/Admin) + Job Family (by dept) + AI Fluency.</p>
                 <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
                   {CATS.map((cat) => {
                     const list = activeComps.filter((c) => c.category === cat && (cat === "CORE" || cat === "LEADERSHIP" || !c.department || c.department === form.department || c.department == null));
@@ -254,7 +254,7 @@ export default function EmployeePeersManager() {
                     <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Name</th>
                     <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Title</th>
                     <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Manager</th>
-                    <th className="text-center px-5 py-2.5 text-xs font-semibold text-slate-400">Komp.</th>
+                    <th className="text-center px-5 py-2.5 text-xs font-semibold text-slate-400">Comps</th>
                     <th className="px-5 py-2.5" />
                   </tr></thead>
                   <tbody>
@@ -296,7 +296,7 @@ export default function EmployeePeersManager() {
         <div className="space-y-4">
           <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
             <div>
-              <p className="font-semibold text-slate-800">Add Assessment Lintas Departemen</p>
+              <p className="font-semibold text-slate-800">Add Cross-Department Assignment</p>
               <p className="text-xs text-slate-400 mt-0.5">Assign an assessment relation between two employees from different departments.</p>
             </div>
             <div className="flex flex-wrap gap-3 items-end">
@@ -345,7 +345,7 @@ export default function EmployeePeersManager() {
                       <td className="px-3 py-3 text-center">
                         {pair.isPeer
                           ? <span className="text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">🤝 Peer</span>
-                          : <span className="text-xs font-semibold text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-lg">⬆️ Manager Lintas Dept</span>
+                          : <span className="text-xs font-semibold text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-lg">⬆️ Cross-Dept Manager</span>
                         }
                       </td>
                       <td className="px-5 py-3 font-medium text-slate-800">{pair.rateeName}</td>

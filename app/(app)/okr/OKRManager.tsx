@@ -214,7 +214,7 @@ function ImportModal({
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[85vh] flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-          <h3 className="font-bold text-slate-800">📋 Import OKR dari Quarter Lain</h3>
+          <h3 className="font-bold text-slate-800">📋 Import OKR from Another Quarter</h3>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition"><X size={18} /></button>
         </div>
 
@@ -230,7 +230,7 @@ function ImportModal({
           ) : (
             <>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 mb-1.5">Select Quarter Sumber (ambil dari)</label>
+                <label className="block text-xs font-semibold text-slate-500 mb-1.5">Select Source Quarter (copy from)</label>
                 <select value={sourceId} onChange={(e) => loadObjectives(e.target.value)}
                   className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white">
                   <option value="">-- Select Quarter --</option>
@@ -299,7 +299,7 @@ function ImportModal({
                       );
                     })}
                   </div>
-                  <p className="text-xs text-slate-400 mt-3">💡 Objective diimpor ke <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name}</strong> as a new DRAFT. Progress from the source quarter <strong>tidak ikut</strong> (starting from 0).</p>
+                  <p className="text-xs text-slate-400 mt-3">💡 Objective diimpor ke <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name}</strong> as a new DRAFT. Progress from the source quarter <strong>is not copied</strong> (starting from 0).</p>
                 </div>
               )}
             </>
@@ -511,7 +511,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
           <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-3">
             <span className="text-lg">✅</span>
             <div>
-              <p className="font-semibold text-green-700 text-sm">OKR done dikumpulkan!</p>
+              <p className="font-semibold text-green-700 text-sm">All OKRs submitted!</p>
               <p className="text-green-600 text-xs mt-0.5">Progress is filled in by members in the Member Distribution section below.</p>
             </div>
           </div>
@@ -816,7 +816,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                                 <button
                                   onClick={() => { updateKR(obj.id, kr.id, { leadProgress: null }); saveLeadProgress(kr.id, null); }}
                                   className="text-slate-300 hover:text-slate-500 text-xs transition"
-                                  title="Reset kontribusi"
+                                  title="Reset contribution"
                                 >✕</button>
                               )}
                             </div>

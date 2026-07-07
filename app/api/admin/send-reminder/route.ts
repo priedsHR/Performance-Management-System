@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   }
 
   const quarter = await prisma.quarter.findUnique({ where: { id: quarterId } });
-  if (!quarter) return NextResponse.json({ error: "Quarter tidak ditemukan." }, { status: 404 });
+  if (!quarter) return NextResponse.json({ error: "Quarter not found." }, { status: 404 });
 
   const leads = await prisma.user.findMany({
     where: { role: "LEAD" },

@@ -166,7 +166,7 @@ export default function MemberDashboard({ quarters, userId, initialObjectives, i
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">📊 Dashboard Saya</h1>
+          <h1 className="text-xl font-bold text-slate-900">📊 My Dashboard</h1>
           <div className="flex items-center gap-2 mt-2">
             <span className="text-xs text-slate-400 flex-shrink-0">⏱️ Quarter:</span>
             <YearQuarterPicker quarters={quarters} value={selectedQ} onChange={setSelectedQ} />

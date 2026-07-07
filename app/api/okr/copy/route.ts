@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   });
 
   if (sourceObjs.length === 0) {
-    return NextResponse.json({ error: "Tidak ada objective yang bisa diimpor" }, { status: 404 });
+    return NextResponse.json({ error: "No objectives available to import" }, { status: 404 });
   }
 
   // Build a map of objectiveId → selected keyResultIds

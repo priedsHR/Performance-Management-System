@@ -87,7 +87,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const file = formData.get("file");
     if (!file || typeof file === "string")
-      return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
+      return Response.json({ error: "File not found." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
   } catch {
     return Response.json({ error: "Failed to read the form." }, { status: 400 });
@@ -95,11 +95,11 @@ export async function POST(req: Request) {
 
   const wb = new ExcelJS.Workbook();
   try { await wb.xlsx.load(fileBuffer); } catch {
-    return Response.json({ error: "File Excel tidak valid." }, { status: 400 });
+    return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
 
   const sheet = wb.getWorksheet("Pengguna") ?? wb.worksheets[0];
-  if (!sheet) return Response.json({ error: "Sheet tidak ditemukan." }, { status: 400 });
+  if (!sheet) return Response.json({ error: "Sheet not found." }, { status: 400 });
 
   let created = 0, updated = 0;
   const errors: string[] = [];
@@ -117,10 +117,10 @@ export async function POST(req: Request) {
     if (!name && !email) continue;
     if (!email.includes("@")) {
       if (name.startsWith("Catatan") || name.startsWith("Note") || !name) continue;
-      errors.push(`Baris ${rowNum} "${name}": Email tidak valid (harus format xxx@domain.com).`);
+      errors.push(`Row ${rowNum} "${name}": Invalid email (must be xxx@domain.com format).`);
       continue;
     }
-    if (!name) { errors.push(`Baris ${rowNum}: Nama kosong, dilewati.`); continue; }
+    if (!name) { errors.push(`Row ${rowNum}: Empty name, skipped.`); continue; }
 
     const role = VALID_ROLES.includes(roleRaw) ? roleRaw : "MEMBER";
 
@@ -134,7 +134,7 @@ export async function POST(req: Request) {
         userId = existing.id;
         updated++;
       } else {
-        if (!password) { errors.push(`Baris ${rowNum} "${name}": Password wajib untuk pengguna baru.`); continue; }
+        if (!password) { errors.push(`Row ${rowNum} "${name}": Password is required for new users.`); continue; }
         const hashed = await bcrypt.hash(password, 10);
         const created_user = await prisma.user.create({ data: { name, email, password: hashed, role: role as "ADMIN" | "LEAD" | "MEMBER", division } });
         userId = created_user.id;
@@ -170,7 +170,7 @@ export async function POST(req: Request) {
         }
       }
     } catch (e) {
-      errors.push(`Baris ${rowNum} "${name}": ${String(e)}`);
+      errors.push(`Row ${rowNum} "${name}": ${String(e)}`);
     }
   }
 

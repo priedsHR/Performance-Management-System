@@ -67,7 +67,7 @@ export default async function RemindersPage() {
       </div>
 
       <div>
-        <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Schedule Otomatis</h2>
+        <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-3">Automatic Schedules</h2>
         <ScheduleManager
           quarters={JSON.parse(JSON.stringify(quarters))}
           initialSchedules={JSON.parse(JSON.stringify(schedules))}

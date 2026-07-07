@@ -77,7 +77,7 @@ function buildIssuesHtml(issues: CompletionIssues): string {
 
   return `
     <div style="margin:20px 0;">
-      <p style="margin:0 0 10px;font-size:14px;font-weight:bold;color:#dc2626;">⚠️ Bagian yang perlu dilengkapi:</p>
+      <p style="margin:0 0 10px;font-size:14px;font-weight:bold;color:#dc2626;">⚠️ Sections that need completing:</p>
       ${summaryHtml}
       <table width="100%" cellpadding="0" cellspacing="0">${rows}</table>
     </div>`;
@@ -143,7 +143,7 @@ export async function sendReminderEmail({
         <tr>
           <td style="padding:28px 32px;">
             <p style="margin:0 0 16px;font-size:22px;font-weight:bold;color:#0f172a;">
-              ${isSettings ? "⏰ Reminder Pengisian OKR" : isCollection ? "📋 Reminder Pengumpulan OKR" : "📊 Reminder Update Progress OKR"}
+              ${isSettings ? "⏰ Reminder Pengisian OKR" : isCollection ? "📋 OKR Submission Reminders" : "📊 Reminder Update Progress OKR"}
             </p>
             <p style="margin:0 0 8px;color:#475569;font-size:14px;line-height:1.6;">
               ${introParagraph}

@@ -37,11 +37,11 @@ export async function POST(req: Request) {
   const file = formData.get("file");
   const leadId = leadIdFromUrl ?? (formData.get("leadId") as string) ?? session.user.id;
 
-  if (!file || typeof file === "string") return Response.json({ error: "File tidak ada." }, { status: 400 });
+  if (!file || typeof file === "string") return Response.json({ error: "No file provided." }, { status: 400 });
 
   const wb = new ExcelJS.Workbook();
   try { await wb.xlsx.load(await (file as File).arrayBuffer()); } catch {
-    return Response.json({ error: "File tidak valid." }, { status: 400 });
+    return Response.json({ error: "Invalid file." }, { status: 400 });
   }
 
   const sheetNames = wb.worksheets.map((ws) => ws.name);
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       if (!/petunjuk/i.test(ws.name)) { sheet = ws; break; }
     }
   }
-  if (!sheet) return Response.json({ sheetNames, error: "Sheet Distribusi tidak ditemukan." }, { status: 400 });
+  if (!sheet) return Response.json({ sheetNames, error: "Sheet Distribusi not found." }, { status: 400 });
 
   // DB state for comparison — quarter comes from URL param (most reliable for multipart POST)
   const activeQuarter = quarterIdFromUrl

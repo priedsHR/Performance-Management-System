@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   try {
     const formData = await req.formData();
     const file = formData.get("file");
-    if (!file || typeof file === "string") return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
+    if (!file || typeof file === "string") return Response.json({ error: "File not found." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
   } catch {
     return Response.json({ error: "Failed to read the file." }, { status: 400 });
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
   const wb = new ExcelJS.Workbook();
   try { await wb.xlsx.load(fileBuffer); } catch {
-    return Response.json({ error: "File Excel tidak valid." }, { status: 400 });
+    return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
 
   const sheetNames = wb.worksheets.map(ws => ws.name);
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     }
   }
 
-  if (!sheet) return Response.json({ sheetNames, error: "Sheet OKR tidak ditemukan" });
+  if (!sheet) return Response.json({ sheetNames, error: "Sheet OKR not found" });
 
   const maxRow = sheet.rowCount;
   const rawRows: Record<string, string>[] = [];

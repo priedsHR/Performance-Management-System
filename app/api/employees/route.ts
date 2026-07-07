@@ -31,7 +31,7 @@ export async function POST(req: Request) {
 
   const body = await req.json();
   const { name, division, position, isActive } = body;
-  if (!name?.trim()) return NextResponse.json({ error: "Nama wajib diisi." }, { status: 400 });
+  if (!name?.trim()) return NextResponse.json({ error: "Name is required." }, { status: 400 });
 
   const employee = await prisma.employee.create({
     data: { name: name.trim(), division: division?.trim() || null, position: position?.trim() || null, isActive: isActive !== false },

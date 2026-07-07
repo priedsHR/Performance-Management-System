@@ -77,7 +77,7 @@ export async function GET(req: Request) {
     { header: "Target", key: "target", width: 10 },
     { header: "Satuan", key: "unit", width: 10 },
     { header: "Progress Tim", key: "teamProgress", width: 13 },
-    { header: "Kontribusi Lead", key: "leadProgress", width: 15 },
+    { header: "Lead Contribution", key: "leadProgress", width: 15 },
     { header: "Total Progress", key: "totalProgress", width: 13 },
     { header: "KR Achievement (%)", key: "krAch", width: 17 },
   ];

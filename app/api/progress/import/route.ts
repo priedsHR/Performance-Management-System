@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const file = formData.get("file");
     if (!file || typeof file === "string")
-      return Response.json({ error: "File tidak ditemukan." }, { status: 400 });
+      return Response.json({ error: "File not found." }, { status: 400 });
     fileBuffer = await (file as File).arrayBuffer();
   } catch {
     return Response.json({ error: "Failed to read the form." }, { status: 400 });
@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
   const wb = new ExcelJS.Workbook();
   try { await wb.xlsx.load(fileBuffer); } catch {
-    return Response.json({ error: "File Excel tidak valid." }, { status: 400 });
+    return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
 
   // Find the Progress sheet
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     }
   }
   if (!sheet)
-    return Response.json({ error: "Sheet 'Progress' tidak ditemukan." }, { status: 400 });
+    return Response.json({ error: "Sheet 'Progress' not found." }, { status: 400 });
 
   // Collect all KRA IDs that belong to this lead (for security check)
   const leadMembers = await prisma.teamMember.findMany({
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
     }
 
     if (progress < 0) {
-      errors.push(`Baris ${rowNum}: Progress tidak boleh negatif (${progress}).`);
+      errors.push(`Row ${rowNum}: Progress cannot be negative (${progress}).`);
       continue;
     }
 
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
 
   if (updates.length === 0) {
     return Response.json({
-      error: "Tidak ada data progress yang terbaca. Pastikan kolom G (Progress) terisi dan file menggunakan template yang benar.",
+      error: "No progress data could be read. Make sure column G (Progress) is filled and the file uses the correct template.",
       debug: { maxRow, errorCount: errors.length },
     }, { status: 400 });
   }

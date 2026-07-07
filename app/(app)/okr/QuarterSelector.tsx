@@ -102,14 +102,14 @@ export default function QuarterSelector({
             }`}
           >
             {showCreate ? <X size={13} /> : <Plus size={13} />}
-            {showCreate ? "Cancel" : "Buat Quarter"}
+            {showCreate ? "Cancel" : "Create Quarter"}
           </button>
         )}
       </div>
 
       {showCreate && (
         <div className="mt-4 pt-4 border-t border-slate-100">
-          <p className="text-xs font-semibold text-slate-500 mb-3">📋 Quarter Baru</p>
+          <p className="text-xs font-semibold text-slate-500 mb-3">📋 New Quarter</p>
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className="block text-xs text-slate-400 mb-1">Name Quarter</label>
@@ -142,7 +142,7 @@ export default function QuarterSelector({
               </select>
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">📅 Mulai</label>
+              <label className="block text-xs text-slate-400 mb-1">📅 Start</label>
               <input
                 type="date"
                 className={inputCls}
@@ -151,7 +151,7 @@ export default function QuarterSelector({
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">📅 Selesai</label>
+              <label className="block text-xs text-slate-400 mb-1">📅 End</label>
               <input
                 type="date"
                 className={inputCls}
