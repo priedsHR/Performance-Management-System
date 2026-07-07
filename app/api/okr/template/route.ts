@@ -10,12 +10,12 @@ export async function GET() {
   wb.created = new Date();
 
   // ── Sheet 1: Petunjuk ────────────────────────────────────────────────────────
-  const info = wb.addWorksheet("Petunjuk");
+  const info = wb.addWorksheet("Instructions");
   info.getColumn("A").width = 28;
   info.getColumn("B").width = 72;
 
   const title = info.getCell("A1");
-  title.value = "Panduan Pengisian Template OKR";
+  title.value = "OKR Template Filling Guide";
   title.font = { name: "Arial", bold: true, size: 14, color: { argb: "FF1E293B" } };
   title.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFBBF24" } };
   title.alignment = { vertical: "middle" };
@@ -23,7 +23,7 @@ export async function GET() {
 
   const guide: [string, string][] = [
     ["", ""],
-    ["CARA PENGGUNAAN", ""],
+    ["HOW TO USE", ""],
     ["1.", 'Open sheet "OKR" (tab below)'],
     ["2.", "Enter data starting from row 3 (below the header rows)"],
     ["3.", "One objective can have many Key Results. Write the Objective name only on its first KR row. For subsequent KR rows of the same objective: leave columns A & B blank."],
@@ -43,7 +43,7 @@ export async function GET() {
     ["Row 3:", "A=Increase Revenue, B=60, C=Revenue Target Q1, D=500, E=million, F=100"],
     ["Row 4:", "A=(blank), B=(blank), C=Wrong — the second KR of the same objective must stay in the same objective"],
     ["", ""],
-    ["ATURAN PENTING", ""],
+    ["IMPORTANT RULES", ""],
     ["*", "Do not change or delete the header rows (rows 1 and 2) in the OKR sheet"],
     ["*", "Column C (Key Result) must always be filled"],
     ["*", "Rows with a blank column C are ignored"],
@@ -53,7 +53,7 @@ export async function GET() {
   let r = 2;
   for (const [a, b] of guide) {
     const row = info.getRow(r);
-    if (a === "CARA PENGGUNAAN" || a === "COLUMN GUIDE" || a === "EXAMPLE" || a === "ATURAN PENTING") {
+    if (a === "HOW TO USE" || a === "COLUMN GUIDE" || a === "EXAMPLE" || a === "IMPORTANT RULES") {
       const cell = row.getCell(1);
       cell.value = a;
       cell.font = { name: "Arial", bold: true, size: 11, color: { argb: "FFB45309" } };
@@ -78,7 +78,7 @@ export async function GET() {
   const AMBER_BG = "FFFBBF24";
   const HEADER_FG = "FF1E293B";
 
-  const headers = ["Objective", "Objective Weight (%)", "Key Result", "Target", "Satuan", "KR Weight (%)"];
+  const headers = ["Objective", "Objective Weight (%)", "Key Result", "Target", "Unit", "KR Weight (%)"];
   const colWidths = [38, 20, 38, 12, 14, 14];
 
   // Row 1: headers
@@ -99,7 +99,7 @@ export async function GET() {
   const exData = [
     "EXAMPLE: Increase Revenue",
     "60",
-    "CONTOH: Capai Revenue Q1 500 juta",
+    "EXAMPLE: Achieve Q1 Revenue of 500 million",
     "500",
     "juta",
     "100",

@@ -100,7 +100,7 @@ export default function ImportExportSection({ quarterId }: Props) {
           <button onClick={handleExport} className={btnGreen}>Export OKR</button>
 
           <label className={btnViolet + " cursor-pointer"} title="Preview the file before importing — no data is changed">
-            {previewing ? <><span className="animate-spin"></span> Membaca…</> : <>Preview File</>}
+            {previewing ? <><span className="animate-spin"></span> Reading…</> : <>Preview File</>}
             <input ref={previewRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handlePreview} disabled={previewing} />
           </label>
         </div>
@@ -140,7 +140,7 @@ export default function ImportExportSection({ quarterId }: Props) {
                 <table className="w-full text-xs font-mono border-collapse">
                   <thead>
                     <tr className="bg-slate-50 border-b border-slate-200">
-                      {["#", "A (Objective)", "B (Weight Obj)", "C (Key Result)", "D (Target)", "E (Satuan)", "F (Weight KR)"].map(h => (
+                      {["#", "A (Objective)", "B (Weight Obj)", "C (Key Result)", "D (Target)", "E (Unit)", "F (Weight KR)"].map(h => (
                         <th key={h} className="text-left px-3 py-2 text-slate-500 font-semibold whitespace-nowrap">{h}</th>
                       ))}
                     </tr>
@@ -174,7 +174,7 @@ export default function ImportExportSection({ quarterId }: Props) {
           <p className="font-semibold">Tips</p>
           <ul className="list-disc list-inside space-y-0.5 text-amber-600">
             <li>Click <strong>Preview File</strong> first to check that columns A & C are read correctly before importing</li>
-            <li>OKR status <strong>Draft</strong> will be replaced · completed ones <strong>Terkumpul</strong> aman</li>
+            <li>OKR status <strong>Draft</strong> will be replaced · completed ones <strong>Submitted</strong> are safe</li>
             <li>Column C (Key Result) must be filled in every row</li>
           </ul>
         </div>

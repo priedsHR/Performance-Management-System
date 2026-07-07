@@ -63,7 +63,7 @@ export async function GET(req: Request) {
 
   const guide: [string, string][] = [
     ["", ""],
-    ["📌 CARA PENGGUNAAN", ""],
+    ["📌 HOW TO USE", ""],
     ["1.", 'Open sheet "Distribusi" (tab below)'],
     ["2.", "Column A (Member) is pre-filled with existing members. Add new names if needed."],
     ["3.", "Columns B (Objective) & D (Key Result) are pre-filled from existing OKR data — do not change them"],
@@ -81,7 +81,7 @@ export async function GET(req: Request) {
     ["F  Unit", "Automatic from the division (no need to change)"],
     ["G  KR Weight (%)", "KR weight within this member's objective (total per objective = 100)"],
     ["", ""],
-    ["⚠️ ATURAN PENTING", ""],
+    ["⚠️ IMPORTANT RULES", ""],
     ["•", "Import REPLACES all existing assignments"],
     ["•", "Rows with a blank column A (Member) reuse the member from the previous row"],
     ["•", "Rows with a blank column D (Key Result) are ignored"],
@@ -116,7 +116,7 @@ export async function GET(req: Request) {
   const DARK = "FF1E293B";
 
   // Header row 1
-  const headers = ["Member", "Objective", "Objective Weight (%)", "Key Result", "Individual Target", "Satuan", "KR Weight (%)"];
+  const headers = ["Member", "Objective", "Objective Weight (%)", "Key Result", "Individual Target", "Unit", "KR Weight (%)"];
   const hRow = sheet.getRow(1);
   hRow.height = 28;
   headers.forEach((h, i) => {

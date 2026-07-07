@@ -93,7 +93,7 @@ function TrendChart({ trend }: { trend: TrendPoint[] }) {
       </div>
       <div className="px-5 pb-4 flex gap-4 text-xs text-slate-400">
         <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-green-500 inline-block rounded" /> ≥100% (target)</span>
-        <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-amber-400 inline-block rounded" /> ≥70% (baik)</span>
+        <span className="flex items-center gap-1"><span className="w-3 h-0.5 bg-amber-400 inline-block rounded" /> ≥70% (good)</span>
       </div>
     </div>
   );

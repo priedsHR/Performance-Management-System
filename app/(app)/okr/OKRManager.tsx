@@ -361,7 +361,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
 
   async function bulkDelete() {
     if (selectedIds.size === 0) return;
-    if (!confirm(`Delete ${selectedIds.size} objective beserta all key result-nya?`)) return;
+    if (!confirm(`Delete ${selectedIds.size} objectives along with all their key results?`)) return;
     setBulkDeleting(true);
     await Promise.all(
       [...selectedIds].map((id) => fetch(`/api/objectives/${id}`, { method: "DELETE" }))
@@ -576,7 +576,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
             {/* Submit all */}
             {objectives.length > 0 && !allSubmitted && !selectMode && (
               <button onClick={submitAllOKR} disabled={saving || !weightOk} className={btnPrimary}>
-                Kumpulkan OKR
+                Submit OKR
               </button>
             )}
           </div>
@@ -743,7 +743,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                               ref={(el) => { if (el) { el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; } }}
                               onChange={(e) => { e.target.style.height = "auto"; e.target.style.height = e.target.scrollHeight + "px"; updateKR(obj.id, kr.id, { title: e.target.value }); }}
                               onBlur={() => !isLocked && saveKR(kr)}
-                              placeholder="Judul Key Result"
+                              placeholder="Key Result title"
                             />
                             {!isLocked && (
                               <button onClick={() => deleteKR(obj.id, kr.id)} className={`${btnDanger} flex-shrink-0`}>

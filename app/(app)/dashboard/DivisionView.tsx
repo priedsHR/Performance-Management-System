@@ -117,7 +117,7 @@ function DonutObjectivesChart({ objectives, divisionAchievement }: { objectives:
   const data = objectives.map((o, i) => ({ name: `OBJ ${i + 1}`, value: o.weight, achievement: o.achievement, title: o.title }));
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5">
-      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Komposisi Weight</p>
+      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Weight Composition</p>
       <p className="text-xs text-slate-400 mb-3">Weight proportion of each objective</p>
       <div className="relative">
         <ResponsiveContainer width="100%" height={220}>
@@ -305,7 +305,7 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
               onClick={() => setShowContrib((v) => !v)}
               className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-700 font-semibold transition"
             >
-              Kontribusi Member {showContrib ? "▲" : "▼"}
+              Member Contribution {showContrib ? "▲" : "▼"}
             </button>
 
             {showContrib && (
@@ -449,7 +449,7 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
 
       {!loading && data && quarters.length === 0 && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-amber-700 text-sm">
-          No quarter. Tambahkan di Admin → Quarter.
+          No quarters. Add one in Admin → Quarter.
         </div>
       )}
 
@@ -491,7 +491,7 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
           {data.members.length > 0 && (
             <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
-                <h2 className="font-bold text-slate-700 text-sm">Ranking Achievement Member</h2>
+                <h2 className="font-bold text-slate-700 text-sm">Member Achievement Ranking</h2>
               </div>
 
               <div className="divide-y divide-slate-50">

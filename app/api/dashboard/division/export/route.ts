@@ -54,7 +54,7 @@ export async function GET(req: Request) {
   wb.created = new Date();
 
   // Sheet 1: Ringkasan
-  const ws1 = wb.addWorksheet("Ringkasan");
+  const ws1 = wb.addWorksheet("Summary");
   ws1.columns = [{ key: "label", width: 28 }, { key: "value", width: 36 }];
   ws1.addRows([
     { label: "Division", value: divisionName },
@@ -75,7 +75,7 @@ export async function GET(req: Request) {
     { header: "Key Result", key: "kr", width: 38 },
     { header: "KR Weight (%)", key: "krWeight", width: 13 },
     { header: "Target", key: "target", width: 10 },
-    { header: "Satuan", key: "unit", width: 10 },
+    { header: "Unit", key: "unit", width: 10 },
     { header: "Progress Tim", key: "teamProgress", width: 13 },
     { header: "Lead Contribution", key: "leadProgress", width: 15 },
     { header: "Total Progress", key: "totalProgress", width: 13 },
@@ -108,7 +108,7 @@ export async function GET(req: Request) {
   // Sheet 3: Member Ranking
   const ws3 = wb.addWorksheet("Member Ranking");
   ws3.columns = [
-    { header: "Peringkat", key: "rank", width: 10 },
+    { header: "Rank", key: "rank", width: 10 },
     { header: "Member Name", key: "name", width: 30 },
     { header: "Achievement (%)", key: "achievement", width: 16 },
   ];

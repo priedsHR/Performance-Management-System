@@ -130,7 +130,7 @@ export async function GET(req: Request) {
       { header: "Key Result", key: "kr", width: 36 },
       { header: "KR Weight (%)", key: "krWeight", width: 13 },
       { header: "Target", key: "target", width: 10 },
-      { header: "Satuan", key: "unit", width: 10 },
+      { header: "Unit", key: "unit", width: 10 },
       { header: "Progress", key: "totalProgress", width: 12 },
       { header: "KR Achievement (%)", key: "krAch", width: 15 },
     ];
@@ -172,7 +172,7 @@ export async function GET(req: Request) {
     // Member ranking
     if (memberAchs.length > 0) {
       ws.addRow([]);
-      const rankHeader = ws.addRow(["Peringkat", "Member Name", "Achievement (%)"]);
+      const rankHeader = ws.addRow(["Rank", "Member Name", "Achievement (%)"]);
       rankHeader.font = HEADER_FONT;
       rankHeader.fill = HEADER_FILL;
       memberAchs.forEach((m, i) => {
@@ -206,7 +206,7 @@ export async function GET(req: Request) {
 
         // Column headers for this member
         const memberHeader = ws.addRow([
-          "Objective", "Key Result", "Weight (%)", "Target", "Satuan", "Progress", "Achievement (%)",
+          "Objective", "Key Result", "Weight (%)", "Target", "Unit", "Progress", "Achievement (%)",
         ]);
         memberHeader.font = HEADER_FONT;
         memberHeader.fill = HEADER_FILL;

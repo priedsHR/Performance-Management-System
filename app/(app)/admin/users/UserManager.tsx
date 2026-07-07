@@ -77,7 +77,7 @@ function UserForm({ form, isEdit, onChange, onSave, onCancel, teamMembers, editU
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-500 mb-1.5">Email</label>
-          <input type="email" className={inputCls} value={form.email} onChange={(e) => onChange({ ...form, email: e.target.value })} placeholder="email@perusahaan.com" />
+          <input type="email" className={inputCls} value={form.email} onChange={(e) => onChange({ ...form, email: e.target.value })} placeholder="email@prieds.com" />
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-500 mb-1.5">

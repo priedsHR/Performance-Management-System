@@ -26,7 +26,7 @@ export async function GET() {
   const AMBER = "FFFBBF24";
   const DARK = "FF1E293B";
 
-  const headers = ["Nama*", "Division", "Jabatan/Posisi", "Status (aktif/nonaktif)"];
+  const headers = ["Nama*", "Division", "Title/Position", "Status (active/inactive)"];
   const hRow = sheet.getRow(1);
   hRow.height = 26;
   headers.forEach((h, i) => {

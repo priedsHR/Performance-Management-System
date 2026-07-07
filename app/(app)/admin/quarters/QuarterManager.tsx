@@ -170,7 +170,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                 disabled:opacity-50
                 transition-all duration-75"
             >
-              {exporting ? "Menyiapkan..." : "Download Excel"}
+              {exporting ? "Preparing..." : "Download Excel"}
             </button>
           </div>
         </div>

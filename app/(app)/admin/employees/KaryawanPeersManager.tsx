@@ -101,7 +101,7 @@ export default function EmployeePeersManager() {
   }
 
   async function del(p: Profile) {
-    const withUser = confirm(`Delete profil 360 "${p.name}".\n\nOK = also delete the login account.\nCancel = delete only the 360 profile.`);
+    const withUser = confirm(`Delete the 360 profile of "${p.name}".\n\nOK = also delete the login account.\nCancel = delete only the 360 profile.`);
     await fetch(`/api/feedback/profiles/${p.id}${withUser ? "?withUser=1" : ""}`, { method: "DELETE" });
     await load();
   }
@@ -201,7 +201,7 @@ export default function EmployeePeersManager() {
                     <option value="MEMBER">Member</option><option value="LEAD">Lead</option><option value="ADMIN">Admin</option>
                   </select>
                 </div>
-                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Departemen</label>
+                <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Department</label>
                   <input list="dept-list" value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} placeholder="mis. HR, Finance, Tech…" className={inp} />
                   <datalist id="dept-list">{DEPARTMENTS.map((d) => <option key={d} value={d} />)}</datalist>
                 </div>
@@ -364,7 +364,7 @@ export default function EmployeePeersManager() {
           {manualPairs.length > 0 ? (
             <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-3 bg-slate-50 border-b border-slate-100">
-                <span className="font-semibold text-slate-700 text-sm">Assessment Lintas Departemen ({manualPairs.length})</span>
+                <span className="font-semibold text-slate-700 text-sm">Cross-Department Assessments ({manualPairs.length})</span>
               </div>
               <table className="w-full text-sm">
                 <thead><tr className="border-b border-slate-100">

@@ -950,7 +950,7 @@ function CopyFromQuarterModal({
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-slate-100">
           <button onClick={onClose} className={btnSecondary}>Cancel</button>
           <button onClick={doCopy} disabled={copying || !destId || totalSel === 0 || !!result} className={btnPrimary}>
-            {copying ? "Menyalin..." : !destId ? "Choose a destination first" : `Copy${totalSel > 0 ? ` (${totalSel} KR)` : ""}`}
+            {copying ? "Copying..." : !destId ? "Choose a destination first" : `Copy${totalSel > 0 ? ` (${totalSel} KR)` : ""}`}
           </button>
         </div>
       </div>
@@ -1306,7 +1306,7 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
         </div>
       )}
 
-      {/* ── 3. Alat Bantu Excel ───────────────────────────────────────── */}
+      {/* ── 3. Excel Tools ───────────────────────────────────────── */}
       <div className="border border-slate-200 rounded-2xl overflow-hidden">
         <button
           onClick={() => setShowTools((v) => !v)}
@@ -1314,7 +1314,7 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
         >
           <div className="flex items-center gap-2">
             <span className="text-sm"></span>
-            <span className="text-sm font-semibold text-slate-600">Alat Bantu Excel</span>
+            <span className="text-sm font-semibold text-slate-600">Excel Tools</span>
             <span className="text-xs text-slate-400">— import/export distribution & update progress</span>
           </div>
           <span className="text-slate-400 text-xs">{showTools ? "▲" : "▼"}</span>

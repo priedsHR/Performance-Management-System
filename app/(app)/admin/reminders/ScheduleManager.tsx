@@ -18,7 +18,7 @@ type Schedule = {
   nextRun: string;
 };
 
-const DAYS = ["Week", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+const DAYS = ["Week", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const TYPE_LABEL: Record<string, string> = { settings: "Setting OKR", collection: "Submission" };
 const FREQ_LABEL: Record<string, string> = { weekly: "Every Week", biweekly: "Every 2 Weeks", monthly: "Every Month" };
 
@@ -113,7 +113,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
 
           {/* Frequency */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-500">Frekuensi</label>
+            <label className="text-xs font-semibold text-slate-500">Frequency</label>
             <select value={frequency} onChange={e => setFrequency(e.target.value)}
               className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400">
               <option value="weekly">Every Week</option>

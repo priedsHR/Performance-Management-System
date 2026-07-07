@@ -26,7 +26,7 @@ export default function SetupPage() {
       return;
     }
     if (password.length < 6) {
-      setError("Password minimal 6 karakter");
+      setError("Password must be at least 6 characters");
       return;
     }
     setLoading(true);
@@ -92,7 +92,7 @@ export default function SetupPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@perusahaan.com"
+              placeholder="admin@prieds.com"
               className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
             />
           </div>
@@ -103,7 +103,7 @@ export default function SetupPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Min. 6 karakter"
+              placeholder="Min. 6 characters"
               className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
             />
           </div>
@@ -114,7 +114,7 @@ export default function SetupPage() {
               required
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              placeholder="Ulangi password"
+              placeholder="Repeat password"
               className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
             />
           </div>

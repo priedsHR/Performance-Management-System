@@ -64,23 +64,23 @@ export async function GET(req: Request) {
 
   const guide: [string, string][] = [
     ["", ""],
-    ["📌 CARA PENGGUNAAN", ""],
-    ["1.", "Buka sheet \"Progress\" (tab below)"],
+    ["📌 HOW TO USE", ""],
+    ["1.", "Open sheet \"Progress\" (tab below)"],
     ["2.", "Fill column G (Progress) for every member & KR"],
     ["3.", "Columns A-F and H are reference only — do not change"],
-    ["4.", "Upload file ini via tombol \"Import Progress\" in the app"],
+    ["4.", "Upload this file via the \"Import Progress\" in the app"],
     ["", ""],
     ["📊 COLUMN GUIDE", ""],
     ["A  ID", "Unique KR assignment ID — DO NOT change, used for matching"],
     ["B  Member", "Member name"],
-    ["C  Objective", "Judul objective"],
-    ["D  Key Result", "Judul key result"],
+    ["C  Objective", "Objective title"],
+    ["D  Key Result", "Key result title"],
     ["E  Target", "Target (division or individual)"],
     ["F  Unit", "Unit of measurement"],
     ["G  Progress", "← FILL THIS: the member's latest progress value"],
     ["H  Achievement (%)", "Calculated automatically (for reference)"],
     ["", ""],
-    ["⚠️ ATURAN PENTING", ""],
+    ["⚠️ IMPORTANT RULES", ""],
     ["•", "Only column G (Progress) needs to be filled"],
     ["•", "Leave blank or enter 0 if there is no progress yet"],
     ["•", "Progress value cannot be negative"],
@@ -121,7 +121,7 @@ export async function GET(req: Request) {
   sheet.getRow(1).height = 30;
 
   // Row 2: headers
-  const headers = ["ID (do not change)", "Member", "Objective", "Key Result", "Target", "Satuan", "Progress ✏️", "Achievement (%)"];
+  const headers = ["ID (do not change)", "Member", "Objective", "Key Result", "Target", "Unit", "Progress ✏️", "Achievement (%)"];
   const hRow = sheet.getRow(2);
   hRow.height = 24;
   headers.forEach((h, i) => {

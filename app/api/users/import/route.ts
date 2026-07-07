@@ -24,7 +24,7 @@ export async function GET() {
   const wb = new ExcelJS.Workbook();
   wb.creator = "OKR App";
 
-  const sheet = wb.addWorksheet("Pengguna", {
+  const sheet = wb.addWorksheet("Users", {
     views: [{ state: "frozen", xSplit: 0, ySplit: 1 }],
   });
 
@@ -98,7 +98,7 @@ export async function POST(req: Request) {
     return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
 
-  const sheet = wb.getWorksheet("Pengguna") ?? wb.worksheets[0];
+  const sheet = wb.getWorksheet("Users") ?? wb.worksheets[0];
   if (!sheet) return Response.json({ error: "Sheet not found." }, { status: 400 });
 
   let created = 0, updated = 0;

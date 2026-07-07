@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
   for (const lead of leads) {
     if (!lead.email) {
-      results.push({ name: lead.name ?? "-", email: "-", status: "error", error: "Tidak ada email" });
+      results.push({ name: lead.name ?? "-", email: "-", status: "error", error: "No email address" });
       continue;
     }
 
