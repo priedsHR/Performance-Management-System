@@ -66,7 +66,7 @@ function TrendChart({ trend }: { trend: TrendPoint[] }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
       <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
-        <h2 className="font-bold text-slate-700 text-sm">Tren Achievement per Quarter</h2>
+        <h2 className="font-bold text-slate-700 text-sm">Achievement Trend per Quarter</h2>
       </div>
       <div className="p-5 h-52">
         <ResponsiveContainer width="100%" height="100%">

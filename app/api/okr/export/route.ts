@@ -60,7 +60,7 @@ export async function GET(req: Request) {
   const headers = [
     "Objective", "Obj Weight (%)", "Status",
     "Key Result", "Target", "Satuan", "KR Weight (%)",
-    "Progress", "Achievement (%)", "Catatan",
+    "Progress", "Achievement (%)", "Notes",
   ];
   const hRow = sheet.getRow(2);
   hRow.height = 24;

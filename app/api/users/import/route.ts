@@ -113,10 +113,10 @@ export async function POST(req: Request) {
     const roleRaw = readStr(row.getCell(4)).trim().toUpperCase();
     const division = readStr(row.getCell(5)).trim() || null;
 
-    // Skip empty rows and note rows (e.g. "Catatan: ...")
+    // Skip empty rows and note rows (e.g. "Notes: ...")
     if (!name && !email) continue;
     if (!email.includes("@")) {
-      if (name.startsWith("Catatan") || name.startsWith("Note") || !name) continue;
+      if (name.startsWith("Notes") || name.startsWith("Note") || !name) continue;
       errors.push(`Row ${rowNum} "${name}": Invalid email (must be xxx@domain.com format).`);
       continue;
     }
@@ -163,7 +163,7 @@ export async function POST(req: Request) {
 
           if (match) {
             await prisma.teamMember.update({ where: { id: match.id }, data: { userId } });
-            linkLog.push(`${name}: ✅ linked ke "${match.name}"`);
+            linkLog.push(`${name}: linked to "${match.name}"`);
           } else {
             linkLog.push(`${name}: ❌ no match found`);
           }
@@ -176,7 +176,7 @@ export async function POST(req: Request) {
 
   return Response.json({
     success: true,
-    message: `Berhasil: ${created} akun baru dibuat, ${updated} akun diperbarui.`,
+    message: `Done: ${created} new accounts created, ${updated} updated.`,
     created,
     updated,
     errors: errors.length > 0 ? errors : undefined,

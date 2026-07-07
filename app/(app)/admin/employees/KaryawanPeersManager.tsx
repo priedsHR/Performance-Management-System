@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Edit2, Trash2 } from "lucide-react";
+import { Edit2, Trash2, Filter, Search } from "lucide-react";
 import { DEPARTMENTS, LEVELS, CATEGORY_LABEL, type Category } from "@/lib/feedback/library";
 
 interface Profile {
@@ -48,6 +48,14 @@ export default function EmployeePeersManager() {
   const [pairB, setPairB] = useState("");
   const [pairType, setPairType] = useState<"peer" | "a_rates_b" | "b_rates_a">("peer");
   const [search, setSearch] = useState("");
+  const [deptFilter, setDeptFilter] = useState("");
+  const [sortKey, setSortKey] = useState<"name" | "position" | "manager">("name");
+  const [sortDir, setSortDir] = useState<1 | -1>(1);
+  function toggleSort(key: "name" | "position" | "manager") {
+    if (sortKey === key) setSortDir((d) => (d === 1 ? -1 : 1));
+    else { setSortKey(key); setSortDir(1); }
+  }
+  const sortIcon = (key: "name" | "position" | "manager") => (sortKey === key ? (sortDir === 1 ? " ▲" : " ▼") : " ⇅");
 
   async function load() {
     const [p, c, u, mp] = await Promise.all([
@@ -105,7 +113,7 @@ export default function EmployeePeersManager() {
     const res = await fetch("/api/feedback/profiles/import", { method: "POST", body: fd });
     const d = await res.json().catch(() => ({}));
     setImporting(false); if (fileRef.current) fileRef.current.value = "";
-    if (res.ok) { setMsg((d.message || "Import complete.") + (d.errors ? ` (${d.errors.length} catatan)` : "")); await load(); }
+    if (res.ok) { setMsg((d.message || "Import complete.") + (d.errors ? ` (${d.errors.length} notes)` : "")); await load(); }
     else setMsg(d.error || "Failed to import.");
   }
 
@@ -121,9 +129,16 @@ export default function EmployeePeersManager() {
     await load();
   }
 
-  const filteredProfiles = profiles.filter((p) =>
-    !search || p.name.toLowerCase().includes(search.toLowerCase()) || (p.department || "").toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredProfiles = profiles
+    .filter((p) => !deptFilter || (p.department || "(No Department)") === deptFilter)
+    .filter((p) =>
+      !search || p.name.toLowerCase().includes(search.toLowerCase()) || (p.department || "").toLowerCase().includes(search.toLowerCase()) || (p.position || "").toLowerCase().includes(search.toLowerCase())
+    )
+    .sort((a, b) => {
+      const va = sortKey === "position" ? (a.position || "") : sortKey === "manager" ? (a.managerName || "") : a.name;
+      const vb = sortKey === "position" ? (b.position || "") : sortKey === "manager" ? (b.managerName || "") : b.name;
+      return sortDir * va.localeCompare(vb) || a.name.localeCompare(b.name);
+    });
   const grouped = filteredProfiles.reduce<Record<string, Profile[]>>((acc, p) => {
     const key = p.department || "(No Department)";
     if (!acc[key]) acc[key] = [];
@@ -154,7 +169,21 @@ export default function EmployeePeersManager() {
               </button>
               <input ref={fileRef} type="file" accept=".xlsx" hidden onChange={doImport} />
             </div>
-            <input className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white" placeholder="Search name / department…" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input className="border border-slate-200 rounded-lg pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white" placeholder="Search name / department…" value={search} onChange={(e) => setSearch(e.target.value)} />
+              </div>
+              <div className="relative">
+                <Filter size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="border border-slate-200 rounded-lg pl-8 pr-6 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400">
+                  <option value="">All departments</option>
+                  {[...new Set(profiles.map((x) => x.department || "(No Department)"))].sort().map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
 
           {msg && <p className="text-sm text-amber-700 bg-amber-50 px-4 py-2 rounded-xl border border-amber-200">{msg}</p>}
@@ -251,9 +280,15 @@ export default function EmployeePeersManager() {
                 </div>
                 <table className="w-full text-sm">
                   <thead><tr className="border-b border-slate-100">
-                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Name</th>
-                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Title</th>
-                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Manager</th>
+                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">
+                      <button onClick={() => toggleSort("name")} className="hover:text-slate-700">Name{sortIcon("name")}</button>
+                    </th>
+                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">
+                      <button onClick={() => toggleSort("position")} className="hover:text-slate-700">Title{sortIcon("position")}</button>
+                    </th>
+                    <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">
+                      <button onClick={() => toggleSort("manager")} className="hover:text-slate-700">Manager{sortIcon("manager")}</button>
+                    </th>
                     <th className="text-center px-5 py-2.5 text-xs font-semibold text-slate-400">Comps</th>
                     <th className="px-5 py-2.5" />
                   </tr></thead>
@@ -334,7 +369,7 @@ export default function EmployeePeersManager() {
               <table className="w-full text-sm">
                 <thead><tr className="border-b border-slate-100">
                   <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Employee A</th>
-                  <th className="text-center px-3 py-2.5 text-xs font-semibold text-slate-400">Relasi</th>
+                  <th className="text-center px-3 py-2.5 text-xs font-semibold text-slate-400">Relation</th>
                   <th className="text-left px-5 py-2.5 text-xs font-semibold text-slate-400">Employee B</th>
                   <th className="px-5 py-2.5" />
                 </tr></thead>

@@ -121,7 +121,7 @@ export default function QuarterSelector({
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">Tahun</label>
+              <label className="block text-xs text-slate-400 mb-1">Year</label>
               <input
                 type="number"
                 className={inputCls}

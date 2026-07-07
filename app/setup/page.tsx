@@ -126,7 +126,7 @@ export default function SetupPage() {
             disabled={loading}
             className="bg-blue-600 text-white font-medium text-sm py-2 rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
           >
-            {loading ? "Membuat akun…" : "Create Admin & Start"}
+            {loading ? "Creating account…" : "Create Admin & Start"}
           </button>
         </form>
       </div>

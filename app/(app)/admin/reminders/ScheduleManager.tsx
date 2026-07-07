@@ -29,8 +29,8 @@ function fmtWIB(iso: string) {
 
 function scheduleDesc(s: Schedule) {
   const freq = FREQ_LABEL[s.frequency] ?? s.frequency;
-  if (s.frequency === "monthly") return `${freq}, tgl ${s.dayOfMonth}, jam ${String(s.hourWIB).padStart(2, "0")}:00 WIB`;
-  return `${freq}, day ${DAYS[s.dayOfWeek ?? 0]}, jam ${String(s.hourWIB).padStart(2, "0")}:00 WIB`;
+  if (s.frequency === "monthly") return `${freq}, date ${s.dayOfMonth}, at ${String(s.hourWIB).padStart(2, "0")}:00 WIB`;
+  return `${freq}, day ${DAYS[s.dayOfWeek ?? 0]}, at ${String(s.hourWIB).padStart(2, "0")}:00 WIB`;
 }
 
 export default function ScheduleManager({ quarters, initialSchedules }: { quarters: Quarter[]; initialSchedules: Schedule[] }) {
@@ -125,7 +125,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
           {/* Day / Date */}
           {frequency !== "monthly" ? (
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-500">Hari</label>
+              <label className="text-xs font-semibold text-slate-500">Day</label>
               <select value={dayOfWeek} onChange={e => setDayOfWeek(Number(e.target.value))}
                 className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400">
                 {DAYS.map((d, i) => <option key={i} value={i}>{d}</option>)}
@@ -143,7 +143,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
 
           {/* Hour */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-slate-500">Jam (WIB)</label>
+            <label className="text-xs font-semibold text-slate-500">Hour (WIB)</label>
             <select value={hourWIB} onChange={e => setHourWIB(Number(e.target.value))}
               className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400">
               {Array.from({ length: 24 }, (_, i) => i).map(h => (
@@ -168,7 +168,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
       {/* Schedule list */}
       {schedules.length === 0 ? (
         <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-400 text-sm">
-          No schedule otomatis. Buat schedule di atas.
+          No automatic schedules. Create one above.
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
@@ -187,7 +187,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
                   <p className="text-xs text-slate-500">{scheduleDesc(s)}</p>
                   <p className="text-xs text-slate-400 mt-0.5">
                     Berikutnya: <span className="font-medium text-slate-600">{fmtWIB(s.nextRun)}</span>
-                    {s.lastRun && <> · Terakhir: {fmtWIB(s.lastRun)}</>}
+                    {s.lastRun && <> · Last: {fmtWIB(s.lastRun)}</>}
                   </p>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">

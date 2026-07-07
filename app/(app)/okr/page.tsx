@@ -115,7 +115,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Import / Export OKR</span>
             <span className="text-xs text-slate-300">—</span>
-            <span className="text-xs text-slate-400">download template → isi → upload, atau ekspor ke Excel</span>
+            <span className="text-xs text-slate-400">download the template → fill it in → upload, or export to Excel</span>
           </div>
           <ImportExportSection quarterId={selectedQuarter.id} />
         </div>

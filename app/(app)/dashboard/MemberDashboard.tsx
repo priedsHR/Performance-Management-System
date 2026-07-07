@@ -205,7 +205,7 @@ export default function MemberDashboard({ quarters, userId, initialObjectives, i
           <a href="/okr" className="inline-flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-5 py-2.5 rounded-xl
             shadow-sm hover:shadow-sm
             active:shadow-sm transition-all duration-75">
-            Isi OKR Sekarang →
+            Fill in OKR Now →
           </a>
         </div>
       )}
@@ -224,7 +224,7 @@ export default function MemberDashboard({ quarters, userId, initialObjectives, i
       {trend.length >= 2 && (
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
-            <h2 className="font-bold text-slate-700 text-sm">Tren Achievement per Quarter</h2>
+            <h2 className="font-bold text-slate-700 text-sm">Achievement Trend per Quarter</h2>
           </div>
           <div className="p-5 h-52">
             <ResponsiveContainer width="100%" height="100%">

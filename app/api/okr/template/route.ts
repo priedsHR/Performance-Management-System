@@ -24,14 +24,14 @@ export async function GET() {
   const guide: [string, string][] = [
     ["", ""],
     ["CARA PENGGUNAAN", ""],
-    ["1.", 'Buka sheet "OKR" (tab di bawah)'],
+    ["1.", 'Buka sheet "OKR" (tab below)'],
     ["2.", "Enter data starting from row 3 (below the header rows)"],
     ["3.", "One objective can have many Key Results. Write the Objective name only on its first KR row. For subsequent KR rows of the same objective: leave columns A & B blank."],
     ["4.", "Total Objective Weight (%) must be 100"],
     ["5.", "Total KR Weight (%) per objective must be 100"],
     ["6.", "Save the file, then upload it via the Import button on the OKR page"],
     ["", ""],
-    ["KETERANGAN KOLOM", ""],
+    ["COLUMN GUIDE", ""],
     ["A  Objective", "Objective name (fill only on the first KR row of each objective)"],
     ["B  Objective Weight (%)", "Objective weight, grand total = 100 (fill only on the first row)"],
     ["C  Key Result", "Key result name — REQUIRED on every row"],
@@ -39,7 +39,7 @@ export async function GET() {
     ["E  Satuan", "Units: %, pcs, x, score, day, month, people, other"],
     ["F  KR Weight (%)", "KR weight, total per objective = 100"],
     ["", ""],
-    ["CONTOH", ""],
+    ["EXAMPLE", ""],
     ["Row 3:", "A=Meningkatkan Revenue, B=60, C=Target Revenue Q1, D=500, E=juta, F=100"],
     ["Row 4:", "A=(blank), B=(blank), C=Wrong — the second KR of the same objective must stay in the same objective"],
     ["", ""],
@@ -53,7 +53,7 @@ export async function GET() {
   let r = 2;
   for (const [a, b] of guide) {
     const row = info.getRow(r);
-    if (a === "CARA PENGGUNAAN" || a === "KETERANGAN KOLOM" || a === "CONTOH" || a === "ATURAN PENTING") {
+    if (a === "CARA PENGGUNAAN" || a === "COLUMN GUIDE" || a === "EXAMPLE" || a === "ATURAN PENTING") {
       const cell = row.getCell(1);
       cell.value = a;
       cell.font = { name: "Arial", bold: true, size: 11, color: { argb: "FFB45309" } };
@@ -97,7 +97,7 @@ export async function GET() {
   const ex = sheet.getRow(2);
   ex.height = 18;
   const exData = [
-    "CONTOH: Meningkatkan Revenue",
+    "EXAMPLE: Increase Revenue",
     "60",
     "CONTOH: Capai Revenue Q1 500 juta",
     "500",

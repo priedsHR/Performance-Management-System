@@ -546,7 +546,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
               <span className="flex-shrink-0">{result.type === "success" && !result.errors?.length ? "" : result.type === "success" ? "" : ""}</span>
               <div className="min-w-0 w-full">
                 <p className="font-semibold">{result.message}</p>
-                {result.debug && <p className="text-xs mt-0.5 opacity-70">Baris terbaca: {result.debug.rowsParsed}</p>}
+                {result.debug && <p className="text-xs mt-0.5 opacity-70">Rows read: {result.debug.rowsParsed}</p>}
                 {result.type === "success" && !result.errors?.length && <p className="text-xs mt-0.5 opacity-75">The page will reload…</p>}
               </div>
             </div>
@@ -560,7 +560,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
             )}
             {result.debug?.lookups && result.debug.lookups.length > 0 && (
               <details className="border border-slate-200 rounded-xl overflow-hidden text-xs">
-                <summary className="px-4 py-2 bg-slate-50 cursor-pointer text-slate-600 font-semibold">Debug lookup ({result.debug.lookups.length} baris)</summary>
+                <summary className="px-4 py-2 bg-slate-50 cursor-pointer text-slate-600 font-semibold">Debug lookup ({result.debug.lookups.length} rows)</summary>
                 <div className="px-4 py-3 font-mono space-y-0.5 max-h-48 overflow-y-auto">
                   {result.debug.lookups.map((l, i) => (
                     <p key={i} className={`text-xs break-all ${l.includes("NOT FOUND") ? "text-red-600 font-bold" : l.includes("FOUND") ? "text-green-700" : "text-slate-500"}`}>{l}</p>

@@ -122,7 +122,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                 onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1.5">Tahun</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">Year</label>
               <input type="number" className={inputCls} value={form.year}
                 onChange={(e) => setForm({ ...form, year: Number(e.target.value) })} />
             </div>

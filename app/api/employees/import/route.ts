@@ -19,7 +19,7 @@ export async function GET() {
   const wb = new ExcelJS.Workbook();
   wb.creator = "OKR App";
 
-  const sheet = wb.addWorksheet("Karyawan", {
+  const sheet = wb.addWorksheet("Employees", {
     views: [{ state: "frozen", xSplit: 0, ySplit: 1 }],
   });
 
@@ -56,7 +56,7 @@ export async function GET() {
     status: 200,
     headers: {
       "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "Content-Disposition": 'attachment; filename="template-karyawan.xlsx"',
+      "Content-Disposition": 'attachment; filename="employee-template.xlsx"',
     },
   });
 }
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
     return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
 
-  const sheet = wb.getWorksheet("Karyawan") ?? wb.worksheets[0];
+  const sheet = wb.getWorksheet("Employees") ?? wb.worksheets[0];
   if (!sheet) return Response.json({ error: "Sheet not found." }, { status: 400 });
 
   let created = 0, updated = 0;

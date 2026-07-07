@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, Target, BarChart3, MessagesSquare } from "lucide-react";
+import PriedsLogo from "@/components/PriedsLogo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,19 +34,19 @@ export default function LoginPage() {
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 bg-white border-r border-slate-200 flex-col items-center justify-center px-16">
         <div className="text-center max-w-xs">
-          <div className="text-6xl mb-5"></div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Performance Management System</h2>
+          <div className="mb-6"><PriedsLogo size="lg" tagline /></div>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">Performance Management System</h2>
           <p className="text-slate-500 text-sm leading-relaxed">
-            Track your team's OKR achievement in real time, transparently.
+            OKR, 360° appraisal, IDP and talent insights for PRIEDS — in one place.
           </p>
           <div className="mt-8 grid grid-cols-3 gap-3">
             {[
-              { emoji: "", label: "Objectives", desc: "Terstruktur" },
-              { emoji: "", label: "Key Results", desc: "Terukur" },
-              { emoji: "", label: "Progress", desc: "Real-time" },
+              { icon: Target, label: "Objectives", desc: "Structured" },
+              { icon: BarChart3, label: "Key Results", desc: "Measurable" },
+              { icon: MessagesSquare, label: "360 Feedback", desc: "Holistic" },
             ].map((item) => (
               <div key={item.label} className="bg-slate-50 border border-slate-200 rounded-xl p-3">
-                <div className="text-xl mb-1">{item.emoji}</div>
+                <item.icon size={18} className="mx-auto mb-1.5 text-[#0b8ec4]" />
                 <p className="text-xs font-bold text-slate-700">{item.label}</p>
                 <p className="text-xs text-slate-400 mt-0.5">{item.desc}</p>
               </div>
@@ -58,13 +59,12 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
-          <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <span className="text-2xl"></span>
-            <span className="text-xl font-bold text-slate-900">Performance Management System</span>
+          <div className="flex justify-center mb-8 lg:hidden">
+            <PriedsLogo size="md" tagline />
           </div>
 
           <div className="mb-7">
-            <h1 className="text-2xl font-bold text-slate-900">Selamat datang</h1>
+            <h1 className="text-2xl font-bold text-slate-900">Welcome back</h1>
             <p className="text-slate-500 text-sm mt-1">Sign in to your account to continue</p>
           </div>
 
@@ -77,7 +77,7 @@ export default function LoginPage() {
                 name="email"
                 type="email"
                 required
-                placeholder="name@perusahaan.com"
+                placeholder="name@prieds.com"
                 className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition"
               />
             </div>

@@ -106,7 +106,7 @@ export default function ReminderManager({
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
               Email all Division Leads to create their Objectives &amp; Key Results on the Division OKR page.
-              Cocok dikirim di <strong>awal quarter</strong>.
+              Best sent at the <strong>start of the quarter</strong>.
             </p>
           </div>
           <button
@@ -126,7 +126,7 @@ export default function ReminderManager({
               <h3 className="font-bold text-slate-800">Submission Reminder</h3>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Cek menyeluruh di <strong>akhir quarter</strong>: weights, targets, units, member progress, and lead achievement.
+              A full check at the <strong>end of the quarter</strong>: weights, targets, units, member progress, and lead achievement.
               Only sends to those with incomplete data.
             </p>
           </div>
@@ -172,7 +172,7 @@ export default function ReminderManager({
           <div>
             <p className="font-semibold text-slate-700 text-sm">Division Leads ({leads.length} people)</p>
             <p className="text-xs text-slate-400 mt-0.5">
-              Reminder hanya dikirim ke yang statusnya <span className="font-semibold text-amber-600">Incomplete</span> or <span className="font-semibold text-red-600">Not created yet</span>.
+              Reminders are only sent to those whose status is <span className="font-semibold text-amber-600">Incomplete</span> or <span className="font-semibold text-red-600">Not created yet</span>.
             </p>
           </div>
           {loadingLeads && <span className="text-xs text-slate-400 animate-pulse">Loading status...</span>}

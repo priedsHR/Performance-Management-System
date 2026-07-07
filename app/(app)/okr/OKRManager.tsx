@@ -299,7 +299,7 @@ function ImportModal({
                       );
                     })}
                   </div>
-                  <p className="text-xs text-slate-400 mt-3">Objective diimpor ke <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name}</strong> as a new DRAFT. Progress from the source quarter <strong>is not copied</strong> (starting from 0).</p>
+                  <p className="text-xs text-slate-400 mt-3">Objectives imported into <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name}</strong> as a new DRAFT. Progress from the source quarter <strong>is not copied</strong> (starting from 0).</p>
                 </div>
               )}
             </>

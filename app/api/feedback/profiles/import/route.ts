@@ -106,7 +106,7 @@ export async function POST(req: Request) {
   } catch {
     return Response.json({ error: "Invalid Excel file." }, { status: 400 });
   }
-  const sheet = wb.getWorksheet("Employees") ?? wb.getWorksheet("Karyawan") ?? wb.worksheets[0];
+  const sheet = wb.getWorksheet("Employees") ?? wb.getWorksheet("Employees") ?? wb.worksheets[0];
   if (!sheet) return Response.json({ error: "Sheet not found." }, { status: 400 });
 
   const allComps = await prisma.competency.findMany({
@@ -132,7 +132,7 @@ export async function POST(req: Request) {
 
     if (!name && !email) continue;
     if (!email.includes("@")) {
-      if (name.startsWith("Catatan") || name.startsWith("Note") || !name) continue;
+      if (name.startsWith("Notes") || name.startsWith("Note") || !name) continue;
       errors.push(`Row ${rowNum} "${name}": Invalid email.`);
       continue;
     }

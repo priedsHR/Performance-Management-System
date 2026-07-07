@@ -47,7 +47,7 @@ export default function ImportExportSection({ quarterId }: Props) {
       const data = await res.json();
       if (res.ok && data.success) {
         const debugInfo = data.debug
-          ? `${data.debug.rowsParsed} rows read` + (data.debug.skipped?.length ? `, ${data.debug.skipped.length} dilewati` : "")
+          ? `${data.debug.rowsParsed} rows read` + (data.debug.skipped?.length ? `, ${data.debug.skipped.length} skipped` : "")
           : undefined;
         setResult({ type: "success", message: data.message, detail: data.errors?.join("; "), debug: debugInfo });
         setTimeout(() => window.location.reload(), 1400);
@@ -125,9 +125,9 @@ export default function ImportExportSection({ quarterId }: Props) {
           <div className="border border-violet-200 rounded-xl overflow-hidden">
             <div className="bg-violet-50 px-4 py-2.5 flex items-center justify-between">
               <div>
-                <p className="text-sm font-bold text-violet-800">Isi File — {preview.selectedSheet}</p>
+                <p className="text-sm font-bold text-violet-800">File Contents — {preview.selectedSheet}</p>
                 <p className="text-xs text-violet-500">
-                  Sheets: {preview.sheetNames.join(", ")} · {preview.maxRow} baris total
+                  Sheets: {preview.sheetNames.join(", ")} · {preview.maxRow} rows total
                 </p>
               </div>
               <button onClick={() => setPreview(null)} className="text-violet-400 hover:text-violet-700 text-lg"></button>

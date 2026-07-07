@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   const { fromQuarterId, toQuarterId, selections } = body;
 
   if (!fromQuarterId || !toQuarterId) {
-    return NextResponse.json({ error: "fromQuarterId dan toQuarterId diperlukan" }, { status: 400 });
+    return NextResponse.json({ error: "fromQuarterId and toQuarterId are required" }, { status: 400 });
   }
 
   if (!selections || !Array.isArray(selections) || selections.length === 0) {

@@ -313,7 +313,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
                           const linked = tms.find((tm) => tm.userId === user.id);
                           return linked
                             ? <span className="text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">{linked.name}</span>
-                            : <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">Not yet di-link</span>;
+                            : <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">Not linked yet</span>;
                         })()}
                       </div>
                       {/* Inline link UI */}

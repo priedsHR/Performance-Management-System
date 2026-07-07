@@ -99,12 +99,8 @@ export default function Sidebar({ role, name, division }: { role: string; name?:
   return (
     <aside className="w-56 min-h-screen bg-white border-r border-slate-200 flex flex-col">
       <div className="px-4 pt-5 pb-4 border-b border-slate-100">
-        <div>
-          <h1 className="text-slate-900 font-bold text-sm leading-tight tracking-tight">
-            <span className="text-[#097eb9]">PRIEDS</span> Performance
-          </h1>
-          <p className="text-slate-400 text-xs leading-tight mt-0.5">Management System{division ? ` · ${division}` : ""}</p>
-        </div>
+        <h1 className="text-slate-800 font-semibold text-sm leading-tight">Performance Management</h1>
+        <p className="text-slate-400 text-xs leading-tight mt-0.5">{division || "PRIEDS"}</p>
       </div>
 
       <nav className="flex-1 px-3 py-3 overflow-y-auto">
