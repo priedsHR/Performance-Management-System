@@ -61,7 +61,7 @@ export default function IdpForm() {
     setSaving(null);
     if (res.ok) {
       setStatus(d.plan.status);
-      setMsg(submit ? "IDP submitted ✓ — discuss it with your lead in the next 1-on-1." : "Draft saved ✓");
+      setMsg(submit ? "IDP submitted ✓ — discuss it with your lead in the next 1-on-1." : "Draft saved");
     } else setMsg(d.error || "Failed to save.");
   }
 
@@ -77,7 +77,7 @@ export default function IdpForm() {
       <div className="flex items-center justify-between flex-wrap gap-2">
         <p className="font-bold text-slate-800">My IDP — {period.name} <span className="text-slate-400 font-normal">(6 months)</span></p>
         <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${status === "SUBMITTED" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-500"}`}>
-          {status === "SUBMITTED" ? "✓ Submitted" : "Draft"}
+          {status === "SUBMITTED" ? "Submitted" : "Draft"}
         </span>
       </div>
 
@@ -136,7 +136,7 @@ export default function IdpForm() {
 
       {leadNote && (
         <div className="bg-teal-50 border border-teal-100 rounded-xl p-4">
-          <p className="text-xs font-bold text-teal-700 mb-1">💬 Coaching note from your lead</p>
+          <p className="text-xs font-bold text-teal-700 mb-1">Coaching note from your lead</p>
           <p className="text-sm text-slate-700 whitespace-pre-wrap">{leadNote}</p>
         </div>
       )}

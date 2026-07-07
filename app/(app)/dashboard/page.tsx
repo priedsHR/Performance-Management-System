@@ -84,9 +84,9 @@ export default async function DashboardPage() {
   if (leads.length === 0) {
     return (
       <div className="space-y-4">
-        <h1 className="text-xl font-bold text-slate-900">📊 Dashboard Admin</h1>
+        <h1 className="text-xl font-bold text-slate-900">Dashboard Admin</h1>
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
-          <div className="text-4xl mb-2">👥</div>
+          <div className="text-4xl mb-2"></div>
           <p className="text-slate-500 text-sm">No Division Leads yet. Add them in Admin → Users.</p>
         </div>
       </div>

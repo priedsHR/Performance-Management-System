@@ -18,7 +18,7 @@ export default function DashboardTabs({ title, quarters, members, leadId, defaul
   return (
     <div>
       {/* Division label */}
-      <h2 className="text-base font-bold text-slate-700 mb-4">🏢 {title}</h2>
+      <h2 className="text-base font-bold text-slate-700 mb-4">{title}</h2>
 
       {/* Tab switcher */}
       <div className="flex gap-1 bg-slate-100 p-1 rounded-xl w-fit mb-6">
@@ -30,7 +30,7 @@ export default function DashboardTabs({ title, quarters, members, leadId, defaul
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
-          📊 Division
+          Division
         </button>
         <button
           onClick={() => setTab("individual")}
@@ -40,7 +40,7 @@ export default function DashboardTabs({ title, quarters, members, leadId, defaul
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
-          👤 Individu
+          Individu
         </button>
       </div>
 

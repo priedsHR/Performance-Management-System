@@ -113,7 +113,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
         {/* Import/Export OKR — sub-panel di bawah OKR manager */}
         <div className="mt-6 pt-5 border-t border-slate-100">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">📁 Import / Export OKR</span>
+            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Import / Export OKR</span>
             <span className="text-xs text-slate-300">—</span>
             <span className="text-xs text-slate-400">download template → isi → upload, atau ekspor ke Excel</span>
           </div>
@@ -128,7 +128,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
           className="flex items-center justify-between bg-white border border-slate-200 rounded-2xl px-5 py-4 hover:border-amber-300 hover:bg-amber-50/30 transition-colors group"
         >
           <div className="flex items-center gap-3">
-            <span className="text-xl">👥</span>
+            <span className="text-xl"></span>
             <div>
               <p className="font-semibold text-slate-800 text-sm group-hover:text-amber-700 transition-colors">
                 Distribusi ke Member

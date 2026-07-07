@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { Filter, Search } from "lucide-react";
 import { Trash2, Edit2, ToggleLeft, ToggleRight } from "lucide-react";
 
 type Employee = {
@@ -16,8 +17,8 @@ type FormState = { name: string; division: string; position: string; isActive: b
 const emptyForm: FormState = { name: "", division: "", position: "", isActive: true };
 
 const inputCls = "w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition";
-const btnPrimary = "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] transition-all duration-75";
-const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
+const btnPrimary = "flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm transition-all duration-75";
+const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm transition-all duration-75";
 
 function EmployeeForm({ form, isEdit, onChange, onSave, onCancel }: {
   form: FormState; isEdit: boolean;
@@ -25,31 +26,31 @@ function EmployeeForm({ form, isEdit, onChange, onSave, onCancel }: {
 }) {
   return (
     <div className="bg-white rounded-2xl border border-amber-200 p-6 mb-5">
-      <h2 className="font-semibold text-slate-800 mb-4">{isEdit ? "✏️ Edit Employee" : "➕ New Employee"}</h2>
+      <h2 className="font-semibold text-slate-800 mb-4">{isEdit ? "Edit Employee" : "New Employee"}</h2>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">👤 Name*</label>
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">Name*</label>
           <input className={inputCls} value={form.name} onChange={(e) => onChange({ ...form, name: e.target.value })} placeholder="Full name" />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">🏢 Division</label>
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">Division</label>
           <input className={inputCls} value={form.division} onChange={(e) => onChange({ ...form, division: e.target.value })} placeholder="e.g. HR, Marketing, Finance" />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">💼 Title / Position</label>
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">Title / Position</label>
           <input className={inputCls} value={form.position} onChange={(e) => onChange({ ...form, position: e.target.value })} placeholder="e.g. Recruiter, HRBP, Content Creator" />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">📌 Status</label>
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">Status</label>
           <select className={inputCls} value={form.isActive ? "true" : "false"} onChange={(e) => onChange({ ...form, isActive: e.target.value === "true" })}>
-            <option value="true">✅ Active</option>
-            <option value="false">⏸️ Non-active</option>
+            <option value="true">Active</option>
+            <option value="false">Non-active</option>
           </select>
         </div>
       </div>
       <div className="flex gap-2 mt-5">
-        <button onClick={onSave} className={btnPrimary}>💾 Save</button>
-        <button onClick={onCancel} className={btnSecondary}>✕ Cancel</button>
+        <button onClick={onSave} className={btnPrimary}>Save</button>
+        <button onClick={onCancel} className={btnSecondary}>Cancel</button>
       </div>
     </div>
   );
@@ -66,6 +67,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
 
   const [filter, setFilter] = useState<"all" | "active" | "inactive">("all");
   const [search, setSearch] = useState("");
+  const [divFilter, setDivFilter] = useState("");
   const [sortKey, setSortKey] = useState<"name" | "position">("name");
   const [sortDir, setSortDir] = useState<1 | -1>(1);
 
@@ -141,6 +143,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
   const filtered = employees.filter((e) => {
     if (filter === "active" && !e.isActive) return false;
     if (filter === "inactive" && e.isActive) return false;
+    if (divFilter && (e.division || "(No Division)") !== divFilter) return false;
     if (search && !e.name.toLowerCase().includes(search.toLowerCase()) && !(e.division ?? "").toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
@@ -164,27 +167,43 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
       <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
         <div className="flex flex-wrap items-center gap-2">
           <button onClick={() => { setShowForm((v) => !v); setEditId(null); setForm(emptyForm); }} className={btnPrimary}>
-            ➕ Add Employee
+            Add Employee
           </button>
-          <a href="/api/employees/import" className={btnSecondary}>📋 Download Template</a>
+          <a href="/api/employees/import" className={btnSecondary}>Download Template</a>
           <label className={`${btnSecondary} cursor-pointer ${importing ? "opacity-50 pointer-events-none" : ""}`}>
-            {importing ? "⏳ Importing..." : "📤 Bulk Import Excel"}
+            {importing ? "Importing..." : "Bulk Import Excel"}
             <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
           </label>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <input
-            className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white"
-            placeholder="🔍 Search name / division..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <div className="relative">
+            <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              className="border border-slate-200 rounded-lg pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white"
+              placeholder="Search name / division..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="relative">
+            <Filter size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+            <select
+              value={divFilter}
+              onChange={(e) => setDivFilter(e.target.value)}
+              className="border border-slate-200 rounded-lg pl-8 pr-6 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400"
+            >
+              <option value="">All divisions</option>
+              {[...new Set(employees.map((e) => e.division || "(No Division)"))].sort().map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </select>
+          </div>
           <div className="flex bg-slate-100 p-1 rounded-lg gap-0.5 text-xs font-semibold">
             {(["all", "active", "inactive"] as const).map((f) => (
               <button key={f} onClick={() => setFilter(f)}
                 className={`px-3 py-1.5 rounded-md transition-all ${filter === f ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>
-                {f === "all" ? `All (${employees.length})` : f === "active" ? `✅ Active (${activeCount})` : `⏸️ Non-active (${inactiveCount})`}
+                {f === "all" ? `All (${employees.length})` : f === "active" ? `Active (${activeCount})` : `Non-active (${inactiveCount})`}
               </button>
             ))}
           </div>
@@ -193,7 +212,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
 
       {importResult && (
         <div className={`rounded-xl px-4 py-3 text-sm mb-4 ${importResult.type === "success" ? "bg-green-50 border border-green-200 text-green-700" : "bg-red-50 border border-red-200 text-red-700"}`}>
-          <p className="font-semibold">{importResult.type === "success" ? "✅" : "❌"} {importResult.message}</p>
+          <p className="font-semibold">{importResult.type === "success" ? "" : ""} {importResult.message}</p>
           {importResult.errors?.map((e, i) => <p key={i} className="text-xs mt-0.5">{e}</p>)}
         </div>
       )}
@@ -206,7 +225,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
         {Object.entries(grouped).map(([division, emps]) => (
           <div key={division} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
             <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
-              <span className="text-base">🏢</span>
+              <span className="text-base"></span>
               <span className="font-semibold text-slate-700 text-sm">{division}</span>
               <span className="text-slate-400 text-xs">({emps.length} employee)</span>
             </div>
@@ -240,11 +259,11 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
                     <td className="px-5 py-3 text-right">
                       <div className="flex items-center justify-end gap-1">
                         <button onClick={() => startEdit(emp)}
-                          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px active:shadow-none active:translate-y-[2px] transition-all duration-75">
+                          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-sm hover:shadow-sm transition-all duration-75">
                           <Edit2 size={13} />
                         </button>
                         <button onClick={() => deleteEmployee(emp.id)}
-                          className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#fecaca] hover:translate-y-px active:shadow-none active:translate-y-[2px] transition-all duration-75">
+                          className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 shadow-sm hover:shadow-sm transition-all duration-75">
                           <Trash2 size={13} />
                         </button>
                       </div>
@@ -258,7 +277,7 @@ export default function EmployeeManager({ initialEmployees }: { initialEmployees
 
         {filtered.length === 0 && (
           <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
-            <div className="text-4xl mb-3">👥</div>
+            <div className="text-4xl mb-3"></div>
             <p className="text-slate-500 text-sm">
               {employees.length === 0 ? "No employees yet. Add manually or bulk import from Excel." : "No employees match the filter."}
             </p>

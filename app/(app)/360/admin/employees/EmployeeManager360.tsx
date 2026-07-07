@@ -266,14 +266,14 @@ export default function EmployeeManager360() {
           + Add employee
         </button>
         <a href="/api/feedback/profiles/import" className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
-          ⬇ Download Excel template
+          Download Excel template
         </a>
         <button
           onClick={() => fileRef.current?.click()}
           disabled={importing}
           className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50"
         >
-          {importing ? "Importing…" : "⬆ Bulk import"}
+          {importing ? "Importing…" : "Bulk import"}
         </button>
         <input ref={fileRef} type="file" accept=".xlsx" hidden onChange={doImport} />
       </div>
@@ -413,7 +413,7 @@ export default function EmployeeManager360() {
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="🔍 Search name / position / email…"
+          placeholder="Search name / position / email…"
           className="border border-slate-200 rounded-lg px-3 py-2 text-sm flex-1 min-w-[200px]"
         />
         <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="border border-slate-200 rounded-lg px-3 py-2 text-sm">

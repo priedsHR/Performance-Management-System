@@ -67,7 +67,7 @@ export default function IdpList() {
               </div>
               <div className="flex items-center gap-3">
                 <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${p.status === "SUBMITTED" ? "bg-emerald-50 text-emerald-600" : "bg-slate-100 text-slate-500"}`}>
-                  {p.status === "SUBMITTED" ? "✓ Submitted" : "Draft"}
+                  {p.status === "SUBMITTED" ? "Submitted" : "Draft"}
                 </span>
                 <span className="text-slate-300">{open ? "▲" : "▼"}</span>
               </div>
@@ -93,7 +93,7 @@ export default function IdpList() {
                 </div>
                 <Item label="Impact Project" text={p.impactProject} />
                 <div>
-                  <p className="text-[11px] font-bold text-teal-700 mb-1">💬 Coaching note (visible to the employee)</p>
+                  <p className="text-[11px] font-bold text-teal-700 mb-1">Coaching note (visible to the employee)</p>
                   <textarea rows={2} value={notes[p.id] || ""} onChange={(e) => setNotes((n) => ({ ...n, [p.id]: e.target.value }))} className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm" placeholder="Agreements from the 1-on-1, support needed, timeline…" />
                   <button onClick={() => saveNote(p)} disabled={savingNote === p.id} className="mt-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50">
                     {savingNote === p.id ? "Saving…" : "Save note"}

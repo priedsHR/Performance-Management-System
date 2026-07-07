@@ -26,11 +26,11 @@ function ObjCard({ obj, index }: { obj: ObjItem; index: number }) {
         className="w-full flex items-center justify-between px-5 py-4 bg-slate-50 hover:bg-slate-100 transition-colors text-left group"
       >
         <div className="flex items-center gap-3 min-w-0">
-          <span className="text-lg flex-shrink-0">🎯</span>
+          <span className="text-lg flex-shrink-0"></span>
           <div className="min-w-0">
             <p className="text-xs font-semibold text-amber-600 mb-0.5">Objective #{index + 1}</p>
             <h3 className="font-bold text-slate-800 text-sm leading-snug">{obj.title}</h3>
-            <span className="text-xs text-slate-400">⚖️ Weight {obj.weight}%</span>
+            <span className="text-xs text-slate-400">Weight {obj.weight}%</span>
           </div>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0 ml-3">
@@ -133,15 +133,15 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">🎯 My OKR Progress</h2>
+          <h2 className="text-lg font-bold text-slate-900">My OKR Progress</h2>
           <div className="flex items-center gap-2 mt-2">
-            <span className="text-xs text-slate-400 flex-shrink-0">⏱️ Quarter:</span>
+            <span className="text-xs text-slate-400 flex-shrink-0">Quarter:</span>
             <YearQuarterPicker quarters={quarters} value={selectedQ} onChange={setSelectedQ} />
           </div>
         </div>
         {objectives.length > 0 && !loading && (
           <div className={`border rounded-2xl px-6 py-3 text-center ${achBg}`}>
-            <p className="text-xs font-semibold mb-0.5">🏆 My Achievement</p>
+            <p className="text-xs font-semibold mb-0.5">My Achievement</p>
             <p className="text-3xl font-bold leading-tight">{totalAchievement.toFixed(1)}%</p>
           </div>
         )}
@@ -149,19 +149,19 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
 
       {loading && (
         <div className="flex items-center justify-center py-16 text-slate-400">
-          <span className="text-2xl animate-spin mr-3">⏳</span> Loading...
+          <span className="text-2xl animate-spin mr-3"></span> Loading...
         </div>
       )}
 
       {!loading && error && (
         <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center text-red-700 text-sm">
-          ❌ Failed to load data. Try refreshing the page.
+          Failed to load data. Try refreshing the page.
         </div>
       )}
 
       {!loading && linked === false && (
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-8 text-center">
-          <div className="text-3xl mb-2">🔗</div>
+          <div className="text-3xl mb-2"></div>
           <p className="font-semibold text-amber-800 mb-1">Account not linked to a team yet</p>
           <p className="text-sm text-amber-700">Contact the admin to link your account to the team distribution data.</p>
         </div>
@@ -169,7 +169,7 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
 
       {!loading && linked && objectives.length === 0 && (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
-          <div className="text-4xl mb-2">📋</div>
+          <div className="text-4xl mb-2"></div>
           <p className="text-slate-500 text-sm">No KRs assigned to you for this quarter yet.</p>
         </div>
       )}

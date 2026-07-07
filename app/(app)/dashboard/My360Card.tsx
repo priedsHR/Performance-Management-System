@@ -49,7 +49,7 @@ export default function My360Card({ userId }: { userId: string }) {
   if (state === "none")
     return (
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <p className="text-sm font-bold text-slate-800">📝 My 360 Performance</p>
+        <p className="text-sm font-bold text-slate-800">My 360 Performance</p>
         <p className="text-sm text-slate-400 mt-1">No released 360 report yet. Your score will appear here once HR releases the reports.</p>
         <Link href="/360" className="text-sm font-semibold text-teal-700 hover:underline mt-2 inline-block">Go to 360° Feedback →</Link>
       </div>
@@ -59,7 +59,7 @@ export default function My360Card({ userId }: { userId: string }) {
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-5">
       <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-        <p className="text-sm font-bold text-slate-800">📝 My 360 Performance <span className="font-normal text-slate-400">· {period.name}</span></p>
+        <p className="text-sm font-bold text-slate-800">My 360 Performance <span className="font-normal text-slate-400">· {period.name}</span></p>
         <Link href="/360/report" className="text-xs font-semibold text-teal-700 hover:underline">Full report →</Link>
       </div>
       <div className="flex items-center gap-4 flex-wrap">

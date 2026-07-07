@@ -28,7 +28,7 @@ export default function MonthlyProgressChart({ memberId }: { memberId?: string }
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-5">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-sm font-bold text-slate-800">📈 Monthly OKR Progress</p>
+        <p className="text-sm font-bold text-slate-800">Monthly OKR Progress</p>
         <span className="text-[11px] text-slate-400">achievement % per month</span>
       </div>
       {series.length === 0 ? (

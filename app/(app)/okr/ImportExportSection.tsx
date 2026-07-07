@@ -82,25 +82,25 @@ export default function ImportExportSection({ quarterId }: Props) {
   }
 
   const btnBase = "flex items-center gap-2 font-bold text-sm px-4 py-2 rounded-xl transition-all duration-75 ";
-  const btnAmber = btnBase + "bg-amber-400 text-white shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0";
-  const btnSlate = btnBase + "bg-white text-slate-700 border border-slate-200 shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px]";
-  const btnGreen = btnBase + "bg-emerald-500 text-white shadow-[0_4px_0_#059669] hover:shadow-[0_2px_0_#059669] hover:translate-y-0.5 active:shadow-[0_1px_0_#059669] active:translate-y-[3px]";
-  const btnViolet = btnBase + "bg-violet-100 text-violet-700 border border-violet-200 shadow-[0_4px_0_#ddd6fe] hover:shadow-[0_2px_0_#ddd6fe] hover:translate-y-0.5 active:shadow-[0_1px_0_#ddd6fe] active:translate-y-[3px]";
+  const btnAmber = btnBase + "bg-[#0b8ec4] text-white hover:bg-[#097eb9] shadow-sm hover:shadow-sm active:shadow-sm disabled:opacity-50";
+  const btnSlate = btnBase + "bg-white text-slate-700 border border-slate-200 shadow-sm hover:shadow-sm active:shadow-sm";
+  const btnGreen = btnBase + "bg-emerald-500 text-white shadow-sm hover:shadow-sm active:shadow-sm";
+  const btnViolet = btnBase + "bg-violet-100 text-violet-700 border border-violet-200 shadow-sm hover:shadow-sm active:shadow-sm";
 
   return (
     <div className="space-y-4">
         <div className="flex flex-wrap items-center gap-3">
-          <button onClick={handleTemplate} className={btnSlate}>📋 Download Template</button>
+          <button onClick={handleTemplate} className={btnSlate}>Download Template</button>
 
           <label className={btnAmber + " cursor-pointer"}>
-            {importing ? <><span className="animate-spin">⏳</span> Importing…</> : <>📤 Import Excel</>}
+            {importing ? <><span className="animate-spin"></span> Importing…</> : <>Import Excel</>}
             <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
           </label>
 
-          <button onClick={handleExport} className={btnGreen}>📥 Export OKR</button>
+          <button onClick={handleExport} className={btnGreen}>Export OKR</button>
 
           <label className={btnViolet + " cursor-pointer"} title="Preview the file before importing — no data is changed">
-            {previewing ? <><span className="animate-spin">⏳</span> Membaca…</> : <>🔍 Preview File</>}
+            {previewing ? <><span className="animate-spin"></span> Membaca…</> : <>Preview File</>}
             <input ref={previewRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handlePreview} disabled={previewing} />
           </label>
         </div>
@@ -109,7 +109,7 @@ export default function ImportExportSection({ quarterId }: Props) {
           <div className={`rounded-xl px-4 py-3 text-sm flex items-start gap-2 ${
             result.type === "success" ? "bg-green-50 border border-green-200 text-green-700" : "bg-red-50 border border-red-200 text-red-700"
           }`}>
-            <span className="text-base flex-shrink-0">{result.type === "success" ? "✅" : "❌"}</span>
+            <span className="text-base flex-shrink-0">{result.type === "success" ? "" : ""}</span>
             <div>
               <p className="font-semibold">{result.message}</p>
               {result.detail && <p className="text-xs mt-0.5 opacity-75">{result.detail}</p>}
@@ -125,12 +125,12 @@ export default function ImportExportSection({ quarterId }: Props) {
           <div className="border border-violet-200 rounded-xl overflow-hidden">
             <div className="bg-violet-50 px-4 py-2.5 flex items-center justify-between">
               <div>
-                <p className="text-sm font-bold text-violet-800">🔍 Isi File — {preview.selectedSheet}</p>
+                <p className="text-sm font-bold text-violet-800">Isi File — {preview.selectedSheet}</p>
                 <p className="text-xs text-violet-500">
                   Sheets: {preview.sheetNames.join(", ")} · {preview.maxRow} baris total
                 </p>
               </div>
-              <button onClick={() => setPreview(null)} className="text-violet-400 hover:text-violet-700 text-lg">✕</button>
+              <button onClick={() => setPreview(null)} className="text-violet-400 hover:text-violet-700 text-lg"></button>
             </div>
             {preview.error && (
               <p className="px-4 py-3 text-sm text-red-600">{preview.error}</p>
@@ -171,9 +171,9 @@ export default function ImportExportSection({ quarterId }: Props) {
         )}
 
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-700 space-y-1">
-          <p className="font-semibold">💡 Tips</p>
+          <p className="font-semibold">Tips</p>
           <ul className="list-disc list-inside space-y-0.5 text-amber-600">
-            <li>Klik <strong>🔍 Preview File</strong> first to check that columns A & C are read correctly before importing</li>
+            <li>Klik <strong>Preview File</strong> first to check that columns A & C are read correctly before importing</li>
             <li>OKR status <strong>Draft</strong> will be replaced · completed ones <strong>Terkumpul</strong> aman</li>
             <li>Column C (Key Result) must be filled in every row</li>
           </ul>

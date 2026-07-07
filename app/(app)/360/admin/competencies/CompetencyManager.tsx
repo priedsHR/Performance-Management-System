@@ -23,8 +23,8 @@ const CATS: Category[] = ["CORE", "LEADERSHIP", "JOB_FAMILY", "TECHNICAL"];
 const empty = { name: "", category: "CORE" as Category, department: "", definition: "", l1: "", l2: "", l3: "", l4: "" };
 
 const inp = "w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition";
-const btnPrimary = "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
-const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
+const btnPrimary = "flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm disabled:opacity-50 transition-all duration-75";
+const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm transition-all duration-75";
 
 function SkeletonRow() {
   return (
@@ -126,11 +126,11 @@ export default function CompetencyManager() {
     const data = await res.json();
     setBulkSaving(false);
     if (res.ok) {
-      setBulkMsg(`✅ ${data.created} competencies created.${data.errors?.length ? ` ${data.errors.length} failed.` : ""}`);
+      setBulkMsg(`${data.created} competencies created.${data.errors?.length ? ` ${data.errors.length} failed.` : ""}`);
       setBulkText("");
       await load();
     } else {
-      setBulkMsg(`❌ ${data.error ?? "Failed."}`);
+      setBulkMsg(`${data.error ?? "Failed."}`);
     }
   }
 
@@ -141,16 +141,16 @@ export default function CompetencyManager() {
     <div className="space-y-4">
       {/* Toolbar */}
       <div className="flex flex-wrap gap-2">
-        <button onClick={startNew} className={btnPrimary}>➕ Add Competency</button>
+        <button onClick={startNew} className={btnPrimary}>Add Competency</button>
         <button onClick={() => { setBulkOpen((v) => !v); setEditing(null); setBulkMsg(""); }} className={btnSecondary}>
-          📋 Bulk Add
+          Bulk Add
         </button>
       </div>
 
       {/* Bulk add form */}
       {bulkOpen && (
         <div className="bg-white border border-amber-200 rounded-2xl p-6 space-y-4">
-          <p className="font-semibold text-slate-800">📋 Bulk Add Competencies</p>
+          <p className="font-semibold text-slate-800">Bulk Add Competencies</p>
           <p className="text-xs text-slate-400">Write one name per line. All competencies will be created with the same category & department.</p>
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
@@ -181,15 +181,15 @@ export default function CompetencyManager() {
             <p className="text-xs text-slate-400 mt-1">{bulkText.split("\n").filter((s) => s.trim()).length} competencies ready to create</p>
           </div>
           {bulkMsg && (
-            <p className={`text-sm px-3 py-2 rounded-xl border ${bulkMsg.startsWith("✅") ? "bg-green-50 border-green-200 text-green-700" : "bg-red-50 border-red-200 text-red-600"}`}>
+            <p className={`text-sm px-3 py-2 rounded-xl border ${bulkMsg.includes("created") ? "bg-green-50 border-green-200 text-green-700" : "bg-red-50 border-red-200 text-red-600"}`}>
               {bulkMsg}
             </p>
           )}
           <div className="flex gap-2">
             <button onClick={saveBulk} disabled={bulkSaving} className={btnPrimary}>
-              {bulkSaving ? "⏳ Saving..." : "💾 Save All"}
+              {bulkSaving ? "Saving..." : "Save All"}
             </button>
-            <button onClick={() => { setBulkOpen(false); setBulkMsg(""); }} className={btnSecondary}>✕ Cancel</button>
+            <button onClick={() => { setBulkOpen(false); setBulkMsg(""); }} className={btnSecondary}>Cancel</button>
           </div>
         </div>
       )}
@@ -197,7 +197,7 @@ export default function CompetencyManager() {
       {/* Single add/edit form */}
       {editing && (
         <div className="bg-white border border-amber-200 rounded-2xl p-6 space-y-4">
-          <p className="font-semibold text-slate-800">{editing === "new" ? "➕ New Competency" : "✏️ Edit Competency"}</p>
+          <p className="font-semibold text-slate-800">{editing === "new" ? "New Competency" : "Edit Competency"}</p>
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-slate-500 mb-1.5">Name*</label>
@@ -232,8 +232,8 @@ export default function CompetencyManager() {
             ))}
           </div>
           <div className="flex gap-2">
-            <button onClick={save} disabled={saving} className={btnPrimary}>{saving ? "⏳ Saving..." : "💾 Save"}</button>
-            <button onClick={() => setEditing(null)} className={btnSecondary}>✕ Cancel</button>
+            <button onClick={save} disabled={saving} className={btnPrimary}>{saving ? "Saving..." : "Save"}</button>
+            <button onClick={() => setEditing(null)} className={btnSecondary}>Cancel</button>
           </div>
         </div>
       )}
@@ -265,16 +265,16 @@ export default function CompetencyManager() {
                       </div>
                       <div className="flex items-center gap-1 flex-shrink-0">
                         <button onClick={() => startEdit(c)}
-                          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px active:shadow-none transition-all duration-75">
+                          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-sm hover:shadow-sm transition-all duration-75">
                           <Edit2 size={13} />
                         </button>
                         <button onClick={() => toggle(c)}
-                          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px active:shadow-none transition-all duration-75"
+                          className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-sm hover:shadow-sm transition-all duration-75"
                           title={c.active ? "Deactivate" : "Activate"}>
                           {c.active ? <ToggleRight size={15} className="text-green-500" /> : <ToggleLeft size={15} className="text-slate-400" />}
                         </button>
                         <button onClick={() => del(c)}
-                          className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#fecaca] hover:translate-y-px active:shadow-none transition-all duration-75">
+                          className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 shadow-sm hover:shadow-sm transition-all duration-75">
                           <Trash2 size={13} />
                         </button>
                       </div>
@@ -287,7 +287,7 @@ export default function CompetencyManager() {
 
           {comps.length === 0 && (
             <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
-              <div className="text-4xl mb-3">🧩</div>
+              <div className="text-4xl mb-3"></div>
               <p className="text-slate-500 text-sm">No competencies yet. Add them one by one or use Bulk Add.</p>
             </div>
           )}

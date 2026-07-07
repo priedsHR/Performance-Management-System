@@ -48,10 +48,10 @@ export default function YearQuarterPicker({ quarters, value, onChange }: Props) 
   const qBtn = (active: boolean, isCurrentActive: boolean) =>
     `px-3 py-1 rounded-lg text-xs font-bold transition-all duration-75 ` +
     (active
-      ? "bg-amber-400 text-white shadow-[0_2px_0_#097eb9]"
+      ? "bg-[#0b8ec4] text-white hover:bg-[#097eb9] shadow-sm"
       : isCurrentActive
-      ? "bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 shadow-[0_2px_0_#fde68a] hover:shadow-[0_1px_0_#fde68a] hover:translate-y-px"
-      : "bg-white border border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px");
+      ? "bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 shadow-sm hover:shadow-sm"
+      : "bg-white border border-slate-200 text-slate-500 hover:border-slate-300 hover:text-slate-700 shadow-sm hover:shadow-sm");
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
@@ -59,7 +59,7 @@ export default function YearQuarterPicker({ quarters, value, onChange }: Props) 
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => { setOpen(!open); setSearch(""); }}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-slate-700 text-white shadow-[0_2px_0_#1e293b] hover:shadow-[0_1px_0_#1e293b] hover:translate-y-px transition-all duration-75"
+          className="flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-slate-700 text-white shadow-sm hover:shadow-sm transition-all duration-75"
         >
           {selectedYear}
           <ChevronDown size={11} className={`transition-transform duration-150 ${open ? "rotate-180" : ""}`} />
@@ -106,7 +106,7 @@ export default function YearQuarterPicker({ quarters, value, onChange }: Props) 
           onClick={() => onChange(q.id)}
           className={qBtn(q.id === value, q.isActive)}
         >
-          Q{q.quarter}{q.isActive ? " ✅" : ""}
+          Q{q.quarter}{q.isActive ? "" : ""}
         </button>
       ))}
     </div>

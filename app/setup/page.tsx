@@ -56,7 +56,7 @@ export default function SetupPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
-          <p className="text-2xl mb-2">🔒</p>
+          <p className="text-2xl mb-2"></p>
           <p className="font-semibold text-slate-700">Setup complete</p>
           <p className="text-sm text-slate-400 mt-1 mb-4">Please sign in with an existing account.</p>
           <a href="/login" className="inline-block bg-blue-600 text-white text-sm font-medium px-5 py-2 rounded-lg hover:bg-blue-700 transition">

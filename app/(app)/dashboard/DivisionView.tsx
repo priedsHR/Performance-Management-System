@@ -35,7 +35,7 @@ const PALETTE = ["#f59e0b", "#3b82f6", "#8b5cf6", "#ec4899", "#06b6d4", "#10b981
 function achClass(v: number) {
   return v >= 90 ? "bg-green-100 text-green-700" : v >= 70 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600";
 }
-function achEmoji(v: number) { return v >= 90 ? "🏆" : v >= 70 ? "🔥" : "📉"; }
+function achEmoji(v: number) { return v >= 90 ? "" : v >= 70 ? "" : ""; }
 function barColor(v: number) { return v >= 90 ? "#22c55e" : v >= 70 ? "#f59e0b" : "#f87171"; }
 
 function PctBadge({ value }: { value: number }) {
@@ -63,7 +63,7 @@ function RadarObjectivesChart({ objectives }: { objectives: ObjData[] }) {
   const data = objectives.map((o, i) => ({ subject: `OBJ ${i + 1}`, value: parseFloat(o.achievement.toFixed(1)), fullMark: 100 }));
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5">
-      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">🕸️ Radar Objective</p>
+      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Radar Objective</p>
       <p className="text-xs text-slate-400 mb-3">Balance of achievement across objectives</p>
       <ResponsiveContainer width="100%" height={260}>
         <RadarChart data={data} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
@@ -93,7 +93,7 @@ function BarObjectivesChart({ objectives }: { objectives: ObjData[] }) {
   const data = objectives.map((o, i) => ({ name: `OBJ ${i + 1}`, pct: parseFloat(o.achievement.toFixed(1)), title: o.title }));
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5">
-      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">📊 Achievement per Objective</p>
+      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Achievement per Objective</p>
       <p className="text-xs text-slate-400 mb-3">Comparison of achievement % per objective</p>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
@@ -117,7 +117,7 @@ function DonutObjectivesChart({ objectives, divisionAchievement }: { objectives:
   const data = objectives.map((o, i) => ({ name: `OBJ ${i + 1}`, value: o.weight, achievement: o.achievement, title: o.title }));
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5">
-      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">🍩 Komposisi Weight</p>
+      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Komposisi Weight</p>
       <p className="text-xs text-slate-400 mb-3">Weight proportion of each objective</p>
       <div className="relative">
         <ResponsiveContainer width="100%" height={220}>
@@ -168,7 +168,7 @@ function MemberStackedChart({ keyResults }: { keyResults: KRData[] }) {
 
   return (
     <div className="mt-5 pt-5 border-t border-slate-100">
-      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">📊 Member Contribution per KR</p>
+      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Member Contribution per KR</p>
       <ResponsiveContainer width="100%" height={200}>
         <BarChart data={data} margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
@@ -226,11 +226,11 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
         className="w-full flex items-center justify-between px-5 py-4 bg-slate-50 hover:bg-slate-100 transition-colors text-left group"
       >
         <div className="flex items-center gap-3 min-w-0">
-          <span className="text-lg flex-shrink-0">🎯</span>
+          <span className="text-lg flex-shrink-0"></span>
           <div className="min-w-0">
             <p className="text-xs font-semibold text-amber-600 mb-0.5">Objective #{index + 1}</p>
             <h3 className="font-bold text-slate-800 text-sm leading-snug">{obj.title}</h3>
-            <span className="text-xs text-slate-400">⚖️ Weight {obj.weight}%</span>
+            <span className="text-xs text-slate-400">Weight {obj.weight}%</span>
           </div>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0 ml-3">
@@ -249,7 +249,7 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
       <div className="p-5 space-y-5">
         {/* KR Table */}
         <div>
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">🔑 Key Results</p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Key Results</p>
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
@@ -270,7 +270,7 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
                       <td className="py-2.5 pr-3 font-medium text-slate-700">
                         <span className="break-words">{kr.title}</span>
                         {kr.leadProgress != null && kr.leadProgress > 0 && (
-                          <span className="text-xs text-blue-500">➕ lead: {kr.leadProgress}</span>
+                          <span className="text-xs text-blue-500">lead: {kr.leadProgress}</span>
                         )}
                       </td>
                       <td className="py-2.5 px-2 text-right text-slate-600 tabular-nums">{kr.target}</td>
@@ -305,7 +305,7 @@ function ObjectiveSection({ obj, index }: { obj: ObjData; index: number }) {
               onClick={() => setShowContrib((v) => !v)}
               className="flex items-center gap-2 text-xs text-slate-500 hover:text-slate-700 font-semibold transition"
             >
-              👥 Kontribusi Member {showContrib ? "▲" : "▼"}
+              Kontribusi Member {showContrib ? "▲" : "▼"}
             </button>
 
             {showContrib && (
@@ -403,10 +403,10 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
       {/* Header row */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">📊 {divisionName}</h1>
+          <h1 className="text-xl font-bold text-slate-900">{divisionName}</h1>
           {/* Quarter selector */}
           <div className="flex items-center gap-2 mt-2 flex-wrap">
-            <span className="text-xs text-slate-400 flex-shrink-0">⏱️ Quarter:</span>
+            <span className="text-xs text-slate-400 flex-shrink-0">Quarter:</span>
             <YearQuarterPicker quarters={quarters} value={selectedQ} onChange={setSelectedQ} />
           </div>
         </div>
@@ -414,7 +414,7 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
         <div className="flex items-center gap-3 flex-wrap print:hidden">
           {data && (
             <div className={`border rounded-2xl px-6 py-3 text-center ${achBg}`}>
-              <p className="text-xs font-semibold mb-0.5">🏆 Achievement Division</p>
+              <p className="text-xs font-semibold mb-0.5">Achievement Division</p>
               <p className="text-3xl font-bold leading-tight">{data.divisionAchievement.toFixed(1)}%</p>
             </div>
           )}
@@ -422,20 +422,20 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
             {selectedQ && (
               <button
                 onClick={() => window.open(`/api/dashboard/division/print?leadId=${leadId}&quarterId=${selectedQ}&divisionName=${encodeURIComponent(divisionName)}`)}
-                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px transition-all duration-75"
-              >🖨️ Print PDF</button>
+                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 shadow-sm hover:shadow-sm transition-all duration-75"
+              >Print PDF</button>
             )}
             {selectedQ && (
               <a
                 href={`/api/dashboard/division/export?leadId=${leadId}&quarterId=${selectedQ}&divisionName=${encodeURIComponent(divisionName)}`}
-                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px transition-all duration-75"
-              >📊 Excel</a>
+                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 shadow-sm hover:shadow-sm transition-all duration-75"
+              >Excel</a>
             )}
           </div>
         </div>
         {data && (
           <div className={`border rounded-2xl px-6 py-3 text-center hidden print:block ${achBg}`}>
-            <p className="text-xs font-semibold mb-0.5">🏆 Achievement Division</p>
+            <p className="text-xs font-semibold mb-0.5">Achievement Division</p>
             <p className="text-3xl font-bold leading-tight">{data.divisionAchievement.toFixed(1)}%</p>
           </div>
         )}
@@ -443,19 +443,19 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
 
       {loading && (
         <div className="flex items-center justify-center py-20 text-slate-400">
-          <span className="text-2xl animate-spin mr-3">⏳</span> Loading data...
+          <span className="text-2xl animate-spin mr-3"></span> Loading data...
         </div>
       )}
 
       {!loading && data && quarters.length === 0 && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 text-amber-700 text-sm">
-          ⚠️ No quarter. Tambahkan di Admin → Quarter.
+          No quarter. Tambahkan di Admin → Quarter.
         </div>
       )}
 
       {!loading && data && data.objectives.length === 0 && (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
-          <div className="text-4xl mb-2">🎯</div>
+          <div className="text-4xl mb-2"></div>
           <p className="text-slate-500 text-sm">No objectives for this quarter yet.</p>
         </div>
       )}
@@ -491,7 +491,7 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
           {data.members.length > 0 && (
             <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
-                <h2 className="font-bold text-slate-700 text-sm">🏅 Ranking Achievement Member</h2>
+                <h2 className="font-bold text-slate-700 text-sm">Ranking Achievement Member</h2>
               </div>
 
               <div className="divide-y divide-slate-50">
@@ -499,7 +499,7 @@ export default function DivisionView({ quarters, leadId, divisionName, defaultQu
                   .sort((a, b) => b.achievement - a.achievement)
                   .map((m, idx) => {
                     const initials = m.name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
-                    const medals = ["🥇", "🥈", "🥉"];
+                    const medals = ["", "", ""];
                     return (
                       <div key={m.id} className="flex items-center gap-4 px-5 py-3">
                         <span className="text-lg w-6 text-center">{medals[idx] ?? `${idx + 1}`}</span>

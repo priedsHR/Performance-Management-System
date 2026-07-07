@@ -36,17 +36,17 @@ const ROLE_COLORS: Record<string, string> = {
   LEAD: "bg-amber-100 text-amber-700",
   MEMBER: "bg-slate-100 text-slate-600",
 };
-const ROLE_EMOJI: Record<string, string> = { ADMIN: "🛡️", LEAD: "⭐", MEMBER: "👤" };
+const ROLE_EMOJI: Record<string, string> = { ADMIN: "", LEAD: "", MEMBER: "" };
 
 const btnPrimary =
-  "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl " +
-  "shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] transition-all duration-75";
+  "flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-5 py-2.5 rounded-xl " +
+  "shadow-sm hover:shadow-sm " +
+  "active:shadow-sm transition-all duration-75";
 
 const btnSecondary =
   "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl " +
-  "shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
+  "shadow-sm hover:shadow-sm " +
+  "active:shadow-sm transition-all duration-75";
 
 const inputCls =
   "w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition";
@@ -68,35 +68,35 @@ function UserForm({ form, isEdit, onChange, onSave, onCancel, teamMembers, editU
   return (
     <div className="bg-white rounded-2xl border border-amber-200 p-6 mb-5">
       <h2 className="font-semibold text-slate-800 mb-4">
-        {isEdit ? "✏️ Edit User" : "➕ New User"}
+        {isEdit ? "Edit User" : "New User"}
       </h2>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">👤 Name</label>
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">Name</label>
           <input className={inputCls} value={form.name} onChange={(e) => onChange({ ...form, name: e.target.value })} placeholder="Full name" />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">📧 Email</label>
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">Email</label>
           <input type="email" className={inputCls} value={form.email} onChange={(e) => onChange({ ...form, email: e.target.value })} placeholder="email@perusahaan.com" />
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-500 mb-1.5">
-            🔒 Password{" "}
+            Password{" "}
             {isEdit && <span className="text-slate-400 font-normal">(leave blank to keep)</span>}
           </label>
           <input type="password" className={inputCls} value={form.password} onChange={(e) => onChange({ ...form, password: e.target.value })} placeholder="••••••••" />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-500 mb-1.5">🎭 Role</label>
+          <label className="block text-xs font-medium text-slate-500 mb-1.5">Role</label>
           <select className={inputCls} value={form.role} onChange={(e) => onChange({ ...form, role: e.target.value, teamMemberId: "" })}>
-            <option value="MEMBER">👤 Member (division member)</option>
-            <option value="LEAD">⭐ Division Lead</option>
-            <option value="ADMIN">🛡️ Admin (HR)</option>
+            <option value="MEMBER">Member (division member)</option>
+            <option value="LEAD">Division Lead</option>
+            <option value="ADMIN">Admin (HR)</option>
           </select>
         </div>
         <div className="col-span-2">
           <label className="block text-xs font-medium text-slate-500 mb-1.5">
-            🏢 Division
+            Division
             {form.role === "LEAD" && (
               <span className="text-amber-600 ml-1 font-normal">— Leads & Members with the same division name are grouped</span>
             )}
@@ -106,7 +106,7 @@ function UserForm({ form, isEdit, onChange, onSave, onCancel, teamMembers, editU
         {form.role === "MEMBER" && (
           <div className="col-span-2">
             <label className="block text-xs font-medium text-slate-500 mb-1.5">
-              🔗 Link ke Member Tim
+              Link ke Member Tim
               <span className="text-slate-400 font-normal ml-1">— link to the Lead's OKR distribution data</span>
             </label>
             <select
@@ -128,8 +128,8 @@ function UserForm({ form, isEdit, onChange, onSave, onCancel, teamMembers, editU
         )}
       </div>
       <div className="flex gap-2 mt-5">
-        <button onClick={onSave} className={btnPrimary}>💾 Save</button>
-        <button onClick={onCancel} className={btnSecondary}>✕ Cancel</button>
+        <button onClick={onSave} className={btnPrimary}>Save</button>
+        <button onClick={onCancel} className={btnSecondary}>Cancel</button>
       </div>
     </div>
   );
@@ -263,11 +263,11 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
             onClick={() => { setShowForm((v) => !v); setEditId(null); setForm(emptyForm); }}
             className={btnPrimary}
           >
-            ➕ Add User
+            Add User
           </button>
-          <a href="/api/users/import" className={btnSecondary}>📋 Download Template</a>
+          <a href="/api/users/import" className={btnSecondary}>Download Template</a>
           <label className={`${btnSecondary} cursor-pointer ${importing ? "opacity-50 pointer-events-none" : ""}`}>
-            {importing ? "⏳ Importing..." : "📤 Bulk Import Excel"}
+            {importing ? "Importing..." : "Bulk Import Excel"}
             <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
           </label>
         </div>
@@ -276,11 +276,11 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
 
       {importResult && (
         <div className={`rounded-xl px-4 py-3 text-sm mb-4 ${importResult.type === "success" ? "bg-green-50 border border-green-200 text-green-700" : "bg-red-50 border border-red-200 text-red-700"}`}>
-          <p className="font-semibold">{importResult.type === "success" ? "✅" : "❌"} {importResult.message}</p>
+          <p className="font-semibold">{importResult.type === "success" ? "" : ""} {importResult.message}</p>
           {importResult.errors?.map((e, i) => <p key={i} className="text-xs mt-0.5">{e}</p>)}
           {importResult.linkLog && importResult.linkLog.length > 0 && (
             <details className="mt-2">
-              <summary className="text-xs font-semibold cursor-pointer opacity-70">🔗 Detail auto-link ({importResult.linkLog.length})</summary>
+              <summary className="text-xs font-semibold cursor-pointer opacity-70">Detail auto-link ({importResult.linkLog.length})</summary>
               {importResult.linkLog.map((l, i) => <p key={i} className="text-xs mt-0.5 font-mono">{l}</p>)}
             </details>
           )}
@@ -294,7 +294,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
         {Object.entries(grouped).map(([division, divUsers]) => (
           <div key={division} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
             <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
-              <span className="text-base">🏢</span>
+              <span className="text-base"></span>
               <span className="font-semibold text-slate-700 text-sm">{division}</span>
               <span className="text-slate-400 text-xs">({divUsers.length} people)</span>
             </div>
@@ -312,8 +312,8 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
                         {user.role === "MEMBER" && (() => {
                           const linked = tms.find((tm) => tm.userId === user.id);
                           return linked
-                            ? <span className="text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">🔗 {linked.name}</span>
-                            : <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">⚠️ Not yet di-link</span>;
+                            ? <span className="text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">{linked.name}</span>
+                            : <span className="text-xs text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">Not yet di-link</span>;
                         })()}
                       </div>
                       {/* Inline link UI */}
@@ -332,11 +332,11 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
                           <button
                             onClick={() => saveLink(user.id)}
                             disabled={linkSaving}
-                            className="text-xs font-semibold px-3 py-1 bg-amber-400 text-white rounded-lg shadow-[0_2px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-px transition-all disabled:opacity-50"
+                            className="text-xs font-semibold px-3 py-1 bg-[#0b8ec4] text-white hover:bg-[#097eb9] rounded-lg shadow-sm hover:shadow-sm transition-all disabled:opacity-50"
                           >
-                            {linkSaving ? "⏳" : "💾 Save"}
+                            {linkSaving ? "" : "Save"}
                           </button>
-                          <button onClick={() => { setLinkingUserId(null); setLinkSelectValue(""); }} className="text-xs text-slate-400 hover:text-slate-600">✕</button>
+                          <button onClick={() => { setLinkingUserId(null); setLinkSelectValue(""); }} className="text-xs text-slate-400 hover:text-slate-600"></button>
                         </div>
                       )}
                     </td>
@@ -351,23 +351,21 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
                             }}
                             className="text-xs font-semibold text-blue-600 px-2 py-1 rounded-lg hover:bg-blue-50 border border-blue-200 transition"
                             title="Link to a team member"
-                          >
-                            🔗
-                          </button>
+                          ></button>
                         )}
                         <button
                           onClick={() => startEdit(user)}
                           className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100
-                            shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px
-                            active:shadow-none active:translate-y-[2px] transition-all duration-75"
+                            shadow-sm hover:shadow-sm
+                            transition-all duration-75"
                         >
                           <Edit2 size={13} />
                         </button>
                         <button
                           onClick={() => deleteUser(user.id)}
                           className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50
-                            shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#fecaca] hover:translate-y-px
-                            active:shadow-none active:translate-y-[2px] transition-all duration-75"
+                            shadow-sm hover:shadow-sm
+                            transition-all duration-75"
                         >
                           <Trash2 size={13} />
                         </button>
@@ -382,7 +380,7 @@ export default function UserManager({ initialUsers, teamMembers }: { initialUser
 
         {users.length === 0 && (
           <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
-            <div className="text-4xl mb-3">👥</div>
+            <div className="text-4xl mb-3"></div>
             <p className="text-slate-500 text-sm">No users. Click "Add User" to get started.</p>
           </div>
         )}

@@ -89,7 +89,7 @@ function KRRow({
       <div className="flex items-center gap-3 flex-wrap">
         {/* Weight */}
         <div className="flex items-center gap-1.5">
-          <span className="text-xs text-slate-400">⚖️ Weight</span>
+          <span className="text-xs text-slate-400">Weight</span>
           <input
             type="number"
             className="w-14 border border-slate-200 rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:border-amber-400 bg-slate-50"
@@ -103,7 +103,7 @@ function KRRow({
 
         {/* Individual target */}
         <div className="flex items-center gap-1.5">
-          <span className="text-xs text-slate-400">🎯 Target</span>
+          <span className="text-xs text-slate-400">Target</span>
           <input
             type="number"
             className={`w-20 border rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:border-amber-400 ${
@@ -126,13 +126,13 @@ function KRRow({
               onClick={() => onTargetChange(kra.id, null)}
               className="text-slate-300 hover:text-slate-500 text-xs transition"
               title="Reset to division target"
-            >✕</button>
+            ></button>
           )}
         </div>
 
         {/* Progress */}
         <div className="flex items-center gap-1.5 flex-1">
-          <span className="text-xs text-slate-400 flex-shrink-0">📈 Progress</span>
+          <span className="text-xs text-slate-400 flex-shrink-0">Progress</span>
           <input
             type="number"
             className="w-20 border border-slate-200 rounded-lg px-2 py-1 text-xs text-right focus:outline-none focus:border-amber-400 bg-slate-50"
@@ -151,7 +151,7 @@ function KRRow({
 
       {kra.target !== null && (
         <p className="text-xs text-amber-600">
-          ⚡ Target individu: <strong>{kra.target} {kr.unit}</strong> (division: {kr.target} {kr.unit})
+          Target individu: <strong>{kra.target} {kr.unit}</strong> (division: {kr.target} {kr.unit})
         </p>
       )}
 
@@ -193,7 +193,7 @@ function AssignmentRow({
         <span className="text-xs font-bold text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5">{objIndex}</span>
         <span className="flex-1 text-sm font-semibold text-slate-700 break-words">{assignment.objective.title}</span>
         <div className="flex items-center gap-1.5 flex-shrink-0">
-          <span className="text-xs text-slate-400">⚖️</span>
+          <span className="text-xs text-slate-400"></span>
           <input
             type="number"
             className="w-14 border border-slate-200 rounded-lg px-2 py-1 text-sm text-right focus:outline-none focus:border-amber-400 bg-white"
@@ -214,10 +214,10 @@ function AssignmentRow({
         className="flex items-center gap-2 px-3 py-2 w-full text-left border-t border-slate-100 hover:bg-slate-50/50 transition"
       >
         {open ? <ChevronUp size={13} className="text-slate-400" /> : <ChevronDown size={13} className="text-slate-400" />}
-        <span className="text-xs text-slate-500">🔑 Key Results ({assignment.krAssignments.length} dipilih)</span>
+        <span className="text-xs text-slate-500">Key Results ({assignment.krAssignments.length} dipilih)</span>
         {assignment.krAssignments.length > 0 && (
           <span className={`ml-auto text-xs font-bold px-2 py-0.5 rounded-md ${krOk ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
-            {krTotal.toFixed(0)}%{krOk ? " ✅" : " · must be 100%"}
+            {krTotal.toFixed(0)}%{krOk ? "" : " · must be 100%"}
           </span>
         )}
       </button>
@@ -248,7 +248,7 @@ function AssignmentRow({
               value=""
               onChange={(e) => { if (e.target.value) onAddKR(assignment.id, e.target.value); }}
             >
-              <option value="">➕ Select Key Result...</option>
+              <option value="">Select Key Result...</option>
               {unassignedKRs.map((kr) => (
                 <option key={kr.id} value={kr.id}>{kr.title} (target division: {kr.target} {kr.unit})</option>
               ))}
@@ -333,7 +333,7 @@ function MemberCard({
             {initials}
           </div>
           <div className="min-w-0">
-            <p className="font-semibold text-slate-800 text-sm">👤 {member.name}</p>
+            <p className="font-semibold text-slate-800 text-sm">{member.name}</p>
             <p className="text-xs text-slate-400">{member.assignments.length} objective · {open ? "click to close" : "click to open"}</p>
           </div>
         </div>
@@ -348,7 +348,7 @@ function MemberCard({
             : totalWeight > 100 ? "bg-red-100 text-red-600"
             : "bg-slate-100 text-slate-500"
           }`}>
-            ⚖️ {totalWeight}%{objOk ? " ✅" : ""}
+            {totalWeight}%{objOk ? "" : ""}
           </span>
           <span className="text-slate-300">
             {open ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
@@ -356,8 +356,8 @@ function MemberCard({
           <button
             onClick={(e) => { e.stopPropagation(); onDelete(member.id); }}
             className="text-slate-300 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50
-              shadow-[0_3px_0_#e2e8f0] hover:shadow-[0_1px_0_#fecaca] hover:translate-y-0.5
-              active:shadow-none active:translate-y-[3px] transition-all duration-75"
+              shadow-sm hover:shadow-sm
+              transition-all duration-75"
           >
             <Trash2 size={14} />
           </button>
@@ -422,13 +422,13 @@ function MemberCard({
                 value=""
                 onChange={(e) => { if (e.target.value) onAddAssignment(member.id, e.target.value); }}
               >
-                <option value="">➕ Add objective...</option>
+                <option value="">Add objective...</option>
                 {unassigned.map((o) => <option key={o.id} value={o.id}>{o.title}</option>)}
               </select>
             )}
 
             {objectives.length === 0 && (
-              <p className="text-xs text-slate-400 text-center py-3">🎯 Create an objective above first.</p>
+              <p className="text-xs text-slate-400 text-center py-3">Create an objective above first.</p>
             )}
           </div>
         </>
@@ -510,15 +510,15 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
   }
 
   const btnBase = "flex items-center gap-2 font-bold text-sm px-4 py-2 rounded-xl transition-all duration-75 ";
-  const btnSlate  = btnBase + "bg-white text-slate-700 border border-slate-200 shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px]";
-  const btnAmber  = btnBase + "bg-amber-400 text-white shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0";
-  const btnGreen  = btnBase + "bg-emerald-500 text-white shadow-[0_4px_0_#059669] hover:shadow-[0_2px_0_#059669] hover:translate-y-0.5 active:shadow-[0_1px_0_#059669] active:translate-y-[3px]";
-  const btnViolet = btnBase + "bg-violet-100 text-violet-700 border border-violet-200 shadow-[0_4px_0_#ddd6fe] hover:shadow-[0_2px_0_#ddd6fe] hover:translate-y-0.5 active:shadow-[0_1px_0_#ddd6fe] active:translate-y-[3px]";
+  const btnSlate  = btnBase + "bg-white text-slate-700 border border-slate-200 shadow-sm hover:shadow-sm active:shadow-sm";
+  const btnAmber  = btnBase + "bg-[#0b8ec4] text-white hover:bg-[#097eb9] shadow-sm hover:shadow-sm active:shadow-sm disabled:opacity-50";
+  const btnGreen  = btnBase + "bg-emerald-500 text-white shadow-sm hover:shadow-sm active:shadow-sm";
+  const btnViolet = btnBase + "bg-violet-100 text-violet-700 border border-violet-200 shadow-sm hover:shadow-sm active:shadow-sm";
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
       <div className="px-5 py-3.5 border-b border-slate-100 bg-slate-50 flex items-center gap-2">
-        <span>📥</span>
+        <span></span>
         <div>
           <h3 className="font-bold text-slate-800 text-sm">Import / Export Distribusi</h3>
           <p className="text-xs text-slate-400">The template lists all objectives & KRs. Just fill in members, weights, & individual targets.</p>
@@ -526,24 +526,24 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
       </div>
       <div className="p-4 space-y-3">
         <div className="flex flex-wrap gap-3">
-          <button onClick={handleTemplate} className={btnSlate} disabled={objectives.length === 0}>📋 Download Template</button>
+          <button onClick={handleTemplate} className={btnSlate} disabled={objectives.length === 0}>Download Template</button>
           <label className={btnAmber + " cursor-pointer"}>
-            {importing ? <><span className="animate-spin">⏳</span> Importing…</> : <>📤 Import Excel</>}
+            {importing ? <><span className="animate-spin"></span> Importing…</> : <>Import Excel</>}
             <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
           </label>
-          <button onClick={handleExport} className={btnGreen}>📥 Export</button>
+          <button onClick={handleExport} className={btnGreen}>Export</button>
           <label className={btnViolet + " cursor-pointer"} title="Check the file contents & matching before importing">
-            {previewing ? <><span className="animate-spin">⏳</span></> : <>🔍 Preview</>}
+            {previewing ? <><span className="animate-spin"></span></> : <>Preview</>}
             <input ref={previewRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handlePreview} disabled={previewing} />
           </label>
         </div>
 
-        {objectives.length === 0 && <p className="text-xs text-slate-400 italic">⚠️ Create objectives first before downloading the template.</p>}
+        {objectives.length === 0 && <p className="text-xs text-slate-400 italic">Create objectives first before downloading the template.</p>}
 
         {result && (
           <div className="space-y-2">
             <div className={`rounded-xl px-4 py-2.5 text-sm flex items-start gap-2 ${result.type === "success" && !result.errors?.length ? "bg-green-50 border border-green-200 text-green-700" : result.type === "success" ? "bg-amber-50 border border-amber-200 text-amber-800" : "bg-red-50 border border-red-200 text-red-700"}`}>
-              <span className="flex-shrink-0">{result.type === "success" && !result.errors?.length ? "✅" : result.type === "success" ? "⚠️" : "❌"}</span>
+              <span className="flex-shrink-0">{result.type === "success" && !result.errors?.length ? "" : result.type === "success" ? "" : ""}</span>
               <div className="min-w-0 w-full">
                 <p className="font-semibold">{result.message}</p>
                 {result.debug && <p className="text-xs mt-0.5 opacity-70">Baris terbaca: {result.debug.rowsParsed}</p>}
@@ -552,7 +552,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
             </div>
             {result.errors && result.errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 space-y-1">
-                <p className="text-xs font-bold text-red-700">⚠️ {result.errors.length} masalah ditemukan:</p>
+                <p className="text-xs font-bold text-red-700">{result.errors.length} issues found:</p>
                 <ul className="space-y-1">
                   {result.errors.map((e, i) => <li key={i} className="text-xs text-red-700 font-mono break-all">• {e}</li>)}
                 </ul>
@@ -560,7 +560,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
             )}
             {result.debug?.lookups && result.debug.lookups.length > 0 && (
               <details className="border border-slate-200 rounded-xl overflow-hidden text-xs">
-                <summary className="px-4 py-2 bg-slate-50 cursor-pointer text-slate-600 font-semibold">🔍 Debug lookup ({result.debug.lookups.length} baris)</summary>
+                <summary className="px-4 py-2 bg-slate-50 cursor-pointer text-slate-600 font-semibold">Debug lookup ({result.debug.lookups.length} baris)</summary>
                 <div className="px-4 py-3 font-mono space-y-0.5 max-h-48 overflow-y-auto">
                   {result.debug.lookups.map((l, i) => (
                     <p key={i} className={`text-xs break-all ${l.includes("NOT FOUND") ? "text-red-600 font-bold" : l.includes("FOUND") ? "text-green-700" : "text-slate-500"}`}>{l}</p>
@@ -576,18 +576,18 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
           <div className="border border-violet-200 rounded-xl overflow-hidden text-xs">
             <div className="bg-violet-50 px-4 py-2.5 flex items-center justify-between">
               <div>
-                <p className="font-bold text-violet-800">🔍 Preview — sheet: {preview.selectedSheet}</p>
+                <p className="font-bold text-violet-800">Preview — sheet: {preview.selectedSheet}</p>
                 <p className="text-violet-500">
                   {preview.maxRow} baris · sheets: {preview.sheetNames.join(", ")}
                   {preview.selectedQuarter && <> · DB quarter: <strong>{preview.selectedQuarter}</strong></>}
                 </p>
               </div>
-              <button onClick={() => setPreview(null)} className="text-violet-400 hover:text-violet-700 text-base">✕</button>
+              <button onClick={() => setPreview(null)} className="text-violet-400 hover:text-violet-700 text-base"></button>
             </div>
 
             {preview.quarterHint && (
               <div className="bg-amber-50 border-b border-amber-200 px-4 py-2.5 flex items-start gap-2 text-amber-800">
-                <span className="flex-shrink-0 text-base">⚠️</span>
+                <span className="flex-shrink-0 text-base"></span>
                 <p className="font-semibold">{preview.quarterHint}</p>
               </div>
             )}
@@ -597,18 +597,18 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
             {/* Matching check */}
             {(preview.matching.objectives.length > 0 || preview.matching.keyResults.length > 0) && (
               <div className="px-4 py-3 border-b border-violet-100 space-y-2">
-                <p className="font-semibold text-slate-600">📋 Matching against the database:</p>
+                <p className="font-semibold text-slate-600">Matching against the database:</p>
                 <div className="space-y-1">
                   {preview.matching.objectives.map((o, i) => (
                     <div key={i} className={`flex items-start gap-2 ${o.matched ? "text-green-700" : "text-red-600"}`}>
-                      <span className="flex-shrink-0">{o.matched ? "✅" : "❌"}</span>
+                      <span className="flex-shrink-0">{o.matched ? "" : ""}</span>
                       <span className="font-mono break-all">[Obj] {o.title}</span>
                       {!o.matched && <span className="text-slate-400 ml-1">(not found in DB)</span>}
                     </div>
                   ))}
                   {preview.matching.keyResults.map((k, i) => (
                     <div key={i} className={`flex items-start gap-2 ${k.matched ? "text-green-700" : "text-red-600"}`}>
-                      <span className="flex-shrink-0">{k.matched ? "✅" : "❌"}</span>
+                      <span className="flex-shrink-0">{k.matched ? "" : ""}</span>
                       <span className="font-mono break-all">[KR] {k.title}</span>
                       {!k.matched && <span className="text-slate-400 ml-1">(not found)</span>}
                     </div>
@@ -618,7 +618,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
                 {/* DB titles for reference if mismatch */}
                 {preview.matching.objectives.some((o) => !o.matched) && (
                   <details className="mt-2">
-                    <summary className="text-slate-500 cursor-pointer">📂 Objective di database ({preview.db.objectives.length})</summary>
+                    <summary className="text-slate-500 cursor-pointer">Objective di database ({preview.db.objectives.length})</summary>
                     <ul className="mt-1 space-y-0.5">
                       {preview.db.objectives.map((t, i) => <li key={i} className="font-mono text-slate-600 break-all">• {t}</li>)}
                     </ul>
@@ -626,7 +626,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
                 )}
                 {preview.matching.keyResults.some((k) => !k.matched) && (
                   <details className="mt-2">
-                    <summary className="text-slate-500 cursor-pointer">📂 KR di database ({preview.db.keyResults.length})</summary>
+                    <summary className="text-slate-500 cursor-pointer">KR di database ({preview.db.keyResults.length})</summary>
                     <ul className="mt-1 space-y-0.5">
                       {preview.db.keyResults.map((t, i) => <li key={i} className="font-mono text-slate-600 break-all">• {t}</li>)}
                     </ul>
@@ -669,9 +669,9 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
         )}
 
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-xs text-amber-700 space-y-1">
-          <p className="font-semibold">💡 Tips</p>
+          <p className="font-semibold">Tips</p>
           <ul className="list-disc list-inside space-y-0.5 text-amber-600">
-            <li>Klik <strong>🔍 Preview</strong> first to check that objective & KR names are read correctly before importing</li>
+            <li>Klik <strong>Preview</strong> first to check that objective & KR names are read correctly before importing</li>
             <li>Columns B (Objective) & D (Key Result) must exactly match what is in the database</li>
             <li>Import replaces all existing assignments</li>
           </ul>
@@ -809,14 +809,14 @@ function CopyFromQuarterModal({
     setCopying(false);
   }
 
-  const btnPrimary   = "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-4 py-2 rounded-xl shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
-  const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-4 py-2 rounded-xl shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
+  const btnPrimary   = "flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-4 py-2 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm disabled:opacity-50 transition-all duration-75";
+  const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-4 py-2 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm transition-all duration-75";
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[85vh] flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-          <h3 className="font-bold text-slate-800">📋 Copy Distribution from Another Quarter</h3>
+          <h3 className="font-bold text-slate-800">Copy Distribution from Another Quarter</h3>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition"><X size={18} /></button>
         </div>
 
@@ -828,7 +828,7 @@ function CopyFromQuarterModal({
               {/* Source + Destination */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">📤 Copy from</label>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">Copy from</label>
                   <select value={sourceId} onChange={(e) => { setDestId(""); loadPreview(e.target.value); }}
                     className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white">
                     <option value="">-- Select --</option>
@@ -836,7 +836,7 @@ function CopyFromQuarterModal({
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">📥 Copy to</label>
+                  <label className="block text-xs font-semibold text-slate-500 mb-1.5">Copy to</label>
                   <select value={destId} onChange={(e) => setDestId(e.target.value)}
                     className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white">
                     <option value="">-- Select --</option>
@@ -847,7 +847,7 @@ function CopyFromQuarterModal({
                 </div>
               </div>
 
-              {loadingPreview && <p className="text-slate-400 text-sm text-center py-4">⏳ Loading data...</p>}
+              {loadingPreview && <p className="text-slate-400 text-sm text-center py-4">Loading data...</p>}
               {!loadingPreview && sourceId && preview.length === 0 && (
                 <div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-500 text-center space-y-1">
                   <p>No distribution for this quarter yet.</p>
@@ -906,7 +906,7 @@ function CopyFromQuarterModal({
                                          : objSel > 0      ? <CheckSquare size={14} className="text-amber-200" />
                                          : <Square size={14} className="text-slate-300" />}
                                       </button>
-                                      <span className="text-xs font-semibold text-slate-600 flex-1 truncate">🎯 {obj.title}</span>
+                                      <span className="text-xs font-semibold text-slate-600 flex-1 truncate">{obj.title}</span>
                                       <span className="text-xs text-slate-400 flex-shrink-0">weight {obj.weight}%</span>
                                     </div>
                                     {/* KR checkboxes */}
@@ -933,13 +933,13 @@ function CopyFromQuarterModal({
                       );
                     })}
                   </div>
-                  <p className="text-xs text-slate-400 mt-3">💡 Weights & targets are copied. Completed progress is filled <strong>is not deleted</strong>.</p>
+                  <p className="text-xs text-slate-400 mt-3">Weights & targets are copied. Completed progress is filled <strong>is not deleted</strong>.</p>
                 </div>
               )}
 
               {result && (
                 <div className={`rounded-xl px-4 py-3 text-xs ${result.type === "success" ? "bg-green-50 border border-green-200 text-green-700" : "bg-red-50 border border-red-200 text-red-700"}`}>
-                  <p className="font-semibold">{result.type === "success" ? "✅" : "❌"} {result.message}</p>
+                  <p className="font-semibold">{result.type === "success" ? "" : ""} {result.message}</p>
                   {result.errors?.map((e, i) => <p key={i} className="mt-0.5">{e}</p>)}
                 </div>
               )}
@@ -950,7 +950,7 @@ function CopyFromQuarterModal({
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-slate-100">
           <button onClick={onClose} className={btnSecondary}>Cancel</button>
           <button onClick={doCopy} disabled={copying || !destId || totalSel === 0 || !!result} className={btnPrimary}>
-            {copying ? "⏳ Menyalin..." : !destId ? "Choose a destination first" : `📋 Copy${totalSel > 0 ? ` (${totalSel} KR)` : ""}`}
+            {copying ? "Menyalin..." : !destId ? "Choose a destination first" : `Copy${totalSel > 0 ? ` (${totalSel} KR)` : ""}`}
           </button>
         </div>
       </div>
@@ -998,32 +998,32 @@ function ProgressExcel({ leadId, quarterId }: { leadId: string; quarterId: strin
   return (
     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
       <div className="px-5 py-4 bg-slate-50 border-b border-slate-100">
-        <h3 className="font-bold text-slate-700 text-sm">📈 Update Progress OKR Individu via Excel</h3>
+        <h3 className="font-bold text-slate-700 text-sm">Update Progress OKR Individu via Excel</h3>
         <p className="text-xs text-slate-400 mt-0.5">Once the Division OKR is done & distributed, download the template — it lists every member's individual OKRs. Fill in the Progress column, then upload it back.</p>
       </div>
       <div className="p-4 flex flex-wrap gap-2 items-center">
         <button
           onClick={handleTemplate}
           className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-700
-            shadow-[0_3px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-0.5
-            active:shadow-none active:translate-y-[3px] transition-all duration-75"
+            shadow-sm hover:shadow-sm
+            transition-all duration-75"
         >
-          📥 Download Template Progress
+          Download Template Progress
         </button>
 
         <label className={`flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl cursor-pointer
-          bg-amber-400 text-white shadow-[0_3px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-0.5
-          active:shadow-none active:translate-y-[3px] transition-all duration-75
+          bg-[#0b8ec4] text-white hover:bg-[#097eb9] shadow-sm hover:shadow-sm
+          transition-all duration-75
           ${importing ? "opacity-50 pointer-events-none" : ""}`}
         >
-          {importing ? "⏳ Importing..." : "📤 Import Progress"}
+          {importing ? "Importing..." : "Import Progress"}
           <input ref={fileRef} type="file" accept=".xlsx,.xls" className="hidden" onChange={handleImport} disabled={importing} />
         </label>
       </div>
 
       {result && (
         <div className={`mx-4 mb-4 rounded-xl px-4 py-3 text-sm ${result.type === "success" ? "bg-green-50 border border-green-200 text-green-700" : "bg-red-50 border border-red-200 text-red-700"}`}>
-          <p className="font-semibold">{result.type === "success" ? "✅" : "❌"} {result.message}</p>
+          <p className="font-semibold">{result.type === "success" ? "" : ""} {result.message}</p>
           {result.errors && result.errors.length > 0 && (
             <ul className="mt-2 space-y-0.5 text-xs list-disc list-inside">
               {result.errors.map((e, i) => <li key={i}>{e}</li>)}
@@ -1209,12 +1209,12 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
 
       {/* ── 1. Add Member ─────────────────────────────────────────── */}
       <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">➕ Add Member</p>
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Add Member</p>
         <div className="flex gap-2">
           <div className="relative flex-1" ref={comboRef}>
             <input
               className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition"
-              placeholder="🔍 Search or type a member name..."
+              placeholder="Search or type a member name..."
               value={newName}
               onChange={(e) => { setNewName(e.target.value); setShowSuggestions(true); }}
               onFocus={() => setShowSuggestions(true)}
@@ -1255,24 +1255,24 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
           <button
             onClick={() => { setShowSuggestions(false); addMember(); }}
             disabled={saving || !newName.trim()}
-            className="flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl
-              shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5
-              active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px]
-              disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75"
+            className="flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-5 py-2.5 rounded-xl
+              shadow-sm hover:shadow-sm
+              active:shadow-sm
+              disabled:opacity-50 transition-all duration-75"
           >
-            ➕ Add
+            Add
           </button>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
           {employees.length === 0 && (
-            <p className="text-xs text-slate-400">💡 Employee list is empty — the Admin can add them in Admin → Employee.</p>
+            <p className="text-xs text-slate-400">Employee list is empty — the Admin can add them in Admin → Employee.</p>
           )}
           {allQuarters.length > 1 && (
             <button
               onClick={() => setShowCopyModal(true)}
               className="text-xs text-slate-500 hover:text-amber-600 font-semibold flex items-center gap-1 transition-colors"
             >
-              📋 Salin dari quarter lain
+              Salin dari quarter lain
             </button>
           )}
         </div>
@@ -1281,7 +1281,7 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
       {/* ── 2. Member cards ──────────────────────────────────────────── */}
       {members.length === 0 ? (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
-          <div className="text-4xl mb-3">👥</div>
+          <div className="text-4xl mb-3"></div>
           <p className="text-slate-600 text-sm font-medium">No members yet</p>
           <p className="text-slate-400 text-xs mt-1">Add a name above, or copy the distribution from another quarter.</p>
         </div>
@@ -1313,7 +1313,7 @@ export default function DistribusiAnggota({ initialMembers, objectives, leadId, 
           className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 hover:bg-slate-100 transition text-left"
         >
           <div className="flex items-center gap-2">
-            <span className="text-sm">🔧</span>
+            <span className="text-sm"></span>
             <span className="text-sm font-semibold text-slate-600">Alat Bantu Excel</span>
             <span className="text-xs text-slate-400">— import/export distribusi & update progress</span>
           </div>

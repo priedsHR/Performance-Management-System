@@ -29,8 +29,8 @@ const CATS: Category[] = ["CORE", "LEADERSHIP", "JOB_FAMILY", "TECHNICAL"];
 const blankForm = { name: "", email: "", password: "", role: "MEMBER", department: "", position: "", level: "", targetMode: "auto", managerId: "", active: true };
 
 const inp = "w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white transition";
-const btnPrimary = "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] transition-all duration-75";
-const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
+const btnPrimary = "flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm transition-all duration-75";
+const btnSecondary = "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm transition-all duration-75";
 
 export default function EmployeePeersManager() {
   const [tab, setTab] = useState<"employee" | "peers">("employee");
@@ -137,7 +137,7 @@ export default function EmployeePeersManager() {
         {(["employee", "peers"] as const).map((t) => (
           <button key={t} onClick={() => setTab(t)}
             className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${tab === t ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}>
-            {t === "employee" ? "🧑‍💼 Employee" : "🔗 Cross-Dept Assignments"}
+            {t === "employee" ? "Employee" : "Cross-Dept Assignments"}
           </button>
         ))}
       </div>
@@ -147,14 +147,14 @@ export default function EmployeePeersManager() {
           {/* Toolbar */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap gap-2">
-              <button onClick={startNew} className={btnPrimary}>➕ Add Employee</button>
-              <a href="/api/feedback/profiles/import" className={btnSecondary}>📋 Download Template</a>
+              <button onClick={startNew} className={btnPrimary}>Add Employee</button>
+              <a href="/api/feedback/profiles/import" className={btnSecondary}>Download Template</a>
               <button onClick={() => fileRef.current?.click()} disabled={importing} className={`${btnSecondary} ${importing ? "opacity-50 pointer-events-none" : ""}`}>
-                {importing ? "⏳ Importing…" : "📤 Bulk Import Excel"}
+                {importing ? "Importing…" : "Bulk Import Excel"}
               </button>
               <input ref={fileRef} type="file" accept=".xlsx" hidden onChange={doImport} />
             </div>
-            <input className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white" placeholder="🔍 Search name / department…" value={search} onChange={(e) => setSearch(e.target.value)} />
+            <input className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white" placeholder="Search name / department…" value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
 
           {msg && <p className="text-sm text-amber-700 bg-amber-50 px-4 py-2 rounded-xl border border-amber-200">{msg}</p>}
@@ -162,7 +162,7 @@ export default function EmployeePeersManager() {
           {/* Form */}
           {editing && (
             <div className="bg-white border border-amber-200 rounded-2xl p-6 space-y-4">
-              <p className="font-semibold text-slate-800">{editing === "new" ? "➕ New Employee" : "✏️ Edit Employee"}</p>
+              <p className="font-semibold text-slate-800">{editing === "new" ? "New Employee" : "Edit Employee"}</p>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Name*</label><input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={inp} /></div>
                 <div><label className="block text-xs font-medium text-slate-500 mb-1.5">Email* (login)</label><input value={form.email} disabled={editing !== "new"} onChange={(e) => setForm({ ...form, email: e.target.value })} className={`${inp} disabled:bg-slate-50 disabled:text-slate-400`} /></div>
@@ -234,8 +234,8 @@ export default function EmployeePeersManager() {
               </div>
 
               <div className="flex gap-2 pt-1">
-                <button onClick={save} className={btnPrimary}>💾 Save</button>
-                <button onClick={() => setEditing(null)} className={btnSecondary}>✕ Cancel</button>
+                <button onClick={save} className={btnPrimary}>Save</button>
+                <button onClick={() => setEditing(null)} className={btnSecondary}>Cancel</button>
               </div>
             </div>
           )}
@@ -245,7 +245,7 @@ export default function EmployeePeersManager() {
             {Object.entries(grouped).map(([dept, emps]) => (
               <div key={dept} className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
                 <div className="px-5 py-3 bg-slate-50 border-b border-slate-100 flex items-center gap-2">
-                  <span>🏢</span>
+                  <span></span>
                   <span className="font-semibold text-slate-700 text-sm">{dept}</span>
                   <span className="text-slate-400 text-xs">({emps.length} employee)</span>
                 </div>
@@ -272,8 +272,8 @@ export default function EmployeePeersManager() {
                         <td className="px-5 py-3 text-center text-slate-500">{p.competencyIds.length}</td>
                         <td className="px-5 py-3 text-right">
                           <div className="flex items-center justify-end gap-1">
-                            <button onClick={() => startEdit(p)} className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px active:shadow-none transition-all duration-75"><Edit2 size={13} /></button>
-                            <button onClick={() => del(p)} className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#fecaca] hover:translate-y-px active:shadow-none transition-all duration-75"><Trash2 size={13} /></button>
+                            <button onClick={() => startEdit(p)} className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 shadow-sm hover:shadow-sm transition-all duration-75"><Edit2 size={13} /></button>
+                            <button onClick={() => del(p)} className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 shadow-sm hover:shadow-sm transition-all duration-75"><Trash2 size={13} /></button>
                           </div>
                         </td>
                       </tr>
@@ -284,7 +284,7 @@ export default function EmployeePeersManager() {
             ))}
             {filteredProfiles.length === 0 && (
               <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
-                <div className="text-4xl mb-3">👥</div>
+                <div className="text-4xl mb-3"></div>
                 <p className="text-slate-500 text-sm">{profiles.length === 0 ? "No employees yet. Add manually or bulk import." : "No employees match your search."}</p>
               </div>
             )}
@@ -310,9 +310,9 @@ export default function EmployeePeersManager() {
               <div>
                 <label className="block text-xs font-medium text-slate-500 mb-1.5">Tipe Relasi</label>
                 <select value={pairType} onChange={(e) => setPairType(e.target.value as typeof pairType)} className={inp} style={{ width: 230 }}>
-                  <option value="peer">🤝 Peer (A ↔ B, rate each other)</option>
-                  <option value="a_rates_b">⬆️ A rates B (A is B's manager)</option>
-                  <option value="b_rates_a">⬇️ B rates A (B is A's manager)</option>
+                  <option value="peer">Peer (A ↔ B, rate each other)</option>
+                  <option value="a_rates_b">A rates B (A is B's manager)</option>
+                  <option value="b_rates_a">B rates A (B is A's manager)</option>
                 </select>
               </div>
               <div>
@@ -322,14 +322,14 @@ export default function EmployeePeersManager() {
                   {profiles.filter((p) => p.active && p.userId !== pairA).map((p) => <option key={p.userId} value={p.userId}>{p.name} ({p.department || "—"})</option>)}
                 </select>
               </div>
-              <button onClick={addPair} className={btnPrimary}>➕ Add</button>
+              <button onClick={addPair} className={btnPrimary}>Add</button>
             </div>
           </div>
 
           {manualPairs.length > 0 ? (
             <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
               <div className="px-5 py-3 bg-slate-50 border-b border-slate-100">
-                <span className="font-semibold text-slate-700 text-sm">🔗 Assessment Lintas Departemen ({manualPairs.length})</span>
+                <span className="font-semibold text-slate-700 text-sm">Assessment Lintas Departemen ({manualPairs.length})</span>
               </div>
               <table className="w-full text-sm">
                 <thead><tr className="border-b border-slate-100">
@@ -344,13 +344,13 @@ export default function EmployeePeersManager() {
                       <td className="px-5 py-3 font-medium text-slate-800">{pair.raterName}</td>
                       <td className="px-3 py-3 text-center">
                         {pair.isPeer
-                          ? <span className="text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">🤝 Peer</span>
-                          : <span className="text-xs font-semibold text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-lg">⬆️ Cross-Dept Manager</span>
+                          ? <span className="text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg">Peer</span>
+                          : <span className="text-xs font-semibold text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-lg">Cross-Dept Manager</span>
                         }
                       </td>
                       <td className="px-5 py-3 font-medium text-slate-800">{pair.rateeName}</td>
                       <td className="px-5 py-3 text-right">
-                        <button onClick={() => removePair(pair)} className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 shadow-[0_2px_0_#e2e8f0] hover:translate-y-px transition-all duration-75"><Trash2 size={13} /></button>
+                        <button onClick={() => removePair(pair)} className="text-slate-300 hover:text-red-500 p-1.5 rounded-lg hover:bg-red-50 shadow-sm transition-all duration-75"><Trash2 size={13} /></button>
                       </td>
                     </tr>
                   ))}
@@ -359,7 +359,7 @@ export default function EmployeePeersManager() {
             </div>
           ) : (
             <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
-              <div className="text-4xl mb-3">🔗</div>
+              <div className="text-4xl mb-3"></div>
               <p className="text-slate-500 text-sm">No cross-department assignments yet.</p>
             </div>
           )}

@@ -72,7 +72,7 @@ export default function QuarterSelector({
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-4">
       <div className="flex items-center gap-3 flex-wrap">
-        <span className="text-sm font-semibold text-slate-600 flex-shrink-0">⏱️ Quarter:</span>
+        <span className="text-sm font-semibold text-slate-600 flex-shrink-0">Quarter:</span>
 
         {quarters.length > 0 ? (
           <YearQuarterPicker
@@ -86,7 +86,7 @@ export default function QuarterSelector({
 
         {selectedQuarter && (
           <span className="text-xs text-slate-400 flex-shrink-0">
-            📅 {new Date(selectedQuarter.startDate).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+            {new Date(selectedQuarter.startDate).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
             {" – "}
             {new Date(selectedQuarter.endDate).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
           </span>
@@ -98,7 +98,7 @@ export default function QuarterSelector({
             className={`flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl transition-all duration-75 flex-shrink-0 ${
               showCreate
                 ? "bg-slate-100 text-slate-600"
-                : "bg-amber-400 text-white shadow-[0_3px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-0.5 active:shadow-none active:translate-y-[3px]"
+                : "bg-[#0b8ec4] text-white hover:bg-[#097eb9] shadow-sm hover:shadow-sm"
             }`}
           >
             {showCreate ? <X size={13} /> : <Plus size={13} />}
@@ -109,7 +109,7 @@ export default function QuarterSelector({
 
       {showCreate && (
         <div className="mt-4 pt-4 border-t border-slate-100">
-          <p className="text-xs font-semibold text-slate-500 mb-3">📋 New Quarter</p>
+          <p className="text-xs font-semibold text-slate-500 mb-3">New Quarter</p>
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className="block text-xs text-slate-400 mb-1">Name Quarter</label>
@@ -142,7 +142,7 @@ export default function QuarterSelector({
               </select>
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">📅 Start</label>
+              <label className="block text-xs text-slate-400 mb-1">Start</label>
               <input
                 type="date"
                 className={inputCls}
@@ -151,7 +151,7 @@ export default function QuarterSelector({
               />
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">📅 End</label>
+              <label className="block text-xs text-slate-400 mb-1">End</label>
               <input
                 type="date"
                 className={inputCls}
@@ -163,9 +163,9 @@ export default function QuarterSelector({
           <button
             onClick={createQuarter}
             disabled={saving || !form.name || !form.startDate || !form.endDate}
-            className="mt-3 flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-4 py-2 rounded-xl shadow-[0_3px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-0.5 active:shadow-none active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75"
+            className="mt-3 flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-4 py-2 rounded-xl shadow-sm hover:shadow-sm disabled:opacity-50 transition-all duration-75"
           >
-            {saving ? "⏳ Saving..." : "💾 Save Quarter"}
+            {saving ? "Saving..." : "Save Quarter"}
           </button>
         </div>
       )}

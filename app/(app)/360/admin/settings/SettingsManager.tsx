@@ -7,7 +7,7 @@ interface Band { key: string; label: string; max: number; color: string }
 interface Settings { weightSuper: number; weightPeer: number; weightSub: number; bands: Band[]; levelTargets: Record<string, number> }
 
 const inp = "w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition";
-const btnPrimary = "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
+const btnPrimary = "flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm disabled:opacity-50 transition-all duration-75";
 
 function SkeletonCard({ rows = 3 }: { rows?: number }) {
   return (
@@ -51,14 +51,14 @@ export default function SettingsManager() {
       body: JSON.stringify(s),
     });
     setSaving(false);
-    setMsg(res.ok ? "✅ Saved." : "❌ Failed to save.");
+    setMsg(res.ok ? "Saved." : "Failed to save.");
   }
 
   return (
     <div className="space-y-4">
       {/* Weights */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <p className="font-semibold text-slate-800 mb-1">⚖️ Rater Group Weights</p>
+        <p className="font-semibold text-slate-800 mb-1">Rater Group Weights</p>
         <p className="text-xs text-slate-400 mb-4">Self carries no weight (context only). Ideal total = 1.00. Current total:{" "}
           <span className={`font-semibold ${sumOk ? "text-green-600" : "text-red-500"}`}>{sum}</span>
         </p>
@@ -82,7 +82,7 @@ export default function SettingsManager() {
 
       {/* Level targets */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <p className="font-semibold text-slate-800 mb-1">🎯 Target Level per Career Level</p>
+        <p className="font-semibold text-slate-800 mb-1">Target Level per Career Level</p>
         <p className="text-xs text-slate-400 mb-4">The expected target score (1–4) for each career level.</p>
         <div className="grid sm:grid-cols-3 gap-3">
           {LEVELS.map((lv) => (
@@ -102,7 +102,7 @@ export default function SettingsManager() {
 
       {/* Bands */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <p className="font-semibold text-slate-800 mb-1">📊 Scoring Bands</p>
+        <p className="font-semibold text-slate-800 mb-1">Scoring Bands</p>
         <p className="text-xs text-slate-400 mb-4">A score falls into the first band whose upper bound is greater than the score. The last band is the highest bound.</p>
         <div className="space-y-2">
           {s.bands.map((b, i) => (
@@ -128,9 +128,9 @@ export default function SettingsManager() {
 
       <div className="flex items-center gap-3">
         <button onClick={save} disabled={saving} className={btnPrimary}>
-          {saving ? "⏳ Saving..." : "💾 Save Settings"}
+          {saving ? "Saving..." : "Save Settings"}
         </button>
-        {msg && <span className={`text-sm font-medium ${msg.startsWith("✅") ? "text-green-600" : "text-red-500"}`}>{msg}</span>}
+        {msg && <span className={`text-sm font-medium ${msg.startsWith("Saved") ? "text-green-600" : "text-red-500"}`}>{msg}</span>}
       </div>
     </div>
   );

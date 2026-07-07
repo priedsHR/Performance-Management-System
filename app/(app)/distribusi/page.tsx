@@ -27,7 +27,7 @@ export default async function DistribusiPage({
   if (quarters.length === 0) {
     return (
       <div className="space-y-4">
-        <h1 className="text-xl font-bold text-slate-900">👥 Distribusi Member</h1>
+        <h1 className="text-xl font-bold text-slate-900">Distribusi Member</h1>
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-amber-700 text-sm">
           No quarter. Buat quarter terlebih dahulu.
         </div>
@@ -90,7 +90,7 @@ export default async function DistribusiPage({
 
       {objectives.length === 0 && (
         <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-sm text-amber-700 flex items-start gap-3">
-          <span className="text-lg flex-shrink-0">⚠️</span>
+          <span className="text-lg flex-shrink-0"></span>
           <div>
             <p className="font-semibold">No Division OKR untuk {selectedQuarter.name}</p>
             <p className="mt-0.5 text-amber-600">

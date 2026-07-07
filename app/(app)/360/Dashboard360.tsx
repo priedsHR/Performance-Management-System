@@ -148,7 +148,7 @@ export default function Dashboard360() {
               title="Click to toggle report visibility for employees"
               className={`text-xs font-semibold px-3 py-2 rounded-lg border transition ${period.releaseReports ? "bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-100" : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"}`}
             >
-              {period.releaseReports ? "🔓 Reports released — click to hide" : "📊 Release Reports"}
+              {period.releaseReports ? "Reports released — click to hide" : "Release Reports"}
             </button>
           )}
           <button
@@ -156,14 +156,14 @@ export default function Dashboard360() {
             disabled={busy !== null || !periodId}
             className="px-3 py-2 rounded-lg text-xs font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50"
           >
-            {busy === "fill" ? "⏳ Simulating…" : "⚡ Simulate responses"}
+            {busy === "fill" ? "Simulating…" : "Simulate responses"}
           </button>
           <button
             onClick={() => runTool("reset")}
             disabled={busy !== null || !periodId}
             className="px-3 py-2 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-red-500 hover:bg-red-50 disabled:opacity-50"
           >
-            {busy === "reset" ? "⏳ Resetting…" : "↺ Reset answers"}
+            {busy === "reset" ? "Resetting…" : "↺ Reset answers"}
           </button>
         </div>
       </div>

@@ -15,7 +15,7 @@ export default async function Reminders360Page() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-xl font-bold text-slate-900 mb-1">📧 Reminder 360 Feedback</h1>
+        <h1 className="text-xl font-bold text-slate-900 mb-1">Reminder 360 Feedback</h1>
         <p className="text-sm text-slate-400">Send reminder emails to employees who have not completed their 360° assessment.</p>
       </div>
 

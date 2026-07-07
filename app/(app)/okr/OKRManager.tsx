@@ -42,15 +42,15 @@ type Props = {
 const UNITS = ["%", "pcs", "x", "score", "day", "month", "people", "other"];
 
 const btnPrimary =
-  "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-4 py-2 rounded-xl " +
-  "shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] " +
-  "disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75";
+  "flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-4 py-2 rounded-xl " +
+  "shadow-sm hover:shadow-sm " +
+  "active:shadow-sm " +
+  "disabled:opacity-50 transition-all duration-75";
 
 const btnSecondary =
   "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-4 py-2 rounded-xl " +
-  "shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
+  "shadow-sm hover:shadow-sm " +
+  "active:shadow-sm transition-all duration-75";
 
 const btnDanger =
   "text-slate-300 hover:text-red-500 transition-colors duration-100";
@@ -68,13 +68,13 @@ function WeightBar({ objectives }: { objectives: Objective[] }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-5">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="font-semibold text-slate-700 text-sm">⚖️ Objective Weight Distribution</h2>
+        <h2 className="font-semibold text-slate-700 text-sm">Objective Weight Distribution</h2>
         <span className={`text-xs font-bold px-2.5 py-1 rounded-lg ${
           total === 0 ? "bg-slate-100 text-slate-500"
           : isOk ? "bg-green-100 text-green-700"
           : "bg-red-100 text-red-600"
         }`}>
-          {total}%{isOk ? " ✅" : total > 0 ? " · must be 100%" : ""}
+          {total}%{isOk ? "" : total > 0 ? " · must be 100%" : ""}
         </span>
       </div>
 
@@ -214,14 +214,14 @@ function ImportModal({
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[85vh] flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-          <h3 className="font-bold text-slate-800">📋 Import OKR from Another Quarter</h3>
+          <h3 className="font-bold text-slate-800">Import OKR from Another Quarter</h3>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition"><X size={18} /></button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {/* Destination indicator */}
           <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-2.5 text-xs text-amber-700">
-            <span>📥</span>
+            <span></span>
             <span>Objectives to be imported into this quarter: <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name ?? currentQuarterId}</strong></span>
           </div>
 
@@ -238,7 +238,7 @@ function ImportModal({
                 </select>
               </div>
 
-              {loadingObjs && <p className="text-slate-400 text-sm text-center py-4">⏳ Loading objectives...</p>}
+              {loadingObjs && <p className="text-slate-400 text-sm text-center py-4">Loading objectives...</p>}
               {!loadingObjs && sourceId && sourceObjs.length === 0 && (
                 <p className="text-slate-400 text-sm text-center py-4">No objectives in this quarter.</p>
               )}
@@ -299,7 +299,7 @@ function ImportModal({
                       );
                     })}
                   </div>
-                  <p className="text-xs text-slate-400 mt-3">💡 Objective diimpor ke <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name}</strong> as a new DRAFT. Progress from the source quarter <strong>is not copied</strong> (starting from 0).</p>
+                  <p className="text-xs text-slate-400 mt-3">Objective diimpor ke <strong>{allQuarters.find((q) => q.id === currentQuarterId)?.name}</strong> as a new DRAFT. Progress from the source quarter <strong>is not copied</strong> (starting from 0).</p>
                 </div>
               )}
             </>
@@ -309,7 +309,7 @@ function ImportModal({
         <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-slate-100">
           <button onClick={onClose} className={btnSecondary}>Cancel</button>
           <button onClick={doImport} disabled={importing || selectedObjCount === 0} className={btnPrimary}>
-            {importing ? "⏳ Importing..." : `📥 Import ${selectedObjCount > 0 ? `(${selectedObjCount} obj, ${selectedKRCount} KR)` : ""}`}
+            {importing ? "Importing..." : `Import ${selectedObjCount > 0 ? `(${selectedObjCount} obj, ${selectedKRCount} KR)` : ""}`}
           </button>
         </div>
       </div>
@@ -501,7 +501,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
         {/* Quarter sanity banner */}
         {allQuarters.length > 0 && (
           <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-500">
-            <span>⏱️</span>
+            <span></span>
             <span>Quarter being edited: <strong className="text-slate-700">{allQuarters.find((q) => q.id === quarterId)?.name ?? quarterId}</strong></span>
           </div>
         )}
@@ -509,7 +509,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
         {/* Status banners */}
         {allSubmitted ? (
           <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-3">
-            <span className="text-lg">✅</span>
+            <span className="text-lg"></span>
             <div>
               <p className="font-semibold text-green-700 text-sm">All OKRs submitted!</p>
               <p className="text-green-600 text-xs mt-0.5">Progress is filled in by members in the Member Distribution section below.</p>
@@ -517,7 +517,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
           </div>
         ) : someSubmitted ? (
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
-            <span className="text-lg">ℹ️</span>
+            <span className="text-lg">ℹ</span>
             <p className="text-blue-700 text-sm">Some OKRs are already submitted. Finish all objectives, then submit.</p>
           </div>
         ) : null}
@@ -525,8 +525,8 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
         {/* Action bar */}
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="text-xs text-slate-400 space-y-0.5">
-            <p>{saving ? "⏳ Saving..." : "💾 Saved automatically"}</p>
-            {!allSubmitted && <p className="text-amber-500 font-medium">⚠️ Saved ≠ submitted. Click "Submit OKR" when everything is done.</p>}
+            <p>{saving ? "Saving..." : "Saved automatically"}</p>
+            {!allSubmitted && <p className="text-amber-500 font-medium">Saved ≠ submitted. Click "Submit OKR" when everything is done.</p>}
           </div>
 
           <div className="flex gap-2 flex-wrap justify-end">
@@ -538,12 +538,12 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                     onClick={selectAll}
                     className={btnSecondary}
                   >
-                    ☑️ Select All ({draftObjectives.length})
+                    Select All ({draftObjectives.length})
                   </button>
                   <button
                     onClick={bulkDelete}
                     disabled={bulkDeleting || selectedIds.size === 0}
-                    className="flex items-center gap-2 bg-red-500 text-white font-bold text-sm px-4 py-2 rounded-xl shadow-[0_4px_0_#dc2626] hover:shadow-[0_2px_0_#dc2626] hover:translate-y-0.5 active:shadow-[0_1px_0_#dc2626] active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none disabled:translate-y-0 transition-all duration-75"
+                    className="flex items-center gap-2 bg-red-500 text-white font-bold text-sm px-4 py-2 rounded-xl shadow-sm hover:shadow-sm active:shadow-sm disabled:opacity-50 transition-all duration-75"
                   >
                     <Trash2 size={14} />
                     {bulkDeleting ? "Deleting..." : `Delete (${selectedIds.size})`}
@@ -562,21 +562,21 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
             {/* Import button */}
             {!allSubmitted && allQuarters.length > 1 && (
               <button onClick={() => setShowImport(true)} className={btnSecondary}>
-                📋 Import dari Quarter Lain
+                Import dari Quarter Lain
               </button>
             )}
 
             {/* Add objective */}
             {!allSubmitted && !selectMode && (
               <button onClick={addObjective} className={btnSecondary}>
-                ➕ Add Objective
+                Add Objective
               </button>
             )}
 
             {/* Submit all */}
             {objectives.length > 0 && !allSubmitted && !selectMode && (
               <button onClick={submitAllOKR} disabled={saving || !weightOk} className={btnPrimary}>
-                📤 Kumpulkan OKR
+                Kumpulkan OKR
               </button>
             )}
           </div>
@@ -585,7 +585,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
         {/* Empty */}
         {objectives.length === 0 && (
           <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
-            <div className="text-4xl mb-3">🎯</div>
+            <div className="text-4xl mb-3"></div>
             <p className="text-slate-500 text-sm">No objectives. Click "Add Objective" or import from a previous quarter.</p>
           </div>
         )}
@@ -631,7 +631,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                   {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </button>
 
-                <span className="w-6 h-6 rounded-full bg-amber-400 text-white text-xs font-bold flex items-center justify-center flex-shrink-0 shadow-[0_2px_0_#097eb9] mt-0.5">
+                <span className="w-6 h-6 rounded-full bg-[#0b8ec4] text-white hover:bg-[#097eb9] text-xs font-bold flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5">
                   {objIdx + 1}
                 </span>
 
@@ -664,7 +664,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                   : achievement >= 70 ? "bg-amber-100 text-amber-700"
                   : "bg-red-100 text-red-600"
                 }`}>
-                  {achievement >= 100 ? "🏆" : achievement >= 70 ? "🔥" : "📉"} {achievement.toFixed(0)}%
+                  {achievement >= 100 ? "" : achievement >= 70 ? "" : ""} {achievement.toFixed(0)}%
                 </span>
 
                 {isLocked ? (
@@ -672,9 +672,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                     onClick={() => recallOKR(obj.id)}
                     className="text-slate-400 hover:text-orange-500 transition flex-shrink-0 text-base mt-0.5"
                     title="Pull back to draft"
-                  >
-                    🔄
-                  </button>
+                  ></button>
                 ) : (
                   !selectMode && (
                     <button onClick={() => deleteObjective(obj.id)} className={`${btnDanger} flex-shrink-0 mt-0.5`}>
@@ -701,12 +699,12 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                 <div className="px-4 pb-4 pt-1">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-medium text-slate-500">🔑 Weight KR: {krTotalWeight}%</span>
+                      <span className="text-xs font-medium text-slate-500">Weight KR: {krTotalWeight}%</span>
                       {obj.keyResults.length > 0 && (
                         <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${
                           krWeightOk ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"
                         }`}>
-                          {krWeightOk ? "✅" : "must be 100%"}
+                          {krWeightOk ? "" : "must be 100%"}
                         </span>
                       )}
                     </div>
@@ -714,17 +712,17 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                       <button
                         onClick={() => addKeyResult(obj.id)}
                         className="flex items-center gap-1 text-xs text-amber-600 hover:text-amber-700 font-bold bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg
-                          shadow-[0_3px_0_#097eb9] hover:shadow-[0_1px_0_#097eb9] hover:translate-y-0.5
-                          active:shadow-none active:translate-y-[3px] transition-all duration-75"
+                          shadow-sm hover:shadow-sm
+                          transition-all duration-75"
                       >
-                        ➕ Add KR
+                        Add KR
                       </button>
                     )}
                   </div>
 
                   {obj.keyResults.length === 0 && (
                     <p className="text-slate-400 text-sm text-center py-6 border-2 border-dashed border-slate-100 rounded-xl">
-                      🔑 No key result.
+                      No key result.
                     </p>
                   )}
 
@@ -756,7 +754,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
 
                           <div className="grid grid-cols-3 gap-3 text-xs mb-3">
                             <div>
-                              <label className="block text-slate-400 mb-1 font-medium">🎯 Target</label>
+                              <label className="block text-slate-400 mb-1 font-medium">Target</label>
                               <input
                                 type="number"
                                 className="w-full border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:border-amber-400 bg-white disabled:bg-slate-50 disabled:cursor-default"
@@ -768,7 +766,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                               />
                             </div>
                             <div>
-                              <label className="block text-slate-400 mb-1 font-medium">📏 Satuan</label>
+                              <label className="block text-slate-400 mb-1 font-medium">Satuan</label>
                               <select
                                 className="w-full border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:border-amber-400 bg-white disabled:cursor-default"
                                 value={kr.unit}
@@ -780,7 +778,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                               </select>
                             </div>
                             <div>
-                              <label className="block text-slate-400 mb-1 font-medium">⚖️ Weight (%)</label>
+                              <label className="block text-slate-400 mb-1 font-medium">Weight (%)</label>
                               <input
                                 type="number"
                                 className="w-full border border-slate-200 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:border-amber-400 bg-white disabled:bg-slate-50 disabled:cursor-default"
@@ -795,7 +793,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
 
                           {isLead ? (
                             <div className="flex items-center gap-2 mb-2">
-                              <span className="text-xs font-medium text-blue-600 flex-shrink-0">📝 Division Lead Contribution</span>
+                              <span className="text-xs font-medium text-blue-600 flex-shrink-0">Division Lead Contribution</span>
                               <input
                                 type="number"
                                 className="w-20 border border-blue-200 rounded-lg px-2 py-1 text-xs text-right bg-blue-50 focus:outline-none focus:border-blue-400"
@@ -817,12 +815,12 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                                   onClick={() => { updateKR(obj.id, kr.id, { leadProgress: null }); saveLeadProgress(kr.id, null); }}
                                   className="text-slate-300 hover:text-slate-500 text-xs transition"
                                   title="Reset contribution"
-                                >✕</button>
+                                ></button>
                               )}
                             </div>
                           ) : (
                             <p className="text-xs text-slate-400 italic mb-2">
-                              💡 Member progress is filled in on the{" "}
+                              Member progress is filled in on the{" "}
                               <a href="/distribusi" className="text-amber-600 hover:underline font-semibold">Distribusi Member →</a>
                             </p>
                           )}

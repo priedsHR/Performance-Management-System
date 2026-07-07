@@ -19,7 +19,7 @@ type Schedule = {
 };
 
 const DAYS = ["Week", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-const TYPE_LABEL: Record<string, string> = { settings: "🎯 Setting OKR", collection: "📋 Submission" };
+const TYPE_LABEL: Record<string, string> = { settings: "Setting OKR", collection: "Submission" };
 const FREQ_LABEL: Record<string, string> = { weekly: "Every Week", biweekly: "Every 2 Weeks", monthly: "Every Month" };
 
 function fmtWIB(iso: string) {
@@ -93,15 +93,15 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
     <div className="space-y-5">
       {/* Create form */}
       <div className="bg-white rounded-2xl border border-slate-200 p-5">
-        <h3 className="font-bold text-slate-800 mb-4">➕ Create Automatic Schedule</h3>
+        <h3 className="font-bold text-slate-800 mb-4">Create Automatic Schedule</h3>
         <form onSubmit={handleCreate} className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
           {/* Type */}
           <div className="space-y-1">
             <label className="text-xs font-semibold text-slate-500">Tipe Reminder</label>
             <select value={type} onChange={e => setType(e.target.value)}
               className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400">
-              <option value="settings">🎯 Setting OKR</option>
-              <option value="collection">📋 Submission</option>
+              <option value="settings">Setting OKR</option>
+              <option value="collection">Submission</option>
             </select>
           </div>
 
@@ -155,10 +155,10 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
           {/* Submit */}
           <div className="flex items-end col-span-2 md:col-span-1">
             <button type="submit" disabled={saving || !quarterId}
-              className="w-full flex items-center justify-center gap-2 bg-amber-400 text-white font-bold text-sm px-5 py-2 rounded-xl
-                shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5
-                active:shadow-none active:translate-y-1 disabled:opacity-50 disabled:shadow-none transition-all duration-75">
-              {saving ? "⏳ Saving..." : "💾 Save Schedule"}
+              className="w-full flex items-center justify-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-5 py-2 rounded-xl
+                shadow-sm hover:shadow-sm
+                active:translate-y-1 disabled:opacity-50 transition-all duration-75">
+              {saving ? "Saving..." : "Save Schedule"}
             </button>
           </div>
         </form>
@@ -173,7 +173,7 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
       ) : (
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
           <div className="px-5 py-3 bg-slate-50 border-b border-slate-100">
-            <p className="font-semibold text-slate-700 text-sm">🗓️ Schedule Active ({schedules.length})</p>
+            <p className="font-semibold text-slate-700 text-sm">Schedule Active ({schedules.length})</p>
           </div>
           <div className="divide-y divide-slate-50">
             {schedules.map((s) => (
@@ -198,13 +198,11 @@ export default function ScheduleManager({ quarters, initialSchedules }: { quarte
                         ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
                         : "bg-slate-50 text-slate-500 border-slate-200 hover:bg-slate-100"
                     }`}>
-                    {s.isActive ? "✅ Active" : "⏸️ Inactive"}
+                    {s.isActive ? "Active" : "Inactive"}
                   </button>
                   {/* Delete */}
                   <button onClick={() => handleDelete(s.id)}
-                    className="text-xs font-semibold px-3 py-1 rounded-lg border border-red-200 text-red-500 bg-red-50 hover:bg-red-100 transition">
-                    🗑️
-                  </button>
+                    className="text-xs font-semibold px-3 py-1 rounded-lg border border-red-200 text-red-500 bg-red-50 hover:bg-red-100 transition"></button>
                 </div>
               </div>
             ))}

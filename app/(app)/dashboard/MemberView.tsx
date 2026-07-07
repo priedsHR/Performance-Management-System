@@ -29,7 +29,7 @@ export default function MemberView({ quarters, initialQuarterId, leadId, divisio
                 : "text-slate-500 hover:text-slate-700"
             }`}
           >
-            📊 {divisionName ?? "Division"}
+            {divisionName ?? "Division"}
           </button>
         )}
         <button
@@ -40,7 +40,7 @@ export default function MemberView({ quarters, initialQuarterId, leadId, divisio
               : "text-slate-500 hover:text-slate-700"
           }`}
         >
-          🎯 Progress Saya
+          Progress Saya
         </button>
       </div>
 

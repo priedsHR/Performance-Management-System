@@ -9,7 +9,7 @@ export default async function NorthStarPage() {
     <div className="space-y-4">
       <div className="flex items-end justify-between flex-wrap gap-2">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">🌟 North Star — Company OKR Trajectory</h1>
+          <h1 className="text-xl font-bold text-slate-900">North Star — Company OKR Trajectory</h1>
           <p className="text-sm text-slate-500 mt-0.5">
             Division achievement per quarter with the company average — presentation-ready for leadership reviews.
           </p>

@@ -60,7 +60,7 @@ export default function ReportsAdmin() {
     <div className="space-y-4">
       {/* Period selector */}
       <div className="bg-white border border-slate-200 rounded-2xl p-5">
-        <label className="block text-xs font-medium text-slate-500 mb-1.5">🗓️ Select Period</label>
+        <label className="block text-xs font-medium text-slate-500 mb-1.5">Select Period</label>
         <select
           value={periodId}
           onChange={(e) => setPeriodId(e.target.value)}
@@ -76,7 +76,7 @@ export default function ReportsAdmin() {
 
       {/* search / filter / sort */}
       <div className="flex flex-wrap items-center gap-2">
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="🔍 Search name / position…"
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name / position…"
           className="border border-slate-200 rounded-xl px-3 py-2.5 text-sm flex-1 min-w-[200px] bg-white" />
         <select value={deptFilter} onChange={(e) => setDeptFilter(e.target.value)} className="border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white">
           <option value="">All departments</option>
@@ -110,7 +110,7 @@ export default function ReportsAdmin() {
           </div>
         ) : rows.length === 0 ? (
           <div className="p-12 text-center">
-            <div className="text-4xl mb-3">📊</div>
+            <div className="text-4xl mb-3"></div>
             <p className="text-slate-500 text-sm">No assessment data for this period yet.</p>
           </div>
         ) : (

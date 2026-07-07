@@ -57,7 +57,7 @@ export default async function RemindersPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-xl font-bold text-slate-900 mb-1">📧 Reminder</h1>
+        <h1 className="text-xl font-bold text-slate-900 mb-1">Reminder</h1>
         <p className="text-sm text-slate-400">Send manually or set an automatic schedule for all Division Leads.</p>
       </div>
 

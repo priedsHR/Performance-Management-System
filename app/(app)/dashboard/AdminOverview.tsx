@@ -33,7 +33,7 @@ function barColor(v: number) {
   return v >= 100 ? "bg-green-500" : v >= 70 ? "bg-amber-400" : "bg-red-400";
 }
 function achEmoji(v: number) {
-  return v >= 100 ? "🏆" : v >= 70 ? "🔥" : "📉";
+  return v >= 100 ? "" : v >= 70 ? "" : "";
 }
 
 export default function AdminOverview({ leads, quarters, allMembersByLead }: Props) {
@@ -73,15 +73,15 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-900">📊 Dashboard All Division</h1>
+          <h1 className="text-xl font-bold text-slate-900">Dashboard All Division</h1>
           <p className="text-xs text-slate-400 mt-1">Click a division to view OKR & individual details</p>
         </div>
 
         {/* Controls */}
         <div className="flex items-center gap-2 flex-wrap">
           <input
-            className="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white shadow-[0_2px_0_#e2e8f0]"
-            placeholder="🔍 Search division..."
+            className="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white shadow-sm"
+            placeholder="Search division..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -118,7 +118,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
 
         {loading && (
           <div className="py-12 text-center text-slate-400 text-sm">
-            <span className="animate-spin mr-2 text-lg inline-block">⏳</span> Loading data...
+            <span className="animate-spin mr-2 text-lg inline-block"></span> Loading data...
           </div>
         )}
 
@@ -145,7 +145,7 @@ export default function AdminOverview({ leads, quarters, allMembersByLead }: Pro
                     {/* Name + stats */}
                     <div className="min-w-0">
                       <p className="font-semibold text-slate-800 text-sm leading-snug">
-                        🏢 {lead.division ?? lead.name}
+                        {lead.division ?? lead.name}
                       </p>
                       {summary ? (
                         <p className="text-xs text-slate-400 mt-0.5">

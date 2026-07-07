@@ -98,7 +98,7 @@ export default function NineBox({ periods, quarters }: { periods: Opt[]; quarter
                       </span>
                     ))}
                   </div>
-                  {openBox === key && <p className="text-[10px] text-slate-500 mt-2 border-t border-slate-200 pt-1.5">📌 {box.action}</p>}
+                  {openBox === key && <p className="text-[10px] text-slate-500 mt-2 border-t border-slate-200 pt-1.5">{box.action}</p>}
                 </button>
               );
             })}

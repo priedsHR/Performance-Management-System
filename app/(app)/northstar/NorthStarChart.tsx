@@ -40,7 +40,7 @@ export default function NorthStarChart() {
         <div className="flex items-center justify-between mb-3 print:hidden">
           <p className="text-sm font-bold text-slate-800">Quarterly achievement — divisions & company</p>
           <button onClick={() => window.print()} className="text-xs font-semibold text-teal-700 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-50">
-            🖨 Print / PDF
+            Print / PDF
           </button>
         </div>
         <ResponsiveContainer width="100%" height={380}>

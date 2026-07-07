@@ -32,7 +32,7 @@ type TrendPoint = { quarterId: string; quarterName: string; quarterLabel: string
 function achClass(v: number) {
   return v >= 100 ? "bg-green-100 text-green-700" : v >= 70 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600";
 }
-function achEmoji(v: number) { return v >= 100 ? "🏆" : v >= 70 ? "🔥" : "📉"; }
+function achEmoji(v: number) { return v >= 100 ? "" : v >= 70 ? "" : ""; }
 function barColor(v: number) { return v >= 100 ? "#22c55e" : v >= 70 ? "#f59e0b" : "#f87171"; }
 
 function PctBadge({ value }: { value: number }) {
@@ -66,7 +66,7 @@ function TrendChart({ trend }: { trend: TrendPoint[] }) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
       <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
-        <h2 className="font-bold text-slate-700 text-sm">📈 Tren Achievement per Quarter</h2>
+        <h2 className="font-bold text-slate-700 text-sm">Tren Achievement per Quarter</h2>
       </div>
       <div className="p-5 h-52">
         <ResponsiveContainer width="100%" height="100%">
@@ -136,11 +136,11 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
         className="w-full flex items-center justify-between px-5 py-4 bg-slate-50 hover:bg-slate-100 transition-colors text-left group"
       >
         <div className="flex items-center gap-3 min-w-0">
-          <span className="text-lg flex-shrink-0">🎯</span>
+          <span className="text-lg flex-shrink-0"></span>
           <div className="min-w-0">
             <p className="text-xs font-semibold text-amber-600 mb-0.5">Objective #{index + 1}</p>
             <h3 className="font-bold text-slate-800 text-sm leading-snug">{a.objectiveTitle}</h3>
-            <span className="text-xs text-slate-400">⚖️ Weight {a.weight}%</span>
+            <span className="text-xs text-slate-400">Weight {a.weight}%</span>
           </div>
         </div>
         <div className="flex items-center gap-3 flex-shrink-0 ml-3">
@@ -160,7 +160,7 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
           <div className="p-5 space-y-4">
             {/* KR Table */}
             <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">🔑 Key Results (My Contribution)</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Key Results (My Contribution)</p>
               {a.krAssignments.length === 0 ? (
                 <p className="text-xs text-slate-400 italic">No KRs assigned yet.</p>
               ) : (
@@ -182,7 +182,7 @@ function AssignmentSection({ a, index }: { a: AssignmentData; index: number }) {
                           <td className="py-2.5 pr-3 font-medium text-slate-700">
                             <span className="break-words">{k.krTitle}</span>
                             {k.individualTarget != null && (
-                              <span className="text-xs text-blue-500">⚡ target individu</span>
+                              <span className="text-xs text-blue-500">target individu</span>
                             )}
                           </td>
                           <td className="py-2.5 px-2 text-right text-slate-600 tabular-nums">
@@ -268,16 +268,16 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
       <div className="flex items-end justify-between gap-4 flex-wrap">
         <div className="flex flex-wrap items-end gap-4">
           <div>
-            <p className="text-xs text-slate-400 mb-1.5">⏱️ Quarter</p>
+            <p className="text-xs text-slate-400 mb-1.5">Quarter</p>
             <YearQuarterPicker quarters={quarters} value={selectedQ} onChange={setSelectedQ} />
           </div>
           <div>
-            <p className="text-xs text-slate-400 mb-1.5">👤 Member</p>
+            <p className="text-xs text-slate-400 mb-1.5">Member</p>
             <select
               value={selectedMember}
               onChange={(e) => setSelectedMember(e.target.value)}
               className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white
-                shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px transition-all duration-75"
+                shadow-sm hover:shadow-sm transition-all duration-75"
             >
               {members.map((m) => (
                 <option key={m.id} value={m.id}>{m.name}</option>
@@ -289,20 +289,20 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
         <div className="flex items-center gap-3 flex-wrap">
           {data && data.assignments.length > 0 && (
             <div className={`border rounded-2xl px-6 py-3 text-center ${achBg}`}>
-              <p className="text-xs font-semibold mb-0.5">🏆 Achievement</p>
+              <p className="text-xs font-semibold mb-0.5">Achievement</p>
               <p className="text-3xl font-bold leading-tight">{data.achievement.toFixed(1)}%</p>
             </div>
           )}
           <div className="flex gap-2 print:hidden">
             <button
               onClick={() => window.print()}
-              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px transition-all duration-75"
-            >🖨️ Print PDF</button>
+              className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 shadow-sm hover:shadow-sm transition-all duration-75"
+            >Print PDF</button>
             {selectedMember && selectedQ && (
               <a
                 href={`/api/dashboard/individual/export?memberId=${selectedMember}&quarterId=${selectedQ}&leadId=${leadId}`}
-                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 shadow-[0_2px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-px transition-all duration-75"
-              >📊 Excel</a>
+                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 shadow-sm hover:shadow-sm transition-all duration-75"
+              >Excel</a>
             )}
           </div>
         </div>
@@ -310,20 +310,20 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
 
       {members.length === 0 && (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
-          <div className="text-4xl mb-2">👥</div>
+          <div className="text-4xl mb-2"></div>
           <p className="text-slate-500 text-sm">No members yet. Add them on the Division OKR page.</p>
         </div>
       )}
 
       {loading && (
         <div className="flex items-center justify-center py-16 text-slate-400">
-          <span className="text-2xl animate-spin mr-3">⏳</span> Loading data...
+          <span className="text-2xl animate-spin mr-3"></span> Loading data...
         </div>
       )}
 
       {!loading && data && data.assignments.length === 0 && (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
-          <div className="text-4xl mb-2">🎯</div>
+          <div className="text-4xl mb-2"></div>
           <p className="text-slate-500 text-sm">This member has no assignments for this quarter yet.</p>
         </div>
       )}
@@ -343,7 +343,7 @@ export default function IndividualView({ quarters, members, leadId, defaultQuart
 
       {!trendLoading && trend.length === 1 && (
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 text-slate-400 text-sm text-center">
-          📈 Tren akan tampil setelah ada data dari 2+ quarter.
+          Tren akan tampil setelah ada data dari 2+ quarter.
         </div>
       )}
     </div>

@@ -119,7 +119,7 @@ export default function MyAssessment() {
     });
     setSaving(null);
     if (res.ok) {
-      setMsg(submit ? "Assessment submitted ✓" : "Saved as draft ✓");
+      setMsg(submit ? "Assessment submitted" : "Saved as draft");
       await load();
       if (submit) setOpenId(null);
     } else {
@@ -182,7 +182,7 @@ export default function MyAssessment() {
               </div>
               <div className="flex items-center gap-3 flex-shrink-0">
                 {t.submitted ? (
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600">✓ Submitted</span>
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600">Submitted</span>
                 ) : (
                   <span className="text-[11px] text-slate-400">{answered}/{t.total} answered</span>
                 )}

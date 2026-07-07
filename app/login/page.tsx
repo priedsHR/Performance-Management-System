@@ -33,16 +33,16 @@ export default function LoginPage() {
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 bg-white border-r border-slate-200 flex-col items-center justify-center px-16">
         <div className="text-center max-w-xs">
-          <div className="text-6xl mb-5">📈</div>
+          <div className="text-6xl mb-5"></div>
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Performance Management System</h2>
           <p className="text-slate-500 text-sm leading-relaxed">
             Track your team's OKR achievement in real time, transparently.
           </p>
           <div className="mt-8 grid grid-cols-3 gap-3">
             {[
-              { emoji: "🎯", label: "Objectives", desc: "Terstruktur" },
-              { emoji: "🔑", label: "Key Results", desc: "Terukur" },
-              { emoji: "📊", label: "Progress", desc: "Real-time" },
+              { emoji: "", label: "Objectives", desc: "Terstruktur" },
+              { emoji: "", label: "Key Results", desc: "Terukur" },
+              { emoji: "", label: "Progress", desc: "Real-time" },
             ].map((item) => (
               <div key={item.label} className="bg-slate-50 border border-slate-200 rounded-xl p-3">
                 <div className="text-xl mb-1">{item.emoji}</div>
@@ -59,19 +59,19 @@ export default function LoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <span className="text-2xl">📈</span>
+            <span className="text-2xl"></span>
             <span className="text-xl font-bold text-slate-900">Performance Management System</span>
           </div>
 
           <div className="mb-7">
-            <h1 className="text-2xl font-bold text-slate-900">Selamat datang 👋</h1>
+            <h1 className="text-2xl font-bold text-slate-900">Selamat datang</h1>
             <p className="text-slate-500 text-sm mt-1">Sign in to your account to continue</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                📧 Email
+                Email
               </label>
               <input
                 name="email"
@@ -83,7 +83,7 @@ export default function LoginPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                🔒 Password
+                Password
               </label>
               <input
                 name="password"
@@ -96,7 +96,7 @@ export default function LoginPage() {
 
             {error && (
               <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-                <span>⚠️</span>
+                <span></span>
                 <p className="text-red-600 text-sm">{error}</p>
               </div>
             )}
@@ -104,11 +104,11 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-amber-400 text-white font-bold py-2.5 rounded-xl text-sm
-                shadow-[0_4px_0_#097eb9]
-                hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5
-                active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px]
-                disabled:opacity-60 disabled:shadow-none disabled:translate-y-0
+              className="w-full bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold py-2.5 rounded-xl text-sm
+                shadow-sm
+                hover:shadow-sm
+                active:shadow-sm
+                disabled:opacity-60
                 transition-all duration-75 flex items-center justify-center gap-2"
             >
               {loading ? (
@@ -117,7 +117,7 @@ export default function LoginPage() {
                   Sign in...
                 </>
               ) : (
-                <>🚀 Sign in</>
+                <>Sign in</>
               )}
             </button>
           </form>

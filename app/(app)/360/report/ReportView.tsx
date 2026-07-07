@@ -330,7 +330,7 @@ function Recommendation({ report, comments, personName }: { report: Report; comm
   return (
     <div className="mt-6 border border-slate-200 rounded-2xl overflow-hidden">
       <div className="bg-slate-50 px-5 py-3 border-b border-slate-100">
-        <p className="text-sm font-bold text-slate-800">💡 Recommendation</p>
+        <p className="text-sm font-bold text-slate-800">Recommendation</p>
         <p className="text-[11px] text-slate-400">Summary of this 360 cycle — overview, development focus, and what raters said.</p>
       </div>
       <div className="p-5 space-y-4">

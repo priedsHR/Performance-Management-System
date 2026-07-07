@@ -52,7 +52,7 @@ export default function LeadDashboard360() {
                 </td>
                 <td className="px-3 py-2 text-center">
                   {m.selfSubmitted ? (
-                    <span className="text-teal-600 font-semibold">✓ Done</span>
+                    <span className="text-teal-600 font-semibold">Done</span>
                   ) : (
                     <span className="text-slate-400">Not yet</span>
                   )}

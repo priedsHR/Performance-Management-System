@@ -17,14 +17,14 @@ type Quarter = {
 };
 
 const btnPrimary =
-  "flex items-center gap-2 bg-amber-400 text-white font-bold text-sm px-4 py-2.5 rounded-xl " +
-  "shadow-[0_4px_0_#097eb9] hover:shadow-[0_2px_0_#097eb9] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#097eb9] active:translate-y-[3px] transition-all duration-75";
+  "flex items-center gap-2 bg-[#0b8ec4] text-white hover:bg-[#097eb9] font-bold text-sm px-4 py-2.5 rounded-xl " +
+  "shadow-sm hover:shadow-sm " +
+  "active:shadow-sm transition-all duration-75";
 
 const btnSecondary =
   "flex items-center gap-2 bg-white border border-slate-200 text-slate-700 font-semibold text-sm px-4 py-2.5 rounded-xl " +
-  "shadow-[0_4px_0_#e2e8f0] hover:shadow-[0_2px_0_#e2e8f0] hover:translate-y-0.5 " +
-  "active:shadow-[0_1px_0_#e2e8f0] active:translate-y-[3px] transition-all duration-75";
+  "shadow-sm hover:shadow-sm " +
+  "active:shadow-sm transition-all duration-75";
 
 const inputCls =
   "w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition";
@@ -107,14 +107,14 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
       {/* Top bar */}
       <div className="flex justify-end">
         <button onClick={() => setShowForm(!showForm)} className={btnPrimary}>
-          ➕ Add Quarter
+          Add Quarter
         </button>
       </div>
 
       {/* Create form */}
       {showForm && (
         <div className="bg-white rounded-2xl border border-amber-200 p-6">
-          <h2 className="font-semibold text-slate-800 mb-4">⏱️ New Quarter</h2>
+          <h2 className="font-semibold text-slate-800 mb-4">New Quarter</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
               <label className="block text-xs font-medium text-slate-500 mb-1.5">Name Quarter</label>
@@ -134,19 +134,19 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1.5">📅 Start Date</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">Start Date</label>
               <input type="date" className={inputCls} value={form.startDate}
                 onChange={(e) => setForm({ ...form, startDate: e.target.value })} />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1.5">📅 End Date</label>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">End Date</label>
               <input type="date" className={inputCls} value={form.endDate}
                 onChange={(e) => setForm({ ...form, endDate: e.target.value })} />
             </div>
           </div>
           <div className="flex gap-2 mt-5">
-            <button onClick={createQuarter} className={btnPrimary}>💾 Save</button>
-            <button onClick={() => setShowForm(false)} className={btnSecondary}>✕ Cancel</button>
+            <button onClick={createQuarter} className={btnPrimary}>Save</button>
+            <button onClick={() => setShowForm(false)} className={btnSecondary}>Cancel</button>
           </div>
         </div>
       )}
@@ -154,7 +154,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
       {/* Export all divisions card */}
       {quarters.length > 0 && (
         <div className="bg-white rounded-2xl border border-slate-200 p-5">
-          <h2 className="font-semibold text-slate-800 mb-1">📊 Export All Division</h2>
+          <h2 className="font-semibold text-slate-800 mb-1">Export All Division</h2>
           <p className="text-xs text-slate-400 mb-4">Download all divisions' OKR data in one Excel file (one tab per division).</p>
           <div className="flex items-center gap-3 flex-wrap">
             <YearQuarterPicker
@@ -166,11 +166,11 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
               onClick={exportAll}
               disabled={!exportQuarterId || exporting}
               className="flex items-center gap-2 bg-emerald-500 text-white font-bold text-sm px-4 py-2 rounded-xl
-                shadow-[0_3px_0_#059669] hover:shadow-[0_1px_0_#059669] hover:translate-y-0.5
-                active:shadow-none active:translate-y-[3px] disabled:opacity-50 disabled:shadow-none
-                disabled:translate-y-0 transition-all duration-75"
+                shadow-sm hover:shadow-sm
+                disabled:opacity-50
+                transition-all duration-75"
             >
-              {exporting ? "⏳ Menyiapkan..." : "⬇️ Download Excel"}
+              {exporting ? "Menyiapkan..." : "Download Excel"}
             </button>
           </div>
         </div>
@@ -180,7 +180,7 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
       <div className="space-y-3">
         {quarters.length === 0 ? (
           <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-12 text-center">
-            <div className="text-4xl mb-3">⏱️</div>
+            <div className="text-4xl mb-3"></div>
             <p className="text-slate-500 text-sm">No quarters. Add the first quarter.</p>
           </div>
         ) : (
@@ -195,10 +195,10 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                   className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-slate-50 transition-colors"
                 >
                   <div className="flex items-center gap-2.5">
-                    <span className="text-sm font-bold text-slate-700">📅 {year}</span>
+                    <span className="text-sm font-bold text-slate-700">{year}</span>
                     {hasActive && (
-                      <span className="bg-amber-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                        ✅ Active
+                      <span className="bg-[#0b8ec4] text-white hover:bg-[#097eb9] text-xs font-bold px-2 py-0.5 rounded-full">
+                        Active
                       </span>
                     )}
                     <span className="text-xs text-slate-400">{qs.length} quarter</span>
@@ -219,15 +219,15 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                       >
                         <div>
                           <div className="flex items-center gap-2.5 mb-0.5">
-                            <h3 className="font-semibold text-slate-800 text-sm">⏱️ {q.name}</h3>
+                            <h3 className="font-semibold text-slate-800 text-sm">{q.name}</h3>
                             {q.isActive && (
-                              <span className="bg-amber-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                                ✅ Active
+                              <span className="bg-[#0b8ec4] text-white hover:bg-[#097eb9] text-xs font-bold px-2 py-0.5 rounded-full">
+                                Active
                               </span>
                             )}
                           </div>
                           <p className="text-xs text-slate-400">
-                            📅 {new Date(q.startDate).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })} –{" "}
+                            {new Date(q.startDate).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })} –{" "}
                             {new Date(q.endDate).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
                           </p>
                         </div>
@@ -236,17 +236,17 @@ export default function QuarterManager({ initialQuarters }: { initialQuarters: Q
                             onClick={() => toggleActive(q)}
                             className={`flex items-center gap-1.5 text-sm px-3 py-1.5 rounded-xl font-semibold transition-all duration-75 ${
                               q.isActive
-                                ? "bg-amber-100 text-amber-700 shadow-[0_3px_0_#fbbf24] hover:shadow-[0_1px_0_#fbbf24] hover:translate-y-0.5 active:shadow-none active:translate-y-[3px]"
-                                : "bg-white border border-slate-200 text-slate-600 shadow-[0_3px_0_#e2e8f0] hover:shadow-[0_1px_0_#e2e8f0] hover:translate-y-0.5 active:shadow-none active:translate-y-[3px]"
+                                ? "bg-amber-100 text-amber-700 shadow-sm hover:shadow-sm"
+                                : "bg-white border border-slate-200 text-slate-600 shadow-sm hover:shadow-sm"
                             }`}
                           >
-                            {q.isActive ? "✅ Active" : "▶️ Set Active"}
+                            {q.isActive ? "Active" : "▶Set Active"}
                           </button>
                           <button
                             onClick={() => deleteQuarter(q.id)}
                             className="text-slate-300 hover:text-red-500 p-2 rounded-lg hover:bg-red-50
-                              shadow-[0_3px_0_#e2e8f0] hover:shadow-[0_1px_0_#fecaca] hover:translate-y-0.5
-                              active:shadow-none active:translate-y-[3px] transition-all duration-75"
+                              shadow-sm hover:shadow-sm
+                              transition-all duration-75"
                           >
                             <Trash2 size={15} />
                           </button>
