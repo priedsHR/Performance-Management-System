@@ -37,6 +37,8 @@ interface SinglePayload {
   person: { name: string; position: string | null; department: string | null; level: string | null; targetLevel: number | null };
   report: Report;
   comments: Record<string, string[]>;
+  commentsSuper?: Record<string, string[]>;
+  commentsOthers?: Record<string, string[]>;
 }
 interface TrendItem { periodId: string; name: string; year: number; half: string; overall: number | null; categories: Record<string, number | null>; }
 
@@ -207,6 +209,7 @@ function Legend({ color, label, bold }: { color: string; label: string; bold?: b
 
 function SingleReport({ data }: { data: SinglePayload }) {
   const { person, report, period, comments } = data;
+  const { commentsSuper, commentsOthers } = data;
   const tgt = report.targetLevel;
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-6">
@@ -272,7 +275,7 @@ function SingleReport({ data }: { data: SinglePayload }) {
               </div>
             </div>
           ))}
-          <Recommendation report={report} comments={comments} personName={person.name} />
+          <Recommendation report={report} comments={comments} commentsSuper={commentsSuper} commentsOthers={commentsOthers} personName={person.name} />
 
           <p className="text-[11px] text-slate-400 mt-3">
             Weighted score = Superordinate 40% · Peers 30% · Subordinates 30% (Self shown for context only). Rater identities are confidential — scores & notes are shown without names.
@@ -286,7 +289,7 @@ function SingleReport({ data }: { data: SinglePayload }) {
 // Auto-generated development recommendation, modeled on the PRIEDS 360 report:
 // a Performance Overview narrative, numbered Areas for Development, and the
 // anonymous qualitative feedback from raters.
-function Recommendation({ report, comments, personName }: { report: Report; comments: Record<string, string[]>; personName: string }) {
+function Recommendation({ report, comments, commentsSuper, commentsOthers, personName }: { report: Report; comments: Record<string, string[]>; commentsSuper?: Record<string, string[]>; commentsOthers?: Record<string, string[]>; personName: string }) {
   const tgt = report.targetLevel;
   const scoredCats = report.categories.filter((c) => c.score != null);
   if (!scoredCats.length) return null;
@@ -351,20 +354,9 @@ function Recommendation({ report, comments, personName }: { report: Report; comm
           </div>
         )}
         {hasComments ? (
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-1.5">Feedback summary (anonymous)</p>
-            <div className="space-y-2">
-              {Object.entries(comments).filter(([, arr]) => arr && arr.length).map(([cat, arr]) => {
-                const sum = summarizeComments(arr);
-                return (
-                  <div key={cat}>
-                    <p className="text-[11px] font-semibold text-slate-400">{CAT_LABEL[cat] ?? cat} · {arr.length} rater{arr.length > 1 ? "s" : ""}</p>
-                    {sum.strengths && <p className="text-[13px] text-slate-600"><span className="font-semibold text-emerald-600">Strengths:</span> {sum.strengths}</p>}
-                    {sum.improve && <p className="text-[13px] text-slate-600"><span className="font-semibold text-amber-600">To improve:</span> {sum.improve}</p>}
-                  </div>
-                );
-              })}
-            </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <FeedbackColumn title="Superordinate feedback" tone="super" data={commentsSuper ?? {}} empty="No feedback from the superordinate yet." />
+            <FeedbackColumn title="Peers & team feedback" tone="others" data={commentsOthers ?? {}} empty="No feedback from peers or team yet." />
           </div>
         ) : (
           <p className="text-[11px] text-slate-400">No qualitative feedback was submitted in this cycle yet.</p>
@@ -399,4 +391,31 @@ function summarizeComments(arr: string[]): { strengths: string; improve: string 
     return out;
   };
   return { strengths: join(strengths), improve: join(improve) };
+}
+
+// One column of the feedback summary: per-category strengths / to-improve
+// extracted from one rater group's comments.
+function FeedbackColumn({ title, tone, data, empty }: { title: string; tone: "super" | "others"; data: Record<string, string[]>; empty: string }) {
+  const entries = Object.entries(data).filter(([, arr]) => arr && arr.length);
+  return (
+    <div className={`rounded-xl border p-4 ${tone === "super" ? "border-[#b7e7f7] bg-[#f7fcfe]" : "border-slate-200 bg-slate-50/50"}`}>
+      <p className={`text-xs font-bold uppercase tracking-wide mb-2 ${tone === "super" ? "text-[#097eb9]" : "text-slate-500"}`}>{title}</p>
+      {entries.length === 0 ? (
+        <p className="text-[12px] text-slate-400">{empty}</p>
+      ) : (
+        <div className="space-y-2.5">
+          {entries.map(([cat, arr]) => {
+            const sum = summarizeComments(arr);
+            return (
+              <div key={cat}>
+                <p className="text-[11px] font-semibold text-slate-400">{CAT_LABEL[cat] ?? cat}</p>
+                {sum.strengths && <p className="text-[13px] text-slate-600"><span className="font-semibold text-emerald-600">Strengths:</span> {sum.strengths}</p>}
+                {sum.improve && <p className="text-[13px] text-slate-600"><span className="font-semibold text-amber-600">To improve:</span> {sum.improve}</p>}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }

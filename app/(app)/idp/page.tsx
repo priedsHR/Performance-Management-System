@@ -14,7 +14,7 @@ export default async function IdpPage() {
           built on the 70-20-10 model.
         </p>
       </div>
-      <IdpForm />
+      <IdpForm isLead={role === "LEAD"} />
       {(role === "ADMIN" || role === "LEAD") && (
         <div>
           <h2 className="text-base font-bold text-slate-800 mb-1">{role === "ADMIN" ? "All Plans" : "Team Plans"}</h2>

@@ -70,11 +70,19 @@ export async function POST(req: NextRequest) {
   for (const f of FIELDS) data[f] = String(body[f] ?? "").trim();
 
   if (body.submit) {
-    const required = ["careerAspiration", "coreStrength", "technicalFocus", "technicalAction", "technicalMetric"];
+    // Leads submit a self-growth plan (behavioral row) instead of a technical one.
+    const isLead = session.user.role === "LEAD";
+    const required = isLead
+      ? ["careerAspiration", "coreStrength", "behavioralFocus", "behavioralAction", "behavioralMetric"]
+      : ["careerAspiration", "coreStrength", "technicalFocus", "technicalAction", "technicalMetric"];
     const missing = required.filter((f) => !data[f]);
     if (missing.length)
       return NextResponse.json(
-        { error: "Please fill in at least the Career Aspiration, Core Strength and the Technical row before submitting." },
+        {
+          error: isLead
+            ? "Please fill in at least the Career Aspiration, Core Strength and the Behavioral row before submitting."
+            : "Please fill in at least the Career Aspiration, Core Strength and the Technical row before submitting.",
+        },
         { status: 400 }
       );
   }

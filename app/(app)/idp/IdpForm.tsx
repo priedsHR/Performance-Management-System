@@ -24,7 +24,7 @@ const ROWS = [
 
 const inp = "w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white";
 
-export default function IdpForm() {
+export default function IdpForm({ isLead = false }: { isLead?: boolean }) {
   const [period, setPeriod] = useState<{ id: string; name: string } | null>(null);
   const [form, setForm] = useState({ ...EMPTY });
   const [status, setStatus] = useState("DRAFT");
@@ -99,7 +99,7 @@ export default function IdpForm() {
       {/* Section 2 */}
       <div>
         <p className="text-xs font-bold uppercase tracking-wide text-teal-700 mb-1">Section 2 · Development Action Plan (70-20-10)</p>
-        <p className="text-[11px] text-slate-400 mb-2">Based on my 360 feedback, I need to improve [behavior/skill] to hit my next OKR.</p>
+        <p className="text-[11px] text-slate-400 mb-2">{isLead ? "Leads focus on self-growth: behavioral & learning goals only — no technical row, to keep the load sustainable." : "Based on my 360 feedback, I need to improve [behavior/skill] to hit my next OKR."}</p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[640px]">
             <thead>
@@ -111,7 +111,7 @@ export default function IdpForm() {
               </tr>
             </thead>
             <tbody>
-              {ROWS.map((r) => (
+              {ROWS.filter((r) => !isLead || r.key !== "technical").map((r) => (
                 <tr key={r.key} className="border-t border-slate-100 align-top">
                   <td className="py-2 pr-2">
                     <p className="font-semibold text-slate-700">{r.goal}</p>

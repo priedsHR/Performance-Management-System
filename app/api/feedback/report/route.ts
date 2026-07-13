@@ -108,14 +108,22 @@ export async function GET(req: NextRequest) {
 
   const report = await scoreRatee(userId, periodId, settings);
 
-  // Qualitative comments — aggregated per category, rater identities removed.
+  // Qualitative comments — aggregated per category, rater identities removed,
+  // but split into superordinate (the ratee's manager) vs everyone else.
   const rawComments = await prisma.feedbackComment.findMany({
     where: { rateeId: userId, periodId, submitted: true },
-    select: { category: true, comment: true },
+    select: { category: true, comment: true, raterId: true },
   });
   const comments: Record<string, string[]> = {};
+  const commentsSuper: Record<string, string[]> = {};
+  const commentsOthers: Record<string, string[]> = {};
   for (const c of rawComments) {
     (comments[c.category] ??= []).push(c.comment);
+    if (profile.managerId && c.raterId === profile.managerId) {
+      (commentsSuper[c.category] ??= []).push(c.comment);
+    } else if (c.raterId !== userId) {
+      (commentsOthers[c.category] ??= []).push(c.comment);
+    }
   }
 
   return NextResponse.json({
@@ -129,5 +137,7 @@ export async function GET(req: NextRequest) {
     },
     report, // rater identities are never included
     comments, // { CORE: ["...","..."], ... } anonymous
+    commentsSuper, // from the superordinate only (still unattributed in UI)
+    commentsOthers, // peers & subordinates (self excluded)
   });
 }
