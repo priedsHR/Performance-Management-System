@@ -38,6 +38,10 @@ export default function EmployeePeersManager() {
   const [comps, setComps] = useState<Comp[]>([]);
   const [users, setUsers] = useState<UserLite[]>([]);
   const [editing, setEditing] = useState<string | "new" | null>(null);
+  const [editUserId, setEditUserId] = useState<string | null>(null);
+  const [peerCands, setPeerCands] = useState<{ userId: string; name: string; department: string | null; position: string | null; isDeptDefault: boolean; isPeer: boolean }[] | null>(null);
+  const [peerSel, setPeerSel] = useState<Set<string>>(new Set());
+  const [showOtherDepts, setShowOtherDepts] = useState(false);
   const [form, setForm] = useState({ ...blankForm });
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [msg, setMsg] = useState("");
@@ -80,11 +84,20 @@ export default function EmployeePeersManager() {
     ).map((c) => c.id);
   }
 
-  function startNew() { setForm({ ...blankForm }); setSelected(new Set()); setEditing("new"); setMsg(""); }
+  function startNew() { setForm({ ...blankForm }); setSelected(new Set()); setEditing("new"); setEditUserId(null); setPeerCands(null); setMsg(""); }
   function startEdit(p: Profile) {
     setForm({ name: p.name, email: p.email, password: "", role: p.role, department: p.department || "", position: p.position || "", level: p.level || "", targetMode: p.targetLevel == null ? "none" : String(p.targetLevel), managerId: p.managerId || "", active: p.active });
     setSelected(new Set(p.competencyIds));
-    setEditing(p.id); setMsg("");
+    setEditing(p.id); setEditUserId(p.userId); setMsg("");
+    setPeerCands(null); setShowOtherDepts(false);
+    fetch(`/api/feedback/peers?userId=${p.userId}`)
+      .then((r) => r.json())
+      .then((d) => {
+        const list = d.candidates || [];
+        setPeerCands(list);
+        setPeerSel(new Set(list.filter((c: { isPeer: boolean }) => c.isPeer).map((c: { userId: string }) => c.userId)));
+      })
+      .catch(() => setPeerCands([]));
   }
 
   async function save() {
@@ -96,7 +109,16 @@ export default function EmployeePeersManager() {
     const res = editing === "new"
       ? await fetch("/api/feedback/profiles", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
       : await fetch(`/api/feedback/profiles/${editing}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    if (res.ok) { setEditing(null); await load(); }
+    if (res.ok) {
+      if (editing !== "new" && editUserId && peerCands !== null) {
+        await fetch("/api/feedback/peers", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: editUserId, peerIds: [...peerSel] }),
+        });
+      }
+      setEditing(null); await load();
+    }
     else { const d = await res.json().catch(() => ({})); setMsg(d.error || "Failed to save."); }
   }
 
@@ -261,6 +283,54 @@ export default function EmployeePeersManager() {
                   })}
                 </div>
               </div>
+
+              {editing !== "new" && (
+                <div className="border-t border-slate-100 pt-4">
+                  <p className="text-sm font-semibold text-slate-700 mb-1">Peers ({peerSel.size} selected)</p>
+                  <p className="text-[11px] text-slate-400 mb-2">
+                    Tick who rates {form.name.split(" ")[0] || "this employee"} as a peer (mutual). Same-department colleagues are
+                    listed first — untick anyone who doesn't actually work together.
+                  </p>
+                  {peerCands === null ? (
+                    <p className="text-sm text-slate-400">Loading peers…</p>
+                  ) : (
+                    <>
+                      <div className="grid sm:grid-cols-2 gap-1 border border-slate-200 rounded-xl p-3 max-h-56 overflow-y-auto">
+                        {peerCands.filter((c) => c.isDeptDefault).map((c) => (
+                          <label key={c.userId} className="flex items-center gap-2 text-sm text-slate-700 py-0.5 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={peerSel.has(c.userId)}
+                              onChange={() => setPeerSel((prev) => { const n = new Set(prev); if (n.has(c.userId)) n.delete(c.userId); else n.add(c.userId); return n; })}
+                            />
+                            <span className="truncate">{c.name} <span className="text-[11px] text-slate-400">· {c.position || "—"}</span></span>
+                          </label>
+                        ))}
+                        {peerCands.filter((c) => c.isDeptDefault).length === 0 && (
+                          <p className="text-sm text-slate-400 col-span-2">No same-department colleagues.</p>
+                        )}
+                      </div>
+                      <button type="button" onClick={() => setShowOtherDepts((v) => !v)} className="text-xs font-semibold text-[#097eb9] hover:underline mt-2">
+                        {showOtherDepts ? "Hide other departments ▲" : "Add peers from other departments ▼"}
+                      </button>
+                      {showOtherDepts && (
+                        <div className="grid sm:grid-cols-2 gap-1 border border-slate-200 rounded-xl p-3 max-h-56 overflow-y-auto mt-1.5">
+                          {peerCands.filter((c) => !c.isDeptDefault).map((c) => (
+                            <label key={c.userId} className="flex items-center gap-2 text-sm text-slate-700 py-0.5 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={peerSel.has(c.userId)}
+                                onChange={() => setPeerSel((prev) => { const n = new Set(prev); if (n.has(c.userId)) n.delete(c.userId); else n.add(c.userId); return n; })}
+                              />
+                              <span className="truncate">{c.name} <span className="text-[11px] text-slate-400">· {c.department || "—"} · {c.position || "—"}</span></span>
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
 
               <div className="flex gap-2 pt-1">
                 <button onClick={save} className={btnPrimary}>Save</button>
