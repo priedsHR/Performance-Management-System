@@ -12,9 +12,14 @@ export async function POST(req: Request) {
   if (session?.user.role !== "ADMIN")
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-  const { action, periodId }: { action: "fill" | "reset"; periodId: string } = await req.json();
+  const { action, periodId, confirm }: { action: "fill" | "reset"; periodId: string; confirm?: string } = await req.json();
   if (!action || !periodId)
     return NextResponse.json({ error: "action and periodId are required." }, { status: 400 });
+  // Server-side guard: destructive/simulation tools require an explicit
+  // confirmation word so no script or stray click can wipe a live cycle.
+  const expected = action === "reset" ? "RESET" : "SIMULATE";
+  if (confirm !== expected)
+    return NextResponse.json({ error: `Confirmation required: send confirm="${expected}".` }, { status: 400 });
 
   const period = await prisma.feedbackPeriod.findUnique({ where: { id: periodId } });
   if (!period) return NextResponse.json({ error: "Period not found." }, { status: 404 });

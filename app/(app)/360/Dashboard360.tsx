@@ -59,20 +59,24 @@ export default function Dashboard360() {
   }
 
   async function runTool(action: "fill" | "reset") {
-    if (action === "fill" && !confirm("Fill this period with random simulated answers for all employees?")) return;
-    if (
-      action === "reset" &&
-      !confirm(
-        "Clear ALL answers & notes for this period (including real ones) and remove demo employees?\n\nForms will be empty and ready to send to employees."
-      )
-    )
+    // Type-to-confirm: these tools can pollute or permanently erase a live
+    // cycle, so a plain OK click is not enough.
+    const word = action === "reset" ? "RESET" : "SIMULATE";
+    const warning =
+      action === "reset"
+        ? "DANGER: this permanently deletes ALL answers & notes for this period — including real submissions from employees. This cannot be undone."
+        : "This fills the period with fake simulated answers. Never use it on a live cycle with real submissions.";
+    const typed = prompt(`${warning}\n\nType ${word} to continue:`);
+    if (typed !== word) {
+      if (typed !== null) setToolMsg(`Cancelled — you must type ${word} exactly.`);
       return;
+    }
     setBusy(action);
     setToolMsg("");
     const res = await fetch("/api/feedback/simulate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action, periodId }),
+      body: JSON.stringify({ action, periodId, confirm: word }),
     });
     const d = await res.json().catch(() => ({}));
     setBusy(null);
