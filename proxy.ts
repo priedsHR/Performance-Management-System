@@ -27,5 +27,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  // Exclude API, Next internals, and any static file with an extension
+  // (e.g. /prieds-logo.png) so public assets aren't redirected to /login.
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\.[a-zA-Z0-9]+$).*)"],
 };
