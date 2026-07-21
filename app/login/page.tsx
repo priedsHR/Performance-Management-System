@@ -34,7 +34,7 @@ export default function LoginPage() {
       {/* Left panel */}
       <div className="hidden lg:flex lg:w-1/2 bg-white border-r border-slate-200 flex-col items-center justify-center px-16">
         <div className="text-center max-w-xs">
-          <div className="mb-6"><PriedsLogo size="lg" tagline /></div>
+          <div className="mb-6 flex justify-center"><PriedsLogo size="lg" tagline /></div>
           <h2 className="text-xl font-bold text-slate-900 mb-2">Performance Management System</h2>
           <p className="text-slate-500 text-sm leading-relaxed">
             OKR, 360° appraisal, IDP and talent insights for PRIEDS — in one place.

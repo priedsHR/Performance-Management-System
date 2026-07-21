@@ -1,20 +1,15 @@
-import { Baloo_2 } from "next/font/google";
+/* eslint-disable @next/next/no-img-element */
 
-const baloo = Baloo_2({ subsets: ["latin"], weight: ["700", "800"] });
-
-// PRIEDS wordmark: rounded lowercase type in brand cyan with the darker blue
-// accent, plus the "Your Primary Needs" tagline.
+// Official PRIEDS logo (image asset in /public). The logo already contains the
+// "Your Primary Needs" tagline, so `tagline` simply controls how much vertical
+// room to give it (larger heights show the tagline legibly).
 export default function PriedsLogo({ size = "md", tagline = false }: { size?: "sm" | "md" | "lg"; tagline?: boolean }) {
-  const px = size === "lg" ? "text-5xl" : size === "md" ? "text-3xl" : "text-xl";
-  const tag = size === "lg" ? "text-sm tracking-[0.35em]" : "text-[10px] tracking-[0.3em]";
+  const height = size === "lg" ? (tagline ? 88 : 64) : size === "md" ? (tagline ? 60 : 44) : 30;
   return (
-    <div className="inline-flex flex-col items-center leading-none select-none">
-      <span className={`${baloo.className} ${px} font-extrabold lowercase`} style={{ color: "#49C5E9", letterSpacing: "-0.02em" }}>
-        prie<span style={{ color: "#097EB9" }}>d</span>s
-      </span>
-      {tagline && (
-        <span className={`${tag} uppercase text-slate-500 font-medium mt-1`}>Your Primary Needs</span>
-      )}
-    </div>
+    <img
+      src="/prieds-logo.png"
+      alt="PRIEDS — Your Primary Needs"
+      style={{ height, width: "auto", display: "block" }}
+    />
   );
 }
