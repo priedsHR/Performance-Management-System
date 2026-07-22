@@ -9,6 +9,8 @@ interface Period {
   year: number;
   isActive: boolean;
   releaseReports: boolean;
+  startedAt: string | null;
+  deadline: string | null;
 }
 
 const inp = "border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent bg-white transition";
@@ -69,6 +71,20 @@ export default function PeriodManager() {
     await load();
   }
 
+  const [starting, setStarting] = useState<string | null>(null);
+  const [startMsg, setStartMsg] = useState("");
+  async function startCycle(p: Period, test = false) {
+    if (!test && !confirm(`Start the ${p.name} cycle now?\n\nThis emails ALL active employees that 360 is open, sets the deadline to 7 days from today, and activates this period.`)) return;
+    setStarting(test ? "test" : p.id); setStartMsg("");
+    const res = await fetch("/api/feedback/start-cycle", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ periodId: p.id, test }),
+    });
+    const d = await res.json().catch(() => ({}));
+    setStarting(null); setStartMsg(d.message || d.error || (res.ok ? "Done." : "Failed."));
+    if (res.ok && !test) load();
+  }
+
   async function del(id: string) {
     if (!confirm("Delete this period along with all its assessments?")) return;
     await fetch(`/api/feedback/periods/${id}`, { method: "DELETE" });
@@ -102,6 +118,7 @@ export default function PeriodManager() {
           </button>
         </div>
         {msg && <p className="text-sm text-red-500 mt-2">{msg}</p>}
+        {startMsg && <p className="text-sm text-[#097eb9] bg-[#eef9fd] border border-[#b7e7f7] rounded-lg px-3 py-2 mt-2">{startMsg}</p>}
       </div>
 
       {/* Loading */}
@@ -129,7 +146,7 @@ export default function PeriodManager() {
                     {p.isActive && <span className="bg-[#0b8ec4] text-white hover:bg-[#097eb9] text-xs font-bold px-2 py-0.5 rounded-full">Active</span>}
                     {p.releaseReports && <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">Reports released</span>}
                   </div>
-                  <p className="text-xs text-slate-400">{p.half === "MID" ? "Mid Year" : "End Year"} {p.year}</p>
+                  <p className="text-xs text-slate-400">{p.half === "MID" ? "Mid Year" : "End Year"} {p.year}{p.deadline ? ` · deadline ${new Date(p.deadline).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}` : ""}</p>
                 </div>
                 <div className="flex items-center gap-2 flex-wrap">
                   {!p.isActive ? (
@@ -141,6 +158,12 @@ export default function PeriodManager() {
                       Deactivate
                     </button>
                   )}
+                  <button onClick={() => startCycle(p, true)} disabled={starting !== null} className={btnSecondary + " !text-xs"} title="Send a test start-email to yourself first">
+                    {starting === "test" ? "Sending…" : "Test email"}
+                  </button>
+                  <button onClick={() => startCycle(p)} disabled={starting !== null} className={btnPrimary + " !py-2 !text-xs"}>
+                    {starting === p.id ? "Starting…" : (p.startedAt ? "Re-notify" : "Start Cycle & Notify")}
+                  </button>
                   <button onClick={() => patch(p.id, { releaseReports: !p.releaseReports })} className={btnSecondary + " !text-xs"}>
                     {p.releaseReports ? "Hide Reports" : "Release Reports"}
                   </button>

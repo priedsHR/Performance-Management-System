@@ -172,6 +172,9 @@ model FeedbackPeriod {
   year           Int
   isActive       Boolean              @default(false)
   releaseReports Boolean              @default(false) // ratees may see their own report
+  startedAt      DateTime?            // cycle announced to employees
+  deadline       DateTime?            // submission deadline (start + 7 days)
+  d3ReminderAt   DateTime?            // when the automatic D-3 reminder was sent
   responses      FeedbackResponse[]
   comments       FeedbackComment[]
   manualPeers    FeedbackManualPeer[]
@@ -246,6 +249,7 @@ model FeedbackResponse {
   relation     String
   score        Int // 1-4
   submitted    Boolean        @default(false)
+  simulated    Boolean        @default(false) // true = created by the Simulate tool
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
 
@@ -289,6 +293,7 @@ model FeedbackComment {
   category  String // CORE | LEADERSHIP | JOB_FAMILY | TECHNICAL
   comment   String
   submitted Boolean        @default(false)
+  simulated Boolean        @default(false) // true = created by the Simulate tool
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
 

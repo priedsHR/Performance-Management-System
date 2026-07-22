@@ -43,6 +43,7 @@ export type FeedbackResponseMinAggregateOutputType = {
   relation: string | null
   score: number | null
   submitted: boolean | null
+  simulated: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +57,7 @@ export type FeedbackResponseMaxAggregateOutputType = {
   relation: string | null
   score: number | null
   submitted: boolean | null
+  simulated: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -69,6 +71,7 @@ export type FeedbackResponseCountAggregateOutputType = {
   relation: number
   score: number
   submitted: number
+  simulated: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -92,6 +95,7 @@ export type FeedbackResponseMinAggregateInputType = {
   relation?: true
   score?: true
   submitted?: true
+  simulated?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -105,6 +109,7 @@ export type FeedbackResponseMaxAggregateInputType = {
   relation?: true
   score?: true
   submitted?: true
+  simulated?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -118,6 +123,7 @@ export type FeedbackResponseCountAggregateInputType = {
   relation?: true
   score?: true
   submitted?: true
+  simulated?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -218,6 +224,7 @@ export type FeedbackResponseGroupByOutputType = {
   relation: string
   score: number
   submitted: boolean
+  simulated: boolean
   createdAt: Date
   updatedAt: Date
   _count: FeedbackResponseCountAggregateOutputType | null
@@ -254,6 +261,7 @@ export type FeedbackResponseWhereInput = {
   relation?: Prisma.StringFilter<"FeedbackResponse"> | string
   score?: Prisma.IntFilter<"FeedbackResponse"> | number
   submitted?: Prisma.BoolFilter<"FeedbackResponse"> | boolean
+  simulated?: Prisma.BoolFilter<"FeedbackResponse"> | boolean
   createdAt?: Prisma.DateTimeFilter<"FeedbackResponse"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FeedbackResponse"> | Date | string
   period?: Prisma.XOR<Prisma.FeedbackPeriodScalarRelationFilter, Prisma.FeedbackPeriodWhereInput>
@@ -271,6 +279,7 @@ export type FeedbackResponseOrderByWithRelationInput = {
   relation?: Prisma.SortOrder
   score?: Prisma.SortOrder
   submitted?: Prisma.SortOrder
+  simulated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   period?: Prisma.FeedbackPeriodOrderByWithRelationInput
@@ -292,6 +301,7 @@ export type FeedbackResponseWhereUniqueInput = Prisma.AtLeast<{
   relation?: Prisma.StringFilter<"FeedbackResponse"> | string
   score?: Prisma.IntFilter<"FeedbackResponse"> | number
   submitted?: Prisma.BoolFilter<"FeedbackResponse"> | boolean
+  simulated?: Prisma.BoolFilter<"FeedbackResponse"> | boolean
   createdAt?: Prisma.DateTimeFilter<"FeedbackResponse"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FeedbackResponse"> | Date | string
   period?: Prisma.XOR<Prisma.FeedbackPeriodScalarRelationFilter, Prisma.FeedbackPeriodWhereInput>
@@ -309,6 +319,7 @@ export type FeedbackResponseOrderByWithAggregationInput = {
   relation?: Prisma.SortOrder
   score?: Prisma.SortOrder
   submitted?: Prisma.SortOrder
+  simulated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.FeedbackResponseCountOrderByAggregateInput
@@ -330,6 +341,7 @@ export type FeedbackResponseScalarWhereWithAggregatesInput = {
   relation?: Prisma.StringWithAggregatesFilter<"FeedbackResponse"> | string
   score?: Prisma.IntWithAggregatesFilter<"FeedbackResponse"> | number
   submitted?: Prisma.BoolWithAggregatesFilter<"FeedbackResponse"> | boolean
+  simulated?: Prisma.BoolWithAggregatesFilter<"FeedbackResponse"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"FeedbackResponse"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"FeedbackResponse"> | Date | string
 }
@@ -339,6 +351,7 @@ export type FeedbackResponseCreateInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   period: Prisma.FeedbackPeriodCreateNestedOneWithoutResponsesInput
@@ -356,6 +369,7 @@ export type FeedbackResponseUncheckedCreateInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -365,6 +379,7 @@ export type FeedbackResponseUpdateInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.FeedbackPeriodUpdateOneRequiredWithoutResponsesNestedInput
@@ -382,6 +397,7 @@ export type FeedbackResponseUncheckedUpdateInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -395,6 +411,7 @@ export type FeedbackResponseCreateManyInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -404,6 +421,7 @@ export type FeedbackResponseUpdateManyMutationInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -417,6 +435,7 @@ export type FeedbackResponseUncheckedUpdateManyInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -447,6 +466,7 @@ export type FeedbackResponseCountOrderByAggregateInput = {
   relation?: Prisma.SortOrder
   score?: Prisma.SortOrder
   submitted?: Prisma.SortOrder
+  simulated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -464,6 +484,7 @@ export type FeedbackResponseMaxOrderByAggregateInput = {
   relation?: Prisma.SortOrder
   score?: Prisma.SortOrder
   submitted?: Prisma.SortOrder
+  simulated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -477,6 +498,7 @@ export type FeedbackResponseMinOrderByAggregateInput = {
   relation?: Prisma.SortOrder
   score?: Prisma.SortOrder
   submitted?: Prisma.SortOrder
+  simulated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -658,6 +680,7 @@ export type FeedbackResponseCreateWithoutRaterInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   period: Prisma.FeedbackPeriodCreateNestedOneWithoutResponsesInput
@@ -673,6 +696,7 @@ export type FeedbackResponseUncheckedCreateWithoutRaterInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -692,6 +716,7 @@ export type FeedbackResponseCreateWithoutRateeInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   period: Prisma.FeedbackPeriodCreateNestedOneWithoutResponsesInput
@@ -707,6 +732,7 @@ export type FeedbackResponseUncheckedCreateWithoutRateeInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -749,6 +775,7 @@ export type FeedbackResponseScalarWhereInput = {
   relation?: Prisma.StringFilter<"FeedbackResponse"> | string
   score?: Prisma.IntFilter<"FeedbackResponse"> | number
   submitted?: Prisma.BoolFilter<"FeedbackResponse"> | boolean
+  simulated?: Prisma.BoolFilter<"FeedbackResponse"> | boolean
   createdAt?: Prisma.DateTimeFilter<"FeedbackResponse"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"FeedbackResponse"> | Date | string
 }
@@ -774,6 +801,7 @@ export type FeedbackResponseCreateWithoutPeriodInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   rater: Prisma.UserCreateNestedOneWithoutFeedbackGivenInput
@@ -789,6 +817,7 @@ export type FeedbackResponseUncheckedCreateWithoutPeriodInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -824,6 +853,7 @@ export type FeedbackResponseCreateWithoutCompetencyInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   period: Prisma.FeedbackPeriodCreateNestedOneWithoutResponsesInput
@@ -839,6 +869,7 @@ export type FeedbackResponseUncheckedCreateWithoutCompetencyInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -877,6 +908,7 @@ export type FeedbackResponseCreateManyRaterInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -889,6 +921,7 @@ export type FeedbackResponseCreateManyRateeInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -898,6 +931,7 @@ export type FeedbackResponseUpdateWithoutRaterInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.FeedbackPeriodUpdateOneRequiredWithoutResponsesNestedInput
@@ -913,6 +947,7 @@ export type FeedbackResponseUncheckedUpdateWithoutRaterInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -925,6 +960,7 @@ export type FeedbackResponseUncheckedUpdateManyWithoutRaterInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -934,6 +970,7 @@ export type FeedbackResponseUpdateWithoutRateeInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.FeedbackPeriodUpdateOneRequiredWithoutResponsesNestedInput
@@ -949,6 +986,7 @@ export type FeedbackResponseUncheckedUpdateWithoutRateeInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -961,6 +999,7 @@ export type FeedbackResponseUncheckedUpdateManyWithoutRateeInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -973,6 +1012,7 @@ export type FeedbackResponseCreateManyPeriodInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -982,6 +1022,7 @@ export type FeedbackResponseUpdateWithoutPeriodInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rater?: Prisma.UserUpdateOneRequiredWithoutFeedbackGivenNestedInput
@@ -997,6 +1038,7 @@ export type FeedbackResponseUncheckedUpdateWithoutPeriodInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1009,6 +1051,7 @@ export type FeedbackResponseUncheckedUpdateManyWithoutPeriodInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1021,6 +1064,7 @@ export type FeedbackResponseCreateManyCompetencyInput = {
   relation: string
   score: number
   submitted?: boolean
+  simulated?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1030,6 +1074,7 @@ export type FeedbackResponseUpdateWithoutCompetencyInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   period?: Prisma.FeedbackPeriodUpdateOneRequiredWithoutResponsesNestedInput
@@ -1045,6 +1090,7 @@ export type FeedbackResponseUncheckedUpdateWithoutCompetencyInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1057,6 +1103,7 @@ export type FeedbackResponseUncheckedUpdateManyWithoutCompetencyInput = {
   relation?: Prisma.StringFieldUpdateOperationsInput | string
   score?: Prisma.IntFieldUpdateOperationsInput | number
   submitted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  simulated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1072,6 +1119,7 @@ export type FeedbackResponseSelect<ExtArgs extends runtime.Types.Extensions.Inte
   relation?: boolean
   score?: boolean
   submitted?: boolean
+  simulated?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   period?: boolean | Prisma.FeedbackPeriodDefaultArgs<ExtArgs>
@@ -1089,6 +1137,7 @@ export type FeedbackResponseSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   relation?: boolean
   score?: boolean
   submitted?: boolean
+  simulated?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   period?: boolean | Prisma.FeedbackPeriodDefaultArgs<ExtArgs>
@@ -1106,6 +1155,7 @@ export type FeedbackResponseSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   relation?: boolean
   score?: boolean
   submitted?: boolean
+  simulated?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   period?: boolean | Prisma.FeedbackPeriodDefaultArgs<ExtArgs>
@@ -1123,11 +1173,12 @@ export type FeedbackResponseSelectScalar = {
   relation?: boolean
   score?: boolean
   submitted?: boolean
+  simulated?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type FeedbackResponseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "periodId" | "raterId" | "rateeId" | "competencyId" | "relation" | "score" | "submitted" | "createdAt" | "updatedAt", ExtArgs["result"]["feedbackResponse"]>
+export type FeedbackResponseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "periodId" | "raterId" | "rateeId" | "competencyId" | "relation" | "score" | "submitted" | "simulated" | "createdAt" | "updatedAt", ExtArgs["result"]["feedbackResponse"]>
 export type FeedbackResponseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   period?: boolean | Prisma.FeedbackPeriodDefaultArgs<ExtArgs>
   rater?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1164,6 +1215,7 @@ export type $FeedbackResponsePayload<ExtArgs extends runtime.Types.Extensions.In
     relation: string
     score: number
     submitted: boolean
+    simulated: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["feedbackResponse"]>
@@ -1601,6 +1653,7 @@ export interface FeedbackResponseFieldRefs {
   readonly relation: Prisma.FieldRef<"FeedbackResponse", 'String'>
   readonly score: Prisma.FieldRef<"FeedbackResponse", 'Int'>
   readonly submitted: Prisma.FieldRef<"FeedbackResponse", 'Boolean'>
+  readonly simulated: Prisma.FieldRef<"FeedbackResponse", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"FeedbackResponse", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"FeedbackResponse", 'DateTime'>
 }

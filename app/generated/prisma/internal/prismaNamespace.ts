@@ -2072,6 +2072,9 @@ export const FeedbackPeriodScalarFieldEnum = {
   year: 'year',
   isActive: 'isActive',
   releaseReports: 'releaseReports',
+  startedAt: 'startedAt',
+  deadline: 'deadline',
+  d3ReminderAt: 'd3ReminderAt',
   createdAt: 'createdAt'
 } as const
 
@@ -2133,6 +2136,7 @@ export const FeedbackResponseScalarFieldEnum = {
   relation: 'relation',
   score: 'score',
   submitted: 'submitted',
+  simulated: 'simulated',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2172,6 +2176,7 @@ export const FeedbackCommentScalarFieldEnum = {
   category: 'category',
   comment: 'comment',
   submitted: 'submitted',
+  simulated: 'simulated',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

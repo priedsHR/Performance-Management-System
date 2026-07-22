@@ -41,6 +41,9 @@ export type FeedbackPeriodMinAggregateOutputType = {
   year: number | null
   isActive: boolean | null
   releaseReports: boolean | null
+  startedAt: Date | null
+  deadline: Date | null
+  d3ReminderAt: Date | null
   createdAt: Date | null
 }
 
@@ -51,6 +54,9 @@ export type FeedbackPeriodMaxAggregateOutputType = {
   year: number | null
   isActive: boolean | null
   releaseReports: boolean | null
+  startedAt: Date | null
+  deadline: Date | null
+  d3ReminderAt: Date | null
   createdAt: Date | null
 }
 
@@ -61,6 +67,9 @@ export type FeedbackPeriodCountAggregateOutputType = {
   year: number
   isActive: number
   releaseReports: number
+  startedAt: number
+  deadline: number
+  d3ReminderAt: number
   createdAt: number
   _all: number
 }
@@ -81,6 +90,9 @@ export type FeedbackPeriodMinAggregateInputType = {
   year?: true
   isActive?: true
   releaseReports?: true
+  startedAt?: true
+  deadline?: true
+  d3ReminderAt?: true
   createdAt?: true
 }
 
@@ -91,6 +103,9 @@ export type FeedbackPeriodMaxAggregateInputType = {
   year?: true
   isActive?: true
   releaseReports?: true
+  startedAt?: true
+  deadline?: true
+  d3ReminderAt?: true
   createdAt?: true
 }
 
@@ -101,6 +116,9 @@ export type FeedbackPeriodCountAggregateInputType = {
   year?: true
   isActive?: true
   releaseReports?: true
+  startedAt?: true
+  deadline?: true
+  d3ReminderAt?: true
   createdAt?: true
   _all?: true
 }
@@ -198,6 +216,9 @@ export type FeedbackPeriodGroupByOutputType = {
   year: number
   isActive: boolean
   releaseReports: boolean
+  startedAt: Date | null
+  deadline: Date | null
+  d3ReminderAt: Date | null
   createdAt: Date
   _count: FeedbackPeriodCountAggregateOutputType | null
   _avg: FeedbackPeriodAvgAggregateOutputType | null
@@ -231,6 +252,9 @@ export type FeedbackPeriodWhereInput = {
   year?: Prisma.IntFilter<"FeedbackPeriod"> | number
   isActive?: Prisma.BoolFilter<"FeedbackPeriod"> | boolean
   releaseReports?: Prisma.BoolFilter<"FeedbackPeriod"> | boolean
+  startedAt?: Prisma.DateTimeNullableFilter<"FeedbackPeriod"> | Date | string | null
+  deadline?: Prisma.DateTimeNullableFilter<"FeedbackPeriod"> | Date | string | null
+  d3ReminderAt?: Prisma.DateTimeNullableFilter<"FeedbackPeriod"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"FeedbackPeriod"> | Date | string
   responses?: Prisma.FeedbackResponseListRelationFilter
   comments?: Prisma.FeedbackCommentListRelationFilter
@@ -245,6 +269,9 @@ export type FeedbackPeriodOrderByWithRelationInput = {
   year?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   releaseReports?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deadline?: Prisma.SortOrderInput | Prisma.SortOrder
+  d3ReminderAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   responses?: Prisma.FeedbackResponseOrderByRelationAggregateInput
   comments?: Prisma.FeedbackCommentOrderByRelationAggregateInput
@@ -263,6 +290,9 @@ export type FeedbackPeriodWhereUniqueInput = Prisma.AtLeast<{
   year?: Prisma.IntFilter<"FeedbackPeriod"> | number
   isActive?: Prisma.BoolFilter<"FeedbackPeriod"> | boolean
   releaseReports?: Prisma.BoolFilter<"FeedbackPeriod"> | boolean
+  startedAt?: Prisma.DateTimeNullableFilter<"FeedbackPeriod"> | Date | string | null
+  deadline?: Prisma.DateTimeNullableFilter<"FeedbackPeriod"> | Date | string | null
+  d3ReminderAt?: Prisma.DateTimeNullableFilter<"FeedbackPeriod"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"FeedbackPeriod"> | Date | string
   responses?: Prisma.FeedbackResponseListRelationFilter
   comments?: Prisma.FeedbackCommentListRelationFilter
@@ -277,6 +307,9 @@ export type FeedbackPeriodOrderByWithAggregationInput = {
   year?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   releaseReports?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deadline?: Prisma.SortOrderInput | Prisma.SortOrder
+  d3ReminderAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.FeedbackPeriodCountOrderByAggregateInput
   _avg?: Prisma.FeedbackPeriodAvgOrderByAggregateInput
@@ -295,6 +328,9 @@ export type FeedbackPeriodScalarWhereWithAggregatesInput = {
   year?: Prisma.IntWithAggregatesFilter<"FeedbackPeriod"> | number
   isActive?: Prisma.BoolWithAggregatesFilter<"FeedbackPeriod"> | boolean
   releaseReports?: Prisma.BoolWithAggregatesFilter<"FeedbackPeriod"> | boolean
+  startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"FeedbackPeriod"> | Date | string | null
+  deadline?: Prisma.DateTimeNullableWithAggregatesFilter<"FeedbackPeriod"> | Date | string | null
+  d3ReminderAt?: Prisma.DateTimeNullableWithAggregatesFilter<"FeedbackPeriod"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"FeedbackPeriod"> | Date | string
 }
 
@@ -305,6 +341,9 @@ export type FeedbackPeriodCreateInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentCreateNestedManyWithoutPeriodInput
@@ -319,6 +358,9 @@ export type FeedbackPeriodUncheckedCreateInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutPeriodInput
@@ -333,6 +375,9 @@ export type FeedbackPeriodUpdateInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUpdateManyWithoutPeriodNestedInput
@@ -347,6 +392,9 @@ export type FeedbackPeriodUncheckedUpdateInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutPeriodNestedInput
@@ -361,6 +409,9 @@ export type FeedbackPeriodCreateManyInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -371,6 +422,9 @@ export type FeedbackPeriodUpdateManyMutationInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -381,6 +435,9 @@ export type FeedbackPeriodUncheckedUpdateManyInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -396,6 +453,9 @@ export type FeedbackPeriodCountOrderByAggregateInput = {
   year?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   releaseReports?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrder
+  deadline?: Prisma.SortOrder
+  d3ReminderAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -410,6 +470,9 @@ export type FeedbackPeriodMaxOrderByAggregateInput = {
   year?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   releaseReports?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrder
+  deadline?: Prisma.SortOrder
+  d3ReminderAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -420,6 +483,9 @@ export type FeedbackPeriodMinOrderByAggregateInput = {
   year?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
   releaseReports?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrder
+  deadline?: Prisma.SortOrder
+  d3ReminderAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -502,6 +568,9 @@ export type FeedbackPeriodCreateWithoutResponsesInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   comments?: Prisma.FeedbackCommentCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerCreateNestedManyWithoutPeriodInput
@@ -515,6 +584,9 @@ export type FeedbackPeriodUncheckedCreateWithoutResponsesInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   comments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutPeriodInput
@@ -544,6 +616,9 @@ export type FeedbackPeriodUpdateWithoutResponsesInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.FeedbackCommentUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUpdateManyWithoutPeriodNestedInput
@@ -557,6 +632,9 @@ export type FeedbackPeriodUncheckedUpdateWithoutResponsesInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutPeriodNestedInput
@@ -570,6 +648,9 @@ export type FeedbackPeriodCreateWithoutManualPeersInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentCreateNestedManyWithoutPeriodInput
@@ -583,6 +664,9 @@ export type FeedbackPeriodUncheckedCreateWithoutManualPeersInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutPeriodInput
@@ -612,6 +696,9 @@ export type FeedbackPeriodUpdateWithoutManualPeersInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUpdateManyWithoutPeriodNestedInput
@@ -625,6 +712,9 @@ export type FeedbackPeriodUncheckedUpdateWithoutManualPeersInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutPeriodNestedInput
@@ -638,6 +728,9 @@ export type FeedbackPeriodCreateWithoutCommentsInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerCreateNestedManyWithoutPeriodInput
@@ -651,6 +744,9 @@ export type FeedbackPeriodUncheckedCreateWithoutCommentsInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutPeriodInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedCreateNestedManyWithoutPeriodInput
@@ -680,6 +776,9 @@ export type FeedbackPeriodUpdateWithoutCommentsInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUpdateManyWithoutPeriodNestedInput
@@ -693,6 +792,9 @@ export type FeedbackPeriodUncheckedUpdateWithoutCommentsInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutPeriodNestedInput
   manualPeers?: Prisma.FeedbackManualPeerUncheckedUpdateManyWithoutPeriodNestedInput
@@ -706,6 +808,9 @@ export type FeedbackPeriodCreateWithoutIdpPlansInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentCreateNestedManyWithoutPeriodInput
@@ -719,6 +824,9 @@ export type FeedbackPeriodUncheckedCreateWithoutIdpPlansInput = {
   year: number
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: Date | string | null
+  deadline?: Date | string | null
+  d3ReminderAt?: Date | string | null
   createdAt?: Date | string
   responses?: Prisma.FeedbackResponseUncheckedCreateNestedManyWithoutPeriodInput
   comments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutPeriodInput
@@ -748,6 +856,9 @@ export type FeedbackPeriodUpdateWithoutIdpPlansInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUpdateManyWithoutPeriodNestedInput
@@ -761,6 +872,9 @@ export type FeedbackPeriodUncheckedUpdateWithoutIdpPlansInput = {
   year?: Prisma.IntFieldUpdateOperationsInput | number
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   releaseReports?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deadline?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  d3ReminderAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   responses?: Prisma.FeedbackResponseUncheckedUpdateManyWithoutPeriodNestedInput
   comments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutPeriodNestedInput
@@ -832,6 +946,9 @@ export type FeedbackPeriodSelect<ExtArgs extends runtime.Types.Extensions.Intern
   year?: boolean
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: boolean
+  deadline?: boolean
+  d3ReminderAt?: boolean
   createdAt?: boolean
   responses?: boolean | Prisma.FeedbackPeriod$responsesArgs<ExtArgs>
   comments?: boolean | Prisma.FeedbackPeriod$commentsArgs<ExtArgs>
@@ -847,6 +964,9 @@ export type FeedbackPeriodSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   year?: boolean
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: boolean
+  deadline?: boolean
+  d3ReminderAt?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["feedbackPeriod"]>
 
@@ -857,6 +977,9 @@ export type FeedbackPeriodSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   year?: boolean
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: boolean
+  deadline?: boolean
+  d3ReminderAt?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["feedbackPeriod"]>
 
@@ -867,10 +990,13 @@ export type FeedbackPeriodSelectScalar = {
   year?: boolean
   isActive?: boolean
   releaseReports?: boolean
+  startedAt?: boolean
+  deadline?: boolean
+  d3ReminderAt?: boolean
   createdAt?: boolean
 }
 
-export type FeedbackPeriodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "half" | "year" | "isActive" | "releaseReports" | "createdAt", ExtArgs["result"]["feedbackPeriod"]>
+export type FeedbackPeriodOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "half" | "year" | "isActive" | "releaseReports" | "startedAt" | "deadline" | "d3ReminderAt" | "createdAt", ExtArgs["result"]["feedbackPeriod"]>
 export type FeedbackPeriodInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   responses?: boolean | Prisma.FeedbackPeriod$responsesArgs<ExtArgs>
   comments?: boolean | Prisma.FeedbackPeriod$commentsArgs<ExtArgs>
@@ -896,6 +1022,9 @@ export type $FeedbackPeriodPayload<ExtArgs extends runtime.Types.Extensions.Inte
     year: number
     isActive: boolean
     releaseReports: boolean
+    startedAt: Date | null
+    deadline: Date | null
+    d3ReminderAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["feedbackPeriod"]>
   composites: {}
@@ -1330,6 +1459,9 @@ export interface FeedbackPeriodFieldRefs {
   readonly year: Prisma.FieldRef<"FeedbackPeriod", 'Int'>
   readonly isActive: Prisma.FieldRef<"FeedbackPeriod", 'Boolean'>
   readonly releaseReports: Prisma.FieldRef<"FeedbackPeriod", 'Boolean'>
+  readonly startedAt: Prisma.FieldRef<"FeedbackPeriod", 'DateTime'>
+  readonly deadline: Prisma.FieldRef<"FeedbackPeriod", 'DateTime'>
+  readonly d3ReminderAt: Prisma.FieldRef<"FeedbackPeriod", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"FeedbackPeriod", 'DateTime'>
 }
     

@@ -25,13 +25,14 @@ export async function POST(req: Request) {
   if (!period) return NextResponse.json({ error: "Period not found." }, { status: 404 });
 
   if (action === "reset") {
-    // Reset is permanently disabled in production so live employee submissions
-    // can never be erased from the app. (Clearing test data before launch is
-    // done once by an admin script, not via the UI.)
-    return NextResponse.json(
-      { error: "Reset is disabled to protect real submissions. Contact the developer if a cycle truly needs clearing." },
-      { status: 403 }
-    );
+    // Only clears data created by the Simulate tool — real employee submissions
+    // (simulated=false) are never touched.
+    const resp = await prisma.feedbackResponse.deleteMany({ where: { periodId, simulated: true } });
+    const com = await prisma.feedbackComment.deleteMany({ where: { periodId, simulated: true } });
+    const demo = await prisma.user.deleteMany({ where: { email: { endsWith: DEMO_EMAIL_SUFFIX } } });
+    return NextResponse.json({
+      message: `Simulation cleared: ${resp.count} test answers and ${com.count} test notes removed${demo.count ? `, ${demo.count} demo employees deleted` : ""}. Real submissions are untouched.`,
+    });
   }
 
   // action === "fill"
@@ -50,7 +51,7 @@ export async function POST(req: Request) {
   const compIdsByUser = new Map(profiles.map((p) => [p.userId, p.competencyIds]));
   const rows: {
     periodId: string; raterId: string; rateeId: string; competencyId: string;
-    relation: string; score: number; submitted: boolean;
+    relation: string; score: number; submitted: boolean; simulated: boolean;
   }[] = [];
 
   const excluded = await loadPeerExclusions();
@@ -61,14 +62,14 @@ export async function POST(req: Request) {
       for (const competencyId of compIdsByUser.get(ratee.userId) ?? []) {
         // random score around the ratee's target, clamped 1..4 (same as the prototype)
         const score = Math.max(1, Math.min(4, Math.round(target + (Math.random() < 0.5 ? 0 : 1) - (Math.random() < 0.3 ? 1 : 0))));
-        rows.push({ periodId, raterId: rater.userId, rateeId: ratee.userId, competencyId, relation, score, submitted: true });
+        rows.push({ periodId, raterId: rater.userId, rateeId: ratee.userId, competencyId, relation, score, submitted: true, simulated: true });
       }
     }
   }
 
   // keep any answers already given; only add the missing ones
   const created = await prisma.feedbackResponse.createMany({ data: rows, skipDuplicates: true });
-  await prisma.feedbackResponse.updateMany({ where: { periodId }, data: { submitted: true } });
+  await prisma.feedbackResponse.updateMany({ where: { periodId, simulated: true }, data: { submitted: true } });
 
   // sample qualitative feedback per rater/ratee/category, so reports show the
   // "what raters said" summary during trials
@@ -94,7 +95,7 @@ export async function POST(req: Request) {
   const compCatById = new Map(
     (await prisma.competency.findMany({ select: { id: true, category: true } })).map((c) => [c.id, c.category])
   );
-  const commentRows: { periodId: string; raterId: string; rateeId: string; category: string; comment: string; submitted: boolean }[] = [];
+  const commentRows: { periodId: string; raterId: string; rateeId: string; category: string; comment: string; submitted: boolean; simulated: boolean }[] = [];
   const seen = new Set<string>();
   for (const r of rows) {
     if (r.relation === "SELF") continue;
@@ -106,7 +107,7 @@ export async function POST(req: Request) {
     const pool = SAMPLES[cat] ?? SAMPLES.CORE;
     commentRows.push({
       periodId, raterId: r.raterId, rateeId: r.rateeId, category: cat,
-      comment: pool[Math.floor(Math.random() * pool.length)], submitted: true,
+      comment: pool[Math.floor(Math.random() * pool.length)], submitted: true, simulated: true,
     });
   }
   await prisma.feedbackComment.createMany({ data: commentRows, skipDuplicates: true });

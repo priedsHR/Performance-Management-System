@@ -64,8 +64,8 @@ export default function Dashboard360() {
     const word = action === "reset" ? "RESET" : "SIMULATE";
     const warning =
       action === "reset"
-        ? "DANGER: this permanently deletes ALL answers & notes for this period — including real submissions from employees. This cannot be undone."
-        : "This fills the period with fake simulated answers. Never use it on a live cycle with real submissions.";
+        ? "Clear the SIMULATED test answers for this period? Real employee submissions are NOT affected."
+        : "Fill the period with fake simulated answers (for testing the reports)?";
     const typed = prompt(`${warning}\n\nType ${word} to continue:`);
     if (typed !== word) {
       if (typed !== null) setToolMsg(`Cancelled — you must type ${word} exactly.`);
@@ -155,6 +155,22 @@ export default function Dashboard360() {
               {period.releaseReports ? "Reports released — click to hide" : "Release Reports"}
             </button>
           )}
+          <button
+            onClick={() => runTool("fill")}
+            disabled={busy !== null || !periodId}
+            title="Fill the period with fake answers to preview the reports"
+            className="px-3 py-2 rounded-lg text-xs font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50"
+          >
+            {busy === "fill" ? "Simulating…" : "Simulate responses"}
+          </button>
+          <button
+            onClick={() => runTool("reset")}
+            disabled={busy !== null || !periodId}
+            title="Removes only simulated test data — real submissions are safe"
+            className="px-3 py-2 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50"
+          >
+            {busy === "reset" ? "Clearing…" : "Clear simulation"}
+          </button>
         </div>
       </div>
       {toolMsg && <div className="text-sm text-teal-700 bg-teal-50 border border-teal-100 rounded-lg px-3 py-2">{toolMsg}</div>}
