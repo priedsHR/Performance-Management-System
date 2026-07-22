@@ -25,13 +25,13 @@ export async function POST(req: Request) {
   if (!period) return NextResponse.json({ error: "Period not found." }, { status: 404 });
 
   if (action === "reset") {
-    const resp = await prisma.feedbackResponse.deleteMany({ where: { periodId } });
-    const com = await prisma.feedbackComment.deleteMany({ where: { periodId } });
-    // also remove demo employees created by the simulator script, if any
-    const demo = await prisma.user.deleteMany({ where: { email: { endsWith: DEMO_EMAIL_SUFFIX } } });
-    return NextResponse.json({
-      message: `Reset done: ${resp.count} answers and ${com.count} notes cleared${demo.count ? `, ${demo.count} demo employees removed` : ""}. Forms are ready to send to employees.`,
-    });
+    // Reset is permanently disabled in production so live employee submissions
+    // can never be erased from the app. (Clearing test data before launch is
+    // done once by an admin script, not via the UI.)
+    return NextResponse.json(
+      { error: "Reset is disabled to protect real submissions. Contact the developer if a cycle truly needs clearing." },
+      { status: 403 }
+    );
   }
 
   // action === "fill"

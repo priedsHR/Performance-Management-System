@@ -155,20 +155,6 @@ export default function Dashboard360() {
               {period.releaseReports ? "Reports released — click to hide" : "Release Reports"}
             </button>
           )}
-          <button
-            onClick={() => runTool("fill")}
-            disabled={busy !== null || !periodId}
-            className="px-3 py-2 rounded-lg text-xs font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50"
-          >
-            {busy === "fill" ? "Simulating…" : "Simulate responses"}
-          </button>
-          <button
-            onClick={() => runTool("reset")}
-            disabled={busy !== null || !periodId}
-            className="px-3 py-2 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-red-500 hover:bg-red-50 disabled:opacity-50"
-          >
-            {busy === "reset" ? "Resetting…" : "↺ Reset answers"}
-          </button>
         </div>
       </div>
       {toolMsg && <div className="text-sm text-teal-700 bg-teal-50 border border-teal-100 rounded-lg px-3 py-2">{toolMsg}</div>}
