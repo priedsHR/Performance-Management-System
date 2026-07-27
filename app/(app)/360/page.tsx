@@ -10,12 +10,21 @@ export default async function FeedbackHome() {
 
   if (session!.user.role === "ADMIN") {
     return (
-      <div className="space-y-4">
-        <div>
-          <h1 className="text-xl font-bold text-slate-900">Dashboard 360</h1>
-          <p className="text-sm text-slate-500 mt-0.5">Summary of 360 assessment progress & results per period.</p>
+      <div className="space-y-8">
+        <div className="space-y-4">
+          <div>
+            <h1 className="text-xl font-bold text-slate-900">My 360° Feedback</h1>
+            <p className="text-sm text-slate-500 mt-0.5">Rate the colleagues assigned to you. Your answers are confidential — just like everyone else.</p>
+          </div>
+          <MyAssessment />
         </div>
-        <Dashboard360 />
+        <div className="space-y-4 border-t border-slate-200 pt-8">
+          <div>
+            <h2 className="text-xl font-bold text-slate-900">Dashboard 360 <span className="text-sm font-normal text-slate-400">· Admin</span></h2>
+            <p className="text-sm text-slate-500 mt-0.5">Summary of 360 assessment progress & results per period.</p>
+          </div>
+          <Dashboard360 />
+        </div>
       </div>
     );
   }
