@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
   if (body.submit) {
     // Leads submit a self-growth plan (behavioral row) instead of a technical one.
     // For leads the first row is "Leadership" (stored in the technical* fields).
-    const isLead = session.user.role === "LEAD";
+    const isLead = session.user.role === "LEAD" || session.user.role === "ADMIN";
     const required = ["careerAspiration", "coreStrength", "technicalFocus", "technicalAction", "technicalMetric"];
     const missing = required.filter((f) => !data[f]);
     if (missing.length)

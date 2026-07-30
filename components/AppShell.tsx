@@ -29,16 +29,16 @@ export default function AppShell({
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-slate-900/40" onClick={() => setOpen(false)} />
-          <div className="absolute left-0 top-0 bottom-0 shadow-2xl">
-            <button
-              onClick={() => setOpen(false)}
-              aria-label="Close menu"
-              className="absolute -right-11 top-3 bg-white rounded-lg p-2 shadow text-slate-600"
-            >
-              <X size={18} />
-            </button>
+          <div className="absolute left-0 top-0 bottom-0 w-56 overflow-y-auto shadow-2xl">
             <Sidebar role={role} name={name} division={division} onNavigate={() => setOpen(false)} />
           </div>
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+            className="absolute left-[15rem] top-3 bg-white rounded-lg p-2 shadow text-slate-600"
+          >
+            <X size={18} />
+          </button>
         </div>
       )}
 
