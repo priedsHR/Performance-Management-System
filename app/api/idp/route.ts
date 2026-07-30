@@ -71,16 +71,15 @@ export async function POST(req: NextRequest) {
 
   if (body.submit) {
     // Leads submit a self-growth plan (behavioral row) instead of a technical one.
+    // For leads the first row is "Leadership" (stored in the technical* fields).
     const isLead = session.user.role === "LEAD";
-    const required = isLead
-      ? ["careerAspiration", "coreStrength", "behavioralFocus", "behavioralAction", "behavioralMetric"]
-      : ["careerAspiration", "coreStrength", "technicalFocus", "technicalAction", "technicalMetric"];
+    const required = ["careerAspiration", "coreStrength", "technicalFocus", "technicalAction", "technicalMetric"];
     const missing = required.filter((f) => !data[f]);
     if (missing.length)
       return NextResponse.json(
         {
           error: isLead
-            ? "Please fill in at least the Career Aspiration, Core Strength and the Behavioral row before submitting."
+            ? "Please fill in at least the Career Aspiration, Core Strength and the Leadership row before submitting."
             : "Please fill in at least the Career Aspiration, Core Strength and the Technical row before submitting.",
         },
         { status: 400 }

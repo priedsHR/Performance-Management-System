@@ -54,7 +54,7 @@ const member360: Item[] = [
   { href: "/idp", label: "My IDP", icon: Sprout },
 ];
 
-export default function Sidebar({ role, name, division }: { role: string; name?: string | null; division?: string | null }) {
+export default function Sidebar({ role, name, division, onNavigate }: { role: string; name?: string | null; division?: string | null; onNavigate?: () => void }) {
   const path = usePathname();
 
   const roleLabel = role === "ADMIN" ? "Admin" : role === "LEAD" ? "Division Lead" : "Member";
@@ -65,6 +65,7 @@ export default function Sidebar({ role, name, division }: { role: string; name?:
     return (
       <Link
         href={href}
+        onClick={onNavigate}
         className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-100 ${
           active
             ? "bg-[#eef9fd] text-[#097eb9] border border-[#b7e7f7]"
