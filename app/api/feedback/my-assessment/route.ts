@@ -111,6 +111,15 @@ export async function POST(req: NextRequest) {
 
   const allowed = new Set(assignment.ratee.competencyIds);
 
+  // Lock: once this rater has submitted this colleague's assessment, it can no
+  // longer be edited or re-submitted.
+  const alreadyLocked = await prisma.feedbackResponse.findFirst({
+    where: { periodId: period.id, raterId: session.user.id, rateeId: rateeUserId, submitted: true },
+    select: { id: true },
+  });
+  if (alreadyLocked)
+    return NextResponse.json({ error: "This assessment is already submitted and locked. It can't be changed." }, { status: 409 });
+
   if (submit) {
     // Submitting requires every competency scored and a qualitative note per
     // category (why the scores were given & what to improve).

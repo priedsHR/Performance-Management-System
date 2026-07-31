@@ -211,7 +211,7 @@ export default function MyAssessment() {
                               </div>
                               <div className="flex gap-1 flex-shrink-0">
                                 {[1, 2, 3, 4].map((v) => (
-                                  <button key={v} onClick={() => setScore(t.rateeUserId, c.id, v)} className={`w-8 h-8 rounded-lg text-sm font-semibold border transition-colors ${cur === v ? "bg-teal-600 text-white border-teal-600" : "bg-white text-slate-500 border-slate-200 hover:border-teal-300"}`}>{v}</button>
+                                  <button key={v} disabled={t.submitted} onClick={() => setScore(t.rateeUserId, c.id, v)} className={`w-8 h-8 rounded-lg text-sm font-semibold border transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${cur === v ? "bg-teal-600 text-white border-teal-600" : "bg-white text-slate-500 border-slate-200 hover:border-teal-300"}`}>{v}</button>
                                 ))}
                               </div>
                             </div>
@@ -234,18 +234,25 @@ export default function MyAssessment() {
                       <textarea
                         value={comments[t.rateeUserId]?.[cat] || ""}
                         onChange={(e) => setComment(t.rateeUserId, cat, e.target.value)}
+                        readOnly={t.submitted}
                         rows={2}
                         placeholder="Explain why you chose these scores (concrete examples) and what this person should improve…"
-                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm"
+                        className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm read-only:bg-slate-50 read-only:text-slate-500"
                       />
                     </div>
                   </div>
                 ))}
 
-                <div className="flex items-center gap-2 mt-5">
-                  <button onClick={() => save(t.rateeUserId, false)} disabled={saving === t.rateeUserId} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50">Save draft</button>
-                  <button onClick={() => save(t.rateeUserId, true)} disabled={saving === t.rateeUserId} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50">{saving === t.rateeUserId ? "Saving…" : "Submit assessment"}</button>
-                </div>
+                {t.submitted ? (
+                  <div className="mt-5 text-sm text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-2">
+                    ✓ Submitted &amp; locked — this assessment can no longer be changed. Thank you!
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 mt-5">
+                    <button onClick={() => save(t.rateeUserId, false)} disabled={saving === t.rateeUserId} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50">Save draft</button>
+                    <button onClick={() => { if (confirm("Submit this assessment? Once submitted it is locked and cannot be changed.")) save(t.rateeUserId, true); }} disabled={saving === t.rateeUserId} className="px-4 py-2 rounded-lg text-sm font-semibold bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50">{saving === t.rateeUserId ? "Saving…" : "Submit assessment"}</button>
+                  </div>
+                )}
               </div>
             )}
           </div>

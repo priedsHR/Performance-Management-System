@@ -25,7 +25,8 @@ export default function LoginPage() {
     if (res?.error) {
       setError("Incorrect email or password.");
     } else {
-      window.location.href = "/dashboard";
+      const next = new URLSearchParams(window.location.search).get("next");
+      window.location.href = next && next.startsWith("/") ? next : "/dashboard";
     }
   }
 

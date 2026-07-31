@@ -49,14 +49,16 @@ export default function Dashboard360() {
     if (!period) return;
     const next = !period.releaseReports;
     if (!confirm(next ? "Release reports? Employees will be able to see their own 360 report." : "Hide reports from employees again?")) return;
-    await fetch(`/api/feedback/periods/${period.id}`, {
+    const resp = await fetch(`/api/feedback/periods/${period.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ releaseReports: next }),
-    });
+    }).then((r) => r.json()).catch(() => ({}));
     const ps: Period[] = await fetch("/api/feedback/periods").then((r) => r.json());
     setPeriods(ps);
-    setToolMsg(next ? "Reports released ✓ — employees can now open My Report." : "Reports hidden from employees.");
+    setToolMsg(next
+      ? `Reports released ✓ — employees can now open My Report${resp?.notified ? `. ${resp.notified} email${resp.notified === 1 ? "" : "s"} sent.` : "."}`
+      : "Reports hidden from employees.");
   }
 
   async function runTool(action: "fill" | "reset") {
