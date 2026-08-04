@@ -8,7 +8,20 @@ export async function GET() {
   if (!session || session.user.role !== "LEAD")
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-  const period = await getActivePeriod();
+  // Prefer the active period; but after a cycle is deactivated (e.g. once
+  // reports are released), leaders must still be able to open their team's
+  // reports — so fall back to the most recent period, preferring a released one.
+  let period = await getActivePeriod();
+  if (!period) {
+    period =
+      (await prisma.feedbackPeriod.findFirst({
+        where: { releaseReports: true },
+        orderBy: [{ year: "desc" }, { half: "desc" }],
+      })) ||
+      (await prisma.feedbackPeriod.findFirst({
+        orderBy: [{ year: "desc" }, { half: "desc" }],
+      }));
+  }
   if (!period) return NextResponse.json({ period: null, team: [] });
 
   // Find team members whose managerId points to this lead

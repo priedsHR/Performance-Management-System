@@ -95,7 +95,7 @@ function TrendChart({ series }: { series: TrendItem[] }) {
   );
 }
 
-export default function ReportView({ userId }: { userId: string; periodId?: string | null; isOwn?: boolean }) {
+export default function ReportView({ userId, periodId }: { userId: string; periodId?: string | null; isOwn?: boolean }) {
   const [periods, setPeriods] = useState<Period[]>([]);
   const [year, setYear] = useState<number | null>(null);
   const [half, setHalf] = useState<string>("MID");
@@ -111,8 +111,10 @@ export default function ReportView({ userId }: { userId: string; periodId?: stri
       .then((r) => r.json())
       .then((ps: Period[]) => {
         setPeriods(ps);
-        const active = ps.find((p) => p.isActive) || ps[0];
-        if (active) { setYear(active.year); setHalf(active.half); }
+        // Prefer the period passed in the URL (e.g. a lead opening a team
+        // member's report for a now-deactivated cycle), then the active one.
+        const initial = (periodId && ps.find((p) => p.id === periodId)) || ps.find((p) => p.isActive) || ps[0];
+        if (initial) { setYear(initial.year); setHalf(initial.half); }
         setLoading(false);
       })
       .catch(() => setLoading(false));

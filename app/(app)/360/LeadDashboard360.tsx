@@ -62,7 +62,7 @@ export default function LeadDashboard360() {
                 </td>
                 <td className="px-3 py-2 text-right">
                   <Link
-                    href={`/360/report?userId=${m.userId}`}
+                    href={`/360/report?userId=${m.userId}&periodId=${data.period!.id}`}
                     className="px-2 py-1 rounded text-xs text-teal-600 hover:bg-teal-50"
                   >
                     View report →
