@@ -3,6 +3,14 @@
 import { useRef, useState, useEffect } from "react";
 import { Trash2, ChevronDown, ChevronUp, X, CheckSquare, Square } from "lucide-react";
 
+type Initiative = {
+  id: string;
+  title: string;
+  progress: number;
+  done: boolean;
+  sortOrder: number;
+};
+
 type KRAssignment = {
   id: string;
   weight: number;
@@ -10,6 +18,7 @@ type KRAssignment = {
   target: number | null;   // individual target override
   keyResultId: string;
   keyResult?: { id: string; title: string; target: number; unit: string } | null;
+  initiatives?: Initiative[];
 };
 
 type Assignment = {
@@ -54,6 +63,85 @@ type Props = {
 };
 
 const btnDanger = "text-slate-300 hover:text-red-500 transition-colors duration-100";
+
+// ─── Initiatives (free-text action items a member owns under a KR) ─────────────
+
+function InitiativeList({ krAssignmentId, initial }: { krAssignmentId: string; initial: Initiative[] }) {
+  const [items, setItems] = useState<Initiative[]>(initial);
+  const [text, setText] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function add() {
+    const title = text.trim();
+    if (!title || busy) return;
+    setBusy(true);
+    const res = await fetch("/api/initiatives", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ krAssignmentId, title }),
+    });
+    setBusy(false);
+    if (res.ok) {
+      const created = await res.json();
+      setItems((prev) => [...prev, created]);
+      setText("");
+    }
+  }
+
+  async function patch(id: string, data: Partial<Initiative>) {
+    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, ...data } : i)));
+    await fetch(`/api/initiatives/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  }
+
+  async function remove(id: string) {
+    setItems((prev) => prev.filter((i) => i.id !== id));
+    await fetch(`/api/initiatives/${id}`, { method: "DELETE" });
+  }
+
+  return (
+    <div className="mt-1 pl-1 border-l-2 border-slate-100 space-y-1.5">
+      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Initiatives</p>
+      {items.length === 0 && <p className="text-[11px] text-slate-300 italic">No initiatives yet — add action items below.</p>}
+      {items.map((it) => (
+        <div key={it.id} className="flex items-center gap-2">
+          <button onClick={() => patch(it.id, { done: !it.done })} className="text-slate-400 hover:text-amber-500 flex-shrink-0" title={it.done ? "Mark not done" : "Mark done"}>
+            {it.done ? <CheckSquare size={14} /> : <Square size={14} />}
+          </button>
+          <input
+            value={it.title}
+            onChange={(e) => setItems((prev) => prev.map((x) => (x.id === it.id ? { ...x, title: e.target.value } : x)))}
+            onBlur={(e) => patch(it.id, { title: e.target.value.trim() })}
+            className={`flex-1 min-w-0 bg-transparent text-xs px-1 py-0.5 rounded focus:outline-none focus:bg-slate-50 ${it.done ? "line-through text-slate-400" : "text-slate-600"}`}
+          />
+          <input
+            type="number" min={0} max={100}
+            value={it.progress}
+            onChange={(e) => setItems((prev) => prev.map((x) => (x.id === it.id ? { ...x, progress: Number(e.target.value) } : x)))}
+            onBlur={(e) => patch(it.id, { progress: Math.max(0, Math.min(100, Number(e.target.value) || 0)) })}
+            onWheel={(e) => e.currentTarget.blur()}
+            className="w-12 border border-slate-200 rounded px-1 py-0.5 text-[11px] text-right text-slate-500 focus:outline-none focus:border-amber-400"
+          />
+          <span className="text-[10px] text-slate-300 flex-shrink-0">%</span>
+          <button onClick={() => remove(it.id)} className={`${btnDanger} flex-shrink-0`}><Trash2 size={12} /></button>
+        </div>
+      ))}
+      <div className="flex items-center gap-2 pt-0.5">
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter") add(); }}
+          placeholder="Add an initiative (action item)…"
+          className="flex-1 min-w-0 border border-slate-200 rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-amber-400"
+        />
+        <button onClick={add} disabled={busy || !text.trim()} className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-amber-500 text-white hover:bg-amber-600 disabled:opacity-40 flex-shrink-0">Add</button>
+      </div>
+    </div>
+  );
+}
 
 // ─── KR row ───────────────────────────────────────────────────────────────────
 
@@ -158,6 +246,8 @@ function KRRow({
       <div className="h-1 bg-slate-100 rounded-full overflow-hidden">
         <div className={`h-1 rounded-full transition-all duration-300 ${barColor}`} style={{ width: `${pct}%` }} />
       </div>
+
+      <InitiativeList krAssignmentId={kra.id} initial={kra.initiatives ?? []} />
     </div>
   );
 }

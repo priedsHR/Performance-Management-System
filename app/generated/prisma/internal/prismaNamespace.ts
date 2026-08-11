@@ -391,6 +391,7 @@ export const ModelName = {
   TeamMember: 'TeamMember',
   ObjectiveAssignment: 'ObjectiveAssignment',
   KRAssignment: 'KRAssignment',
+  Initiative: 'Initiative',
   Employee: 'Employee',
   KeyResult: 'KeyResult',
   FeedbackPeriod: 'FeedbackPeriod',
@@ -419,7 +420,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment" | "feedbackPeerExclusion" | "idpPlan" | "progressSnapshot"
+    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "initiative" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment" | "feedbackPeerExclusion" | "idpPlan" | "progressSnapshot"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -938,6 +939,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.KRAssignmentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.KRAssignmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    Initiative: {
+      payload: Prisma.$InitiativePayload<ExtArgs>
+      fields: Prisma.InitiativeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InitiativeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InitiativeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload>
+        }
+        findFirst: {
+          args: Prisma.InitiativeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InitiativeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload>
+        }
+        findMany: {
+          args: Prisma.InitiativeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload>[]
+        }
+        create: {
+          args: Prisma.InitiativeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload>
+        }
+        createMany: {
+          args: Prisma.InitiativeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InitiativeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload>[]
+        }
+        delete: {
+          args: Prisma.InitiativeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload>
+        }
+        update: {
+          args: Prisma.InitiativeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload>
+        }
+        deleteMany: {
+          args: Prisma.InitiativeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InitiativeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InitiativeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload>[]
+        }
+        upsert: {
+          args: Prisma.InitiativeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativePayload>
+        }
+        aggregate: {
+          args: Prisma.InitiativeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInitiative>
+        }
+        groupBy: {
+          args: Prisma.InitiativeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InitiativeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeCountAggregateOutputType> | number
         }
       }
     }
@@ -2036,6 +2111,20 @@ export const KRAssignmentScalarFieldEnum = {
 export type KRAssignmentScalarFieldEnum = (typeof KRAssignmentScalarFieldEnum)[keyof typeof KRAssignmentScalarFieldEnum]
 
 
+export const InitiativeScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  progress: 'progress',
+  done: 'done',
+  sortOrder: 'sortOrder',
+  krAssignmentId: 'krAssignmentId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InitiativeScalarFieldEnum = (typeof InitiativeScalarFieldEnum)[keyof typeof InitiativeScalarFieldEnum]
+
+
 export const EmployeeScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -2513,6 +2602,7 @@ export type GlobalOmitConfig = {
   teamMember?: Prisma.TeamMemberOmit
   objectiveAssignment?: Prisma.ObjectiveAssignmentOmit
   kRAssignment?: Prisma.KRAssignmentOmit
+  initiative?: Prisma.InitiativeOmit
   employee?: Prisma.EmployeeOmit
   keyResult?: Prisma.KeyResultOmit
   feedbackPeriod?: Prisma.FeedbackPeriodOmit

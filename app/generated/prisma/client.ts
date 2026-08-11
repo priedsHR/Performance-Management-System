@@ -77,6 +77,11 @@ export type ObjectiveAssignment = Prisma.ObjectiveAssignmentModel
  */
 export type KRAssignment = Prisma.KRAssignmentModel
 /**
+ * Model Initiative
+ * 
+ */
+export type Initiative = Prisma.InitiativeModel
+/**
  * Model Employee
  * 
  */

@@ -71,6 +71,7 @@ export default async function DistribusiPage({
               keyResult: {
                 select: { id: true, title: true, target: true, unit: true },
               },
+              initiatives: { orderBy: { sortOrder: "asc" } },
             },
           },
         },

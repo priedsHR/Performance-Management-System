@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
       krAssignments: {
         include: {
           keyResult: { select: { id: true, title: true, target: true, unit: true } },
+          initiatives: { orderBy: { sortOrder: "asc" } },
         },
       },
     },
@@ -36,7 +37,7 @@ export async function GET(req: NextRequest) {
   // Group by objective
   const objMap = new Map<string, {
     id: string; title: string; weight: number;
-    krs: { id: string; title: string; target: number; unit: string; weight: number; progress: number; achievement: number }[];
+    krs: { id: string; title: string; target: number; unit: string; weight: number; progress: number; achievement: number; initiatives: { id: string; title: string; progress: number; done: boolean }[] }[];
   }>();
 
   for (const a of assignments) {
@@ -56,6 +57,7 @@ export async function GET(req: NextRequest) {
         weight: kra.weight,
         progress: kra.progress,
         achievement,
+        initiatives: kra.initiatives.map((i) => ({ id: i.id, title: i.title, progress: i.progress, done: i.done })),
       });
     }
   }

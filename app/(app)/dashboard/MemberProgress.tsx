@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import YearQuarterPicker from "@/components/YearQuarterPicker";
 
-type KRItem = { id: string; title: string; target: number; unit: string; weight: number; progress: number; achievement: number };
+type InitiativeItem = { id: string; title: string; progress: number; done: boolean };
+type KRItem = { id: string; title: string; target: number; unit: string; weight: number; progress: number; achievement: number; initiatives?: InitiativeItem[] };
 type ObjItem = { id: string; title: string; weight: number; krs: KRItem[] };
 
 function achClass(v: number) {
@@ -68,18 +69,36 @@ function ObjCard({ obj, index }: { obj: ObjItem; index: number }) {
                 </thead>
                 <tbody>
                   {obj.krs.map((kr) => (
-                    <tr key={kr.id} className="border-b border-slate-50 last:border-0">
-                      <td className="py-2.5 pr-3 font-medium text-slate-700">{kr.title}</td>
-                      <td className="py-2.5 px-2 text-right text-slate-600 tabular-nums">{kr.target}</td>
-                      <td className="py-2.5 px-2 text-right text-slate-400">{kr.unit}</td>
-                      <td className="py-2.5 px-2 text-right font-semibold text-slate-600">{kr.weight}%</td>
-                      <td className="py-2.5 px-2 text-right tabular-nums text-slate-700">{kr.progress} / {kr.target}</td>
-                      <td className="py-2.5 pl-2 text-right">
-                        <span className={`text-xs font-bold px-2 py-0.5 rounded-lg ${achClass(kr.achievement)}`}>
-                          {kr.achievement.toFixed(0)}%
-                        </span>
-                      </td>
-                    </tr>
+                    <Fragment key={kr.id}>
+                      <tr className={`${kr.initiatives && kr.initiatives.length > 0 ? "" : "border-b border-slate-50 last:border-0"}`}>
+                        <td className="py-2.5 pr-3 font-medium text-slate-700">{kr.title}</td>
+                        <td className="py-2.5 px-2 text-right text-slate-600 tabular-nums">{kr.target}</td>
+                        <td className="py-2.5 px-2 text-right text-slate-400">{kr.unit}</td>
+                        <td className="py-2.5 px-2 text-right font-semibold text-slate-600">{kr.weight}%</td>
+                        <td className="py-2.5 px-2 text-right tabular-nums text-slate-700">{kr.progress} / {kr.target}</td>
+                        <td className="py-2.5 pl-2 text-right">
+                          <span className={`text-xs font-bold px-2 py-0.5 rounded-lg ${achClass(kr.achievement)}`}>
+                            {kr.achievement.toFixed(0)}%
+                          </span>
+                        </td>
+                      </tr>
+                      {kr.initiatives && kr.initiatives.length > 0 && (
+                        <tr className="border-b border-slate-50 last:border-0">
+                          <td colSpan={6} className="pb-2.5 pl-4">
+                            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide mb-1">My initiatives</p>
+                            <ul className="space-y-1">
+                              {kr.initiatives.map((it) => (
+                                <li key={it.id} className="flex items-center gap-2 text-xs">
+                                  <span className={`inline-block w-3 h-3 rounded-sm flex-shrink-0 ${it.done ? "bg-green-500" : "border border-slate-300"}`} />
+                                  <span className={it.done ? "line-through text-slate-400" : "text-slate-600"}>{it.title}</span>
+                                  <span className="text-[10px] text-slate-400 ml-auto tabular-nums">{it.progress}%</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </td>
+                        </tr>
+                      )}
+                    </Fragment>
                   ))}
                 </tbody>
               </table>
