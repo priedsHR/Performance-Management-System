@@ -24,6 +24,7 @@ model User {
   email          String       @unique
   password       String
   role           Role         @default(MEMBER)
+  isExecutive    Boolean      @default(false) // C-Level: can view all departments' OKR
   division       String?
   objectives     Objective[]
   teamMembers    TeamMember[] @relation("LeadTeamMembers")
@@ -100,6 +101,7 @@ model TeamMember {
   user        User?                 @relation("MemberUserLink", fields: [userId], references: [id], onDelete: SetNull)
   assignments ObjectiveAssignment[]
   snapshots   ProgressSnapshot[]
+  initiatives Initiative[]
   createdAt   DateTime              @default(now())
 }
 
@@ -124,23 +126,27 @@ model KRAssignment {
   assignment   ObjectiveAssignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   keyResultId  String
   keyResult    KeyResult           @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
-  initiatives  Initiative[]
 
   @@unique([assignmentId, keyResultId])
 }
 
-// A free-text initiative (action item) a member owns under an assigned KR.
-// Managers create these when distributing a KR to a team member.
+// An Initiative (action plan) under a Key Result. The leader assigns it to a
+// team member (PIC) and tracks its own target / actual / achievement, matching
+// the department OKR template: Objective → Key Result → Initiative.
 model Initiative {
-  id             String       @id @default(cuid())
-  title          String
-  progress       Float        @default(0) // 0–100 % complete
-  done           Boolean      @default(false)
-  sortOrder      Int          @default(0)
-  krAssignmentId String
-  krAssignment   KRAssignment @relation(fields: [krAssignmentId], references: [id], onDelete: Cascade)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id           String      @id @default(cuid())
+  title        String                     // description / action plan
+  target       Float       @default(1)    // success indicator (= 100%)
+  actual       Float       @default(0)
+  unit         String      @default("")
+  resultNote   String?                    // Results & Evaluation
+  sortOrder    Int         @default(0)
+  keyResultId  String
+  keyResult    KeyResult   @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+  picId        String?                     // Person In Charge (assigned team member)
+  pic          TeamMember? @relation(fields: [picId], references: [id], onDelete: SetNull)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 model Employee {
@@ -164,6 +170,7 @@ model KeyResult {
   objectiveId   String
   objective     Objective      @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
   krAssignments KRAssignment[]
+  initiatives   Initiative[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }

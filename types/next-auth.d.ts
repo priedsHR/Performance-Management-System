@@ -4,6 +4,7 @@ declare module "next-auth" {
   interface User {
     role?: string;
     division?: string | null;
+    isExecutive?: boolean;
   }
   interface Session {
     user: {
@@ -13,6 +14,7 @@ declare module "next-auth" {
       image?: string | null;
       role: string;
       division?: string | null;
+      isExecutive?: boolean;
     };
   }
 }

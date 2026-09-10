@@ -2,17 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
-// Ownership: the initiative -> KR assignment -> objective must belong to the
-// signed-in user (their Division OKR), unless they're an admin.
+// Ownership: initiative -> KR -> objective must belong to the signed-in user
+// (their Division OKR), unless they're an admin.
 async function ownsInitiative(id: string, userId: string, isAdmin: boolean) {
   const init = await prisma.initiative.findUnique({
     where: { id },
-    include: {
-      krAssignment: { include: { assignment: { include: { objective: { select: { userId: true } } } } } },
-    },
+    include: { keyResult: { include: { objective: { select: { userId: true } } } } },
   });
   if (!init) return { ok: false as const, status: 404, error: "Initiative not found." };
-  if (!isAdmin && init.krAssignment.assignment.objective.userId !== userId)
+  if (!isAdmin && init.keyResult.objective.userId !== userId)
     return { ok: false as const, status: 403, error: "Forbidden" };
   return { ok: true as const };
 }
@@ -31,11 +29,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     where: { id },
     data: {
       ...(body.title !== undefined && { title: String(body.title).trim() }),
-      ...(body.progress !== undefined && {
-        progress: Math.max(0, Math.min(100, Number(body.progress) || 0)),
-      }),
-      ...(body.done !== undefined && { done: !!body.done }),
+      ...(body.target !== undefined && { target: Number(body.target) || 0 }),
+      ...(body.actual !== undefined && { actual: Number(body.actual) || 0 }),
+      ...(body.unit !== undefined && { unit: String(body.unit) }),
+      ...(body.resultNote !== undefined && { resultNote: body.resultNote ? String(body.resultNote) : null }),
+      ...(body.picId !== undefined && { picId: body.picId ? String(body.picId) : null }),
     },
+    include: { pic: { select: { id: true, name: true } } },
   });
   return NextResponse.json(initiative);
 }

@@ -4,7 +4,7 @@ import { useState, useEffect, Fragment } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import YearQuarterPicker from "@/components/YearQuarterPicker";
 
-type InitiativeItem = { id: string; title: string; progress: number; done: boolean };
+type InitiativeItem = { id: string; title: string; achievement: number };
 type KRItem = { id: string; title: string; target: number; unit: string; weight: number; progress: number; achievement: number; initiatives?: InitiativeItem[] };
 type ObjItem = { id: string; title: string; weight: number; krs: KRItem[] };
 
@@ -89,9 +89,9 @@ function ObjCard({ obj, index }: { obj: ObjItem; index: number }) {
                             <ul className="space-y-1">
                               {kr.initiatives.map((it) => (
                                 <li key={it.id} className="flex items-center gap-2 text-xs">
-                                  <span className={`inline-block w-3 h-3 rounded-sm flex-shrink-0 ${it.done ? "bg-green-500" : "border border-slate-300"}`} />
-                                  <span className={it.done ? "line-through text-slate-400" : "text-slate-600"}>{it.title}</span>
-                                  <span className="text-[10px] text-slate-400 ml-auto tabular-nums">{it.progress}%</span>
+                                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0" />
+                                  <span className="text-slate-600">{it.title}</span>
+                                  <span className={`text-[10px] ml-auto font-bold px-1.5 py-0.5 rounded ${achClass(it.achievement)}`}>{it.achievement.toFixed(0)}%</span>
                                 </li>
                               ))}
                             </ul>

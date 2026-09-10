@@ -6,7 +6,7 @@ import { signOut } from "next-auth/react";
 import {
   Target, MessageSquareText, TrendingUp, Grid3x3, Sprout, CalendarClock,
   Bell, Puzzle, CalendarDays, FileText, SlidersHorizontal, Users,
-  LayoutDashboard, UserSquare2, LogOut, type LucideIcon,
+  LayoutDashboard, UserSquare2, LogOut, Building2, type LucideIcon,
 } from "lucide-react";
 
 type Item = { href: string; label: string; icon: LucideIcon };
@@ -54,7 +54,11 @@ const member360: Item[] = [
   { href: "/idp", label: "My IDP", icon: Sprout },
 ];
 
-export default function Sidebar({ role, name, division, onNavigate }: { role: string; name?: string | null; division?: string | null; onNavigate?: () => void }) {
+const executiveOkr: Item[] = [
+  { href: "/company-okr", label: "Company OKR", icon: Building2 },
+];
+
+export default function Sidebar({ role, name, division, isExecutive, onNavigate }: { role: string; name?: string | null; division?: string | null; isExecutive?: boolean; onNavigate?: () => void }) {
   const path = usePathname();
 
   const roleLabel = role === "ADMIN" ? "Admin" : role === "LEAD" ? "Division Lead" : "Member";
@@ -108,6 +112,7 @@ export default function Sidebar({ role, name, division, onNavigate }: { role: st
         {role === "ADMIN" && (
           <>
             <NavGroup label="Dashboard" items={adminDashboard} />
+            <NavGroup label="C-Level" items={executiveOkr} />
             <NavGroup label="Setting OKR" items={adminSettingOkr} />
             <NavGroup label="Setting 360 Feedback" items={adminSetting360} />
             <NavGroup label="General Setting" items={adminGeneralSetting} />
@@ -117,6 +122,7 @@ export default function Sidebar({ role, name, division, onNavigate }: { role: st
           <>
             <NavGroup label="Dashboard" items={leadDashboard} />
             <NavGroup label="OKR" items={leadOkr} />
+            {isExecutive && <NavGroup label="C-Level" items={executiveOkr} />}
             <NavGroup label="360 Feedback" items={lead360} />
           </>
         )}

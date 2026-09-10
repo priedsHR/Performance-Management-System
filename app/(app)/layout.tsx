@@ -19,6 +19,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         division={session.user.division ?? null}
         roleLabel={roleLabel}
         initials={initials}
+        isExecutive={session.user.isExecutive}
       >
         {children}
       </AppShell>

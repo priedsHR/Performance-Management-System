@@ -96,6 +96,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   role: 'role',
+  isExecutive: 'isExecutive',
   division: 'division',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -187,10 +188,13 @@ export type KRAssignmentScalarFieldEnum = (typeof KRAssignmentScalarFieldEnum)[k
 export const InitiativeScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  progress: 'progress',
-  done: 'done',
+  target: 'target',
+  actual: 'actual',
+  unit: 'unit',
+  resultNote: 'resultNote',
   sortOrder: 'sortOrder',
-  krAssignmentId: 'krAssignmentId',
+  keyResultId: 'keyResultId',
+  picId: 'picId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

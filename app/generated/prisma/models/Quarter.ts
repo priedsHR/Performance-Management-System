@@ -454,10 +454,6 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type QuarterCreateNestedOneWithoutReminderSchedulesInput = {
   create?: Prisma.XOR<Prisma.QuarterCreateWithoutReminderSchedulesInput, Prisma.QuarterUncheckedCreateWithoutReminderSchedulesInput>
   connectOrCreate?: Prisma.QuarterCreateOrConnectWithoutReminderSchedulesInput

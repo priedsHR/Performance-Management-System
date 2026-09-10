@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2, ChevronDown, ChevronUp, CheckSquare, Square, X, Key } from "lucide-react";
 import { calcObjectiveAchievement, calcKRAchievement } from "@/lib/calculations";
+import InitiativeEditor from "./InitiativeEditor";
 
 type KeyResult = {
   id: string;
@@ -836,6 +837,9 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                             </div>
                             <span className="text-xs font-bold text-slate-500 w-10 text-right">{pct.toFixed(0)}%</span>
                           </div>
+
+                          {/* Initiatives (action plans) under this KR, each with a PIC */}
+                          <InitiativeEditor keyResultId={kr.id} krUnit={kr.unit} isLocked={isLocked} />
                         </div>
                       );
                     })}

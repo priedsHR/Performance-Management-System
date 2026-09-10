@@ -270,6 +270,7 @@ export type KeyResultWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"KeyResult"> | Date | string
   objective?: Prisma.XOR<Prisma.ObjectiveScalarRelationFilter, Prisma.ObjectiveWhereInput>
   krAssignments?: Prisma.KRAssignmentListRelationFilter
+  initiatives?: Prisma.InitiativeListRelationFilter
 }
 
 export type KeyResultOrderByWithRelationInput = {
@@ -285,6 +286,7 @@ export type KeyResultOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   objective?: Prisma.ObjectiveOrderByWithRelationInput
   krAssignments?: Prisma.KRAssignmentOrderByRelationAggregateInput
+  initiatives?: Prisma.InitiativeOrderByRelationAggregateInput
 }
 
 export type KeyResultWhereUniqueInput = Prisma.AtLeast<{
@@ -303,6 +305,7 @@ export type KeyResultWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"KeyResult"> | Date | string
   objective?: Prisma.XOR<Prisma.ObjectiveScalarRelationFilter, Prisma.ObjectiveWhereInput>
   krAssignments?: Prisma.KRAssignmentListRelationFilter
+  initiatives?: Prisma.InitiativeListRelationFilter
 }, "id">
 
 export type KeyResultOrderByWithAggregationInput = {
@@ -351,6 +354,7 @@ export type KeyResultCreateInput = {
   updatedAt?: Date | string
   objective: Prisma.ObjectiveCreateNestedOneWithoutKeyResultsInput
   krAssignments?: Prisma.KRAssignmentCreateNestedManyWithoutKeyResultInput
+  initiatives?: Prisma.InitiativeCreateNestedManyWithoutKeyResultInput
 }
 
 export type KeyResultUncheckedCreateInput = {
@@ -365,6 +369,7 @@ export type KeyResultUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   krAssignments?: Prisma.KRAssignmentUncheckedCreateNestedManyWithoutKeyResultInput
+  initiatives?: Prisma.InitiativeUncheckedCreateNestedManyWithoutKeyResultInput
 }
 
 export type KeyResultUpdateInput = {
@@ -379,6 +384,7 @@ export type KeyResultUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   objective?: Prisma.ObjectiveUpdateOneRequiredWithoutKeyResultsNestedInput
   krAssignments?: Prisma.KRAssignmentUpdateManyWithoutKeyResultNestedInput
+  initiatives?: Prisma.InitiativeUpdateManyWithoutKeyResultNestedInput
 }
 
 export type KeyResultUncheckedUpdateInput = {
@@ -393,6 +399,7 @@ export type KeyResultUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   krAssignments?: Prisma.KRAssignmentUncheckedUpdateManyWithoutKeyResultNestedInput
+  initiatives?: Prisma.InitiativeUncheckedUpdateManyWithoutKeyResultNestedInput
 }
 
 export type KeyResultCreateManyInput = {
@@ -557,6 +564,20 @@ export type KeyResultUpdateOneRequiredWithoutKrAssignmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.KeyResultUpdateToOneWithWhereWithoutKrAssignmentsInput, Prisma.KeyResultUpdateWithoutKrAssignmentsInput>, Prisma.KeyResultUncheckedUpdateWithoutKrAssignmentsInput>
 }
 
+export type KeyResultCreateNestedOneWithoutInitiativesInput = {
+  create?: Prisma.XOR<Prisma.KeyResultCreateWithoutInitiativesInput, Prisma.KeyResultUncheckedCreateWithoutInitiativesInput>
+  connectOrCreate?: Prisma.KeyResultCreateOrConnectWithoutInitiativesInput
+  connect?: Prisma.KeyResultWhereUniqueInput
+}
+
+export type KeyResultUpdateOneRequiredWithoutInitiativesNestedInput = {
+  create?: Prisma.XOR<Prisma.KeyResultCreateWithoutInitiativesInput, Prisma.KeyResultUncheckedCreateWithoutInitiativesInput>
+  connectOrCreate?: Prisma.KeyResultCreateOrConnectWithoutInitiativesInput
+  upsert?: Prisma.KeyResultUpsertWithoutInitiativesInput
+  connect?: Prisma.KeyResultWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.KeyResultUpdateToOneWithWhereWithoutInitiativesInput, Prisma.KeyResultUpdateWithoutInitiativesInput>, Prisma.KeyResultUncheckedUpdateWithoutInitiativesInput>
+}
+
 export type KeyResultCreateWithoutObjectiveInput = {
   id?: string
   title: string
@@ -568,6 +589,7 @@ export type KeyResultCreateWithoutObjectiveInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   krAssignments?: Prisma.KRAssignmentCreateNestedManyWithoutKeyResultInput
+  initiatives?: Prisma.InitiativeCreateNestedManyWithoutKeyResultInput
 }
 
 export type KeyResultUncheckedCreateWithoutObjectiveInput = {
@@ -581,6 +603,7 @@ export type KeyResultUncheckedCreateWithoutObjectiveInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   krAssignments?: Prisma.KRAssignmentUncheckedCreateNestedManyWithoutKeyResultInput
+  initiatives?: Prisma.InitiativeUncheckedCreateNestedManyWithoutKeyResultInput
 }
 
 export type KeyResultCreateOrConnectWithoutObjectiveInput = {
@@ -636,6 +659,7 @@ export type KeyResultCreateWithoutKrAssignmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   objective: Prisma.ObjectiveCreateNestedOneWithoutKeyResultsInput
+  initiatives?: Prisma.InitiativeCreateNestedManyWithoutKeyResultInput
 }
 
 export type KeyResultUncheckedCreateWithoutKrAssignmentsInput = {
@@ -649,6 +673,7 @@ export type KeyResultUncheckedCreateWithoutKrAssignmentsInput = {
   objectiveId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  initiatives?: Prisma.InitiativeUncheckedCreateNestedManyWithoutKeyResultInput
 }
 
 export type KeyResultCreateOrConnectWithoutKrAssignmentsInput = {
@@ -678,6 +703,7 @@ export type KeyResultUpdateWithoutKrAssignmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   objective?: Prisma.ObjectiveUpdateOneRequiredWithoutKeyResultsNestedInput
+  initiatives?: Prisma.InitiativeUpdateManyWithoutKeyResultNestedInput
 }
 
 export type KeyResultUncheckedUpdateWithoutKrAssignmentsInput = {
@@ -691,6 +717,79 @@ export type KeyResultUncheckedUpdateWithoutKrAssignmentsInput = {
   objectiveId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  initiatives?: Prisma.InitiativeUncheckedUpdateManyWithoutKeyResultNestedInput
+}
+
+export type KeyResultCreateWithoutInitiativesInput = {
+  id?: string
+  title: string
+  target: number
+  unit: string
+  weight: number
+  teamProgress?: number
+  leadProgress?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  objective: Prisma.ObjectiveCreateNestedOneWithoutKeyResultsInput
+  krAssignments?: Prisma.KRAssignmentCreateNestedManyWithoutKeyResultInput
+}
+
+export type KeyResultUncheckedCreateWithoutInitiativesInput = {
+  id?: string
+  title: string
+  target: number
+  unit: string
+  weight: number
+  teamProgress?: number
+  leadProgress?: number | null
+  objectiveId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  krAssignments?: Prisma.KRAssignmentUncheckedCreateNestedManyWithoutKeyResultInput
+}
+
+export type KeyResultCreateOrConnectWithoutInitiativesInput = {
+  where: Prisma.KeyResultWhereUniqueInput
+  create: Prisma.XOR<Prisma.KeyResultCreateWithoutInitiativesInput, Prisma.KeyResultUncheckedCreateWithoutInitiativesInput>
+}
+
+export type KeyResultUpsertWithoutInitiativesInput = {
+  update: Prisma.XOR<Prisma.KeyResultUpdateWithoutInitiativesInput, Prisma.KeyResultUncheckedUpdateWithoutInitiativesInput>
+  create: Prisma.XOR<Prisma.KeyResultCreateWithoutInitiativesInput, Prisma.KeyResultUncheckedCreateWithoutInitiativesInput>
+  where?: Prisma.KeyResultWhereInput
+}
+
+export type KeyResultUpdateToOneWithWhereWithoutInitiativesInput = {
+  where?: Prisma.KeyResultWhereInput
+  data: Prisma.XOR<Prisma.KeyResultUpdateWithoutInitiativesInput, Prisma.KeyResultUncheckedUpdateWithoutInitiativesInput>
+}
+
+export type KeyResultUpdateWithoutInitiativesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  weight?: Prisma.FloatFieldUpdateOperationsInput | number
+  teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
+  leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  objective?: Prisma.ObjectiveUpdateOneRequiredWithoutKeyResultsNestedInput
+  krAssignments?: Prisma.KRAssignmentUpdateManyWithoutKeyResultNestedInput
+}
+
+export type KeyResultUncheckedUpdateWithoutInitiativesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  weight?: Prisma.FloatFieldUpdateOperationsInput | number
+  teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
+  leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  objectiveId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  krAssignments?: Prisma.KRAssignmentUncheckedUpdateManyWithoutKeyResultNestedInput
 }
 
 export type KeyResultCreateManyObjectiveInput = {
@@ -716,6 +815,7 @@ export type KeyResultUpdateWithoutObjectiveInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   krAssignments?: Prisma.KRAssignmentUpdateManyWithoutKeyResultNestedInput
+  initiatives?: Prisma.InitiativeUpdateManyWithoutKeyResultNestedInput
 }
 
 export type KeyResultUncheckedUpdateWithoutObjectiveInput = {
@@ -729,6 +829,7 @@ export type KeyResultUncheckedUpdateWithoutObjectiveInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   krAssignments?: Prisma.KRAssignmentUncheckedUpdateManyWithoutKeyResultNestedInput
+  initiatives?: Prisma.InitiativeUncheckedUpdateManyWithoutKeyResultNestedInput
 }
 
 export type KeyResultUncheckedUpdateManyWithoutObjectiveInput = {
@@ -750,10 +851,12 @@ export type KeyResultUncheckedUpdateManyWithoutObjectiveInput = {
 
 export type KeyResultCountOutputType = {
   krAssignments: number
+  initiatives: number
 }
 
 export type KeyResultCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   krAssignments?: boolean | KeyResultCountOutputTypeCountKrAssignmentsArgs
+  initiatives?: boolean | KeyResultCountOutputTypeCountInitiativesArgs
 }
 
 /**
@@ -773,6 +876,13 @@ export type KeyResultCountOutputTypeCountKrAssignmentsArgs<ExtArgs extends runti
   where?: Prisma.KRAssignmentWhereInput
 }
 
+/**
+ * KeyResultCountOutputType without action
+ */
+export type KeyResultCountOutputTypeCountInitiativesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InitiativeWhereInput
+}
+
 
 export type KeyResultSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -787,6 +897,7 @@ export type KeyResultSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   updatedAt?: boolean
   objective?: boolean | Prisma.ObjectiveDefaultArgs<ExtArgs>
   krAssignments?: boolean | Prisma.KeyResult$krAssignmentsArgs<ExtArgs>
+  initiatives?: boolean | Prisma.KeyResult$initiativesArgs<ExtArgs>
   _count?: boolean | Prisma.KeyResultCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["keyResult"]>
 
@@ -835,6 +946,7 @@ export type KeyResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type KeyResultInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   objective?: boolean | Prisma.ObjectiveDefaultArgs<ExtArgs>
   krAssignments?: boolean | Prisma.KeyResult$krAssignmentsArgs<ExtArgs>
+  initiatives?: boolean | Prisma.KeyResult$initiativesArgs<ExtArgs>
   _count?: boolean | Prisma.KeyResultCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type KeyResultIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -849,6 +961,7 @@ export type $KeyResultPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     objective: Prisma.$ObjectivePayload<ExtArgs>
     krAssignments: Prisma.$KRAssignmentPayload<ExtArgs>[]
+    initiatives: Prisma.$InitiativePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1257,6 +1370,7 @@ export interface Prisma__KeyResultClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   objective<T extends Prisma.ObjectiveDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ObjectiveDefaultArgs<ExtArgs>>): Prisma.Prisma__ObjectiveClient<runtime.Types.Result.GetResult<Prisma.$ObjectivePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   krAssignments<T extends Prisma.KeyResult$krAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KeyResult$krAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KRAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  initiatives<T extends Prisma.KeyResult$initiativesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KeyResult$initiativesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InitiativePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1718,6 +1832,30 @@ export type KeyResult$krAssignmentsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.KRAssignmentScalarFieldEnum | Prisma.KRAssignmentScalarFieldEnum[]
+}
+
+/**
+ * KeyResult.initiatives
+ */
+export type KeyResult$initiativesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Initiative
+   */
+  select?: Prisma.InitiativeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Initiative
+   */
+  omit?: Prisma.InitiativeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InitiativeInclude<ExtArgs> | null
+  where?: Prisma.InitiativeWhereInput
+  orderBy?: Prisma.InitiativeOrderByWithRelationInput | Prisma.InitiativeOrderByWithRelationInput[]
+  cursor?: Prisma.InitiativeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InitiativeScalarFieldEnum | Prisma.InitiativeScalarFieldEnum[]
 }
 
 /**

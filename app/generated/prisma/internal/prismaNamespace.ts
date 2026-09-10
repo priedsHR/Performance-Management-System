@@ -2023,6 +2023,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   role: 'role',
+  isExecutive: 'isExecutive',
   division: 'division',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2114,10 +2115,13 @@ export type KRAssignmentScalarFieldEnum = (typeof KRAssignmentScalarFieldEnum)[k
 export const InitiativeScalarFieldEnum = {
   id: 'id',
   title: 'title',
-  progress: 'progress',
-  done: 'done',
+  target: 'target',
+  actual: 'actual',
+  unit: 'unit',
+  resultNote: 'resultNote',
   sortOrder: 'sortOrder',
-  krAssignmentId: 'krAssignmentId',
+  keyResultId: 'keyResultId',
+  picId: 'picId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2396,6 +2400,13 @@ export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -2420,13 +2431,6 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

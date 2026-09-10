@@ -186,6 +186,7 @@ export type TeamMemberWhereInput = {
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   assignments?: Prisma.ObjectiveAssignmentListRelationFilter
   snapshots?: Prisma.ProgressSnapshotListRelationFilter
+  initiatives?: Prisma.InitiativeListRelationFilter
 }
 
 export type TeamMemberOrderByWithRelationInput = {
@@ -198,6 +199,7 @@ export type TeamMemberOrderByWithRelationInput = {
   user?: Prisma.UserOrderByWithRelationInput
   assignments?: Prisma.ObjectiveAssignmentOrderByRelationAggregateInput
   snapshots?: Prisma.ProgressSnapshotOrderByRelationAggregateInput
+  initiatives?: Prisma.InitiativeOrderByRelationAggregateInput
 }
 
 export type TeamMemberWhereUniqueInput = Prisma.AtLeast<{
@@ -213,6 +215,7 @@ export type TeamMemberWhereUniqueInput = Prisma.AtLeast<{
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   assignments?: Prisma.ObjectiveAssignmentListRelationFilter
   snapshots?: Prisma.ProgressSnapshotListRelationFilter
+  initiatives?: Prisma.InitiativeListRelationFilter
 }, "id" | "userId">
 
 export type TeamMemberOrderByWithAggregationInput = {
@@ -245,6 +248,7 @@ export type TeamMemberCreateInput = {
   user?: Prisma.UserCreateNestedOneWithoutTeamMembershipInput
   assignments?: Prisma.ObjectiveAssignmentCreateNestedManyWithoutMemberInput
   snapshots?: Prisma.ProgressSnapshotCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberUncheckedCreateInput = {
@@ -255,6 +259,7 @@ export type TeamMemberUncheckedCreateInput = {
   createdAt?: Date | string
   assignments?: Prisma.ObjectiveAssignmentUncheckedCreateNestedManyWithoutMemberInput
   snapshots?: Prisma.ProgressSnapshotUncheckedCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeUncheckedCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberUpdateInput = {
@@ -265,6 +270,7 @@ export type TeamMemberUpdateInput = {
   user?: Prisma.UserUpdateOneWithoutTeamMembershipNestedInput
   assignments?: Prisma.ObjectiveAssignmentUpdateManyWithoutMemberNestedInput
   snapshots?: Prisma.ProgressSnapshotUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUpdateManyWithoutPicNestedInput
 }
 
 export type TeamMemberUncheckedUpdateInput = {
@@ -275,6 +281,7 @@ export type TeamMemberUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignments?: Prisma.ObjectiveAssignmentUncheckedUpdateManyWithoutMemberNestedInput
   snapshots?: Prisma.ProgressSnapshotUncheckedUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUncheckedUpdateManyWithoutPicNestedInput
 }
 
 export type TeamMemberCreateManyInput = {
@@ -431,6 +438,22 @@ export type TeamMemberUpdateOneRequiredWithoutAssignmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TeamMemberUpdateToOneWithWhereWithoutAssignmentsInput, Prisma.TeamMemberUpdateWithoutAssignmentsInput>, Prisma.TeamMemberUncheckedUpdateWithoutAssignmentsInput>
 }
 
+export type TeamMemberCreateNestedOneWithoutInitiativesInput = {
+  create?: Prisma.XOR<Prisma.TeamMemberCreateWithoutInitiativesInput, Prisma.TeamMemberUncheckedCreateWithoutInitiativesInput>
+  connectOrCreate?: Prisma.TeamMemberCreateOrConnectWithoutInitiativesInput
+  connect?: Prisma.TeamMemberWhereUniqueInput
+}
+
+export type TeamMemberUpdateOneWithoutInitiativesNestedInput = {
+  create?: Prisma.XOR<Prisma.TeamMemberCreateWithoutInitiativesInput, Prisma.TeamMemberUncheckedCreateWithoutInitiativesInput>
+  connectOrCreate?: Prisma.TeamMemberCreateOrConnectWithoutInitiativesInput
+  upsert?: Prisma.TeamMemberUpsertWithoutInitiativesInput
+  disconnect?: Prisma.TeamMemberWhereInput | boolean
+  delete?: Prisma.TeamMemberWhereInput | boolean
+  connect?: Prisma.TeamMemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TeamMemberUpdateToOneWithWhereWithoutInitiativesInput, Prisma.TeamMemberUpdateWithoutInitiativesInput>, Prisma.TeamMemberUncheckedUpdateWithoutInitiativesInput>
+}
+
 export type TeamMemberCreateNestedOneWithoutSnapshotsInput = {
   create?: Prisma.XOR<Prisma.TeamMemberCreateWithoutSnapshotsInput, Prisma.TeamMemberUncheckedCreateWithoutSnapshotsInput>
   connectOrCreate?: Prisma.TeamMemberCreateOrConnectWithoutSnapshotsInput
@@ -452,6 +475,7 @@ export type TeamMemberCreateWithoutLeadInput = {
   user?: Prisma.UserCreateNestedOneWithoutTeamMembershipInput
   assignments?: Prisma.ObjectiveAssignmentCreateNestedManyWithoutMemberInput
   snapshots?: Prisma.ProgressSnapshotCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberUncheckedCreateWithoutLeadInput = {
@@ -461,6 +485,7 @@ export type TeamMemberUncheckedCreateWithoutLeadInput = {
   createdAt?: Date | string
   assignments?: Prisma.ObjectiveAssignmentUncheckedCreateNestedManyWithoutMemberInput
   snapshots?: Prisma.ProgressSnapshotUncheckedCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeUncheckedCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberCreateOrConnectWithoutLeadInput = {
@@ -480,6 +505,7 @@ export type TeamMemberCreateWithoutUserInput = {
   lead: Prisma.UserCreateNestedOneWithoutTeamMembersInput
   assignments?: Prisma.ObjectiveAssignmentCreateNestedManyWithoutMemberInput
   snapshots?: Prisma.ProgressSnapshotCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberUncheckedCreateWithoutUserInput = {
@@ -489,6 +515,7 @@ export type TeamMemberUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   assignments?: Prisma.ObjectiveAssignmentUncheckedCreateNestedManyWithoutMemberInput
   snapshots?: Prisma.ProgressSnapshotUncheckedCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeUncheckedCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberCreateOrConnectWithoutUserInput = {
@@ -541,6 +568,7 @@ export type TeamMemberUpdateWithoutUserInput = {
   lead?: Prisma.UserUpdateOneRequiredWithoutTeamMembersNestedInput
   assignments?: Prisma.ObjectiveAssignmentUpdateManyWithoutMemberNestedInput
   snapshots?: Prisma.ProgressSnapshotUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUpdateManyWithoutPicNestedInput
 }
 
 export type TeamMemberUncheckedUpdateWithoutUserInput = {
@@ -550,6 +578,7 @@ export type TeamMemberUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignments?: Prisma.ObjectiveAssignmentUncheckedUpdateManyWithoutMemberNestedInput
   snapshots?: Prisma.ProgressSnapshotUncheckedUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUncheckedUpdateManyWithoutPicNestedInput
 }
 
 export type TeamMemberCreateWithoutAssignmentsInput = {
@@ -559,6 +588,7 @@ export type TeamMemberCreateWithoutAssignmentsInput = {
   lead: Prisma.UserCreateNestedOneWithoutTeamMembersInput
   user?: Prisma.UserCreateNestedOneWithoutTeamMembershipInput
   snapshots?: Prisma.ProgressSnapshotCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberUncheckedCreateWithoutAssignmentsInput = {
@@ -568,6 +598,7 @@ export type TeamMemberUncheckedCreateWithoutAssignmentsInput = {
   userId?: string | null
   createdAt?: Date | string
   snapshots?: Prisma.ProgressSnapshotUncheckedCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeUncheckedCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberCreateOrConnectWithoutAssignmentsInput = {
@@ -593,6 +624,7 @@ export type TeamMemberUpdateWithoutAssignmentsInput = {
   lead?: Prisma.UserUpdateOneRequiredWithoutTeamMembersNestedInput
   user?: Prisma.UserUpdateOneWithoutTeamMembershipNestedInput
   snapshots?: Prisma.ProgressSnapshotUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUpdateManyWithoutPicNestedInput
 }
 
 export type TeamMemberUncheckedUpdateWithoutAssignmentsInput = {
@@ -601,6 +633,63 @@ export type TeamMemberUncheckedUpdateWithoutAssignmentsInput = {
   leadId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  snapshots?: Prisma.ProgressSnapshotUncheckedUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUncheckedUpdateManyWithoutPicNestedInput
+}
+
+export type TeamMemberCreateWithoutInitiativesInput = {
+  id?: string
+  name: string
+  createdAt?: Date | string
+  lead: Prisma.UserCreateNestedOneWithoutTeamMembersInput
+  user?: Prisma.UserCreateNestedOneWithoutTeamMembershipInput
+  assignments?: Prisma.ObjectiveAssignmentCreateNestedManyWithoutMemberInput
+  snapshots?: Prisma.ProgressSnapshotCreateNestedManyWithoutMemberInput
+}
+
+export type TeamMemberUncheckedCreateWithoutInitiativesInput = {
+  id?: string
+  name: string
+  leadId: string
+  userId?: string | null
+  createdAt?: Date | string
+  assignments?: Prisma.ObjectiveAssignmentUncheckedCreateNestedManyWithoutMemberInput
+  snapshots?: Prisma.ProgressSnapshotUncheckedCreateNestedManyWithoutMemberInput
+}
+
+export type TeamMemberCreateOrConnectWithoutInitiativesInput = {
+  where: Prisma.TeamMemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.TeamMemberCreateWithoutInitiativesInput, Prisma.TeamMemberUncheckedCreateWithoutInitiativesInput>
+}
+
+export type TeamMemberUpsertWithoutInitiativesInput = {
+  update: Prisma.XOR<Prisma.TeamMemberUpdateWithoutInitiativesInput, Prisma.TeamMemberUncheckedUpdateWithoutInitiativesInput>
+  create: Prisma.XOR<Prisma.TeamMemberCreateWithoutInitiativesInput, Prisma.TeamMemberUncheckedCreateWithoutInitiativesInput>
+  where?: Prisma.TeamMemberWhereInput
+}
+
+export type TeamMemberUpdateToOneWithWhereWithoutInitiativesInput = {
+  where?: Prisma.TeamMemberWhereInput
+  data: Prisma.XOR<Prisma.TeamMemberUpdateWithoutInitiativesInput, Prisma.TeamMemberUncheckedUpdateWithoutInitiativesInput>
+}
+
+export type TeamMemberUpdateWithoutInitiativesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lead?: Prisma.UserUpdateOneRequiredWithoutTeamMembersNestedInput
+  user?: Prisma.UserUpdateOneWithoutTeamMembershipNestedInput
+  assignments?: Prisma.ObjectiveAssignmentUpdateManyWithoutMemberNestedInput
+  snapshots?: Prisma.ProgressSnapshotUpdateManyWithoutMemberNestedInput
+}
+
+export type TeamMemberUncheckedUpdateWithoutInitiativesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  leadId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  assignments?: Prisma.ObjectiveAssignmentUncheckedUpdateManyWithoutMemberNestedInput
   snapshots?: Prisma.ProgressSnapshotUncheckedUpdateManyWithoutMemberNestedInput
 }
 
@@ -611,6 +700,7 @@ export type TeamMemberCreateWithoutSnapshotsInput = {
   lead: Prisma.UserCreateNestedOneWithoutTeamMembersInput
   user?: Prisma.UserCreateNestedOneWithoutTeamMembershipInput
   assignments?: Prisma.ObjectiveAssignmentCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberUncheckedCreateWithoutSnapshotsInput = {
@@ -620,6 +710,7 @@ export type TeamMemberUncheckedCreateWithoutSnapshotsInput = {
   userId?: string | null
   createdAt?: Date | string
   assignments?: Prisma.ObjectiveAssignmentUncheckedCreateNestedManyWithoutMemberInput
+  initiatives?: Prisma.InitiativeUncheckedCreateNestedManyWithoutPicInput
 }
 
 export type TeamMemberCreateOrConnectWithoutSnapshotsInput = {
@@ -645,6 +736,7 @@ export type TeamMemberUpdateWithoutSnapshotsInput = {
   lead?: Prisma.UserUpdateOneRequiredWithoutTeamMembersNestedInput
   user?: Prisma.UserUpdateOneWithoutTeamMembershipNestedInput
   assignments?: Prisma.ObjectiveAssignmentUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUpdateManyWithoutPicNestedInput
 }
 
 export type TeamMemberUncheckedUpdateWithoutSnapshotsInput = {
@@ -654,6 +746,7 @@ export type TeamMemberUncheckedUpdateWithoutSnapshotsInput = {
   userId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignments?: Prisma.ObjectiveAssignmentUncheckedUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUncheckedUpdateManyWithoutPicNestedInput
 }
 
 export type TeamMemberCreateManyLeadInput = {
@@ -670,6 +763,7 @@ export type TeamMemberUpdateWithoutLeadInput = {
   user?: Prisma.UserUpdateOneWithoutTeamMembershipNestedInput
   assignments?: Prisma.ObjectiveAssignmentUpdateManyWithoutMemberNestedInput
   snapshots?: Prisma.ProgressSnapshotUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUpdateManyWithoutPicNestedInput
 }
 
 export type TeamMemberUncheckedUpdateWithoutLeadInput = {
@@ -679,6 +773,7 @@ export type TeamMemberUncheckedUpdateWithoutLeadInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignments?: Prisma.ObjectiveAssignmentUncheckedUpdateManyWithoutMemberNestedInput
   snapshots?: Prisma.ProgressSnapshotUncheckedUpdateManyWithoutMemberNestedInput
+  initiatives?: Prisma.InitiativeUncheckedUpdateManyWithoutPicNestedInput
 }
 
 export type TeamMemberUncheckedUpdateManyWithoutLeadInput = {
@@ -696,11 +791,13 @@ export type TeamMemberUncheckedUpdateManyWithoutLeadInput = {
 export type TeamMemberCountOutputType = {
   assignments: number
   snapshots: number
+  initiatives: number
 }
 
 export type TeamMemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   assignments?: boolean | TeamMemberCountOutputTypeCountAssignmentsArgs
   snapshots?: boolean | TeamMemberCountOutputTypeCountSnapshotsArgs
+  initiatives?: boolean | TeamMemberCountOutputTypeCountInitiativesArgs
 }
 
 /**
@@ -727,6 +824,13 @@ export type TeamMemberCountOutputTypeCountSnapshotsArgs<ExtArgs extends runtime.
   where?: Prisma.ProgressSnapshotWhereInput
 }
 
+/**
+ * TeamMemberCountOutputType without action
+ */
+export type TeamMemberCountOutputTypeCountInitiativesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InitiativeWhereInput
+}
+
 
 export type TeamMemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -738,6 +842,7 @@ export type TeamMemberSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   user?: boolean | Prisma.TeamMember$userArgs<ExtArgs>
   assignments?: boolean | Prisma.TeamMember$assignmentsArgs<ExtArgs>
   snapshots?: boolean | Prisma.TeamMember$snapshotsArgs<ExtArgs>
+  initiatives?: boolean | Prisma.TeamMember$initiativesArgs<ExtArgs>
   _count?: boolean | Prisma.TeamMemberCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["teamMember"]>
 
@@ -775,6 +880,7 @@ export type TeamMemberInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   user?: boolean | Prisma.TeamMember$userArgs<ExtArgs>
   assignments?: boolean | Prisma.TeamMember$assignmentsArgs<ExtArgs>
   snapshots?: boolean | Prisma.TeamMember$snapshotsArgs<ExtArgs>
+  initiatives?: boolean | Prisma.TeamMember$initiativesArgs<ExtArgs>
   _count?: boolean | Prisma.TeamMemberCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TeamMemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -793,6 +899,7 @@ export type $TeamMemberPayload<ExtArgs extends runtime.Types.Extensions.Internal
     user: Prisma.$UserPayload<ExtArgs> | null
     assignments: Prisma.$ObjectiveAssignmentPayload<ExtArgs>[]
     snapshots: Prisma.$ProgressSnapshotPayload<ExtArgs>[]
+    initiatives: Prisma.$InitiativePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1198,6 +1305,7 @@ export interface Prisma__TeamMemberClient<T, Null = never, ExtArgs extends runti
   user<T extends Prisma.TeamMember$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeamMember$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   assignments<T extends Prisma.TeamMember$assignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeamMember$assignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ObjectiveAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   snapshots<T extends Prisma.TeamMember$snapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeamMember$snapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgressSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  initiatives<T extends Prisma.TeamMember$initiativesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeamMember$initiativesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InitiativePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1697,6 +1805,30 @@ export type TeamMember$snapshotsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ProgressSnapshotScalarFieldEnum | Prisma.ProgressSnapshotScalarFieldEnum[]
+}
+
+/**
+ * TeamMember.initiatives
+ */
+export type TeamMember$initiativesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Initiative
+   */
+  select?: Prisma.InitiativeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Initiative
+   */
+  omit?: Prisma.InitiativeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InitiativeInclude<ExtArgs> | null
+  where?: Prisma.InitiativeWhereInput
+  orderBy?: Prisma.InitiativeOrderByWithRelationInput | Prisma.InitiativeOrderByWithRelationInput[]
+  cursor?: Prisma.InitiativeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InitiativeScalarFieldEnum | Prisma.InitiativeScalarFieldEnum[]
 }
 
 /**

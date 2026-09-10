@@ -27,22 +27,27 @@ export type AggregateInitiative = {
 }
 
 export type InitiativeAvgAggregateOutputType = {
-  progress: number | null
+  target: number | null
+  actual: number | null
   sortOrder: number | null
 }
 
 export type InitiativeSumAggregateOutputType = {
-  progress: number | null
+  target: number | null
+  actual: number | null
   sortOrder: number | null
 }
 
 export type InitiativeMinAggregateOutputType = {
   id: string | null
   title: string | null
-  progress: number | null
-  done: boolean | null
+  target: number | null
+  actual: number | null
+  unit: string | null
+  resultNote: string | null
   sortOrder: number | null
-  krAssignmentId: string | null
+  keyResultId: string | null
+  picId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,10 +55,13 @@ export type InitiativeMinAggregateOutputType = {
 export type InitiativeMaxAggregateOutputType = {
   id: string | null
   title: string | null
-  progress: number | null
-  done: boolean | null
+  target: number | null
+  actual: number | null
+  unit: string | null
+  resultNote: string | null
   sortOrder: number | null
-  krAssignmentId: string | null
+  keyResultId: string | null
+  picId: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -61,10 +69,13 @@ export type InitiativeMaxAggregateOutputType = {
 export type InitiativeCountAggregateOutputType = {
   id: number
   title: number
-  progress: number
-  done: number
+  target: number
+  actual: number
+  unit: number
+  resultNote: number
   sortOrder: number
-  krAssignmentId: number
+  keyResultId: number
+  picId: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -72,22 +83,27 @@ export type InitiativeCountAggregateOutputType = {
 
 
 export type InitiativeAvgAggregateInputType = {
-  progress?: true
+  target?: true
+  actual?: true
   sortOrder?: true
 }
 
 export type InitiativeSumAggregateInputType = {
-  progress?: true
+  target?: true
+  actual?: true
   sortOrder?: true
 }
 
 export type InitiativeMinAggregateInputType = {
   id?: true
   title?: true
-  progress?: true
-  done?: true
+  target?: true
+  actual?: true
+  unit?: true
+  resultNote?: true
   sortOrder?: true
-  krAssignmentId?: true
+  keyResultId?: true
+  picId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -95,10 +111,13 @@ export type InitiativeMinAggregateInputType = {
 export type InitiativeMaxAggregateInputType = {
   id?: true
   title?: true
-  progress?: true
-  done?: true
+  target?: true
+  actual?: true
+  unit?: true
+  resultNote?: true
   sortOrder?: true
-  krAssignmentId?: true
+  keyResultId?: true
+  picId?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -106,10 +125,13 @@ export type InitiativeMaxAggregateInputType = {
 export type InitiativeCountAggregateInputType = {
   id?: true
   title?: true
-  progress?: true
-  done?: true
+  target?: true
+  actual?: true
+  unit?: true
+  resultNote?: true
   sortOrder?: true
-  krAssignmentId?: true
+  keyResultId?: true
+  picId?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -204,10 +226,13 @@ export type InitiativeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type InitiativeGroupByOutputType = {
   id: string
   title: string
-  progress: number
-  done: boolean
+  target: number
+  actual: number
+  unit: string
+  resultNote: string | null
   sortOrder: number
-  krAssignmentId: string
+  keyResultId: string
+  picId: string | null
   createdAt: Date
   updatedAt: Date
   _count: InitiativeCountAggregateOutputType | null
@@ -238,25 +263,33 @@ export type InitiativeWhereInput = {
   NOT?: Prisma.InitiativeWhereInput | Prisma.InitiativeWhereInput[]
   id?: Prisma.StringFilter<"Initiative"> | string
   title?: Prisma.StringFilter<"Initiative"> | string
-  progress?: Prisma.FloatFilter<"Initiative"> | number
-  done?: Prisma.BoolFilter<"Initiative"> | boolean
+  target?: Prisma.FloatFilter<"Initiative"> | number
+  actual?: Prisma.FloatFilter<"Initiative"> | number
+  unit?: Prisma.StringFilter<"Initiative"> | string
+  resultNote?: Prisma.StringNullableFilter<"Initiative"> | string | null
   sortOrder?: Prisma.IntFilter<"Initiative"> | number
-  krAssignmentId?: Prisma.StringFilter<"Initiative"> | string
+  keyResultId?: Prisma.StringFilter<"Initiative"> | string
+  picId?: Prisma.StringNullableFilter<"Initiative"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Initiative"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Initiative"> | Date | string
-  krAssignment?: Prisma.XOR<Prisma.KRAssignmentScalarRelationFilter, Prisma.KRAssignmentWhereInput>
+  keyResult?: Prisma.XOR<Prisma.KeyResultScalarRelationFilter, Prisma.KeyResultWhereInput>
+  pic?: Prisma.XOR<Prisma.TeamMemberNullableScalarRelationFilter, Prisma.TeamMemberWhereInput> | null
 }
 
 export type InitiativeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  progress?: Prisma.SortOrder
-  done?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  actual?: Prisma.SortOrder
+  unit?: Prisma.SortOrder
+  resultNote?: Prisma.SortOrderInput | Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
-  krAssignmentId?: Prisma.SortOrder
+  keyResultId?: Prisma.SortOrder
+  picId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  krAssignment?: Prisma.KRAssignmentOrderByWithRelationInput
+  keyResult?: Prisma.KeyResultOrderByWithRelationInput
+  pic?: Prisma.TeamMemberOrderByWithRelationInput
 }
 
 export type InitiativeWhereUniqueInput = Prisma.AtLeast<{
@@ -265,22 +298,29 @@ export type InitiativeWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.InitiativeWhereInput[]
   NOT?: Prisma.InitiativeWhereInput | Prisma.InitiativeWhereInput[]
   title?: Prisma.StringFilter<"Initiative"> | string
-  progress?: Prisma.FloatFilter<"Initiative"> | number
-  done?: Prisma.BoolFilter<"Initiative"> | boolean
+  target?: Prisma.FloatFilter<"Initiative"> | number
+  actual?: Prisma.FloatFilter<"Initiative"> | number
+  unit?: Prisma.StringFilter<"Initiative"> | string
+  resultNote?: Prisma.StringNullableFilter<"Initiative"> | string | null
   sortOrder?: Prisma.IntFilter<"Initiative"> | number
-  krAssignmentId?: Prisma.StringFilter<"Initiative"> | string
+  keyResultId?: Prisma.StringFilter<"Initiative"> | string
+  picId?: Prisma.StringNullableFilter<"Initiative"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Initiative"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Initiative"> | Date | string
-  krAssignment?: Prisma.XOR<Prisma.KRAssignmentScalarRelationFilter, Prisma.KRAssignmentWhereInput>
+  keyResult?: Prisma.XOR<Prisma.KeyResultScalarRelationFilter, Prisma.KeyResultWhereInput>
+  pic?: Prisma.XOR<Prisma.TeamMemberNullableScalarRelationFilter, Prisma.TeamMemberWhereInput> | null
 }, "id">
 
 export type InitiativeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  progress?: Prisma.SortOrder
-  done?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  actual?: Prisma.SortOrder
+  unit?: Prisma.SortOrder
+  resultNote?: Prisma.SortOrderInput | Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
-  krAssignmentId?: Prisma.SortOrder
+  keyResultId?: Prisma.SortOrder
+  picId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.InitiativeCountOrderByAggregateInput
@@ -296,10 +336,13 @@ export type InitiativeScalarWhereWithAggregatesInput = {
   NOT?: Prisma.InitiativeScalarWhereWithAggregatesInput | Prisma.InitiativeScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Initiative"> | string
   title?: Prisma.StringWithAggregatesFilter<"Initiative"> | string
-  progress?: Prisma.FloatWithAggregatesFilter<"Initiative"> | number
-  done?: Prisma.BoolWithAggregatesFilter<"Initiative"> | boolean
+  target?: Prisma.FloatWithAggregatesFilter<"Initiative"> | number
+  actual?: Prisma.FloatWithAggregatesFilter<"Initiative"> | number
+  unit?: Prisma.StringWithAggregatesFilter<"Initiative"> | string
+  resultNote?: Prisma.StringNullableWithAggregatesFilter<"Initiative"> | string | null
   sortOrder?: Prisma.IntWithAggregatesFilter<"Initiative"> | number
-  krAssignmentId?: Prisma.StringWithAggregatesFilter<"Initiative"> | string
+  keyResultId?: Prisma.StringWithAggregatesFilter<"Initiative"> | string
+  picId?: Prisma.StringNullableWithAggregatesFilter<"Initiative"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Initiative"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Initiative"> | Date | string
 }
@@ -307,21 +350,27 @@ export type InitiativeScalarWhereWithAggregatesInput = {
 export type InitiativeCreateInput = {
   id?: string
   title: string
-  progress?: number
-  done?: boolean
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
   sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
-  krAssignment: Prisma.KRAssignmentCreateNestedOneWithoutInitiativesInput
+  keyResult: Prisma.KeyResultCreateNestedOneWithoutInitiativesInput
+  pic?: Prisma.TeamMemberCreateNestedOneWithoutInitiativesInput
 }
 
 export type InitiativeUncheckedCreateInput = {
   id?: string
   title: string
-  progress?: number
-  done?: boolean
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
   sortOrder?: number
-  krAssignmentId: string
+  keyResultId: string
+  picId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -329,21 +378,27 @@ export type InitiativeUncheckedCreateInput = {
 export type InitiativeUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  progress?: Prisma.FloatFieldUpdateOperationsInput | number
-  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  krAssignment?: Prisma.KRAssignmentUpdateOneRequiredWithoutInitiativesNestedInput
+  keyResult?: Prisma.KeyResultUpdateOneRequiredWithoutInitiativesNestedInput
+  pic?: Prisma.TeamMemberUpdateOneWithoutInitiativesNestedInput
 }
 
 export type InitiativeUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  progress?: Prisma.FloatFieldUpdateOperationsInput | number
-  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  krAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  keyResultId?: Prisma.StringFieldUpdateOperationsInput | string
+  picId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -351,10 +406,13 @@ export type InitiativeUncheckedUpdateInput = {
 export type InitiativeCreateManyInput = {
   id?: string
   title: string
-  progress?: number
-  done?: boolean
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
   sortOrder?: number
-  krAssignmentId: string
+  keyResultId: string
+  picId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -362,8 +420,10 @@ export type InitiativeCreateManyInput = {
 export type InitiativeUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  progress?: Prisma.FloatFieldUpdateOperationsInput | number
-  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -372,10 +432,13 @@ export type InitiativeUpdateManyMutationInput = {
 export type InitiativeUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  progress?: Prisma.FloatFieldUpdateOperationsInput | number
-  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
-  krAssignmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  keyResultId?: Prisma.StringFieldUpdateOperationsInput | string
+  picId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -393,26 +456,33 @@ export type InitiativeOrderByRelationAggregateInput = {
 export type InitiativeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  progress?: Prisma.SortOrder
-  done?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  actual?: Prisma.SortOrder
+  unit?: Prisma.SortOrder
+  resultNote?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
-  krAssignmentId?: Prisma.SortOrder
+  keyResultId?: Prisma.SortOrder
+  picId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type InitiativeAvgOrderByAggregateInput = {
-  progress?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  actual?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
 
 export type InitiativeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  progress?: Prisma.SortOrder
-  done?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  actual?: Prisma.SortOrder
+  unit?: Prisma.SortOrder
+  resultNote?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
-  krAssignmentId?: Prisma.SortOrder
+  keyResultId?: Prisma.SortOrder
+  picId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -420,105 +490,157 @@ export type InitiativeMaxOrderByAggregateInput = {
 export type InitiativeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  progress?: Prisma.SortOrder
-  done?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  actual?: Prisma.SortOrder
+  unit?: Prisma.SortOrder
+  resultNote?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
-  krAssignmentId?: Prisma.SortOrder
+  keyResultId?: Prisma.SortOrder
+  picId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type InitiativeSumOrderByAggregateInput = {
-  progress?: Prisma.SortOrder
+  target?: Prisma.SortOrder
+  actual?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
 
-export type InitiativeCreateNestedManyWithoutKrAssignmentInput = {
-  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutKrAssignmentInput, Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput> | Prisma.InitiativeCreateWithoutKrAssignmentInput[] | Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput[]
-  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutKrAssignmentInput | Prisma.InitiativeCreateOrConnectWithoutKrAssignmentInput[]
-  createMany?: Prisma.InitiativeCreateManyKrAssignmentInputEnvelope
+export type InitiativeCreateNestedManyWithoutPicInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutPicInput, Prisma.InitiativeUncheckedCreateWithoutPicInput> | Prisma.InitiativeCreateWithoutPicInput[] | Prisma.InitiativeUncheckedCreateWithoutPicInput[]
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutPicInput | Prisma.InitiativeCreateOrConnectWithoutPicInput[]
+  createMany?: Prisma.InitiativeCreateManyPicInputEnvelope
   connect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
 }
 
-export type InitiativeUncheckedCreateNestedManyWithoutKrAssignmentInput = {
-  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutKrAssignmentInput, Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput> | Prisma.InitiativeCreateWithoutKrAssignmentInput[] | Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput[]
-  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutKrAssignmentInput | Prisma.InitiativeCreateOrConnectWithoutKrAssignmentInput[]
-  createMany?: Prisma.InitiativeCreateManyKrAssignmentInputEnvelope
+export type InitiativeUncheckedCreateNestedManyWithoutPicInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutPicInput, Prisma.InitiativeUncheckedCreateWithoutPicInput> | Prisma.InitiativeCreateWithoutPicInput[] | Prisma.InitiativeUncheckedCreateWithoutPicInput[]
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutPicInput | Prisma.InitiativeCreateOrConnectWithoutPicInput[]
+  createMany?: Prisma.InitiativeCreateManyPicInputEnvelope
   connect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
 }
 
-export type InitiativeUpdateManyWithoutKrAssignmentNestedInput = {
-  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutKrAssignmentInput, Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput> | Prisma.InitiativeCreateWithoutKrAssignmentInput[] | Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput[]
-  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutKrAssignmentInput | Prisma.InitiativeCreateOrConnectWithoutKrAssignmentInput[]
-  upsert?: Prisma.InitiativeUpsertWithWhereUniqueWithoutKrAssignmentInput | Prisma.InitiativeUpsertWithWhereUniqueWithoutKrAssignmentInput[]
-  createMany?: Prisma.InitiativeCreateManyKrAssignmentInputEnvelope
+export type InitiativeUpdateManyWithoutPicNestedInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutPicInput, Prisma.InitiativeUncheckedCreateWithoutPicInput> | Prisma.InitiativeCreateWithoutPicInput[] | Prisma.InitiativeUncheckedCreateWithoutPicInput[]
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutPicInput | Prisma.InitiativeCreateOrConnectWithoutPicInput[]
+  upsert?: Prisma.InitiativeUpsertWithWhereUniqueWithoutPicInput | Prisma.InitiativeUpsertWithWhereUniqueWithoutPicInput[]
+  createMany?: Prisma.InitiativeCreateManyPicInputEnvelope
   set?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
   disconnect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
   delete?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
   connect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
-  update?: Prisma.InitiativeUpdateWithWhereUniqueWithoutKrAssignmentInput | Prisma.InitiativeUpdateWithWhereUniqueWithoutKrAssignmentInput[]
-  updateMany?: Prisma.InitiativeUpdateManyWithWhereWithoutKrAssignmentInput | Prisma.InitiativeUpdateManyWithWhereWithoutKrAssignmentInput[]
+  update?: Prisma.InitiativeUpdateWithWhereUniqueWithoutPicInput | Prisma.InitiativeUpdateWithWhereUniqueWithoutPicInput[]
+  updateMany?: Prisma.InitiativeUpdateManyWithWhereWithoutPicInput | Prisma.InitiativeUpdateManyWithWhereWithoutPicInput[]
   deleteMany?: Prisma.InitiativeScalarWhereInput | Prisma.InitiativeScalarWhereInput[]
 }
 
-export type InitiativeUncheckedUpdateManyWithoutKrAssignmentNestedInput = {
-  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutKrAssignmentInput, Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput> | Prisma.InitiativeCreateWithoutKrAssignmentInput[] | Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput[]
-  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutKrAssignmentInput | Prisma.InitiativeCreateOrConnectWithoutKrAssignmentInput[]
-  upsert?: Prisma.InitiativeUpsertWithWhereUniqueWithoutKrAssignmentInput | Prisma.InitiativeUpsertWithWhereUniqueWithoutKrAssignmentInput[]
-  createMany?: Prisma.InitiativeCreateManyKrAssignmentInputEnvelope
+export type InitiativeUncheckedUpdateManyWithoutPicNestedInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutPicInput, Prisma.InitiativeUncheckedCreateWithoutPicInput> | Prisma.InitiativeCreateWithoutPicInput[] | Prisma.InitiativeUncheckedCreateWithoutPicInput[]
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutPicInput | Prisma.InitiativeCreateOrConnectWithoutPicInput[]
+  upsert?: Prisma.InitiativeUpsertWithWhereUniqueWithoutPicInput | Prisma.InitiativeUpsertWithWhereUniqueWithoutPicInput[]
+  createMany?: Prisma.InitiativeCreateManyPicInputEnvelope
   set?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
   disconnect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
   delete?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
   connect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
-  update?: Prisma.InitiativeUpdateWithWhereUniqueWithoutKrAssignmentInput | Prisma.InitiativeUpdateWithWhereUniqueWithoutKrAssignmentInput[]
-  updateMany?: Prisma.InitiativeUpdateManyWithWhereWithoutKrAssignmentInput | Prisma.InitiativeUpdateManyWithWhereWithoutKrAssignmentInput[]
+  update?: Prisma.InitiativeUpdateWithWhereUniqueWithoutPicInput | Prisma.InitiativeUpdateWithWhereUniqueWithoutPicInput[]
+  updateMany?: Prisma.InitiativeUpdateManyWithWhereWithoutPicInput | Prisma.InitiativeUpdateManyWithWhereWithoutPicInput[]
   deleteMany?: Prisma.InitiativeScalarWhereInput | Prisma.InitiativeScalarWhereInput[]
 }
 
-export type InitiativeCreateWithoutKrAssignmentInput = {
+export type InitiativeCreateNestedManyWithoutKeyResultInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutKeyResultInput, Prisma.InitiativeUncheckedCreateWithoutKeyResultInput> | Prisma.InitiativeCreateWithoutKeyResultInput[] | Prisma.InitiativeUncheckedCreateWithoutKeyResultInput[]
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutKeyResultInput | Prisma.InitiativeCreateOrConnectWithoutKeyResultInput[]
+  createMany?: Prisma.InitiativeCreateManyKeyResultInputEnvelope
+  connect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+}
+
+export type InitiativeUncheckedCreateNestedManyWithoutKeyResultInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutKeyResultInput, Prisma.InitiativeUncheckedCreateWithoutKeyResultInput> | Prisma.InitiativeCreateWithoutKeyResultInput[] | Prisma.InitiativeUncheckedCreateWithoutKeyResultInput[]
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutKeyResultInput | Prisma.InitiativeCreateOrConnectWithoutKeyResultInput[]
+  createMany?: Prisma.InitiativeCreateManyKeyResultInputEnvelope
+  connect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+}
+
+export type InitiativeUpdateManyWithoutKeyResultNestedInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutKeyResultInput, Prisma.InitiativeUncheckedCreateWithoutKeyResultInput> | Prisma.InitiativeCreateWithoutKeyResultInput[] | Prisma.InitiativeUncheckedCreateWithoutKeyResultInput[]
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutKeyResultInput | Prisma.InitiativeCreateOrConnectWithoutKeyResultInput[]
+  upsert?: Prisma.InitiativeUpsertWithWhereUniqueWithoutKeyResultInput | Prisma.InitiativeUpsertWithWhereUniqueWithoutKeyResultInput[]
+  createMany?: Prisma.InitiativeCreateManyKeyResultInputEnvelope
+  set?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+  disconnect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+  delete?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+  connect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+  update?: Prisma.InitiativeUpdateWithWhereUniqueWithoutKeyResultInput | Prisma.InitiativeUpdateWithWhereUniqueWithoutKeyResultInput[]
+  updateMany?: Prisma.InitiativeUpdateManyWithWhereWithoutKeyResultInput | Prisma.InitiativeUpdateManyWithWhereWithoutKeyResultInput[]
+  deleteMany?: Prisma.InitiativeScalarWhereInput | Prisma.InitiativeScalarWhereInput[]
+}
+
+export type InitiativeUncheckedUpdateManyWithoutKeyResultNestedInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutKeyResultInput, Prisma.InitiativeUncheckedCreateWithoutKeyResultInput> | Prisma.InitiativeCreateWithoutKeyResultInput[] | Prisma.InitiativeUncheckedCreateWithoutKeyResultInput[]
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutKeyResultInput | Prisma.InitiativeCreateOrConnectWithoutKeyResultInput[]
+  upsert?: Prisma.InitiativeUpsertWithWhereUniqueWithoutKeyResultInput | Prisma.InitiativeUpsertWithWhereUniqueWithoutKeyResultInput[]
+  createMany?: Prisma.InitiativeCreateManyKeyResultInputEnvelope
+  set?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+  disconnect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+  delete?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+  connect?: Prisma.InitiativeWhereUniqueInput | Prisma.InitiativeWhereUniqueInput[]
+  update?: Prisma.InitiativeUpdateWithWhereUniqueWithoutKeyResultInput | Prisma.InitiativeUpdateWithWhereUniqueWithoutKeyResultInput[]
+  updateMany?: Prisma.InitiativeUpdateManyWithWhereWithoutKeyResultInput | Prisma.InitiativeUpdateManyWithWhereWithoutKeyResultInput[]
+  deleteMany?: Prisma.InitiativeScalarWhereInput | Prisma.InitiativeScalarWhereInput[]
+}
+
+export type InitiativeCreateWithoutPicInput = {
   id?: string
   title: string
-  progress?: number
-  done?: boolean
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
   sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  keyResult: Prisma.KeyResultCreateNestedOneWithoutInitiativesInput
+}
+
+export type InitiativeUncheckedCreateWithoutPicInput = {
+  id?: string
+  title: string
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
+  sortOrder?: number
+  keyResultId: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type InitiativeUncheckedCreateWithoutKrAssignmentInput = {
-  id?: string
-  title: string
-  progress?: number
-  done?: boolean
-  sortOrder?: number
-  createdAt?: Date | string
-  updatedAt?: Date | string
-}
-
-export type InitiativeCreateOrConnectWithoutKrAssignmentInput = {
+export type InitiativeCreateOrConnectWithoutPicInput = {
   where: Prisma.InitiativeWhereUniqueInput
-  create: Prisma.XOR<Prisma.InitiativeCreateWithoutKrAssignmentInput, Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput>
+  create: Prisma.XOR<Prisma.InitiativeCreateWithoutPicInput, Prisma.InitiativeUncheckedCreateWithoutPicInput>
 }
 
-export type InitiativeCreateManyKrAssignmentInputEnvelope = {
-  data: Prisma.InitiativeCreateManyKrAssignmentInput | Prisma.InitiativeCreateManyKrAssignmentInput[]
+export type InitiativeCreateManyPicInputEnvelope = {
+  data: Prisma.InitiativeCreateManyPicInput | Prisma.InitiativeCreateManyPicInput[]
   skipDuplicates?: boolean
 }
 
-export type InitiativeUpsertWithWhereUniqueWithoutKrAssignmentInput = {
+export type InitiativeUpsertWithWhereUniqueWithoutPicInput = {
   where: Prisma.InitiativeWhereUniqueInput
-  update: Prisma.XOR<Prisma.InitiativeUpdateWithoutKrAssignmentInput, Prisma.InitiativeUncheckedUpdateWithoutKrAssignmentInput>
-  create: Prisma.XOR<Prisma.InitiativeCreateWithoutKrAssignmentInput, Prisma.InitiativeUncheckedCreateWithoutKrAssignmentInput>
+  update: Prisma.XOR<Prisma.InitiativeUpdateWithoutPicInput, Prisma.InitiativeUncheckedUpdateWithoutPicInput>
+  create: Prisma.XOR<Prisma.InitiativeCreateWithoutPicInput, Prisma.InitiativeUncheckedCreateWithoutPicInput>
 }
 
-export type InitiativeUpdateWithWhereUniqueWithoutKrAssignmentInput = {
+export type InitiativeUpdateWithWhereUniqueWithoutPicInput = {
   where: Prisma.InitiativeWhereUniqueInput
-  data: Prisma.XOR<Prisma.InitiativeUpdateWithoutKrAssignmentInput, Prisma.InitiativeUncheckedUpdateWithoutKrAssignmentInput>
+  data: Prisma.XOR<Prisma.InitiativeUpdateWithoutPicInput, Prisma.InitiativeUncheckedUpdateWithoutPicInput>
 }
 
-export type InitiativeUpdateManyWithWhereWithoutKrAssignmentInput = {
+export type InitiativeUpdateManyWithWhereWithoutPicInput = {
   where: Prisma.InitiativeScalarWhereInput
-  data: Prisma.XOR<Prisma.InitiativeUpdateManyMutationInput, Prisma.InitiativeUncheckedUpdateManyWithoutKrAssignmentInput>
+  data: Prisma.XOR<Prisma.InitiativeUpdateManyMutationInput, Prisma.InitiativeUncheckedUpdateManyWithoutPicInput>
 }
 
 export type InitiativeScalarWhereInput = {
@@ -527,50 +649,169 @@ export type InitiativeScalarWhereInput = {
   NOT?: Prisma.InitiativeScalarWhereInput | Prisma.InitiativeScalarWhereInput[]
   id?: Prisma.StringFilter<"Initiative"> | string
   title?: Prisma.StringFilter<"Initiative"> | string
-  progress?: Prisma.FloatFilter<"Initiative"> | number
-  done?: Prisma.BoolFilter<"Initiative"> | boolean
+  target?: Prisma.FloatFilter<"Initiative"> | number
+  actual?: Prisma.FloatFilter<"Initiative"> | number
+  unit?: Prisma.StringFilter<"Initiative"> | string
+  resultNote?: Prisma.StringNullableFilter<"Initiative"> | string | null
   sortOrder?: Prisma.IntFilter<"Initiative"> | number
-  krAssignmentId?: Prisma.StringFilter<"Initiative"> | string
+  keyResultId?: Prisma.StringFilter<"Initiative"> | string
+  picId?: Prisma.StringNullableFilter<"Initiative"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Initiative"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Initiative"> | Date | string
 }
 
-export type InitiativeCreateManyKrAssignmentInput = {
+export type InitiativeCreateWithoutKeyResultInput = {
   id?: string
   title: string
-  progress?: number
-  done?: boolean
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
   sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pic?: Prisma.TeamMemberCreateNestedOneWithoutInitiativesInput
+}
+
+export type InitiativeUncheckedCreateWithoutKeyResultInput = {
+  id?: string
+  title: string
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
+  sortOrder?: number
+  picId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
-export type InitiativeUpdateWithoutKrAssignmentInput = {
+export type InitiativeCreateOrConnectWithoutKeyResultInput = {
+  where: Prisma.InitiativeWhereUniqueInput
+  create: Prisma.XOR<Prisma.InitiativeCreateWithoutKeyResultInput, Prisma.InitiativeUncheckedCreateWithoutKeyResultInput>
+}
+
+export type InitiativeCreateManyKeyResultInputEnvelope = {
+  data: Prisma.InitiativeCreateManyKeyResultInput | Prisma.InitiativeCreateManyKeyResultInput[]
+  skipDuplicates?: boolean
+}
+
+export type InitiativeUpsertWithWhereUniqueWithoutKeyResultInput = {
+  where: Prisma.InitiativeWhereUniqueInput
+  update: Prisma.XOR<Prisma.InitiativeUpdateWithoutKeyResultInput, Prisma.InitiativeUncheckedUpdateWithoutKeyResultInput>
+  create: Prisma.XOR<Prisma.InitiativeCreateWithoutKeyResultInput, Prisma.InitiativeUncheckedCreateWithoutKeyResultInput>
+}
+
+export type InitiativeUpdateWithWhereUniqueWithoutKeyResultInput = {
+  where: Prisma.InitiativeWhereUniqueInput
+  data: Prisma.XOR<Prisma.InitiativeUpdateWithoutKeyResultInput, Prisma.InitiativeUncheckedUpdateWithoutKeyResultInput>
+}
+
+export type InitiativeUpdateManyWithWhereWithoutKeyResultInput = {
+  where: Prisma.InitiativeScalarWhereInput
+  data: Prisma.XOR<Prisma.InitiativeUpdateManyMutationInput, Prisma.InitiativeUncheckedUpdateManyWithoutKeyResultInput>
+}
+
+export type InitiativeCreateManyPicInput = {
+  id?: string
+  title: string
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
+  sortOrder?: number
+  keyResultId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type InitiativeUpdateWithoutPicInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  progress?: Prisma.FloatFieldUpdateOperationsInput | number
-  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  keyResult?: Prisma.KeyResultUpdateOneRequiredWithoutInitiativesNestedInput
+}
+
+export type InitiativeUncheckedUpdateWithoutPicInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  keyResultId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type InitiativeUncheckedUpdateWithoutKrAssignmentInput = {
+export type InitiativeUncheckedUpdateManyWithoutPicInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  progress?: Prisma.FloatFieldUpdateOperationsInput | number
-  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  keyResultId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type InitiativeUncheckedUpdateManyWithoutKrAssignmentInput = {
+export type InitiativeCreateManyKeyResultInput = {
+  id?: string
+  title: string
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
+  sortOrder?: number
+  picId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type InitiativeUpdateWithoutKeyResultInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  progress?: Prisma.FloatFieldUpdateOperationsInput | number
-  done?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pic?: Prisma.TeamMemberUpdateOneWithoutInitiativesNestedInput
+}
+
+export type InitiativeUncheckedUpdateWithoutKeyResultInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  picId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type InitiativeUncheckedUpdateManyWithoutKeyResultInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  picId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -580,73 +821,95 @@ export type InitiativeUncheckedUpdateManyWithoutKrAssignmentInput = {
 export type InitiativeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  progress?: boolean
-  done?: boolean
+  target?: boolean
+  actual?: boolean
+  unit?: boolean
+  resultNote?: boolean
   sortOrder?: boolean
-  krAssignmentId?: boolean
+  keyResultId?: boolean
+  picId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  krAssignment?: boolean | Prisma.KRAssignmentDefaultArgs<ExtArgs>
+  keyResult?: boolean | Prisma.KeyResultDefaultArgs<ExtArgs>
+  pic?: boolean | Prisma.Initiative$picArgs<ExtArgs>
 }, ExtArgs["result"]["initiative"]>
 
 export type InitiativeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  progress?: boolean
-  done?: boolean
+  target?: boolean
+  actual?: boolean
+  unit?: boolean
+  resultNote?: boolean
   sortOrder?: boolean
-  krAssignmentId?: boolean
+  keyResultId?: boolean
+  picId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  krAssignment?: boolean | Prisma.KRAssignmentDefaultArgs<ExtArgs>
+  keyResult?: boolean | Prisma.KeyResultDefaultArgs<ExtArgs>
+  pic?: boolean | Prisma.Initiative$picArgs<ExtArgs>
 }, ExtArgs["result"]["initiative"]>
 
 export type InitiativeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
-  progress?: boolean
-  done?: boolean
+  target?: boolean
+  actual?: boolean
+  unit?: boolean
+  resultNote?: boolean
   sortOrder?: boolean
-  krAssignmentId?: boolean
+  keyResultId?: boolean
+  picId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  krAssignment?: boolean | Prisma.KRAssignmentDefaultArgs<ExtArgs>
+  keyResult?: boolean | Prisma.KeyResultDefaultArgs<ExtArgs>
+  pic?: boolean | Prisma.Initiative$picArgs<ExtArgs>
 }, ExtArgs["result"]["initiative"]>
 
 export type InitiativeSelectScalar = {
   id?: boolean
   title?: boolean
-  progress?: boolean
-  done?: boolean
+  target?: boolean
+  actual?: boolean
+  unit?: boolean
+  resultNote?: boolean
   sortOrder?: boolean
-  krAssignmentId?: boolean
+  keyResultId?: boolean
+  picId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type InitiativeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "progress" | "done" | "sortOrder" | "krAssignmentId" | "createdAt" | "updatedAt", ExtArgs["result"]["initiative"]>
+export type InitiativeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "target" | "actual" | "unit" | "resultNote" | "sortOrder" | "keyResultId" | "picId" | "createdAt" | "updatedAt", ExtArgs["result"]["initiative"]>
 export type InitiativeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  krAssignment?: boolean | Prisma.KRAssignmentDefaultArgs<ExtArgs>
+  keyResult?: boolean | Prisma.KeyResultDefaultArgs<ExtArgs>
+  pic?: boolean | Prisma.Initiative$picArgs<ExtArgs>
 }
 export type InitiativeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  krAssignment?: boolean | Prisma.KRAssignmentDefaultArgs<ExtArgs>
+  keyResult?: boolean | Prisma.KeyResultDefaultArgs<ExtArgs>
+  pic?: boolean | Prisma.Initiative$picArgs<ExtArgs>
 }
 export type InitiativeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  krAssignment?: boolean | Prisma.KRAssignmentDefaultArgs<ExtArgs>
+  keyResult?: boolean | Prisma.KeyResultDefaultArgs<ExtArgs>
+  pic?: boolean | Prisma.Initiative$picArgs<ExtArgs>
 }
 
 export type $InitiativePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Initiative"
   objects: {
-    krAssignment: Prisma.$KRAssignmentPayload<ExtArgs>
+    keyResult: Prisma.$KeyResultPayload<ExtArgs>
+    pic: Prisma.$TeamMemberPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
-    progress: number
-    done: boolean
+    target: number
+    actual: number
+    unit: string
+    resultNote: string | null
     sortOrder: number
-    krAssignmentId: string
+    keyResultId: string
+    picId: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["initiative"]>
@@ -1043,7 +1306,8 @@ readonly fields: InitiativeFieldRefs;
  */
 export interface Prisma__InitiativeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  krAssignment<T extends Prisma.KRAssignmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KRAssignmentDefaultArgs<ExtArgs>>): Prisma.Prisma__KRAssignmentClient<runtime.Types.Result.GetResult<Prisma.$KRAssignmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  keyResult<T extends Prisma.KeyResultDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KeyResultDefaultArgs<ExtArgs>>): Prisma.Prisma__KeyResultClient<runtime.Types.Result.GetResult<Prisma.$KeyResultPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  pic<T extends Prisma.Initiative$picArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Initiative$picArgs<ExtArgs>>): Prisma.Prisma__TeamMemberClient<runtime.Types.Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1075,10 +1339,13 @@ export interface Prisma__InitiativeClient<T, Null = never, ExtArgs extends runti
 export interface InitiativeFieldRefs {
   readonly id: Prisma.FieldRef<"Initiative", 'String'>
   readonly title: Prisma.FieldRef<"Initiative", 'String'>
-  readonly progress: Prisma.FieldRef<"Initiative", 'Float'>
-  readonly done: Prisma.FieldRef<"Initiative", 'Boolean'>
+  readonly target: Prisma.FieldRef<"Initiative", 'Float'>
+  readonly actual: Prisma.FieldRef<"Initiative", 'Float'>
+  readonly unit: Prisma.FieldRef<"Initiative", 'String'>
+  readonly resultNote: Prisma.FieldRef<"Initiative", 'String'>
   readonly sortOrder: Prisma.FieldRef<"Initiative", 'Int'>
-  readonly krAssignmentId: Prisma.FieldRef<"Initiative", 'String'>
+  readonly keyResultId: Prisma.FieldRef<"Initiative", 'String'>
+  readonly picId: Prisma.FieldRef<"Initiative", 'String'>
   readonly createdAt: Prisma.FieldRef<"Initiative", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Initiative", 'DateTime'>
 }
@@ -1479,6 +1746,25 @@ export type InitiativeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Limit how many Initiatives to delete.
    */
   limit?: number
+}
+
+/**
+ * Initiative.pic
+ */
+export type Initiative$picArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TeamMember
+   */
+  select?: Prisma.TeamMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TeamMember
+   */
+  omit?: Prisma.TeamMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TeamMemberInclude<ExtArgs> | null
+  where?: Prisma.TeamMemberWhereInput
 }
 
 /**
