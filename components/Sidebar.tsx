@@ -18,6 +18,12 @@ const adminDashboard: Item[] = [
   { href: "/admin/ninebox", label: "9-Box Matrix", icon: Grid3x3 },
   { href: "/idp", label: "IDP", icon: Sprout },
 ];
+// Dwita is admin AND a mid-manager, so she fills her own Division OKR + assigns
+// initiatives to her team, just like the LEAD mid-managers.
+const adminMyOkr: Item[] = [
+  { href: "/okr", label: "Division OKR", icon: Target },
+  { href: "/distribusi", label: "Member Distribution", icon: Users },
+];
 const adminSettingOkr: Item[] = [
   { href: "/admin/quarters", label: "Quarter", icon: CalendarClock },
   { href: "/admin/reminders", label: "Reminder", icon: Bell },
@@ -112,6 +118,7 @@ export default function Sidebar({ role, name, division, isExecutive, onNavigate 
         {role === "ADMIN" && (
           <>
             <NavGroup label="Dashboard" items={adminDashboard} />
+            <NavGroup label="My OKR" items={adminMyOkr} />
             <NavGroup label="C-Level" items={executiveOkr} />
             <NavGroup label="Setting OKR" items={adminSettingOkr} />
             <NavGroup label="Setting 360 Feedback" items={adminSetting360} />
