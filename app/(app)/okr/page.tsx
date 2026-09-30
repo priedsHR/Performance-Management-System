@@ -97,7 +97,7 @@ export default async function OKRPage({ searchParams }: { searchParams: Promise<
         badge={
           objCount > 0 ? (
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500">
-              {submittedCount}/{objCount} dikumpulkan
+              {submittedCount}/{objCount} submitted
             </span>
           ) : undefined
         }

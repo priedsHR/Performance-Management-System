@@ -640,7 +640,7 @@ function DistribusiExcel({ leadId, objectives, quarterId }: { leadId: string; ob
               <table className="w-full font-mono border-collapse">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200">
-                    {["#","A Member","B Objective","C Weight","D Key Result","E Target","F Satuan","G WeightKR"].map((h) => (
+                    {["#","A Member","B Objective","C Weight","D Key Result","E Target","F Unit","G WeightKR"].map((h) => (
                       <th key={h} className="text-left px-2 py-1.5 text-slate-500 font-semibold whitespace-nowrap">{h}</th>
                     ))}
                   </tr>
