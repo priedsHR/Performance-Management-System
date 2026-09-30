@@ -2150,6 +2150,7 @@ export const KeyResultScalarFieldEnum = {
   weight: 'weight',
   teamProgress: 'teamProgress',
   leadProgress: 'leadProgress',
+  sortOrder: 'sortOrder',
   objectiveId: 'objectiveId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

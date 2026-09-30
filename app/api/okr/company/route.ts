@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     include: {
       user: { select: { id: true, name: true, division: true } },
       keyResults: {
-        orderBy: { createdAt: "asc" },
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
         include: {
           initiatives: {
             orderBy: { sortOrder: "asc" },

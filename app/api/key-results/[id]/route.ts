@@ -33,6 +33,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (body.unit !== undefined && (isAdmin || isLead || isOwner)) data.unit = body.unit;
   if (body.weight !== undefined && (isAdmin || isLead || isOwner)) data.weight = Number(body.weight);
   if (body.teamProgress !== undefined) data.teamProgress = Number(body.teamProgress);
+  if (body.sortOrder !== undefined && (isAdmin || isLead || isOwner)) data.sortOrder = Number(body.sortOrder);
   if ("leadProgress" in body && (isAdmin || isLead)) {
     data.leadProgress = body.leadProgress !== null ? Number(body.leadProgress) : null;
   }

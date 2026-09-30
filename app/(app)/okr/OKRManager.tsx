@@ -485,6 +485,22 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
     setObjectives((prev) => prev.map((o) => o.id === objectiveId ? { ...o, keyResults: o.keyResults.filter((kr) => kr.id !== krId) } : o));
   }
 
+  // Move a KR up/down within its objective and persist the new order.
+  function moveKR(objectiveId: string, krId: string, dir: "up" | "down") {
+    const obj = objectives.find((o) => o.id === objectiveId);
+    if (!obj) return;
+    const krs = [...obj.keyResults];
+    const idx = krs.findIndex((k) => k.id === krId);
+    const swap = dir === "up" ? idx - 1 : idx + 1;
+    if (swap < 0 || swap >= krs.length) return;
+    [krs[idx], krs[swap]] = [krs[swap], krs[idx]];
+    setObjectives((prev) => prev.map((o) => (o.id === objectiveId ? { ...o, keyResults: krs } : o)));
+    const patch = (id: string, sortOrder: number) =>
+      fetch(`/api/key-results/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ sortOrder }) });
+    patch(krs[idx].id, idx);
+    patch(krs[swap].id, swap);
+  }
+
   const draftObjectives = objectives.filter((o) => o.status === "DRAFT");
 
   return (
@@ -775,9 +791,27 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                               placeholder="Key Result title"
                             />
                             {!isLocked && (
-                              <button onClick={() => deleteKR(obj.id, kr.id)} className={`${btnDanger} flex-shrink-0`}>
-                                <Trash2 size={13} />
-                              </button>
+                              <div className="flex items-center gap-0.5 flex-shrink-0">
+                                <button
+                                  onClick={() => moveKR(obj.id, kr.id, "up")}
+                                  disabled={krIdx === 0}
+                                  title="Move up"
+                                  className="text-slate-300 hover:text-amber-500 disabled:opacity-30 disabled:hover:text-slate-300 transition p-0.5"
+                                >
+                                  <ChevronUp size={15} />
+                                </button>
+                                <button
+                                  onClick={() => moveKR(obj.id, kr.id, "down")}
+                                  disabled={krIdx === obj.keyResults.length - 1}
+                                  title="Move down"
+                                  className="text-slate-300 hover:text-amber-500 disabled:opacity-30 disabled:hover:text-slate-300 transition p-0.5"
+                                >
+                                  <ChevronDown size={15} />
+                                </button>
+                                <button onClick={() => deleteKR(obj.id, kr.id)} className={`${btnDanger} ml-1`}>
+                                  <Trash2 size={13} />
+                                </button>
+                              </div>
                             )}
                           </div>
 

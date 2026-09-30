@@ -53,7 +53,7 @@ export default async function DistribusiPage({
 
   const objectives = await prisma.objective.findMany({
     where: { userId: session!.user.id, quarterId: selectedQuarter.id },
-    include: { keyResults: true },
+    include: { keyResults: { orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] } },
     orderBy: { createdAt: "asc" },
   });
 

@@ -7,6 +7,11 @@ export async function POST(req: NextRequest) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
+  const last = await prisma.keyResult.findFirst({
+    where: { objectiveId: body.objectiveId },
+    orderBy: { sortOrder: "desc" },
+    select: { sortOrder: true },
+  });
   const kr = await prisma.keyResult.create({
     data: {
       title: body.title,
@@ -14,6 +19,7 @@ export async function POST(req: NextRequest) {
       unit: body.unit,
       weight: Number(body.weight ?? 0),
       teamProgress: Number(body.teamProgress ?? 0),
+      sortOrder: (last?.sortOrder ?? -1) + 1,
       objectiveId: body.objectiveId,
     },
   });

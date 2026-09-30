@@ -31,6 +31,7 @@ export type KeyResultAvgAggregateOutputType = {
   weight: number | null
   teamProgress: number | null
   leadProgress: number | null
+  sortOrder: number | null
 }
 
 export type KeyResultSumAggregateOutputType = {
@@ -38,6 +39,7 @@ export type KeyResultSumAggregateOutputType = {
   weight: number | null
   teamProgress: number | null
   leadProgress: number | null
+  sortOrder: number | null
 }
 
 export type KeyResultMinAggregateOutputType = {
@@ -48,6 +50,7 @@ export type KeyResultMinAggregateOutputType = {
   weight: number | null
   teamProgress: number | null
   leadProgress: number | null
+  sortOrder: number | null
   objectiveId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -61,6 +64,7 @@ export type KeyResultMaxAggregateOutputType = {
   weight: number | null
   teamProgress: number | null
   leadProgress: number | null
+  sortOrder: number | null
   objectiveId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -74,6 +78,7 @@ export type KeyResultCountAggregateOutputType = {
   weight: number
   teamProgress: number
   leadProgress: number
+  sortOrder: number
   objectiveId: number
   createdAt: number
   updatedAt: number
@@ -86,6 +91,7 @@ export type KeyResultAvgAggregateInputType = {
   weight?: true
   teamProgress?: true
   leadProgress?: true
+  sortOrder?: true
 }
 
 export type KeyResultSumAggregateInputType = {
@@ -93,6 +99,7 @@ export type KeyResultSumAggregateInputType = {
   weight?: true
   teamProgress?: true
   leadProgress?: true
+  sortOrder?: true
 }
 
 export type KeyResultMinAggregateInputType = {
@@ -103,6 +110,7 @@ export type KeyResultMinAggregateInputType = {
   weight?: true
   teamProgress?: true
   leadProgress?: true
+  sortOrder?: true
   objectiveId?: true
   createdAt?: true
   updatedAt?: true
@@ -116,6 +124,7 @@ export type KeyResultMaxAggregateInputType = {
   weight?: true
   teamProgress?: true
   leadProgress?: true
+  sortOrder?: true
   objectiveId?: true
   createdAt?: true
   updatedAt?: true
@@ -129,6 +138,7 @@ export type KeyResultCountAggregateInputType = {
   weight?: true
   teamProgress?: true
   leadProgress?: true
+  sortOrder?: true
   objectiveId?: true
   createdAt?: true
   updatedAt?: true
@@ -229,6 +239,7 @@ export type KeyResultGroupByOutputType = {
   weight: number
   teamProgress: number
   leadProgress: number | null
+  sortOrder: number
   objectiveId: string
   createdAt: Date
   updatedAt: Date
@@ -265,6 +276,7 @@ export type KeyResultWhereInput = {
   weight?: Prisma.FloatFilter<"KeyResult"> | number
   teamProgress?: Prisma.FloatFilter<"KeyResult"> | number
   leadProgress?: Prisma.FloatNullableFilter<"KeyResult"> | number | null
+  sortOrder?: Prisma.IntFilter<"KeyResult"> | number
   objectiveId?: Prisma.StringFilter<"KeyResult"> | string
   createdAt?: Prisma.DateTimeFilter<"KeyResult"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"KeyResult"> | Date | string
@@ -281,6 +293,7 @@ export type KeyResultOrderByWithRelationInput = {
   weight?: Prisma.SortOrder
   teamProgress?: Prisma.SortOrder
   leadProgress?: Prisma.SortOrderInput | Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   objectiveId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -300,6 +313,7 @@ export type KeyResultWhereUniqueInput = Prisma.AtLeast<{
   weight?: Prisma.FloatFilter<"KeyResult"> | number
   teamProgress?: Prisma.FloatFilter<"KeyResult"> | number
   leadProgress?: Prisma.FloatNullableFilter<"KeyResult"> | number | null
+  sortOrder?: Prisma.IntFilter<"KeyResult"> | number
   objectiveId?: Prisma.StringFilter<"KeyResult"> | string
   createdAt?: Prisma.DateTimeFilter<"KeyResult"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"KeyResult"> | Date | string
@@ -316,6 +330,7 @@ export type KeyResultOrderByWithAggregationInput = {
   weight?: Prisma.SortOrder
   teamProgress?: Prisma.SortOrder
   leadProgress?: Prisma.SortOrderInput | Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   objectiveId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -337,6 +352,7 @@ export type KeyResultScalarWhereWithAggregatesInput = {
   weight?: Prisma.FloatWithAggregatesFilter<"KeyResult"> | number
   teamProgress?: Prisma.FloatWithAggregatesFilter<"KeyResult"> | number
   leadProgress?: Prisma.FloatNullableWithAggregatesFilter<"KeyResult"> | number | null
+  sortOrder?: Prisma.IntWithAggregatesFilter<"KeyResult"> | number
   objectiveId?: Prisma.StringWithAggregatesFilter<"KeyResult"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"KeyResult"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"KeyResult"> | Date | string
@@ -350,6 +366,7 @@ export type KeyResultCreateInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   objective: Prisma.ObjectiveCreateNestedOneWithoutKeyResultsInput
@@ -365,6 +382,7 @@ export type KeyResultUncheckedCreateInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   objectiveId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -380,6 +398,7 @@ export type KeyResultUpdateInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   objective?: Prisma.ObjectiveUpdateOneRequiredWithoutKeyResultsNestedInput
@@ -395,6 +414,7 @@ export type KeyResultUncheckedUpdateInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   objectiveId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -410,6 +430,7 @@ export type KeyResultCreateManyInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   objectiveId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -423,6 +444,7 @@ export type KeyResultUpdateManyMutationInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -435,6 +457,7 @@ export type KeyResultUncheckedUpdateManyInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   objectiveId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -463,6 +486,7 @@ export type KeyResultCountOrderByAggregateInput = {
   weight?: Prisma.SortOrder
   teamProgress?: Prisma.SortOrder
   leadProgress?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   objectiveId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -473,6 +497,7 @@ export type KeyResultAvgOrderByAggregateInput = {
   weight?: Prisma.SortOrder
   teamProgress?: Prisma.SortOrder
   leadProgress?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
 export type KeyResultMaxOrderByAggregateInput = {
@@ -483,6 +508,7 @@ export type KeyResultMaxOrderByAggregateInput = {
   weight?: Prisma.SortOrder
   teamProgress?: Prisma.SortOrder
   leadProgress?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   objectiveId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -496,6 +522,7 @@ export type KeyResultMinOrderByAggregateInput = {
   weight?: Prisma.SortOrder
   teamProgress?: Prisma.SortOrder
   leadProgress?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
   objectiveId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -506,6 +533,7 @@ export type KeyResultSumOrderByAggregateInput = {
   weight?: Prisma.SortOrder
   teamProgress?: Prisma.SortOrder
   leadProgress?: Prisma.SortOrder
+  sortOrder?: Prisma.SortOrder
 }
 
 export type KeyResultCreateNestedManyWithoutObjectiveInput = {
@@ -586,6 +614,7 @@ export type KeyResultCreateWithoutObjectiveInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   krAssignments?: Prisma.KRAssignmentCreateNestedManyWithoutKeyResultInput
@@ -600,6 +629,7 @@ export type KeyResultUncheckedCreateWithoutObjectiveInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   krAssignments?: Prisma.KRAssignmentUncheckedCreateNestedManyWithoutKeyResultInput
@@ -643,6 +673,7 @@ export type KeyResultScalarWhereInput = {
   weight?: Prisma.FloatFilter<"KeyResult"> | number
   teamProgress?: Prisma.FloatFilter<"KeyResult"> | number
   leadProgress?: Prisma.FloatNullableFilter<"KeyResult"> | number | null
+  sortOrder?: Prisma.IntFilter<"KeyResult"> | number
   objectiveId?: Prisma.StringFilter<"KeyResult"> | string
   createdAt?: Prisma.DateTimeFilter<"KeyResult"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"KeyResult"> | Date | string
@@ -656,6 +687,7 @@ export type KeyResultCreateWithoutKrAssignmentsInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   objective: Prisma.ObjectiveCreateNestedOneWithoutKeyResultsInput
@@ -670,6 +702,7 @@ export type KeyResultUncheckedCreateWithoutKrAssignmentsInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   objectiveId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -700,6 +733,7 @@ export type KeyResultUpdateWithoutKrAssignmentsInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   objective?: Prisma.ObjectiveUpdateOneRequiredWithoutKeyResultsNestedInput
@@ -714,6 +748,7 @@ export type KeyResultUncheckedUpdateWithoutKrAssignmentsInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   objectiveId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -728,6 +763,7 @@ export type KeyResultCreateWithoutInitiativesInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
   objective: Prisma.ObjectiveCreateNestedOneWithoutKeyResultsInput
@@ -742,6 +778,7 @@ export type KeyResultUncheckedCreateWithoutInitiativesInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   objectiveId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -772,6 +809,7 @@ export type KeyResultUpdateWithoutInitiativesInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   objective?: Prisma.ObjectiveUpdateOneRequiredWithoutKeyResultsNestedInput
@@ -786,6 +824,7 @@ export type KeyResultUncheckedUpdateWithoutInitiativesInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   objectiveId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -800,6 +839,7 @@ export type KeyResultCreateManyObjectiveInput = {
   weight: number
   teamProgress?: number
   leadProgress?: number | null
+  sortOrder?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -812,6 +852,7 @@ export type KeyResultUpdateWithoutObjectiveInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   krAssignments?: Prisma.KRAssignmentUpdateManyWithoutKeyResultNestedInput
@@ -826,6 +867,7 @@ export type KeyResultUncheckedUpdateWithoutObjectiveInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   krAssignments?: Prisma.KRAssignmentUncheckedUpdateManyWithoutKeyResultNestedInput
@@ -840,6 +882,7 @@ export type KeyResultUncheckedUpdateManyWithoutObjectiveInput = {
   weight?: Prisma.FloatFieldUpdateOperationsInput | number
   teamProgress?: Prisma.FloatFieldUpdateOperationsInput | number
   leadProgress?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -892,6 +935,7 @@ export type KeyResultSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   weight?: boolean
   teamProgress?: boolean
   leadProgress?: boolean
+  sortOrder?: boolean
   objectiveId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -909,6 +953,7 @@ export type KeyResultSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   weight?: boolean
   teamProgress?: boolean
   leadProgress?: boolean
+  sortOrder?: boolean
   objectiveId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -923,6 +968,7 @@ export type KeyResultSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   weight?: boolean
   teamProgress?: boolean
   leadProgress?: boolean
+  sortOrder?: boolean
   objectiveId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -937,12 +983,13 @@ export type KeyResultSelectScalar = {
   weight?: boolean
   teamProgress?: boolean
   leadProgress?: boolean
+  sortOrder?: boolean
   objectiveId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type KeyResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "target" | "unit" | "weight" | "teamProgress" | "leadProgress" | "objectiveId" | "createdAt" | "updatedAt", ExtArgs["result"]["keyResult"]>
+export type KeyResultOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "target" | "unit" | "weight" | "teamProgress" | "leadProgress" | "sortOrder" | "objectiveId" | "createdAt" | "updatedAt", ExtArgs["result"]["keyResult"]>
 export type KeyResultInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   objective?: boolean | Prisma.ObjectiveDefaultArgs<ExtArgs>
   krAssignments?: boolean | Prisma.KeyResult$krAssignmentsArgs<ExtArgs>
@@ -971,6 +1018,7 @@ export type $KeyResultPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     weight: number
     teamProgress: number
     leadProgress: number | null
+    sortOrder: number
     objectiveId: string
     createdAt: Date
     updatedAt: Date
@@ -1407,6 +1455,7 @@ export interface KeyResultFieldRefs {
   readonly weight: Prisma.FieldRef<"KeyResult", 'Float'>
   readonly teamProgress: Prisma.FieldRef<"KeyResult", 'Float'>
   readonly leadProgress: Prisma.FieldRef<"KeyResult", 'Float'>
+  readonly sortOrder: Prisma.FieldRef<"KeyResult", 'Int'>
   readonly objectiveId: Prisma.FieldRef<"KeyResult", 'String'>
   readonly createdAt: Prisma.FieldRef<"KeyResult", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"KeyResult", 'DateTime'>

@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
       userId: session.user.role === "ADMIN" && searchParams.get("userId") ? userId : session.user.id,
       ...(quarterId ? { quarterId } : {}),
     },
-    include: { keyResults: true },
+    include: { keyResults: { orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }] } },
     orderBy: { createdAt: "asc" },
   });
   return NextResponse.json(objectives);
