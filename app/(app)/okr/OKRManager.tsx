@@ -339,8 +339,11 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
   const [krAch, setKrAch] = useState<Record<string, number | null>>({});
   const achOf = (kr: KeyResult) => (krAch[kr.id] != null ? (krAch[kr.id] as number) : calcKRAchievement(kr));
   const objAchAuto = (obj: Objective) => {
+    if (obj.keyResults.length === 0) return 0;
     const tw = obj.keyResults.reduce((s, k) => s + Number(k.weight), 0);
-    if (tw === 0) return 0;
+    // Weighted by KR weight; if no weights are set yet, use a simple average
+    // so the objective still reflects its KRs' achievement.
+    if (tw === 0) return obj.keyResults.reduce((s, k) => s + achOf(k), 0) / obj.keyResults.length;
     return obj.keyResults.reduce((s, k) => s + (achOf(k) * Number(k.weight)) / tw, 0);
   };
 

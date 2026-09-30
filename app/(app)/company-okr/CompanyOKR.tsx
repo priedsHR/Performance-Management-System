@@ -14,12 +14,18 @@ function achClass(v: number) {
   return v >= 100 ? "bg-green-100 text-green-700" : v >= 70 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600";
 }
 function krAch(kr: KeyResult) {
+  // Roll up from initiatives (avg of each initiative's %); fall back to team
+  // progress when a KR has no initiatives.
+  if (kr.initiatives.length > 0) {
+    return kr.initiatives.reduce((s, it) => s + (it.target > 0 ? Math.min((it.actual / it.target) * 100, 100) : 0), 0) / kr.initiatives.length;
+  }
   const actual = kr.leadProgress ?? kr.teamProgress;
   return kr.target > 0 ? Math.min((actual / kr.target) * 100, 100) : 0;
 }
 function objAch(obj: Objective) {
+  if (obj.keyResults.length === 0) return 0;
   const tw = obj.keyResults.reduce((s, k) => s + k.weight, 0);
-  if (tw <= 0) return 0;
+  if (tw <= 0) return obj.keyResults.reduce((s, k) => s + krAch(k), 0) / obj.keyResults.length;
   return obj.keyResults.reduce((s, k) => s + (krAch(k) * k.weight) / tw, 0);
 }
 
