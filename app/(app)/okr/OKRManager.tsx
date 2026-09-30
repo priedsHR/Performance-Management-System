@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2, ChevronDown, ChevronUp, CheckSquare, Square, X, Key } from "lucide-react";
-import { calcObjectiveAchievement, calcKRAchievement } from "@/lib/calculations";
+import { calcKRAchievement } from "@/lib/calculations";
 import InitiativeEditor from "./InitiativeEditor";
 
 type KeyResult = {
@@ -334,6 +334,16 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
   // Import modal
   const [showImport, setShowImport] = useState(false);
 
+  // Automatic per-KR achievement, rolled up from each KR's initiatives.
+  // null (or missing) = KR has no initiatives → fall back to team progress.
+  const [krAch, setKrAch] = useState<Record<string, number | null>>({});
+  const achOf = (kr: KeyResult) => (krAch[kr.id] != null ? (krAch[kr.id] as number) : calcKRAchievement(kr));
+  const objAchAuto = (obj: Objective) => {
+    const tw = obj.keyResults.reduce((s, k) => s + Number(k.weight), 0);
+    if (tw === 0) return 0;
+    return obj.keyResults.reduce((s, k) => s + (achOf(k) * Number(k.weight)) / tw, 0);
+  };
+
   const allSubmitted = objectives.length > 0 && objectives.every((o) => o.status === "SUBMITTED");
   const someSubmitted = objectives.some((o) => o.status === "SUBMITTED");
   const totalWeight = objectives.reduce((s, o) => s + Number(o.weight), 0);
@@ -465,13 +475,6 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
     setSaving(false);
   }
 
-  async function saveLeadProgress(krId: string, value: number | null) {
-    await fetch(`/api/key-results/${krId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ leadProgress: value }),
-    });
-  }
 
   async function deleteKR(objectiveId: string, krId: string) {
     if (!confirm("Delete this key result?")) return;
@@ -598,7 +601,7 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
           const krTotalWeight = obj.keyResults.reduce((s, kr) => s + Number(kr.weight), 0);
           const krWeightOk = Math.abs(krTotalWeight - 100) <= 0.01;
           const isExpanded = expanded[obj.id] ?? false;
-          const achievement = calcObjectiveAchievement(obj);
+          const achievement = objAchAuto(obj);
           const isSelected = selectedIds.has(obj.id);
 
           return (
@@ -727,9 +730,31 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                     </p>
                   )}
 
+                  {/* Achievement bar chart — one bar per KR, rolled up automatically */}
+                  {obj.keyResults.length > 0 && (
+                    <div className="bg-white border border-slate-100 rounded-xl p-4 mb-2">
+                      <p className="text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-2.5">Achievement per Key Result</p>
+                      <div className="space-y-2">
+                        {obj.keyResults.map((kr, i) => {
+                          const a = achOf(kr);
+                          const color = a >= 100 ? "bg-green-500" : a >= 70 ? "bg-amber-400" : "bg-red-400";
+                          return (
+                            <div key={kr.id} className="flex items-center gap-2">
+                              <span className="text-[11px] font-bold text-slate-400 w-8 flex-shrink-0">{objIdx + 1}.{i + 1}</span>
+                              <div className="flex-1 h-4 bg-slate-100 rounded-md overflow-hidden">
+                                <div className={`h-4 rounded-md transition-all ${color}`} style={{ width: `${Math.min(a, 100)}%` }} />
+                              </div>
+                              <span className="text-[11px] font-bold text-slate-500 w-9 text-right flex-shrink-0">{a.toFixed(0)}%</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="space-y-2">
                     {obj.keyResults.map((kr, krIdx) => {
-                      const pct = calcKRAchievement(kr);
+                      const pct = achOf(kr);
                       return (
                         <div key={kr.id} className="border border-slate-100 rounded-xl p-4 bg-slate-50/50">
                           <div className="flex items-center gap-2 mb-3">
@@ -792,44 +817,12 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                             </div>
                           </div>
 
-                          {isLead ? (
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="text-xs font-medium text-blue-600 flex-shrink-0">Division Lead Contribution</span>
-                              <input
-                                type="number"
-                                className="w-20 border border-blue-200 rounded-lg px-2 py-1 text-xs text-right bg-blue-50 focus:outline-none focus:border-blue-400"
-                                value={kr.leadProgress ?? ""}
-                                placeholder="0"
-                                min={0}
-                                onChange={(e) => {
-                                  const v = e.target.value === "" ? null : Number(e.target.value);
-                                  updateKR(obj.id, kr.id, { leadProgress: v });
-                                }}
-                                onBlur={(e) => {
-                                  const v = e.target.value === "" ? null : Number(e.target.value);
-                                  saveLeadProgress(kr.id, v);
-                                }}
-                              />
-                              <span className="text-xs text-slate-400">/ {kr.target} {kr.unit}</span>
-                              {(kr.leadProgress ?? 0) > 0 && (
-                                <button
-                                  onClick={() => { updateKR(obj.id, kr.id, { leadProgress: null }); saveLeadProgress(kr.id, null); }}
-                                  className="text-slate-300 hover:text-slate-500 text-xs transition"
-                                  title="Reset contribution"
-                                ></button>
-                              )}
-                            </div>
-                          ) : (
-                            <p className="text-xs text-slate-400 italic mb-2">
-                              Member progress is filled in on the{" "}
-                              <a href="/distribusi" className="text-amber-600 hover:underline font-semibold">Member Distribution →</a>
-                            </p>
-                          )}
-
+                          {/* KR achievement — automatically rolled up from the initiatives below */}
                           <div className="flex items-center gap-3">
-                            <div className="flex-1 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                            <span className="text-[11px] text-slate-400 flex-shrink-0">Achievement</span>
+                            <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
                               <div
-                                className={`h-1.5 rounded-full transition-all ${
+                                className={`h-2 rounded-full transition-all ${
                                   pct >= 100 ? "bg-green-500" : pct >= 70 ? "bg-amber-400" : "bg-red-400"
                                 }`}
                                 style={{ width: `${Math.min(pct, 100)}%` }}
@@ -839,7 +832,12 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                           </div>
 
                           {/* Initiatives (action plans) under this KR, each with a PIC */}
-                          <InitiativeEditor keyResultId={kr.id} krUnit={kr.unit} isLocked={isLocked} />
+                          <InitiativeEditor
+                            keyResultId={kr.id}
+                            krUnit={kr.unit}
+                            isLocked={isLocked}
+                            onAchievement={(v) => setKrAch((prev) => (prev[kr.id] === v ? prev : { ...prev, [kr.id]: v }))}
+                          />
                         </div>
                       );
                     })}

@@ -29,10 +29,12 @@ type Assignment = {
   krAssignments?: KRAssignment[];
 };
 
+// Fallback KR achievement from member/team progress, used only when a KR has
+// no initiatives. When it has initiatives, achievement is rolled up from them
+// (average of each initiative's % achievement) in the UI layer.
 export function calcKRAchievement(kr: KR): number {
-  const progress = kr.teamProgress + (kr.leadProgress ?? 0);
   if (kr.target === 0) return 0;
-  return Math.min((progress / kr.target) * 100, 100);
+  return Math.min((kr.teamProgress / kr.target) * 100, 100);
 }
 
 export function calcObjectiveAchievement(obj: ObjWithKRs): number {

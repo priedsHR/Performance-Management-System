@@ -27,10 +27,14 @@ export default function InitiativeEditor({
   keyResultId,
   krUnit,
   isLocked,
+  onAchievement,
 }: {
   keyResultId: string;
   krUnit: string;
   isLocked: boolean;
+  // Reports this KR's rolled-up achievement (avg of initiatives' %), or null
+  // when there are no initiatives (parent then uses its own fallback).
+  onAchievement?: (pct: number | null) => void;
 }) {
   const [items, setItems] = useState<Initiative[]>([]);
   const [team, setTeam] = useState<TeamMember[]>([]);
@@ -48,6 +52,15 @@ export default function InitiativeEditor({
       .then((d: TeamMember[]) => setTeam(Array.isArray(d) ? d.map((m) => ({ id: m.id, name: m.name })) : []))
       .catch(() => {});
   }, [keyResultId]);
+
+  // Roll this KR's achievement up to the parent whenever initiatives change.
+  useEffect(() => {
+    if (!loaded || !onAchievement) return;
+    if (items.length === 0) { onAchievement(null); return; }
+    const avg = items.reduce((s, it) => s + (it.target > 0 ? Math.min((it.actual / it.target) * 100, 100) : 0), 0) / items.length;
+    onAchievement(avg);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items, loaded]);
 
   async function add() {
     const title = text.trim();
