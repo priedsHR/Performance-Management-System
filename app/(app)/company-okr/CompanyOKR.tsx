@@ -8,7 +8,7 @@ type Pic = { id: string; name: string } | null;
 type Initiative = { id: string; title: string; target: number; actual: number; unit: string; resultNote: string | null; pic: Pic };
 type KeyResult = { id: string; title: string; target: number; unit: string; weight: number; teamProgress: number; leadProgress: number | null; initiatives: Initiative[] };
 type Objective = { id: string; title: string; weight: number; status: string; keyResults: KeyResult[] };
-type Dept = { ownerId: string; ownerName: string; division: string | null; objectives: Objective[] };
+type Dept = { division: string; leadNames: string[]; objectives: Objective[] };
 type Quarter = { id: string; name: string; isActive: boolean };
 
 function achClass(v: number) {
@@ -66,18 +66,18 @@ export default function CompanyOKR({ quarters }: { quarters: Quarter[] }) {
         <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-400 text-sm">No OKR submitted for this quarter yet.</div>
       ) : (
         departments.map((dept) => {
-          const isOpen = open[dept.ownerId] ?? true;
+          const isOpen = open[dept.division] ?? true;
           const deptObjs = dept.objectives;
           const deptAch = deptObjs.length ? deptObjs.reduce((s, o) => s + objAch(o), 0) / deptObjs.length : 0;
           return (
-            <div key={dept.ownerId} className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+            <div key={dept.division} className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
               <div className="flex items-center bg-slate-50 hover:bg-slate-100 transition">
-                <button onClick={() => setOpen((p) => ({ ...p, [dept.ownerId]: !isOpen }))} className="flex-1 flex items-center justify-between px-5 py-4 text-left min-w-0">
+                <button onClick={() => setOpen((p) => ({ ...p, [dept.division]: !isOpen }))} className="flex-1 flex items-center justify-between px-5 py-4 text-left min-w-0">
                   <div className="flex items-center gap-3 min-w-0">
                     <Building2 size={18} className="text-[#097eb9] flex-shrink-0" />
                     <div className="min-w-0">
-                      <p className="font-bold text-slate-800 text-sm truncate">{dept.division || dept.ownerName}</p>
-                      <p className="text-xs text-slate-400 truncate">Lead: {dept.ownerName} · {deptObjs.length} objective{deptObjs.length === 1 ? "" : "s"}</p>
+                      <p className="font-bold text-slate-800 text-sm truncate">{dept.division}</p>
+                      <p className="text-xs text-slate-400 truncate">{dept.leadNames.join(", ")} · {deptObjs.length} objective{deptObjs.length === 1 ? "" : "s"}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 flex-shrink-0 ml-3">
@@ -86,7 +86,7 @@ export default function CompanyOKR({ quarters }: { quarters: Quarter[] }) {
                   </div>
                 </button>
                 <Link
-                  href={`/okr/present?userId=${dept.ownerId}&quarterId=${quarterId}`}
+                  href={`/okr/present?division=${encodeURIComponent(dept.division)}&quarterId=${quarterId}`}
                   className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 mr-4 rounded-lg bg-[#097eb9] text-white hover:bg-[#0b6fa3] flex-shrink-0"
                   title="Open the OKR meeting presentation"
                 >

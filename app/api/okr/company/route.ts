@@ -29,22 +29,27 @@ export async function GET(req: NextRequest) {
     orderBy: [{ createdAt: "asc" }],
   });
 
-  // Group by owner (department lead)
+  // Group by DIVISION, merging every owner in the same division into one card.
+  const ORDER = ["HR", "Finance", "Marketing", "Partnership", "Sales", "Tech-Product", "Tech-Project", "Executive"];
   const deptMap = new Map<string, {
-    ownerId: string;
-    ownerName: string;
-    division: string | null;
+    division: string;
+    leadNames: string[];
     objectives: typeof objectives;
   }>();
   for (const o of objectives) {
-    const key = o.user.id;
-    if (!deptMap.has(key))
-      deptMap.set(key, { ownerId: o.user.id, ownerName: o.user.name, division: o.user.division, objectives: [] });
-    deptMap.get(key)!.objectives.push(o);
+    const division = o.user.division || o.user.name;
+    if (!deptMap.has(division)) deptMap.set(division, { division, leadNames: [], objectives: [] });
+    const d = deptMap.get(division)!;
+    d.objectives.push(o);
+    if (!d.leadNames.includes(o.user.name)) d.leadNames.push(o.user.name);
   }
 
-  const departments = Array.from(deptMap.values()).sort((a, b) =>
-    (a.division || a.ownerName).localeCompare(b.division || b.ownerName)
-  );
+  const departments = Array.from(deptMap.values()).sort((a, b) => {
+    const ia = ORDER.indexOf(a.division), ib = ORDER.indexOf(b.division);
+    if (ia !== -1 && ib !== -1) return ia - ib;
+    if (ia !== -1) return -1;
+    if (ib !== -1) return 1;
+    return a.division.localeCompare(b.division);
+  });
   return NextResponse.json({ departments });
 }
