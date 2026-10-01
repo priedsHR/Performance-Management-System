@@ -6,8 +6,7 @@ import CompanyOKR from "./CompanyOKR";
 export default async function CompanyOKRPage() {
   const session = await auth();
   if (!session) redirect("/login");
-  // C-Level (isExecutive) and admins only
-  if (session.user.role !== "ADMIN" && !session.user.isExecutive) redirect("/dashboard");
+  // All employees can view all departments' OKR (read-only).
 
   const quarters = await prisma.quarter.findMany({ orderBy: [{ year: "desc" }, { quarter: "desc" }] });
 

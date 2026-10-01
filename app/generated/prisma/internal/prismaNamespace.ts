@@ -392,6 +392,7 @@ export const ModelName = {
   ObjectiveAssignment: 'ObjectiveAssignment',
   KRAssignment: 'KRAssignment',
   Initiative: 'Initiative',
+  InitiativeMonthly: 'InitiativeMonthly',
   Employee: 'Employee',
   KeyResult: 'KeyResult',
   FeedbackPeriod: 'FeedbackPeriod',
@@ -420,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "initiative" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment" | "feedbackPeerExclusion" | "idpPlan" | "progressSnapshot"
+    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "initiative" | "initiativeMonthly" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment" | "feedbackPeerExclusion" | "idpPlan" | "progressSnapshot"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1013,6 +1014,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.InitiativeCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.InitiativeCountAggregateOutputType> | number
+        }
+      }
+    }
+    InitiativeMonthly: {
+      payload: Prisma.$InitiativeMonthlyPayload<ExtArgs>
+      fields: Prisma.InitiativeMonthlyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InitiativeMonthlyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InitiativeMonthlyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload>
+        }
+        findFirst: {
+          args: Prisma.InitiativeMonthlyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InitiativeMonthlyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload>
+        }
+        findMany: {
+          args: Prisma.InitiativeMonthlyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload>[]
+        }
+        create: {
+          args: Prisma.InitiativeMonthlyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload>
+        }
+        createMany: {
+          args: Prisma.InitiativeMonthlyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InitiativeMonthlyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload>[]
+        }
+        delete: {
+          args: Prisma.InitiativeMonthlyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload>
+        }
+        update: {
+          args: Prisma.InitiativeMonthlyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload>
+        }
+        deleteMany: {
+          args: Prisma.InitiativeMonthlyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InitiativeMonthlyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InitiativeMonthlyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload>[]
+        }
+        upsert: {
+          args: Prisma.InitiativeMonthlyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InitiativeMonthlyPayload>
+        }
+        aggregate: {
+          args: Prisma.InitiativeMonthlyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInitiativeMonthly>
+        }
+        groupBy: {
+          args: Prisma.InitiativeMonthlyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeMonthlyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InitiativeMonthlyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InitiativeMonthlyCountAggregateOutputType> | number
         }
       }
     }
@@ -2129,6 +2204,18 @@ export const InitiativeScalarFieldEnum = {
 export type InitiativeScalarFieldEnum = (typeof InitiativeScalarFieldEnum)[keyof typeof InitiativeScalarFieldEnum]
 
 
+export const InitiativeMonthlyScalarFieldEnum = {
+  id: 'id',
+  initiativeId: 'initiativeId',
+  year: 'year',
+  month: 'month',
+  actual: 'actual',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InitiativeMonthlyScalarFieldEnum = (typeof InitiativeMonthlyScalarFieldEnum)[keyof typeof InitiativeMonthlyScalarFieldEnum]
+
+
 export const EmployeeScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -2608,6 +2695,7 @@ export type GlobalOmitConfig = {
   objectiveAssignment?: Prisma.ObjectiveAssignmentOmit
   kRAssignment?: Prisma.KRAssignmentOmit
   initiative?: Prisma.InitiativeOmit
+  initiativeMonthly?: Prisma.InitiativeMonthlyOmit
   employee?: Prisma.EmployeeOmit
   keyResult?: Prisma.KeyResultOmit
   feedbackPeriod?: Prisma.FeedbackPeriodOmit

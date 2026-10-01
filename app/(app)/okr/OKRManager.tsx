@@ -336,6 +336,11 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
 
   // Automatic per-KR achievement, rolled up from each KR's initiatives.
   // null (or missing) = KR has no initiatives → fall back to team progress.
+  // Months of the quarter being edited, for monthly initiative tracking.
+  const curQuarter = allQuarters.find((q) => q.id === quarterId);
+  const qYear = curQuarter?.year;
+  const qMonths = curQuarter ? [0, 1, 2].map((i) => (curQuarter.quarter - 1) * 3 + 1 + i) : undefined;
+
   const [krAch, setKrAch] = useState<Record<string, number | null>>({});
   const achOf = (kr: KeyResult) => (krAch[kr.id] != null ? (krAch[kr.id] as number) : calcKRAchievement(kr));
   const objAchAuto = (obj: Objective) => {
@@ -873,6 +878,8 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                             keyResultId={kr.id}
                             krUnit={kr.unit}
                             isLocked={isLocked}
+                            year={qYear}
+                            months={qMonths}
                             onAchievement={(v) => setKrAch((prev) => (prev[kr.id] === v ? prev : { ...prev, [kr.id]: v }))}
                           />
                         </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Trash2, Plus } from "lucide-react";
 
 type Pic = { id: string; name: string } | null;
+type Monthly = { year: number; month: number; actual: number };
 type Initiative = {
   id: string;
   title: string;
@@ -13,8 +14,11 @@ type Initiative = {
   resultNote: string | null;
   picId: string | null;
   pic?: Pic;
+  monthly?: Monthly[];
 };
 type TeamMember = { id: string; name: string };
+
+const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function achClass(v: number) {
   return v >= 100 ? "bg-green-100 text-green-700" : v >= 70 ? "bg-amber-100 text-amber-700" : "bg-red-100 text-red-600";
@@ -28,6 +32,8 @@ export default function InitiativeEditor({
   krUnit,
   isLocked,
   onAchievement,
+  year,
+  months,
 }: {
   keyResultId: string;
   krUnit: string;
@@ -35,7 +41,10 @@ export default function InitiativeEditor({
   // Reports this KR's rolled-up achievement (avg of initiatives' %), or null
   // when there are no initiatives (parent then uses its own fallback).
   onAchievement?: (pct: number | null) => void;
+  year?: number;
+  months?: number[]; // the quarter's months (1–12), e.g. Q3 → [7,8,9]
 }) {
+  const useMonthly = !!year && !!months && months.length > 0;
   const [items, setItems] = useState<Initiative[]>([]);
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -94,6 +103,30 @@ export default function InitiativeEditor({
     await fetch(`/api/initiatives/${id}`, { method: "DELETE" });
   }
 
+  function monthValue(it: Initiative, m: number): number | "" {
+    const e = (it.monthly ?? []).find((x) => x.year === year && x.month === m);
+    return e ? e.actual : "";
+  }
+  // Update one month locally; the initiative's actual tracks the latest month.
+  function setMonthLocal(id: string, m: number, val: number) {
+    setItems((prev) => prev.map((it) => {
+      if (it.id !== id) return it;
+      const monthly = [...(it.monthly ?? [])];
+      const idx = monthly.findIndex((x) => x.year === year && x.month === m);
+      if (idx >= 0) monthly[idx] = { ...monthly[idx], actual: val };
+      else monthly.push({ year: year!, month: m, actual: val });
+      const latest = [...monthly].sort((a, b) => a.year - b.year || a.month - b.month).pop();
+      return { ...it, monthly, actual: latest ? latest.actual : it.actual };
+    }));
+  }
+  async function saveMonth(id: string, m: number, val: number) {
+    await fetch("/api/initiatives/monthly", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ initiativeId: id, year, month: m, actual: val }),
+    });
+  }
+
   if (!loaded) return null;
   if (isLocked && items.length === 0) return null;
 
@@ -109,7 +142,9 @@ export default function InitiativeEditor({
                 <th className="text-left font-semibold py-1 pr-2">Initiative (action plan)</th>
                 <th className="text-left font-semibold py-1 px-2 w-32">PIC</th>
                 <th className="text-right font-semibold py-1 px-1 w-16">Target</th>
-                <th className="text-right font-semibold py-1 px-1 w-16">Actual</th>
+                {useMonthly
+                  ? months!.map((m) => <th key={m} className="text-right font-semibold py-1 px-1 w-14">{MONTH_NAMES[m - 1]}</th>)
+                  : <th className="text-right font-semibold py-1 px-1 w-16">Actual</th>}
                 <th className="text-right font-semibold py-1 px-1 w-14">% Ach</th>
                 <th className="text-left font-semibold py-1 px-2 w-40">Results & Evaluation</th>
                 {!isLocked && <th className="w-6"></th>}
@@ -150,13 +185,25 @@ export default function InitiativeEditor({
                         onWheel={(e) => e.currentTarget.blur()}
                         className="w-full border border-slate-200 rounded-md px-1 py-1 text-right bg-white focus:outline-none focus:border-amber-400 disabled:bg-slate-50 disabled:cursor-default" />
                     </td>
-                    <td className="py-1.5 px-1">
-                      <input type="number" min={0} value={it.actual} disabled={isLocked}
-                        onChange={(e) => patchLocal(it.id, { actual: Number(e.target.value) })}
-                        onBlur={(e) => !isLocked && patch(it.id, { actual: Number(e.target.value) || 0 })}
-                        onWheel={(e) => e.currentTarget.blur()}
-                        className="w-full border border-slate-200 rounded-md px-1 py-1 text-right bg-white focus:outline-none focus:border-amber-400 disabled:bg-slate-50 disabled:cursor-default" />
-                    </td>
+                    {useMonthly ? (
+                      months!.map((m) => (
+                        <td key={m} className="py-1.5 px-1">
+                          <input type="number" min={0} value={monthValue(it, m)} disabled={isLocked}
+                            onChange={(e) => setMonthLocal(it.id, m, Number(e.target.value))}
+                            onBlur={(e) => !isLocked && saveMonth(it.id, m, Number(e.target.value) || 0)}
+                            onWheel={(e) => e.currentTarget.blur()}
+                            className="w-full border border-slate-200 rounded-md px-1 py-1 text-right bg-white focus:outline-none focus:border-amber-400 disabled:bg-slate-50 disabled:cursor-default" />
+                        </td>
+                      ))
+                    ) : (
+                      <td className="py-1.5 px-1">
+                        <input type="number" min={0} value={it.actual} disabled={isLocked}
+                          onChange={(e) => patchLocal(it.id, { actual: Number(e.target.value) })}
+                          onBlur={(e) => !isLocked && patch(it.id, { actual: Number(e.target.value) || 0 })}
+                          onWheel={(e) => e.currentTarget.blur()}
+                          className="w-full border border-slate-200 rounded-md px-1 py-1 text-right bg-white focus:outline-none focus:border-amber-400 disabled:bg-slate-50 disabled:cursor-default" />
+                      </td>
+                    )}
                     <td className="py-1.5 px-1 text-right">
                       <span className={`inline-block font-bold px-1.5 py-0.5 rounded ${achClass(pct)}`}>{pct.toFixed(0)}%</span>
                     </td>

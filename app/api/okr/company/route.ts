@@ -7,8 +7,7 @@ import { prisma } from "@/lib/prisma";
 export async function GET(req: NextRequest) {
   const session = await auth();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  if (session.user.role !== "ADMIN" && !session.user.isExecutive)
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  // All employees can view all departments' OKR (read-only).
 
   const quarterId = req.nextUrl.searchParams.get("quarterId");
   if (!quarterId) return NextResponse.json({ error: "quarterId is required." }, { status: 400 });

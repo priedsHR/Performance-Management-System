@@ -60,11 +60,12 @@ const member360: Item[] = [
   { href: "/idp", label: "My IDP", icon: Sprout },
 ];
 
-const executiveOkr: Item[] = [
+// Visible to everyone now — all employees can view all departments' OKR.
+const companyOkr: Item[] = [
   { href: "/company-okr", label: "Company OKR", icon: Building2 },
 ];
 
-export default function Sidebar({ role, name, division, isExecutive, onNavigate }: { role: string; name?: string | null; division?: string | null; isExecutive?: boolean; onNavigate?: () => void }) {
+export default function Sidebar({ role, name, division, onNavigate }: { role: string; name?: string | null; division?: string | null; onNavigate?: () => void }) {
   const path = usePathname();
 
   const roleLabel = role === "ADMIN" ? "Admin" : role === "LEAD" ? "Division Lead" : "Member";
@@ -119,7 +120,7 @@ export default function Sidebar({ role, name, division, isExecutive, onNavigate 
           <>
             <NavGroup label="Dashboard" items={adminDashboard} />
             <NavGroup label="My OKR" items={adminMyOkr} />
-            <NavGroup label="C-Level" items={executiveOkr} />
+            <NavGroup label="Company OKR" items={companyOkr} />
             <NavGroup label="Setting OKR" items={adminSettingOkr} />
             <NavGroup label="Setting 360 Feedback" items={adminSetting360} />
             <NavGroup label="General Setting" items={adminGeneralSetting} />
@@ -129,13 +130,14 @@ export default function Sidebar({ role, name, division, isExecutive, onNavigate 
           <>
             <NavGroup label="Dashboard" items={leadDashboard} />
             <NavGroup label="OKR" items={leadOkr} />
-            {isExecutive && <NavGroup label="C-Level" items={executiveOkr} />}
+            <NavGroup label="Company OKR" items={companyOkr} />
             <NavGroup label="360 Feedback" items={lead360} />
           </>
         )}
         {role === "MEMBER" && (
           <>
             <NavGroup label="Dashboard" items={memberDashboard} />
+            <NavGroup label="Company OKR" items={companyOkr} />
             <NavGroup label="360 Feedback" items={member360} />
           </>
         )}

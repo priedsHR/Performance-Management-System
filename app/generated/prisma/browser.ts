@@ -58,6 +58,11 @@ export type KRAssignment = Prisma.KRAssignmentModel
  */
 export type Initiative = Prisma.InitiativeModel
 /**
+ * Model InitiativeMonthly
+ * 
+ */
+export type InitiativeMonthly = Prisma.InitiativeMonthlyModel
+/**
  * Model Employee
  * 
  */

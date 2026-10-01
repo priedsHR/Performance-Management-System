@@ -274,6 +274,7 @@ export type InitiativeWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Initiative"> | Date | string
   keyResult?: Prisma.XOR<Prisma.KeyResultScalarRelationFilter, Prisma.KeyResultWhereInput>
   pic?: Prisma.XOR<Prisma.TeamMemberNullableScalarRelationFilter, Prisma.TeamMemberWhereInput> | null
+  monthly?: Prisma.InitiativeMonthlyListRelationFilter
 }
 
 export type InitiativeOrderByWithRelationInput = {
@@ -290,6 +291,7 @@ export type InitiativeOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   keyResult?: Prisma.KeyResultOrderByWithRelationInput
   pic?: Prisma.TeamMemberOrderByWithRelationInput
+  monthly?: Prisma.InitiativeMonthlyOrderByRelationAggregateInput
 }
 
 export type InitiativeWhereUniqueInput = Prisma.AtLeast<{
@@ -309,6 +311,7 @@ export type InitiativeWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Initiative"> | Date | string
   keyResult?: Prisma.XOR<Prisma.KeyResultScalarRelationFilter, Prisma.KeyResultWhereInput>
   pic?: Prisma.XOR<Prisma.TeamMemberNullableScalarRelationFilter, Prisma.TeamMemberWhereInput> | null
+  monthly?: Prisma.InitiativeMonthlyListRelationFilter
 }, "id">
 
 export type InitiativeOrderByWithAggregationInput = {
@@ -359,6 +362,7 @@ export type InitiativeCreateInput = {
   updatedAt?: Date | string
   keyResult: Prisma.KeyResultCreateNestedOneWithoutInitiativesInput
   pic?: Prisma.TeamMemberCreateNestedOneWithoutInitiativesInput
+  monthly?: Prisma.InitiativeMonthlyCreateNestedManyWithoutInitiativeInput
 }
 
 export type InitiativeUncheckedCreateInput = {
@@ -373,6 +377,7 @@ export type InitiativeUncheckedCreateInput = {
   picId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  monthly?: Prisma.InitiativeMonthlyUncheckedCreateNestedManyWithoutInitiativeInput
 }
 
 export type InitiativeUpdateInput = {
@@ -387,6 +392,7 @@ export type InitiativeUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyResult?: Prisma.KeyResultUpdateOneRequiredWithoutInitiativesNestedInput
   pic?: Prisma.TeamMemberUpdateOneWithoutInitiativesNestedInput
+  monthly?: Prisma.InitiativeMonthlyUpdateManyWithoutInitiativeNestedInput
 }
 
 export type InitiativeUncheckedUpdateInput = {
@@ -401,6 +407,7 @@ export type InitiativeUncheckedUpdateInput = {
   picId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  monthly?: Prisma.InitiativeMonthlyUncheckedUpdateManyWithoutInitiativeNestedInput
 }
 
 export type InitiativeCreateManyInput = {
@@ -507,6 +514,11 @@ export type InitiativeSumOrderByAggregateInput = {
   sortOrder?: Prisma.SortOrder
 }
 
+export type InitiativeScalarRelationFilter = {
+  is?: Prisma.InitiativeWhereInput
+  isNot?: Prisma.InitiativeWhereInput
+}
+
 export type InitiativeCreateNestedManyWithoutPicInput = {
   create?: Prisma.XOR<Prisma.InitiativeCreateWithoutPicInput, Prisma.InitiativeUncheckedCreateWithoutPicInput> | Prisma.InitiativeCreateWithoutPicInput[] | Prisma.InitiativeUncheckedCreateWithoutPicInput[]
   connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutPicInput | Prisma.InitiativeCreateOrConnectWithoutPicInput[]
@@ -547,6 +559,20 @@ export type InitiativeUncheckedUpdateManyWithoutPicNestedInput = {
   update?: Prisma.InitiativeUpdateWithWhereUniqueWithoutPicInput | Prisma.InitiativeUpdateWithWhereUniqueWithoutPicInput[]
   updateMany?: Prisma.InitiativeUpdateManyWithWhereWithoutPicInput | Prisma.InitiativeUpdateManyWithWhereWithoutPicInput[]
   deleteMany?: Prisma.InitiativeScalarWhereInput | Prisma.InitiativeScalarWhereInput[]
+}
+
+export type InitiativeCreateNestedOneWithoutMonthlyInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutMonthlyInput, Prisma.InitiativeUncheckedCreateWithoutMonthlyInput>
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutMonthlyInput
+  connect?: Prisma.InitiativeWhereUniqueInput
+}
+
+export type InitiativeUpdateOneRequiredWithoutMonthlyNestedInput = {
+  create?: Prisma.XOR<Prisma.InitiativeCreateWithoutMonthlyInput, Prisma.InitiativeUncheckedCreateWithoutMonthlyInput>
+  connectOrCreate?: Prisma.InitiativeCreateOrConnectWithoutMonthlyInput
+  upsert?: Prisma.InitiativeUpsertWithoutMonthlyInput
+  connect?: Prisma.InitiativeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InitiativeUpdateToOneWithWhereWithoutMonthlyInput, Prisma.InitiativeUpdateWithoutMonthlyInput>, Prisma.InitiativeUncheckedUpdateWithoutMonthlyInput>
 }
 
 export type InitiativeCreateNestedManyWithoutKeyResultInput = {
@@ -602,6 +628,7 @@ export type InitiativeCreateWithoutPicInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   keyResult: Prisma.KeyResultCreateNestedOneWithoutInitiativesInput
+  monthly?: Prisma.InitiativeMonthlyCreateNestedManyWithoutInitiativeInput
 }
 
 export type InitiativeUncheckedCreateWithoutPicInput = {
@@ -615,6 +642,7 @@ export type InitiativeUncheckedCreateWithoutPicInput = {
   keyResultId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  monthly?: Prisma.InitiativeMonthlyUncheckedCreateNestedManyWithoutInitiativeInput
 }
 
 export type InitiativeCreateOrConnectWithoutPicInput = {
@@ -660,6 +688,78 @@ export type InitiativeScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Initiative"> | Date | string
 }
 
+export type InitiativeCreateWithoutMonthlyInput = {
+  id?: string
+  title: string
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
+  sortOrder?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  keyResult: Prisma.KeyResultCreateNestedOneWithoutInitiativesInput
+  pic?: Prisma.TeamMemberCreateNestedOneWithoutInitiativesInput
+}
+
+export type InitiativeUncheckedCreateWithoutMonthlyInput = {
+  id?: string
+  title: string
+  target?: number
+  actual?: number
+  unit?: string
+  resultNote?: string | null
+  sortOrder?: number
+  keyResultId: string
+  picId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type InitiativeCreateOrConnectWithoutMonthlyInput = {
+  where: Prisma.InitiativeWhereUniqueInput
+  create: Prisma.XOR<Prisma.InitiativeCreateWithoutMonthlyInput, Prisma.InitiativeUncheckedCreateWithoutMonthlyInput>
+}
+
+export type InitiativeUpsertWithoutMonthlyInput = {
+  update: Prisma.XOR<Prisma.InitiativeUpdateWithoutMonthlyInput, Prisma.InitiativeUncheckedUpdateWithoutMonthlyInput>
+  create: Prisma.XOR<Prisma.InitiativeCreateWithoutMonthlyInput, Prisma.InitiativeUncheckedCreateWithoutMonthlyInput>
+  where?: Prisma.InitiativeWhereInput
+}
+
+export type InitiativeUpdateToOneWithWhereWithoutMonthlyInput = {
+  where?: Prisma.InitiativeWhereInput
+  data: Prisma.XOR<Prisma.InitiativeUpdateWithoutMonthlyInput, Prisma.InitiativeUncheckedUpdateWithoutMonthlyInput>
+}
+
+export type InitiativeUpdateWithoutMonthlyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  keyResult?: Prisma.KeyResultUpdateOneRequiredWithoutInitiativesNestedInput
+  pic?: Prisma.TeamMemberUpdateOneWithoutInitiativesNestedInput
+}
+
+export type InitiativeUncheckedUpdateWithoutMonthlyInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  target?: Prisma.FloatFieldUpdateOperationsInput | number
+  actual?: Prisma.FloatFieldUpdateOperationsInput | number
+  unit?: Prisma.StringFieldUpdateOperationsInput | string
+  resultNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  keyResultId?: Prisma.StringFieldUpdateOperationsInput | string
+  picId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type InitiativeCreateWithoutKeyResultInput = {
   id?: string
   title: string
@@ -671,6 +771,7 @@ export type InitiativeCreateWithoutKeyResultInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   pic?: Prisma.TeamMemberCreateNestedOneWithoutInitiativesInput
+  monthly?: Prisma.InitiativeMonthlyCreateNestedManyWithoutInitiativeInput
 }
 
 export type InitiativeUncheckedCreateWithoutKeyResultInput = {
@@ -684,6 +785,7 @@ export type InitiativeUncheckedCreateWithoutKeyResultInput = {
   picId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  monthly?: Prisma.InitiativeMonthlyUncheckedCreateNestedManyWithoutInitiativeInput
 }
 
 export type InitiativeCreateOrConnectWithoutKeyResultInput = {
@@ -736,6 +838,7 @@ export type InitiativeUpdateWithoutPicInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   keyResult?: Prisma.KeyResultUpdateOneRequiredWithoutInitiativesNestedInput
+  monthly?: Prisma.InitiativeMonthlyUpdateManyWithoutInitiativeNestedInput
 }
 
 export type InitiativeUncheckedUpdateWithoutPicInput = {
@@ -749,6 +852,7 @@ export type InitiativeUncheckedUpdateWithoutPicInput = {
   keyResultId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  monthly?: Prisma.InitiativeMonthlyUncheckedUpdateManyWithoutInitiativeNestedInput
 }
 
 export type InitiativeUncheckedUpdateManyWithoutPicInput = {
@@ -788,6 +892,7 @@ export type InitiativeUpdateWithoutKeyResultInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pic?: Prisma.TeamMemberUpdateOneWithoutInitiativesNestedInput
+  monthly?: Prisma.InitiativeMonthlyUpdateManyWithoutInitiativeNestedInput
 }
 
 export type InitiativeUncheckedUpdateWithoutKeyResultInput = {
@@ -801,6 +906,7 @@ export type InitiativeUncheckedUpdateWithoutKeyResultInput = {
   picId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  monthly?: Prisma.InitiativeMonthlyUncheckedUpdateManyWithoutInitiativeNestedInput
 }
 
 export type InitiativeUncheckedUpdateManyWithoutKeyResultInput = {
@@ -817,6 +923,35 @@ export type InitiativeUncheckedUpdateManyWithoutKeyResultInput = {
 }
 
 
+/**
+ * Count Type InitiativeCountOutputType
+ */
+
+export type InitiativeCountOutputType = {
+  monthly: number
+}
+
+export type InitiativeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  monthly?: boolean | InitiativeCountOutputTypeCountMonthlyArgs
+}
+
+/**
+ * InitiativeCountOutputType without action
+ */
+export type InitiativeCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InitiativeCountOutputType
+   */
+  select?: Prisma.InitiativeCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * InitiativeCountOutputType without action
+ */
+export type InitiativeCountOutputTypeCountMonthlyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InitiativeMonthlyWhereInput
+}
+
 
 export type InitiativeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -832,6 +967,8 @@ export type InitiativeSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   updatedAt?: boolean
   keyResult?: boolean | Prisma.KeyResultDefaultArgs<ExtArgs>
   pic?: boolean | Prisma.Initiative$picArgs<ExtArgs>
+  monthly?: boolean | Prisma.Initiative$monthlyArgs<ExtArgs>
+  _count?: boolean | Prisma.InitiativeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["initiative"]>
 
 export type InitiativeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -884,6 +1021,8 @@ export type InitiativeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type InitiativeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   keyResult?: boolean | Prisma.KeyResultDefaultArgs<ExtArgs>
   pic?: boolean | Prisma.Initiative$picArgs<ExtArgs>
+  monthly?: boolean | Prisma.Initiative$monthlyArgs<ExtArgs>
+  _count?: boolean | Prisma.InitiativeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InitiativeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   keyResult?: boolean | Prisma.KeyResultDefaultArgs<ExtArgs>
@@ -899,6 +1038,7 @@ export type $InitiativePayload<ExtArgs extends runtime.Types.Extensions.Internal
   objects: {
     keyResult: Prisma.$KeyResultPayload<ExtArgs>
     pic: Prisma.$TeamMemberPayload<ExtArgs> | null
+    monthly: Prisma.$InitiativeMonthlyPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1308,6 +1448,7 @@ export interface Prisma__InitiativeClient<T, Null = never, ExtArgs extends runti
   readonly [Symbol.toStringTag]: "PrismaPromise"
   keyResult<T extends Prisma.KeyResultDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.KeyResultDefaultArgs<ExtArgs>>): Prisma.Prisma__KeyResultClient<runtime.Types.Result.GetResult<Prisma.$KeyResultPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   pic<T extends Prisma.Initiative$picArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Initiative$picArgs<ExtArgs>>): Prisma.Prisma__TeamMemberClient<runtime.Types.Result.GetResult<Prisma.$TeamMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  monthly<T extends Prisma.Initiative$monthlyArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Initiative$monthlyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InitiativeMonthlyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1765,6 +1906,30 @@ export type Initiative$picArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.TeamMemberInclude<ExtArgs> | null
   where?: Prisma.TeamMemberWhereInput
+}
+
+/**
+ * Initiative.monthly
+ */
+export type Initiative$monthlyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InitiativeMonthly
+   */
+  select?: Prisma.InitiativeMonthlySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InitiativeMonthly
+   */
+  omit?: Prisma.InitiativeMonthlyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InitiativeMonthlyInclude<ExtArgs> | null
+  where?: Prisma.InitiativeMonthlyWhereInput
+  orderBy?: Prisma.InitiativeMonthlyOrderByWithRelationInput | Prisma.InitiativeMonthlyOrderByWithRelationInput[]
+  cursor?: Prisma.InitiativeMonthlyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InitiativeMonthlyScalarFieldEnum | Prisma.InitiativeMonthlyScalarFieldEnum[]
 }
 
 /**

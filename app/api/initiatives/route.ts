@@ -36,7 +36,10 @@ export async function GET(req: NextRequest) {
 
   const initiatives = await prisma.initiative.findMany({
     where: { keyResultId },
-    include: { pic: { select: { id: true, name: true } } },
+    include: {
+      pic: { select: { id: true, name: true } },
+      monthly: { orderBy: [{ year: "asc" }, { month: "asc" }] },
+    },
     orderBy: { sortOrder: "asc" },
   });
   return NextResponse.json(initiatives);

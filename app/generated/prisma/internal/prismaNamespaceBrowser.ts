@@ -59,6 +59,7 @@ export const ModelName = {
   ObjectiveAssignment: 'ObjectiveAssignment',
   KRAssignment: 'KRAssignment',
   Initiative: 'Initiative',
+  InitiativeMonthly: 'InitiativeMonthly',
   Employee: 'Employee',
   KeyResult: 'KeyResult',
   FeedbackPeriod: 'FeedbackPeriod',
@@ -200,6 +201,18 @@ export const InitiativeScalarFieldEnum = {
 } as const
 
 export type InitiativeScalarFieldEnum = (typeof InitiativeScalarFieldEnum)[keyof typeof InitiativeScalarFieldEnum]
+
+
+export const InitiativeMonthlyScalarFieldEnum = {
+  id: 'id',
+  initiativeId: 'initiativeId',
+  year: 'year',
+  month: 'month',
+  actual: 'actual',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InitiativeMonthlyScalarFieldEnum = (typeof InitiativeMonthlyScalarFieldEnum)[keyof typeof InitiativeMonthlyScalarFieldEnum]
 
 
 export const EmployeeScalarFieldEnum = {

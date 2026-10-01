@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, Fragment } from "react";
-import { ChevronDown, ChevronUp, Building2 } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, ChevronUp, Building2, Play } from "lucide-react";
 
 type Pic = { id: string; name: string } | null;
 type Initiative = { id: string; title: string; target: number; actual: number; unit: string; resultNote: string | null; pic: Pic };
@@ -70,19 +71,28 @@ export default function CompanyOKR({ quarters }: { quarters: Quarter[] }) {
           const deptAch = deptObjs.length ? deptObjs.reduce((s, o) => s + objAch(o), 0) / deptObjs.length : 0;
           return (
             <div key={dept.ownerId} className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
-              <button onClick={() => setOpen((p) => ({ ...p, [dept.ownerId]: !isOpen }))} className="w-full flex items-center justify-between px-5 py-4 bg-slate-50 hover:bg-slate-100 transition text-left">
-                <div className="flex items-center gap-3 min-w-0">
-                  <Building2 size={18} className="text-[#097eb9] flex-shrink-0" />
-                  <div className="min-w-0">
-                    <p className="font-bold text-slate-800 text-sm truncate">{dept.division || dept.ownerName}</p>
-                    <p className="text-xs text-slate-400 truncate">Lead: {dept.ownerName} · {deptObjs.length} objective{deptObjs.length === 1 ? "" : "s"}</p>
+              <div className="flex items-center bg-slate-50 hover:bg-slate-100 transition">
+                <button onClick={() => setOpen((p) => ({ ...p, [dept.ownerId]: !isOpen }))} className="flex-1 flex items-center justify-between px-5 py-4 text-left min-w-0">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <Building2 size={18} className="text-[#097eb9] flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="font-bold text-slate-800 text-sm truncate">{dept.division || dept.ownerName}</p>
+                      <p className="text-xs text-slate-400 truncate">Lead: {dept.ownerName} · {deptObjs.length} objective{deptObjs.length === 1 ? "" : "s"}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className={`text-xs font-bold px-2.5 py-1 rounded-lg ${achClass(deptAch)}`}>{deptAch.toFixed(0)}%</span>
-                  <span className="text-slate-300">{isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</span>
-                </div>
-              </button>
+                  <div className="flex items-center gap-3 flex-shrink-0 ml-3">
+                    <span className={`text-xs font-bold px-2.5 py-1 rounded-lg ${achClass(deptAch)}`}>{deptAch.toFixed(0)}%</span>
+                    <span className="text-slate-300">{isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</span>
+                  </div>
+                </button>
+                <Link
+                  href={`/okr/present?userId=${dept.ownerId}&quarterId=${quarterId}`}
+                  className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 mr-4 rounded-lg bg-[#097eb9] text-white hover:bg-[#0b6fa3] flex-shrink-0"
+                  title="Open the OKR meeting presentation"
+                >
+                  <Play size={13} /> Present
+                </Link>
+              </div>
 
               {isOpen && (
                 <div className="p-5 space-y-5">

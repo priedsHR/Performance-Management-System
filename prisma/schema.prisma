@@ -145,8 +145,23 @@ model Initiative {
   keyResult    KeyResult   @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
   picId        String?                     // Person In Charge (assigned team member)
   pic          TeamMember? @relation(fields: [picId], references: [id], onDelete: SetNull)
+  monthly      InitiativeMonthly[]
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
+}
+
+// Monthly progress for an initiative. Mid-managers enter an actual for each
+// month of the quarter; the initiative's `actual` tracks the latest filled month.
+model InitiativeMonthly {
+  id           String     @id @default(cuid())
+  initiativeId String
+  initiative   Initiative @relation(fields: [initiativeId], references: [id], onDelete: Cascade)
+  year         Int
+  month        Int        // 1–12
+  actual       Float      @default(0)
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([initiativeId, year, month])
 }
 
 model Employee {

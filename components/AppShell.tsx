@@ -9,10 +9,10 @@ import PriedsLogo from "@/components/PriedsLogo";
 // Responsive shell: fixed sidebar on desktop; on mobile the sidebar is a
 // slide-in drawer opened from a hamburger in the top bar and auto-closes on navigation.
 export default function AppShell({
-  role, name, division, roleLabel, initials, isExecutive, children,
+  role, name, division, roleLabel, initials, children,
 }: {
   role: string; name: string | null; division: string | null;
-  roleLabel: string; initials: string; isExecutive?: boolean; children: React.ReactNode;
+  roleLabel: string; initials: string; children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -22,7 +22,7 @@ export default function AppShell({
     <div className="flex min-h-screen bg-slate-50">
       {/* Desktop sidebar */}
       <div className="hidden lg:block print:hidden">
-        <Sidebar role={role} name={name} division={division} isExecutive={isExecutive} />
+        <Sidebar role={role} name={name} division={division} />
       </div>
 
       {/* Mobile drawer */}
@@ -30,7 +30,7 @@ export default function AppShell({
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-slate-900/40" onClick={() => setOpen(false)} />
           <div className="absolute left-0 top-0 bottom-0 w-56 overflow-y-auto shadow-2xl">
-            <Sidebar role={role} name={name} division={division} isExecutive={isExecutive} onNavigate={() => setOpen(false)} />
+            <Sidebar role={role} name={name} division={division} onNavigate={() => setOpen(false)} />
           </div>
           <button
             onClick={() => setOpen(false)}
