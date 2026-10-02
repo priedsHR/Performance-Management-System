@@ -73,7 +73,8 @@ export const ModelName = {
   FeedbackPeerExclusion: 'FeedbackPeerExclusion',
   IdpPlan: 'IdpPlan',
   ProgressSnapshot: 'ProgressSnapshot',
-  SlideAnnotation: 'SlideAnnotation'
+  SlideAnnotation: 'SlideAnnotation',
+  PresentationSlide: 'PresentationSlide'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -432,6 +433,19 @@ export const SlideAnnotationScalarFieldEnum = {
 } as const
 
 export type SlideAnnotationScalarFieldEnum = (typeof SlideAnnotationScalarFieldEnum)[keyof typeof SlideAnnotationScalarFieldEnum]
+
+
+export const PresentationSlideScalarFieldEnum = {
+  id: 'id',
+  division: 'division',
+  quarterId: 'quarterId',
+  title: 'title',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PresentationSlideScalarFieldEnum = (typeof PresentationSlideScalarFieldEnum)[keyof typeof PresentationSlideScalarFieldEnum]
 
 
 export const SortOrder = {

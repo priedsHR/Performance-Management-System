@@ -415,3 +415,17 @@ model SlideAnnotation {
 
   @@index([division, quarterId])
 }
+
+// Custom blank slides a user adds to a division's OKR presentation. They hold
+// only annotations (slideKey "custom:<id>") and are ordered after the plan slide.
+model PresentationSlide {
+  id        String   @id @default(cuid())
+  division  String
+  quarterId String
+  title     String   @default("New slide")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([division, quarterId])
+}

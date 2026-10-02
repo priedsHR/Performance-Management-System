@@ -132,3 +132,8 @@ export type ProgressSnapshot = Prisma.ProgressSnapshotModel
  * 
  */
 export type SlideAnnotation = Prisma.SlideAnnotationModel
+/**
+ * Model PresentationSlide
+ * 
+ */
+export type PresentationSlide = Prisma.PresentationSlideModel

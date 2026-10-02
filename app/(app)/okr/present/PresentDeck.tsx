@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
-import { Printer, ArrowLeft, ChevronLeft, ChevronRight, Target as TargetIcon, TrendingUp, Flag, Maximize, Pencil, Type, ImagePlus, Check, Trash2 } from "lucide-react";
+import { Printer, ArrowLeft, ChevronLeft, ChevronRight, Target as TargetIcon, TrendingUp, Flag, Maximize, Pencil, Type, ImagePlus, Check, Trash2, Plus } from "lucide-react";
 
 const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -67,12 +67,16 @@ export default function PresentDeck({
     ? curObjectives.reduce((s, o) => s + objAch(o) * (o.weight || 1), 0) / curObjectives.reduce((s, o) => s + (o.weight || 1), 0)
     : 0;
 
-  // Build slides: cover + one per current objective + plan
-  type Slide = { kind: "cover" } | { kind: "obj"; obj: Objective; idx: number } | { kind: "plan" };
+  // Custom blank slides the user adds (filled with annotations).
+  const [customSlides, setCustomSlides] = useState<{ id: string; title: string }[]>([]);
+
+  // Build slides: cover + one per current objective + plan + custom slides
+  type Slide = { kind: "cover" } | { kind: "obj"; obj: Objective; idx: number } | { kind: "plan" } | { kind: "custom"; id: string; title: string };
   const slides: Slide[] = [
     { kind: "cover" },
     ...curObjectives.map((obj, idx) => ({ kind: "obj" as const, obj, idx })),
     { kind: "plan" as const },
+    ...customSlides.map((c) => ({ kind: "custom" as const, id: c.id, title: c.title })),
   ];
 
   const [i, setI] = useState(0);
@@ -91,9 +95,33 @@ export default function PresentDeck({
       .then((r) => (r.ok ? r.json() : { annotations: [], canEdit: false }))
       .then((d) => { setAnnotations(d.annotations || []); setCanEdit(!!d.canEdit); })
       .catch(() => {});
+    fetch(`/api/presentation-slides?division=${encodeURIComponent(division)}&quarterId=${quarterId}`)
+      .then((r) => (r.ok ? r.json() : { slides: [] }))
+      .then((d) => setCustomSlides(d.slides || []))
+      .catch(() => {});
   }, [division, quarterId]);
 
-  const slideKeyOf = (s: Slide) => (s.kind === "cover" ? "cover" : s.kind === "plan" ? "plan" : `obj:${s.obj.id}`);
+  const slideKeyOf = (s: Slide) =>
+    s.kind === "cover" ? "cover" : s.kind === "plan" ? "plan" : s.kind === "custom" ? `custom:${s.id}` : `obj:${s.obj.id}`;
+
+  async function addSlide() {
+    const res = await fetch("/api/presentation-slides", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ division, quarterId, title: "New slide" }),
+    });
+    if (res.ok) { const s = await res.json(); setCustomSlides((p) => [...p, { id: s.id, title: s.title }]); setTimeout(() => setI(slides.length), 0); }
+  }
+  async function updateSlideTitle(id: string, title: string) {
+    setCustomSlides((p) => p.map((s) => (s.id === id ? { ...s, title } : s)));
+    await fetch(`/api/presentation-slides/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title }) });
+  }
+  async function deleteSlide(id: string) {
+    if (!confirm("Delete this slide and everything on it?")) return;
+    setCustomSlides((p) => p.filter((s) => s.id !== id));
+    setAnnotations((p) => p.filter((a) => a.slideKey !== `custom:${id}`));
+    setI((v) => Math.max(0, v - 1));
+    await fetch(`/api/presentation-slides/${id}`, { method: "DELETE" });
+  }
   const curKey = slideKeyOf(slides[i]);
 
   async function addAnnotation(kind: "text" | "image", content: string) {
@@ -308,9 +336,31 @@ export default function PresentDeck({
     );
   }
 
+  function CustomSlide({ id, title }: { id: string; title: string }) {
+    return (
+      <div className="h-full flex flex-col px-8 py-6">
+        {editMode ? (
+          <input
+            value={title}
+            onChange={(e) => setCustomSlides((p) => p.map((s) => (s.id === id ? { ...s, title: e.target.value } : s)))}
+            onBlur={(e) => updateSlideTitle(id, e.target.value)}
+            onPointerDown={(e) => e.stopPropagation()}
+            className="text-2xl font-extrabold text-slate-900 bg-transparent border-b border-dashed border-slate-200 focus:border-amber-400 focus:outline-none"
+          />
+        ) : (
+          <h1 className="text-2xl font-extrabold text-slate-900">{title}</h1>
+        )}
+        {editMode && (
+          <p className="text-xs text-slate-300 mt-auto mb-auto text-center">Blank slide — use <b>＋ Text</b> and <b>＋ Image</b> to add content here.</p>
+        )}
+      </div>
+    );
+  }
+
   function renderSlide(s: Slide) {
     if (s.kind === "cover") return <CoverSlide />;
     if (s.kind === "plan") return <PlanSlide />;
+    if (s.kind === "custom") return <CustomSlide id={s.id} title={s.title} />;
     return <ObjSlide obj={s.obj} idx={s.idx} />;
   }
 
@@ -329,6 +379,10 @@ export default function PresentDeck({
               <button onClick={() => addAnnotation("text", "Double-click to edit")} className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"><Type size={14} /> Text</button>
               <button onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"><ImagePlus size={14} /> Image</button>
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPickImage} />
+              <button onClick={addSlide} className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"><Plus size={14} /> Slide</button>
+              {slides[i].kind === "custom" && (
+                <button onClick={() => deleteSlide((slides[i] as { id: string }).id)} className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-2 rounded-lg border border-red-200 text-red-500 hover:bg-red-50"><Trash2 size={14} /> Slide</button>
+              )}
             </>
           )}
           {canEdit && (
