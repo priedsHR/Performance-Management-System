@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Trash2, ChevronDown, ChevronUp, CheckSquare, Square, X, Key } from "lucide-react";
+import { Trash2, ChevronDown, ChevronUp, CheckSquare, Square, X, Key, Unlock } from "lucide-react";
 import { calcKRAchievement } from "@/lib/calculations";
 import InitiativeEditor from "./InitiativeEditor";
 
@@ -698,9 +698,11 @@ export default function OKRManager({ initialObjectives, quarterId, userId, allQu
                 {isLocked ? (
                   <button
                     onClick={() => recallOKR(obj.id)}
-                    className="text-slate-400 hover:text-orange-500 transition flex-shrink-0 text-base mt-0.5"
-                    title="Pull back to draft"
-                  ></button>
+                    className="inline-flex items-center gap-1 flex-shrink-0 mt-0.5 text-xs font-semibold px-2.5 py-1 rounded-lg border border-orange-200 text-orange-600 bg-orange-50 hover:bg-orange-100 transition"
+                    title="Reopen this submitted OKR so you can edit it"
+                  >
+                    <Unlock size={13} /> Reopen to edit
+                  </button>
                 ) : (
                   !selectMode && (
                     <button onClick={() => deleteObjective(obj.id)} className={`${btnDanger} flex-shrink-0 mt-0.5`}>
