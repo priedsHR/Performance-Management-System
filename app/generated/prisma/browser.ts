@@ -127,3 +127,8 @@ export type IdpPlan = Prisma.IdpPlanModel
  * 
  */
 export type ProgressSnapshot = Prisma.ProgressSnapshotModel
+/**
+ * Model SlideAnnotation
+ * 
+ */
+export type SlideAnnotation = Prisma.SlideAnnotationModel

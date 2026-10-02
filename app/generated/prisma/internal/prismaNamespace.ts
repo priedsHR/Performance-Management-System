@@ -405,7 +405,8 @@ export const ModelName = {
   FeedbackComment: 'FeedbackComment',
   FeedbackPeerExclusion: 'FeedbackPeerExclusion',
   IdpPlan: 'IdpPlan',
-  ProgressSnapshot: 'ProgressSnapshot'
+  ProgressSnapshot: 'ProgressSnapshot',
+  SlideAnnotation: 'SlideAnnotation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -421,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "initiative" | "initiativeMonthly" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment" | "feedbackPeerExclusion" | "idpPlan" | "progressSnapshot"
+    modelProps: "user" | "quarter" | "reminderSchedule" | "objective" | "teamMember" | "objectiveAssignment" | "kRAssignment" | "initiative" | "initiativeMonthly" | "employee" | "keyResult" | "feedbackPeriod" | "competency" | "feedbackProfile" | "profileCompetency" | "feedbackResponse" | "feedbackSetting" | "feedbackManualPeer" | "feedbackComment" | "feedbackPeerExclusion" | "idpPlan" | "progressSnapshot" | "slideAnnotation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2053,6 +2054,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SlideAnnotation: {
+      payload: Prisma.$SlideAnnotationPayload<ExtArgs>
+      fields: Prisma.SlideAnnotationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SlideAnnotationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SlideAnnotationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload>
+        }
+        findFirst: {
+          args: Prisma.SlideAnnotationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SlideAnnotationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload>
+        }
+        findMany: {
+          args: Prisma.SlideAnnotationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload>[]
+        }
+        create: {
+          args: Prisma.SlideAnnotationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload>
+        }
+        createMany: {
+          args: Prisma.SlideAnnotationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SlideAnnotationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload>[]
+        }
+        delete: {
+          args: Prisma.SlideAnnotationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload>
+        }
+        update: {
+          args: Prisma.SlideAnnotationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload>
+        }
+        deleteMany: {
+          args: Prisma.SlideAnnotationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SlideAnnotationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SlideAnnotationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload>[]
+        }
+        upsert: {
+          args: Prisma.SlideAnnotationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SlideAnnotationPayload>
+        }
+        aggregate: {
+          args: Prisma.SlideAnnotationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSlideAnnotation>
+        }
+        groupBy: {
+          args: Prisma.SlideAnnotationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SlideAnnotationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SlideAnnotationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SlideAnnotationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2413,6 +2488,27 @@ export const ProgressSnapshotScalarFieldEnum = {
 export type ProgressSnapshotScalarFieldEnum = (typeof ProgressSnapshotScalarFieldEnum)[keyof typeof ProgressSnapshotScalarFieldEnum]
 
 
+export const SlideAnnotationScalarFieldEnum = {
+  id: 'id',
+  division: 'division',
+  quarterId: 'quarterId',
+  slideKey: 'slideKey',
+  kind: 'kind',
+  content: 'content',
+  x: 'x',
+  y: 'y',
+  w: 'w',
+  h: 'h',
+  fontSize: 'fontSize',
+  color: 'color',
+  z: 'z',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SlideAnnotationScalarFieldEnum = (typeof SlideAnnotationScalarFieldEnum)[keyof typeof SlideAnnotationScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2709,6 +2805,7 @@ export type GlobalOmitConfig = {
   feedbackPeerExclusion?: Prisma.FeedbackPeerExclusionOmit
   idpPlan?: Prisma.IdpPlanOmit
   progressSnapshot?: Prisma.ProgressSnapshotOmit
+  slideAnnotation?: Prisma.SlideAnnotationOmit
 }
 
 /* Types for Logging */

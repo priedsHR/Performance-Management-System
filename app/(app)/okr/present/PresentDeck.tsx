@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
-import { Printer, ArrowLeft, ChevronLeft, ChevronRight, Target as TargetIcon, TrendingUp, Flag } from "lucide-react";
+import { Printer, ArrowLeft, ChevronLeft, ChevronRight, Target as TargetIcon, TrendingUp, Flag, Maximize, Pencil, Type, ImagePlus, Check, Trash2 } from "lucide-react";
 
 const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -10,6 +10,8 @@ type Monthly = { year: number; month: number; actual: number };
 type Initiative = { id: string; title: string; target: number; actual: number; unit: string; resultNote: string | null; pic: { name: string } | null; monthly: Monthly[] };
 type KeyResult = { id: string; title: string; target: number; unit: string; weight: number; teamProgress: number; leadProgress: number | null; initiatives: Initiative[] };
 type Objective = { id: string; title: string; weight: number; user: { name: string }; keyResults: KeyResult[] };
+
+type Annotation = { id: string; slideKey: string; kind: "text" | "image"; content: string; x: number; y: number; w: number; h: number; fontSize: number; color: string; z: number };
 
 function initAch(it: Initiative) { return it.target > 0 ? Math.min((it.actual / it.target) * 100, 100) : 0; }
 function krActual(kr: KeyResult) { return kr.initiatives.length > 0 ? (kr.leadProgress ?? kr.teamProgress) : (kr.leadProgress ?? kr.teamProgress); }
@@ -51,9 +53,10 @@ function objTotals(obj: Objective) {
 }
 
 export default function PresentDeck({
-  division, curQuarter, nextQuarter, curMonths, curObjectives, nextObjectives,
+  division, quarterId, curQuarter, nextQuarter, curMonths, curObjectives, nextObjectives,
 }: {
   division: string;
+  quarterId: string;
   curQuarter: { name: string; year: number; quarter: number };
   nextQuarter: { name: string } | null;
   curMonths: number[];
@@ -74,11 +77,107 @@ export default function PresentDeck({
 
   const [i, setI] = useState(0);
   const go = useCallback((d: number) => setI((v) => Math.min(Math.max(v + d, 0), slides.length - 1)), [slides.length]);
+
+  // ── Annotations (text boxes / images) ──────────────────────────────────────
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const [canEdit, setCanEdit] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [selId, setSelId] = useState<string | null>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
-    const h = (e: KeyboardEvent) => { if (e.key === "ArrowRight" || e.key === "PageDown") go(1); if (e.key === "ArrowLeft" || e.key === "PageUp") go(-1); };
+    fetch(`/api/slide-annotations?division=${encodeURIComponent(division)}&quarterId=${quarterId}`)
+      .then((r) => (r.ok ? r.json() : { annotations: [], canEdit: false }))
+      .then((d) => { setAnnotations(d.annotations || []); setCanEdit(!!d.canEdit); })
+      .catch(() => {});
+  }, [division, quarterId]);
+
+  const slideKeyOf = (s: Slide) => (s.kind === "cover" ? "cover" : s.kind === "plan" ? "plan" : `obj:${s.obj.id}`);
+  const curKey = slideKeyOf(slides[i]);
+
+  async function addAnnotation(kind: "text" | "image", content: string) {
+    const res = await fetch("/api/slide-annotations", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ division, quarterId, slideKey: curKey, kind, content,
+        x: 34, y: 38, w: kind === "image" ? 32 : 28, h: kind === "image" ? 26 : 12 }),
+    });
+    if (res.ok) { const a = await res.json(); setAnnotations((p) => [...p, a]); setSelId(a.id); }
+    else { const d = await res.json().catch(() => ({})); alert(d.error || "Could not add."); }
+  }
+  function patchAnnotationLocal(id: string, data: Partial<Annotation>) {
+    setAnnotations((p) => p.map((a) => (a.id === id ? { ...a, ...data } : a)));
+  }
+  async function saveAnnotation(id: string, data: Partial<Annotation>) {
+    await fetch(`/api/slide-annotations/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+  }
+  async function removeAnnotation(id: string) {
+    setAnnotations((p) => p.filter((a) => a.id !== id)); setSelId(null);
+    await fetch(`/api/slide-annotations/${id}`, { method: "DELETE" });
+  }
+
+  // Downscale an image to keep the stored data URL small, then add it.
+  function onPickImage(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 1200; let { width, height } = img;
+        if (width > max) { height = (height * max) / width; width = max; }
+        const canvas = document.createElement("canvas"); canvas.width = width; canvas.height = height;
+        canvas.getContext("2d")!.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+        addAnnotation("image", dataUrl);
+      };
+      img.src = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  }
+
+  // Drag / resize using pointer deltas converted to % of the stage.
+  function startDrag(e: React.PointerEvent, ann: Annotation, mode: "move" | "resize") {
+    if (!editMode) return;
+    e.preventDefault(); e.stopPropagation(); setSelId(ann.id);
+    const rect = stageRef.current!.getBoundingClientRect();
+    const startX = e.clientX, startY = e.clientY;
+    const o = { x: ann.x, y: ann.y, w: ann.w, h: ann.h };
+    function onMove(ev: PointerEvent) {
+      const dx = ((ev.clientX - startX) / rect.width) * 100;
+      const dy = ((ev.clientY - startY) / rect.height) * 100;
+      if (mode === "move") patchAnnotationLocal(ann.id, { x: Math.max(0, Math.min(95, o.x + dx)), y: Math.max(0, Math.min(95, o.y + dy)) });
+      else patchAnnotationLocal(ann.id, { w: Math.max(5, Math.min(100, o.w + dx)), h: Math.max(4, Math.min(100, o.h + dy)) });
+    }
+    function onUp() {
+      window.removeEventListener("pointermove", onMove); window.removeEventListener("pointerup", onUp);
+      setAnnotations((cur) => { const a = cur.find((x) => x.id === ann.id); if (a) saveAnnotation(a.id, { x: a.x, y: a.y, w: a.w, h: a.h }); return cur; });
+    }
+    window.addEventListener("pointermove", onMove); window.addEventListener("pointerup", onUp);
+  }
+
+  // ── Fullscreen ──────────────────────────────────────────────────────────────
+  const [isFull, setIsFull] = useState(false);
+  function toggleFull() {
+    const el = stageRef.current?.parentElement;
+    if (!document.fullscreenElement) el?.requestFullscreen?.().catch(() => {});
+    else document.exitFullscreen?.();
+  }
+  useEffect(() => {
+    const h = () => setIsFull(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", h);
+    return () => document.removeEventListener("fullscreenchange", h);
+  }, []);
+
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (editMode) return;
+      if (e.key === "ArrowRight" || e.key === "PageDown") go(1);
+      if (e.key === "ArrowLeft" || e.key === "PageUp") go(-1);
+    };
     window.addEventListener("keydown", h);
     return () => window.removeEventListener("keydown", h);
-  }, [go]);
+  }, [go, editMode]);
 
   const nextFocus = nextObjectives.slice(0, 4).map((o) => o.title);
 
@@ -215,36 +314,131 @@ export default function PresentDeck({
     return <ObjSlide obj={s.obj} idx={s.idx} />;
   }
 
+  const curAnns = annotations.filter((a) => a.slideKey === curKey);
+
   return (
     <div className="space-y-3">
       {/* Controls — hidden in print */}
-      <div className="flex items-center justify-between print:hidden">
+      <div className="flex items-center justify-between flex-wrap gap-2 print:hidden">
         <Link href="/company-okr" className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800">
           <ArrowLeft size={15} /> Back
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {editMode && (
+            <>
+              <button onClick={() => addAnnotation("text", "Double-click to edit")} className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"><Type size={14} /> Text</button>
+              <button onClick={() => fileRef.current?.click()} className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"><ImagePlus size={14} /> Image</button>
+              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPickImage} />
+            </>
+          )}
+          {canEdit && (
+            <button onClick={() => { setEditMode((v) => !v); setSelId(null); }} className={`inline-flex items-center gap-1 text-xs font-semibold px-3 py-2 rounded-lg ${editMode ? "bg-green-600 text-white hover:bg-green-700" : "border border-slate-200 text-slate-600 hover:bg-slate-50"}`}>
+              {editMode ? <><Check size={14} /> Done</> : <><Pencil size={14} /> Edit</>}
+            </button>
+          )}
           <button onClick={() => go(-1)} disabled={i === 0} className="p-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-30"><ChevronLeft size={16} /></button>
           <span className="text-sm text-slate-500 tabular-nums w-16 text-center">{i + 1} / {slides.length}</span>
           <button onClick={() => go(1)} disabled={i === slides.length - 1} className="p-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-30"><ChevronRight size={16} /></button>
-          <button onClick={() => window.print()} className="ml-2 inline-flex items-center gap-1.5 text-sm font-semibold px-3.5 py-2 rounded-lg bg-[#097eb9] text-white hover:bg-[#0b6fa3]"><Printer size={15} /> PDF</button>
+          <button onClick={toggleFull} title="Full screen" className="p-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50"><Maximize size={16} /></button>
+          <button onClick={() => window.print()} className="inline-flex items-center gap-1.5 text-sm font-semibold px-3.5 py-2 rounded-lg bg-[#097eb9] text-white hover:bg-[#0b6fa3]"><Printer size={15} /> PDF</button>
         </div>
       </div>
 
-      {/* On-screen: current slide only, 16:9 */}
-      <div className="print:hidden">
-        <div className="w-full max-w-5xl mx-auto aspect-[16/9] bg-gradient-to-br from-slate-50 to-cyan-50/40 border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+      {/* On-screen: current slide only, 16:9. This wrapper is the fullscreen target. */}
+      <div className={`print:hidden ${isFull ? "flex items-center justify-center bg-slate-900 w-screen h-screen" : ""}`}>
+        <div
+          ref={stageRef}
+          onPointerDown={() => editMode && setSelId(null)}
+          className={`relative w-full max-w-5xl mx-auto aspect-[16/9] bg-gradient-to-br from-slate-50 to-cyan-50/40 border border-slate-200 rounded-2xl shadow-sm overflow-hidden ${isFull ? "max-w-none !rounded-none" : ""}`}
+          style={isFull ? { width: "min(100vw, calc(100vh * 16 / 9))", height: "min(100vh, calc(100vw * 9 / 16))" } : undefined}
+        >
           {renderSlide(slides[i])}
+          {/* Annotation overlay */}
+          {curAnns.map((a) => (
+            <AnnotationBox
+              key={a.id} ann={a} editMode={editMode} selected={selId === a.id}
+              onSelect={() => setSelId(a.id)}
+              onStartDrag={(e, mode) => startDrag(e, a, mode)}
+              onChangeText={(v) => patchAnnotationLocal(a.id, { content: v })}
+              onSaveText={(v) => saveAnnotation(a.id, { content: v })}
+              onRemove={() => removeAnnotation(a.id)}
+            />
+          ))}
+
+          {/* In-slide nav arrows when fullscreen */}
+          {isFull && (
+            <>
+              <button onClick={() => go(-1)} disabled={i === 0} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow disabled:opacity-20"><ChevronLeft size={22} /></button>
+              <button onClick={() => go(1)} disabled={i === slides.length - 1} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow disabled:opacity-20"><ChevronRight size={22} /></button>
+              <span className="absolute bottom-3 right-4 text-xs text-slate-500 bg-white/80 rounded px-2 py-0.5">{i + 1} / {slides.length}</span>
+            </>
+          )}
         </div>
       </div>
+      {editMode && <p className="text-xs text-slate-400 print:hidden">Editing — drag to move, drag the corner to resize, double-click text to edit. Changes save automatically and show for everyone.</p>}
 
-      {/* Print: every slide, each on its own page */}
+      {/* Print: every slide, each on its own page (with its annotations) */}
       <div className="hidden print:block">
-        {slides.map((s, idx) => (
-          <div key={idx} className="w-full aspect-[16/9] bg-white border border-slate-200 rounded-2xl overflow-hidden break-after-page">
-            {renderSlide(s)}
-          </div>
-        ))}
+        {slides.map((s, idx) => {
+          const key = slideKeyOf(s);
+          return (
+            <div key={idx} className="relative w-full aspect-[16/9] bg-white border border-slate-200 rounded-2xl overflow-hidden break-after-page">
+              {renderSlide(s)}
+              {annotations.filter((a) => a.slideKey === key).map((a) => (
+                <AnnotationBox key={a.id} ann={a} editMode={false} selected={false} onSelect={() => {}} onStartDrag={() => {}} onChangeText={() => {}} onSaveText={() => {}} onRemove={() => {}} />
+              ))}
+            </div>
+          );
+        })}
       </div>
+    </div>
+  );
+}
+
+function AnnotationBox({ ann, editMode, selected, onSelect, onStartDrag, onChangeText, onSaveText, onRemove }: {
+  ann: Annotation; editMode: boolean; selected: boolean;
+  onSelect: () => void;
+  onStartDrag: (e: React.PointerEvent, mode: "move" | "resize") => void;
+  onChangeText: (v: string) => void;
+  onSaveText: (v: string) => void;
+  onRemove: () => void;
+}) {
+  const [editingText, setEditingText] = useState(false);
+  const style: React.CSSProperties = { position: "absolute", left: `${ann.x}%`, top: `${ann.y}%`, width: `${ann.w}%`, height: ann.kind === "image" ? `${ann.h}%` : undefined, zIndex: 10 + ann.z };
+  return (
+    <div
+      style={style}
+      onPointerDown={(e) => { if (editMode && !editingText) onStartDrag(e, "move"); }}
+      onClick={(e) => { e.stopPropagation(); if (editMode) onSelect(); }}
+      className={`${editMode ? "cursor-move" : ""} ${selected ? "outline outline-2 outline-[#097eb9]" : ""}`}
+    >
+      {ann.kind === "image" ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={ann.content} alt="" className="w-full h-full object-contain pointer-events-none select-none" draggable={false} />
+      ) : editingText ? (
+        <textarea
+          autoFocus defaultValue={ann.content}
+          onBlur={(e) => { setEditingText(false); onChangeText(e.target.value); onSaveText(e.target.value); }}
+          onPointerDown={(e) => e.stopPropagation()}
+          style={{ fontSize: ann.fontSize, color: ann.color }}
+          className="w-full h-full min-h-[1.5em] resize-none bg-white/80 border border-[#097eb9] rounded p-1 focus:outline-none leading-snug"
+        />
+      ) : (
+        <div
+          onDoubleClick={() => editMode && setEditingText(true)}
+          style={{ fontSize: ann.fontSize, color: ann.color }}
+          className="w-full h-full whitespace-pre-wrap leading-snug font-semibold"
+        >
+          {ann.content}
+        </div>
+      )}
+
+      {editMode && selected && !editingText && (
+        <>
+          <button onClick={(e) => { e.stopPropagation(); onRemove(); }} className="absolute -top-3 -right-3 bg-red-500 text-white rounded-full p-1 shadow"><Trash2 size={11} /></button>
+          <div onPointerDown={(e) => onStartDrag(e, "resize")} className="absolute -bottom-1.5 -right-1.5 w-3.5 h-3.5 bg-[#097eb9] rounded-sm cursor-se-resize" />
+        </>
+      )}
     </div>
   );
 }

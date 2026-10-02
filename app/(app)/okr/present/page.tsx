@@ -53,6 +53,7 @@ export default async function PresentPage({
   return (
     <PresentDeck
       division={division}
+      quarterId={curQ.id}
       curQuarter={{ name: curQ.name, year: curQ.year, quarter: curQ.quarter }}
       nextQuarter={nextQ ? { name: nextQ.name } : null}
       curMonths={curMonths}

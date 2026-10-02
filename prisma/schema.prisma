@@ -393,3 +393,25 @@ model ProgressSnapshot {
 
   @@unique([memberId, quarterId, month])
 }
+
+// Free-form annotations (text boxes & images) placed on the OKR presentation
+// slides for a division's quarter. Positions/sizes are percentages of the slide.
+model SlideAnnotation {
+  id        String   @id @default(cuid())
+  division  String
+  quarterId String
+  slideKey  String   // "cover" | "obj:<objectiveId>" | "plan"
+  kind      String   // "text" | "image"
+  content   String   // text content, or an image data URL
+  x         Float    @default(10) // % from left
+  y         Float    @default(10) // % from top
+  w         Float    @default(30) // % width
+  h         Float    @default(15) // % height
+  fontSize  Int      @default(16)
+  color     String   @default("#0f172a")
+  z         Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([division, quarterId])
+}
