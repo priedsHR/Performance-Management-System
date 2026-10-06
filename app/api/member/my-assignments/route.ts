@@ -75,5 +75,26 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ linked: true, objectives: Array.from(objMap.values()) });
+  // Initiatives this member is the PIC for — shown regardless of whether the
+  // parent KR was assigned to them in Member Distribution.
+  const picInitiatives = await prisma.initiative.findMany({
+    where: { picId: teamMember.id, keyResult: { objective: { quarterId } } },
+    orderBy: { sortOrder: "asc" },
+    select: {
+      id: true, title: true, target: true, actual: true, unit: true,
+      keyResult: { select: { title: true, objective: { select: { title: true } } } },
+    },
+  });
+  const myInitiatives = picInitiatives.map((i) => ({
+    id: i.id,
+    title: i.title,
+    target: i.target,
+    actual: i.actual,
+    unit: i.unit,
+    achievement: i.target > 0 ? Math.min((i.actual / i.target) * 100, 100) : 0,
+    krTitle: i.keyResult.title,
+    objTitle: i.keyResult.objective.title,
+  }));
+
+  return NextResponse.json({ linked: true, objectives: Array.from(objMap.values()), myInitiatives });
 }

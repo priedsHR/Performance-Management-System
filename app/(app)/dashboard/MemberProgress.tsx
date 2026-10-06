@@ -118,6 +118,7 @@ type Props = {
 export default function MemberProgress({ quarters, initialQuarterId }: Props) {
   const [selectedQ, setSelectedQ] = useState(initialQuarterId);
   const [objectives, setObjectives] = useState<ObjItem[]>([]);
+  const [myInitiatives, setMyInitiatives] = useState<{ id: string; title: string; achievement: number; krTitle: string; objTitle: string; target: number; actual: number; unit: string }[]>([]);
   const [linked, setLinked] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -128,7 +129,7 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
     setError(false);
     fetch(`/api/member/my-assignments?quarterId=${selectedQ}`)
       .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
-      .then((d) => { setLinked(d.linked ?? false); setObjectives(d.objectives ?? []); })
+      .then((d) => { setLinked(d.linked ?? false); setObjectives(d.objectives ?? []); setMyInitiatives(d.myInitiatives ?? []); })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, [selectedQ]);
@@ -186,16 +187,38 @@ export default function MemberProgress({ quarters, initialQuarterId }: Props) {
         </div>
       )}
 
-      {!loading && linked && objectives.length === 0 && (
+      {!loading && linked && objectives.length === 0 && myInitiatives.length === 0 && (
         <div className="bg-white border-2 border-dashed border-slate-200 rounded-2xl p-10 text-center">
           <div className="text-4xl mb-2"></div>
-          <p className="text-slate-500 text-sm">No KRs assigned to you for this quarter yet.</p>
+          <p className="text-slate-500 text-sm">No KRs or initiatives assigned to you for this quarter yet.</p>
         </div>
       )}
 
       {!loading && objectives.length > 0 && (
         <div className="space-y-4">
           {objectives.map((obj, i) => <ObjCard key={obj.id} obj={obj} index={i} />)}
+        </div>
+      )}
+
+      {/* Initiatives where I'm the PIC (independent of KR assignment) */}
+      {!loading && myInitiatives.length > 0 && (
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+          <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-100">
+            <h3 className="font-bold text-slate-800 text-sm">My Initiatives</h3>
+            <p className="text-xs text-slate-400 mt-0.5">Action plans you own as PIC this quarter.</p>
+          </div>
+          <div className="divide-y divide-slate-50">
+            {myInitiatives.map((it) => (
+              <div key={it.id} className="px-5 py-3 flex items-center gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-slate-700 truncate">{it.title}</p>
+                  <p className="text-[11px] text-slate-400 truncate">{it.objTitle} · {it.krTitle}</p>
+                </div>
+                <span className="text-xs text-slate-500 tabular-nums flex-shrink-0">{it.actual}/{it.target} {it.unit}</span>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-lg flex-shrink-0 ${achClass(it.achievement)}`}>{it.achievement.toFixed(0)}%</span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
