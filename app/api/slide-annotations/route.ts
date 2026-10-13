@@ -2,10 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
-// A user may edit a division's slides if they're admin, an executive, or they
-// belong to that division.
 function canEdit(session: { user: { role: string; isExecutive?: boolean; division?: string | null } }, division: string) {
-  return session.user.role === "ADMIN" || !!session.user.isExecutive || session.user.division === division;
+  // Only the department's own leader (or an admin) may edit its slides.
+  return session.user.role === "ADMIN" || (session.user.role === "LEAD" && session.user.division === division);
 }
 
 export async function GET(req: NextRequest) {
