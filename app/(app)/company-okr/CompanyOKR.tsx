@@ -29,6 +29,124 @@ function objAch(obj: Objective) {
   if (tw <= 0) return obj.keyResults.reduce((s, k) => s + krAch(k), 0) / obj.keyResults.length;
   return obj.keyResults.reduce((s, k) => s + (krAch(k) * k.weight) / tw, 0);
 }
+function deptAch(d: Dept) { return d.objectives.length ? d.objectives.reduce((s, o) => s + objAch(o), 0) / d.objectives.length : 0; }
+const hex = (v: number) => (v >= 100 ? "#16a34a" : v >= 70 ? "#f59e0b" : "#ef4444");
+
+function Donut({ pct, size = 108, stroke = 12 }: { pct: number; size?: number; stroke?: number }) {
+  const r = (size - stroke) / 2, c = 2 * Math.PI * r, off = c * (1 - Math.min(Math.max(pct, 0), 100) / 100);
+  return (
+    <svg width={size} height={size} className="flex-shrink-0">
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e2e8f0" strokeWidth={stroke} />
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={hex(pct)} strokeWidth={stroke} strokeLinecap="round" strokeDasharray={c} strokeDashoffset={off} transform={`rotate(-90 ${size / 2} ${size / 2})`} />
+      <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" className="fill-slate-800" style={{ fontSize: size * 0.24, fontWeight: 800 }}>{pct.toFixed(0)}%</text>
+    </svg>
+  );
+}
+function Tile({ label, value, sub }: { label: string; value: string; sub?: string }) {
+  return (
+    <div className="bg-white border border-slate-200 rounded-xl p-4">
+      <p className="text-xs text-slate-400">{label}</p>
+      <p className="text-2xl font-extrabold text-slate-900 mt-0.5">{value}</p>
+      {sub && <p className="text-[11px] text-slate-400 mt-0.5">{sub}</p>}
+    </div>
+  );
+}
+
+function Analytics({ departments }: { departments: Dept[] }) {
+  const deptStats = departments.map((d) => ({ name: d.division, ach: deptAch(d), objs: d.objectives.length })).sort((a, b) => b.ach - a.ach);
+  const company = deptStats.length ? deptStats.reduce((s, d) => s + d.ach, 0) / deptStats.length : 0;
+  const allObjs = departments.flatMap((d) => d.objectives);
+  const allInits = departments.flatMap((d) => d.objectives.flatMap((o) => o.keyResults.flatMap((k) => k.initiatives)));
+
+  // Per-person (PIC) achievement
+  const pm = new Map<string, { sum: number; n: number }>();
+  for (const it of allInits) {
+    const name = it.pic?.name ?? "Unassigned";
+    const a = it.target > 0 ? Math.min((it.actual / it.target) * 100, 100) : 0;
+    const e = pm.get(name) ?? { sum: 0, n: 0 }; e.sum += a; e.n += 1; pm.set(name, e);
+  }
+  const people = [...pm.entries()].map(([name, v]) => ({ name, ach: v.sum / v.n, n: v.n })).filter((p) => p.name !== "Unassigned").sort((a, b) => b.ach - a.ach);
+
+  // Status split (by objective)
+  const onTrack = allObjs.filter((o) => objAch(o) >= 100).length;
+  const nearly = allObjs.filter((o) => { const a = objAch(o); return a >= 70 && a < 100; }).length;
+  const behind = allObjs.filter((o) => objAch(o) < 70).length;
+  const total = allObjs.length || 1;
+
+  const maxPeople = 8;
+
+  return (
+    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-5">
+      <h2 className="text-sm font-bold text-slate-800">Company OKR Analytics</h2>
+
+      {/* KPI row */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3">
+          <Donut pct={company} size={84} stroke={10} />
+          <div><p className="text-xs text-slate-400">Company</p><p className="text-sm font-semibold text-slate-600">achievement</p></div>
+        </div>
+        <Tile label="Departments" value={String(departments.length)} />
+        <Tile label="Objectives" value={String(allObjs.length)} sub={`${onTrack} on track`} />
+        <Tile label="Initiatives" value={String(allInits.length)} />
+      </div>
+
+      {/* Achievement by department */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4">
+        <p className="text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-3">Achievement by Department</p>
+        <div className="space-y-2.5">
+          {deptStats.map((d) => (
+            <div key={d.name} className="flex items-center gap-3">
+              <span className="text-xs text-slate-600 w-28 truncate flex-shrink-0">{d.name}</span>
+              <div className="flex-1 h-4 bg-slate-100 rounded-md overflow-hidden">
+                <div className="h-4 rounded-md" style={{ width: `${Math.min(d.ach, 100)}%`, background: hex(d.ach) }} />
+              </div>
+              <span className="text-xs font-bold w-10 text-right flex-shrink-0" style={{ color: hex(d.ach) }}>{d.ach.toFixed(0)}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-3">
+        {/* By person */}
+        <div className="bg-white border border-slate-200 rounded-xl p-4">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-3">Achievement by Person (PIC)</p>
+          {people.length === 0 ? (
+            <p className="text-xs text-slate-300 italic">No initiatives assigned to people yet.</p>
+          ) : (
+            <div className="space-y-2">
+              {people.slice(0, maxPeople).map((p) => (
+                <div key={p.name} className="flex items-center gap-2">
+                  <span className="text-xs text-slate-600 w-28 truncate flex-shrink-0" title={p.name}>{p.name}</span>
+                  <div className="flex-1 h-3.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div className="h-3.5 rounded-full" style={{ width: `${Math.min(p.ach, 100)}%`, background: hex(p.ach) }} />
+                  </div>
+                  <span className="text-[11px] text-slate-400 w-6 text-right flex-shrink-0">{p.n}</span>
+                  <span className="text-xs font-bold w-9 text-right flex-shrink-0" style={{ color: hex(p.ach) }}>{p.ach.toFixed(0)}%</span>
+                </div>
+              ))}
+              {people.length > maxPeople && <p className="text-[11px] text-slate-300">+{people.length - maxPeople} more</p>}
+            </div>
+          )}
+        </div>
+
+        {/* Status */}
+        <div className="bg-white border border-slate-200 rounded-xl p-4">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-slate-400 mb-3">Objective Status</p>
+          <div className="flex h-4 rounded-full overflow-hidden mb-3">
+            <div style={{ width: `${(onTrack / total) * 100}%`, background: "#16a34a" }} />
+            <div style={{ width: `${(nearly / total) * 100}%`, background: "#f59e0b" }} />
+            <div style={{ width: `${(behind / total) * 100}%`, background: "#ef4444" }} />
+          </div>
+          <div className="space-y-1.5 text-xs">
+            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-sm bg-green-500" /> On track (≥100%) <span className="ml-auto font-bold text-slate-700">{onTrack}</span></div>
+            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-sm bg-amber-400" /> Nearly there (70–99%) <span className="ml-auto font-bold text-slate-700">{nearly}</span></div>
+            <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-sm bg-red-400" /> Behind (&lt;70%) <span className="ml-auto font-bold text-slate-700">{behind}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function CompanyOKR({ quarters }: { quarters: Quarter[] }) {
   const [quarterId, setQuarterId] = useState(quarters.find((q) => q.isActive)?.id ?? quarters[0]?.id ?? "");
@@ -65,7 +183,9 @@ export default function CompanyOKR({ quarters }: { quarters: Quarter[] }) {
       ) : departments.length === 0 ? (
         <div className="bg-white border border-slate-200 rounded-2xl p-8 text-center text-slate-400 text-sm">No OKR submitted for this quarter yet.</div>
       ) : (
-        departments.map((dept) => {
+        <>
+        <Analytics departments={departments} />
+        {departments.map((dept) => {
           const isOpen = open[dept.division] ?? true;
           const deptObjs = dept.objectives;
           const deptAch = deptObjs.length ? deptObjs.reduce((s, o) => s + objAch(o), 0) / deptObjs.length : 0;
@@ -161,7 +281,8 @@ export default function CompanyOKR({ quarters }: { quarters: Quarter[] }) {
               )}
             </div>
           );
-        })
+        })}
+        </>
       )}
     </div>
   );
